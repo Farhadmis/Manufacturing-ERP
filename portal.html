@@ -72,7 +72,7 @@ function layout(){const g=$("#g"),n=g.children.length,W=g.clientWidth,H=g.client
 function fitT(){const hs=[...document.querySelectorAll(".row h3")];let f=21;const set=v=>hs.forEach(h=>h.style.fontSize=v+"px");set(f);while(f>10.5&&hs.some(h=>h.scrollWidth>h.clientWidth+1)){f-=.5;set(f)}}
 addEventListener("resize",layout);layout();if(document.fonts)document.fonts.ready.then(layout);
 let cur=null;
-function openM(id){cur=mods.find(m=>m.id===id);const i=mods.indexOf(cur),[bg,ac]=CL[i%13];$("#ov").style.display="grid";
+function openM(id){cur=mods.find(m=>m.id===id);if(/deliver/i.test(cur.name)){location.href="delivery.html";return}const i=mods.indexOf(cur),[bg,ac]=CL[i%13];$("#ov").style.display="grid";
  $("#md").innerHTML=`<div class="mh" style="background:${ac}"><h3>${esc(cur.name)}</h3><button class="x" onclick="shut()">✕</button></div><div class="tabs" id="tb"></div><div class="body" id="bd"></div>`;
  const t=[cur,...cur.subs].filter(n=>can(n.id));$("#tb").innerHTML=t.map((n,j)=>`<div class="tab ${j?"":"on"}" onclick="tab('${n.id}',this)">${j===0||n===cur?"Overview":esc(n.name)}</div>`).join("");
  tab(t[0].id)}
