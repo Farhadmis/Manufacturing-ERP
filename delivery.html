@@ -4,6 +4,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="erp.js"></script>
 <style>
 :root{--navy:#0f2a5a;--red:#a61935;--blue:#2b5bb8;--mute:#6d7c99;--line:#dbe4f2;--bg:#f1f5fb}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--navy);height:100vh;display:flex;flex-direction:column;overflow:hidden;font-size:13px}
@@ -51,12 +53,7 @@ main{flex:1;min-width:0;overflow:auto;padding:0 22px 30px}
 <main id="mn2"><div class="fb" id="fb"></div><div id="pgc"></div></main></div><div id="pn"></div>
 <script>
 const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const me=sessionStorage.getItem("erp_user");if(!me)location.replace("index.html");
-function out(){sessionStorage.removeItem("erp_user");location.replace("index.html")}
-let D=null;try{D=JSON.parse(localStorage.getItem("mainetti_admin_v1"))}catch(e){}
-const rec0=D&&D.users.find(u=>u.id.toLowerCase()===(me||"").toLowerCase()),full=!rec0||rec0.role==="admin";
-const can=id=>full||!!rec0.perm?.[id]?.v;
-const nm=rec0?.name||me||"";$("#un").textContent=nm;$("#av").textContent=nm.slice(0,2).toUpperCase();
+let ME=null;const out=()=>ERP.signOut();
 $("#ub").onclick=e=>{e.stopPropagation();const m=$("#mn");m.style.display=m.style.display==="block"?"none":"block"};
 document.addEventListener("click",e=>{$("#mn").style.display="none";if(!e.target.closest("#pn,.f"))$("#pn").style.display="none"});
 const MN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -73,20 +70,24 @@ function pdate(v){if(v==null||v==="")return null;
  const d=new Date(v);return isNaN(d)?null:[d.getFullYear(),d.getMonth()+1,d.getDate()]}
 const isIC=v=>/(^|[^a-z])ic([^a-z]|$)/i.test(String(v||""));
 let R=[],mod=null,msg="";
-(function(){
- if(!D){msg="No data found. Upload the Delivery sheet from the Admin Console first.";return}
- mod=D.mods.find(m=>/deliver/i.test(m.name));
- if(!mod){msg="The Delivery module does not exist in the Admin Console.";return}
- if(!can(mod.id)&&!mod.subs.some(s=>can(s.id))){msg="You do not have access to the Delivery module.";return}
- const ids=[mod.id,...mod.subs.map(s=>s.id)],ds=ids.map(i=>D.data[i]).find(d=>d&&d.cols.map(norm).includes("hangerqty"));
- if(!ds){msg="No Delivery data yet. Upload the Delivery Excel from Admin Console → Data Manager → Delivery.";return}
+async function load(){
+ ME=await ERP.require();if(!ME)return false;
+ const nm=ME.name||ME.login_id;$("#un").textContent=nm;$("#av").textContent=nm.slice(0,2).toUpperCase();
+ const tree=await ERP.tree();mod=tree.find(m=>/deliver/i.test(m.name));
+ if(!mod){msg="The Delivery module does not exist in the Admin Console.";return true}
+ if(!ERP.can(ME,mod.id)&&!mod.subs.some(s=>ERP.can(ME,s.id,"v",mod.id))){msg="You do not have access to the Delivery module.";return true}
+ let ds=null;for(const id of [mod.id,...mod.subs.map(s=>s.id)]){
+  const{data:x}=await sb.from("datasets").select("cols").eq("node_id",id).maybeSingle();
+  if(x&&x.cols.map(norm).includes("hangerqty")){ds=await ERP.dataset(id);break}}
+ if(!ds){msg="No Delivery data yet. Upload the Delivery Excel from Admin Console → Data Manager → Delivery.";return true}
  const ix={};ds.cols.forEach((c,i)=>{const k=norm(c);if(!(k in ix))ix[k]=i});
- const g=(r,k)=>ix[k]==null?"":r[ix[k]];
+ const g=(r,k)=>ix[k]==null?"":r.data[ix[k]];
  ds.rows.forEach(r=>{const d=pdate(g(r,"date"));if(!d)return;const hq=num(g(r,"hangerqty")),sq=num(g(r,"sizerqty")),up=num(g(r,"unitprice"));
   let hv=g(r,"hangervalue"),sv=g(r,"sizervalue");hv=hv===""?hq*up/100:num(hv);sv=sv===""?sq*up/100:num(sv);   // Value = Qty × Unit Price ÷ 100
   R.push({y:d[0],m:d[1],d:d[2],ds:`${d[0]}-${String(d[1]).padStart(2,"0")}-${String(d[2]).padStart(2,"0")}`,cust:clean(g(r,"customername")),buyer:clean(g(r,"buyer")).toUpperCase(),model:clean(g(r,"model")).toUpperCase(),mc:clean(g(r,"modelcolor")).toUpperCase(),
    pay:clean(g(r,"paymentterms")).toUpperCase(),region:clean(g(r,"region")).toUpperCase(),prod:clean(g(r,"prodtype")),ot:isIC(g(r,"ordertype"))?"IC Order":"Others Order",hq,sq,up,hv,sv})});
- if(!R.length)msg="The uploaded sheet has no valid rows (check the DATE column)."})();
+ if(!R.length)msg="The uploaded sheet has no valid rows (check the DATE column)."
+ return true}
 /* ---------- filters ---------- */
 const FD=[["y","Year",r=>r.y],["m","Month",r=>r.m],["buyer","Buyer",r=>r.buyer],["model","Model",r=>r.model],["prod","Prod. Type",r=>r.prod],["pay","Payment Terms",r=>r.pay],["region","Region",r=>r.region],["ot","Order Type",r=>r.ot]];
 const F={};FD.forEach(f=>F[f[0]]=new Set());let from="",to="",page="ov";
@@ -156,5 +157,8 @@ function rt(){const C=["Date","Customer Name","Buyer","Model","Model & Color","H
  $("#tb").innerHTML=`<table><tr>${C.map(c=>`<th class="${NU[c]?"r":""}">${c}</th>`).join("")}</tr>${p.map(r=>`<tr>${C.map(c=>c==="Order Type"?`<td><span class="tag ${r[c]==="IC Order"?"ic":""}">${r[c]}</span></td>`:NU[c]?`<td class="r">${NU[c](r[c])}</td>`:`<td title="${esc(r[c])}">${esc(r[c])}</td>`).join("")}</tr>`).join("")||`<tr><td colspan="11" style="text-align:center;padding:40px;color:#6d7c99">No data for the selected filters</td></tr>`}</table>`}
 function pp(d){const mx=Math.max(0,Math.ceil(rows.length/PS)-1);pgn=Math.min(mx,Math.max(0,pgn+d));rt();$("#tb").scrollTop=0}
 function dx(){if(!rows.length||!window.XLSX)return alert("Nothing to download.");const w=XLSX.utils.book_new();XLSX.utils.book_append_sheet(w,XLSX.utils.json_to_sheet(rows),"Delivery");XLSX.writeFile(w,"Delivery_Raw_Data_"+new Date().toISOString().slice(0,10)+".xlsx")}
-fbuild();draw();
+async function init(){$("#pgc").innerHTML='<div class="empty"><b>Delivery</b>Loading data…</div>';
+ try{if(!(await load()))return}catch(e){console.error(e);msg="Could not load data: "+(e.message||e)}
+ fbuild();draw()}
+init();
 </script></body></html>
