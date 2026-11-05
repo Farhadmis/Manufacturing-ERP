@@ -814,14 +814,16 @@
           Pvt. Ltd. All rights reserved.</span></footer>
     </div>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="erp.js"></script>
   <script>
     const T = {
       en: { h1a: "Hanger Manufacturing Excellence", h1b: "with", h1c: "Smart ERP", h1d: "Solution", m1: "Production<br>Monitoring", m2: "Quality<br>Control", m3: "Inventory<br>Management", m4: "Business<br>Analytics", m5: "Sustainability &<br>Compliance", t1: "Drive Efficiency", t2: "Ensure Quality", t3: "Grow Together", sys: "Hanger Manufacturing ERP", wb: "Welcome Back!", sub: "Sign in to continue your journey", ph1: "Employee ID / Email", ph2: "Password", rem: "Remember Me", fp: "Forgot Password?", login: "Login", busy: "Signing in…", f1: "Committed to a Sustainable Future", sec: "Secure • Reliable • Scalable", e1: "Enter your ID or email.", e2: "Enter your password.", e3: "Password must be at least 6 characters.", e4: "Enter a valid email or an ID (letters and numbers only).", bad: "ID or password is incorrect.", net: "Cannot reach the server. Check your connection and try again.", show: "Show password", hide: "Hide password" },
       bn: { h1a: "হ্যাঙ্গার ম্যানুফ্যাকচারিং শ্রেষ্ঠত্ব", h1b: "স্মার্ট", h1c: "ERP", h1d: "সলিউশনে", m1: "প্রোডাকশন<br>মনিটরিং", m2: "কোয়ালিটি<br>কন্ট্রোল", m3: "ইনভেন্টরি<br>ম্যানেজমেন্ট", m4: "বিজনেস<br>অ্যানালিটিক্স", m5: "টেকসই উন্নয়ন ও<br>কমপ্লায়েন্স", t1: "দক্ষতা বৃদ্ধি", t2: "মান নিশ্চিত", t3: "একসাথে এগিয়ে", sys: "হ্যাঙ্গার ম্যানুফ্যাকচারিং ERP", wb: "স্বাগতম!", sub: "চালিয়ে যেতে সাইন ইন করুন", ph1: "কর্মী আইডি / ইমেইল", ph2: "পাসওয়ার্ড", rem: "আমাকে মনে রাখুন", fp: "পাসওয়ার্ড ভুলে গেছেন?", login: "লগইন", busy: "সাইন ইন হচ্ছে…", f1: "টেকসই ভবিষ্যতের প্রতি অঙ্গীকারবদ্ধ", sec: "নিরাপদ • নির্ভরযোগ্য • স্কেলেবল", e1: "আইডি বা ইমেইল দিন।", e2: "পাসওয়ার্ড দিন।", e3: "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।", e4: "সঠিক ইমেইল বা আইডি দিন (শুধু অক্ষর ও সংখ্যা)।", bad: "আইডি বা পাসওয়ার্ড ভুল।", net: "সার্ভারে পৌঁছানো যাচ্ছে না। সংযোগ দেখে আবার চেষ্টা করুন।", show: "পাসওয়ার্ড দেখান", hide: "পাসওয়ার্ড লুকান" }
     };
-    let L = "en"; const $ = id => document.getElementById(id);
+    let L = "en"; const sha = async t => { try { const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join("") } catch (e) { return "x" + btoa(unescape(encodeURIComponent(t))) } }; const $ = id => document.getElementById(id);
     function scale() { const d = document.documentElement, k = Math.min(d.clientWidth / 1672, innerHeight / 941); $("wrap").style.setProperty("--s", k); $("stage").style.setProperty("--s", k) }
-    function fit() { const h = $("h1"); h.style.fontSize = ""; if (innerWidth < 901) return; const a = h.firstElementChild; h.style.fontSize = "54px"; const w = a.offsetWidth; if (L === "en") h.style.fontSize = (54 * 857 / w * 0.65) + "px" }
+    function fit() { const h = $("h1"); h.style.fontSize = ""; if (innerWidth < 901) return; const a = h.firstElementChild; h.style.fontSize = "54px"; const w = a.offsetWidth; h.style.fontSize = L === "en" ? (54 * 800 / w) + "px" : "50px" }
     function setLang(l) { L = l; document.documentElement.lang = l; document.querySelectorAll("[data-i]").forEach(e => e.innerHTML = T[l][e.dataset.i]); document.querySelectorAll("[data-p]").forEach(e => e.placeholder = T[l][e.dataset.p]); document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.l === l)); syncEye(); fit(); try { localStorage.setItem("lang", l) } catch (e) { } }
     document.querySelectorAll(".lang button").forEach(b => b.onclick = () => setLang(b.dataset.l));
     function syncEye() { const s = $("p").type === "text"; $("eye").setAttribute("aria-label", s ? T[L].hide : T[L].show); $("eye").setAttribute("aria-pressed", s); $("sl").style.display = s ? "none" : "" }
@@ -829,17 +831,18 @@
     function fe(i, e, m) { $(e).textContent = m || ""; $(i).setAttribute("aria-invalid", !!m) }
     $("f").addEventListener("submit", async ev => {
       ev.preventDefault(); const t = T[L], u = $("u").value.trim(), p = $("p").value; $("al").classList.remove("on");
-      fe("u", "ue", !u ? t.e1 : (!/^[\w.+-]+@[\w-]+(\.[\w-]+)+$/.test(u) && !/^[A-Za-z0-9_-]{3,}$/.test(u) ? t.e4 : ""));
+      fe("u", "ue", !u ? t.e1 : (!/^[\w.+-]+@[\w-]+(\.[\w-]+)+$/.test(u) && !/^[A-Za-z0-9._-]{3,}$/.test(u) ? t.e4 : ""));
       fe("p", "pe", !p ? t.e2 : (p.length < 6 ? t.e3 : ""));
       const bad = $("ue").textContent ? $("u") : $("pe").textContent ? $("p") : null; if (bad) { bad.focus(); return }
       const b = $("go"); b.disabled = true; $("gt").textContent = t.busy;
-      try { // Backend contract: POST /api/auth/login → HttpOnly Secure session cookie. Password goes over HTTPS only and is never stored in the browser.
-        const r = await fetch("/api/auth/login", { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: u, password: p, remember: $("r").checked }) });
-        if (r.ok) { location.href = "/dashboard"; return }
-        $("al").textContent = r.status === 401 ? t.bad : t.net;
+      try {
+        const { error } = await sb.auth.signInWithPassword({ email: ERP.email(u), password: p });
+        if (!error) { location.href = "portal.html"; return }
+        $("al").textContent = /fetch|network/i.test(error.message) ? t.net : t.bad;
       } catch (e) { $("al").textContent = t.net }
       $("al").classList.add("on"); b.disabled = false; $("gt").textContent = t.login; $("p").value = ""; $("p").focus()
     });
+    sb.auth.getSession().then(({ data }) => { if (data.session) location.replace("portal.html") });
     addEventListener("resize", () => { scale(); fit() }); scale(); syncEye();
     (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { fit(); try { if (localStorage.getItem("lang") === "bn") setLang("bn") } catch (e) { } });
   </script>
