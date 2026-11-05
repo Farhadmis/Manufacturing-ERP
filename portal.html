@@ -43,42 +43,44 @@ footer{flex:none;text-align:center;color:var(--mute);font-size:12px;padding:9px;
 <main><div class="grid" id="g"></div></main>
 <footer>Mainetti Bangladesh — Hanger Manufacturing ERP · v1.0.0</footer>
 <div id="ov"><div class="mod" id="md"></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="erp.js"></script>
 <script>
 const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const me=sessionStorage.getItem("erp_user");if(!me)location.replace("index.html");
-const M0=["Order","RMS – Raw Material Store","Mixer Room","Production & Planning","Technical","Quality","FG – Finish Good","Delivery","HR – Human Resource","Learning & Development","Document Manager","Report & Analysis","Settings"];
 const DESC=["Customer orders, order confirmation, revisions and status tracking from receipt to dispatch.","Incoming material receipt, inspection, storage locations, stock levels and issue to the floor.","Batch recipes, colour matching, mixing logs and consumption against each production order.","Order planning, machine loading, daily output, downtime and delivery commitment tracking.","Mould and machine records, maintenance schedules, breakdowns, spares and technical changes.","In-process and final inspection, non-conformance handling, rejection analysis and complaints.","Finished goods receipt, packing, stock position and dispatch planning.","Delivery schedule, vehicle and challan management, and customer receipt confirmation.","Employee master, attendance, manpower deployment, leave and shift-wise headcount.","Training calendar, attendance, skill matrix and competency assessment across operations.","Controlled SOPs, work instructions, formats and records with versions and review dates.","Management reports, KPI dashboards and cross-module analysis for decisions.","System preferences, master data and portal configuration."];
 const IC=["M9 4h6v3H9zM7 5H5v16h14V5h-2M9 12h6M9 16h4","M3 10l9-6 9 6v10H3zM8 20v-6h8v6","M9 3h6M10 3v6l-5 10a2 2 0 002 3h10a2 2 0 002-3l-5-10V3M8 15h8","M12 8a4 4 0 100 8 4 4 0 000-8zM12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2","M14 6a4 4 0 005 5l-9 9a2.8 2.8 0 01-4-4l9-9z","M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM8.5 12l2.5 2.5 4.5-5","M12 3l8 4.5v9L12 21l-8-4.5v-9zM4 7.5l8 4.5 8-4.5M12 12v9","M2 6h12v10H2zM14 9h4l4 4v3h-8zM6 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z","M9 11a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM2 20c0-4 3-6 7-6s7 2 7 6M17 5a3 3 0 010 6M19 14c2 .6 3 2.5 3 5","M2 9l10-5 10 5-10 5zM6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5","M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h6","M4 20V10M10 20V4M16 20v-8M22 20H2","M4 6h10M18 6h2M4 12h2M10 12h10M4 18h12M14 4v4M8 10v4M16 16v4"];
 const CL=[["#fff6dc","#c58a00"],["#e3f6fb","#0b8aa6"],["#e4eeff","#2563eb"],["#ece8ff","#6d4aff"],["#e4f6ec","#1f9d55"],["#ffebe3","#e0562f"],["#fde8f1","#d6336c"],["#f1ebff","#7c4dff"],["#e9eff6","#4b647f"],["#ffefdc","#d9730d"],["#e5f2ff","#1d6fb8"],["#f6e6ec","#a61935"],["#eceff3","#51607a"]];
-let D=null;try{D=JSON.parse(localStorage.getItem("mainetti_admin_v1"))}catch(e){}
-const rec=D&&D.users.find(u=>u.id.toLowerCase()===(me||"").toLowerCase());
-if(D&&rec&&!rec.active)out();
-const full=!rec||rec.role==="admin";                 // test login (Farhad) and admins see everything
-const mods=D?D.mods:M0.map((n,i)=>({id:"d"+i,name:n,subs:[]}));
-const can=(id,k="v")=>full||!!rec.perm?.[id]?.[k];
-const nodeOk=m=>can(m.id)||m.subs.some(s=>can(s.id));
-function out(){sessionStorage.removeItem("erp_user");location.replace("index.html")}
-const nm=rec?.name||me||"";$("#un").textContent=nm;$("#av").textContent=nm.slice(0,2).toUpperCase();
-const hr=new Date().getHours();$("#gr").textContent=`Good ${hr<12?"morning":hr<17?"afternoon":"evening"}, ${nm.split(" ")[0]}. Here is your operation at a glance.`;
-if(rec&&rec.role==="admin")$("#adm").style.display="block";
-$("#ub").onclick=e=>{e.stopPropagation();const m=$("#mn");m.style.display=m.style.display==="block"?"none":"block"};document.onclick=()=>$("#mn").style.display="none";
-$("#g").innerHTML=mods.map((m,i)=>{const ok=nodeOk(m),[bg,ac]=CL[i%13],ic=IC[i%13];
- return`<div class="card ${ok?"ok":"lock"}" ${ok?`onclick="openM('${m.id}')"`:""} style="background:linear-gradient(135deg,${bg},#fff 140%);color:${ac}"><div class="row"><div class="ic" style="color:${ac}"><svg viewBox="0 0 24 24"><path d="${ic}"/></svg></div><h3>${esc(m.name.replace(/^(\w+) – /,""))}</h3><span class="chip ${ok?"on":""}">${ok?"● ACCESS":"LOCKED"}</span></div>
- <p>${esc(DESC[i]||"Module data and records managed from the Admin Console.")}</p>${ok?`<button class="btn" style="background:${ac}">Open ${esc(m.name.replace(/^(\w+) – /,""))} →</button>`:`<span class="no">No access</span>`}
- <div class="wm" style="color:${ac}"><svg viewBox="0 0 24 24"><path d="${ic}"/></svg></div><span class="num">${String(i+1).padStart(2,"0")}</span></div>`}).join("");
+let ME=null,mods=[],cur=null,tk=0;const DC={};
+const can=(id,k="v",pid)=>ERP.can(ME,id,k,pid);
+const nodeOk=m=>can(m.id)||m.subs.some(s=>can(s.id,"v",m.id));
+const out=()=>ERP.signOut();
+const sn=n=>n.replace(/^(\w+) – /,"");
+(async()=>{
+ ME=await ERP.require();if(!ME)return;mods=await ERP.tree();
+ const nm=ME.name||ME.login_id;$("#un").textContent=nm;$("#av").textContent=nm.slice(0,2).toUpperCase();
+ const hr=new Date().getHours();$("#gr").textContent=`Good ${hr<12?"morning":hr<17?"afternoon":"evening"}, ${nm.split(" ")[0]}. Here is your operation at a glance.`;
+ if(ME.role==="admin")$("#adm").style.display="block";
+ $("#ub").onclick=e=>{e.stopPropagation();const m=$("#mn");m.style.display=m.style.display==="block"?"none":"block"};document.onclick=()=>$("#mn").style.display="none";
+ $("#g").innerHTML=mods.map((m,i)=>{const ok=nodeOk(m),[bg,ac]=CL[i%13],ic=IC[i%13];
+  return`<div class="card ${ok?"ok":"lock"}" ${ok?`onclick="openM('${m.id}')"`:""} style="background:linear-gradient(135deg,${bg},#fff 140%);color:${ac}"><div class="row"><div class="ic" style="color:${ac}"><svg viewBox="0 0 24 24"><path d="${ic}"/></svg></div><h3>${esc(sn(m.name))}</h3><span class="chip ${ok?"on":""}">${ok?"● ACCESS":"LOCKED"}</span></div>
+  <p>${esc(DESC[i]||"Module data and records managed from the Admin Console.")}</p>${ok?`<button class="btn" style="background:${ac}">Open ${esc(sn(m.name))} →</button>`:`<span class="no">No access</span>`}
+  <div class="wm" style="color:${ac}"><svg viewBox="0 0 24 24"><path d="${ic}"/></svg></div><span class="num">${String(i+1).padStart(2,"0")}</span></div>`}).join("");
+ addEventListener("resize",layout);layout();if(document.fonts)document.fonts.ready.then(layout);
+})().catch(e=>{console.error(e);document.body.innerHTML='<p style="padding:30px;font-family:sans-serif">Could not load portal: '+esc(e.message||e)+'</p>'});
 function layout(){const g=$("#g"),n=g.children.length,W=g.clientWidth,H=g.clientHeight,gap=innerWidth<700?8:14;let best=2,sc=1e9;
  for(let c=innerWidth<700?1:2;c<=(innerWidth<700?1:7);c++){const r=Math.ceil(n/c),w=(W-gap*(c-1))/c,h=(H-gap*(r-1))/r,v=Math.abs(Math.log((w/h)/1.75))+(r*c-n)*.03;if(v<sc){sc=v;best=c}}
  const r=Math.ceil(n/best),h=(H-gap*(r-1))/r;g.style.gridTemplateColumns=`repeat(${best*2},minmax(0,1fr))`;[...g.children].forEach((c,i)=>{c.style.gridColumn="span 2"});const k=n-(r-1)*best;if(k<best&&k>0)g.children[n-k].style.gridColumn=`${best-k+1} / span 2`;g.style.gridTemplateRows=`repeat(${r},minmax(0,1fr))`;g.classList.toggle("tight",h<170);g.classList.toggle("mini",h<112);fitT()}
 function fitT(){const hs=[...document.querySelectorAll(".row h3")];let f=21;const set=v=>hs.forEach(h=>h.style.fontSize=v+"px");set(f);while(f>10.5&&hs.some(h=>h.scrollWidth>h.clientWidth+1)){f-=.5;set(f)}}
-addEventListener("resize",layout);layout();if(document.fonts)document.fonts.ready.then(layout);
-let cur=null;
+
 function openM(id){cur=mods.find(m=>m.id===id);if(/deliver/i.test(cur.name)){location.href="delivery.html";return}const i=mods.indexOf(cur),[bg,ac]=CL[i%13];$("#ov").style.display="grid";
  $("#md").innerHTML=`<div class="mh" style="background:${ac}"><h3>${esc(cur.name)}</h3><button class="x" onclick="shut()">✕</button></div><div class="tabs" id="tb"></div><div class="body" id="bd"></div>`;
- const t=[cur,...cur.subs].filter(n=>can(n.id));$("#tb").innerHTML=t.map((n,j)=>`<div class="tab ${j?"":"on"}" onclick="tab('${n.id}',this)">${j===0||n===cur?"Overview":esc(n.name)}</div>`).join("");
- tab(t[0].id)}
-function tab(id,el){if(el){document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));el.classList.add("on")}
- const d=D&&D.data[id],sub=cur.subs.find(s=>s.id===id);
- $("#bd").innerHTML=`<div class="perm">${[["v","View"],["a","Add"],["e","Edit"],["d","Delete"]].map(([k,n])=>`<span class="${can(id,k)?"":"off"}">${n}</span>`).join("")}</div><h3 style="margin:0 0 10px">${esc(sub?sub.name:cur.name)}</h3>`+
- (d?`<div style="overflow:auto;max-height:50vh"><table><tr>${d.cols.map(c=>`<th>${esc(c)}</th>`).join("")}</tr>${d.rows.slice(0,300).map(r=>`<tr>${d.cols.map((c,j)=>`<td>${esc(r[j])}</td>`).join("")}</tr>`).join("")}</table></div><p style="color:var(--mute);font-size:12px">${d.rows.length} rows${d.rows.length>300?" (first 300 shown)":""}</p>`:`<div class="empty">No data uploaded for this section yet.</div>`)}
+ const t=[cur,...cur.subs].filter(n=>can(n.id,"v",n===cur?null:cur.id));$("#tb").innerHTML=t.map((n,j)=>`<div class="tab ${j?"":"on"}" onclick="tab('${n.id}',this)">${n===cur?"Overview":esc(n.name)}</div>`).join("");
+ if(t[0])tab(t[0].id);else $("#bd").innerHTML='<div class="empty">No access.</div>'}
+async function tab(id,el){if(el){document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));el.classList.add("on")}
+ const sub=cur.subs.find(s=>s.id===id),pid=sub?cur.id:null,t=++tk,head=`<div class="perm">${[["v","View"],["a","Add"],["e","Edit"],["d","Delete"]].map(([k,n])=>`<span class="${can(id,k,pid)?"":"off"}">${n}</span>`).join("")}</div><h3 style="margin:0 0 10px">${esc(sub?sub.name:cur.name)}</h3>`;
+ $("#bd").innerHTML=head+'<div class="empty">Loading…</div>';
+ let d=DC[id];if(d===undefined){try{d=DC[id]=await ERP.dataset(id,300)}catch(e){d=null;console.error(e)}}
+ if(t!==tk)return;
+ $("#bd").innerHTML=head+(d?`<div style="overflow:auto;max-height:50vh"><table><tr>${d.cols.map(c=>`<th>${esc(c)}</th>`).join("")}</tr>${d.rows.map(r=>`<tr>${d.cols.map((c,j)=>`<td>${esc(r.data[j])}</td>`).join("")}</tr>`).join("")}</table></div><p style="color:var(--mute);font-size:12px">${d.total} rows${d.total>300?" (first 300 shown)":""}</p>`:`<div class="empty">No data uploaded for this section yet.</div>`)}
 function shut(){$("#ov").style.display="none"}$("#ov").onclick=e=>{if(e.target.id==="ov")shut()};
 </script></body></html>
