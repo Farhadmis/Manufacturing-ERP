@@ -72,7 +72,7 @@ function layout(){const g=$("#g"),n=g.children.length,W=g.clientWidth,H=g.client
  const r=Math.ceil(n/best),h=(H-gap*(r-1))/r;g.style.gridTemplateColumns=`repeat(${best*2},minmax(0,1fr))`;[...g.children].forEach((c,i)=>{c.style.gridColumn="span 2"});const k=n-(r-1)*best;if(k<best&&k>0)g.children[n-k].style.gridColumn=`${best-k+1} / span 2`;g.style.gridTemplateRows=`repeat(${r},minmax(0,1fr))`;g.classList.toggle("tight",h<170);g.classList.toggle("mini",h<112);fitT()}
 function fitT(){const hs=[...document.querySelectorAll(".row h3")];let f=21;const set=v=>hs.forEach(h=>h.style.fontSize=v+"px");set(f);while(f>10.5&&hs.some(h=>h.scrollWidth>h.clientWidth+1)){f-=.5;set(f)}}
 
-function openM(id){cur=mods.find(m=>m.id===id);if(/deliver/i.test(cur.name)){location.href="delivery.html";return}const i=mods.indexOf(cur),[bg,ac]=CL[i%13];$("#ov").style.display="grid";
+function openM(id){cur=mods.find(m=>m.id===id);if(/deliver/i.test(cur.name)){location.href="delivery.html";return}if(/finish/i.test(cur.name)){location.href="fg.html";return}const i=mods.indexOf(cur),[bg,ac]=CL[i%13];$("#ov").style.display="grid";
  $("#md").innerHTML=`<div class="mh" style="background:${ac}"><h3>${esc(cur.name)}</h3><button class="x" onclick="shut()">✕</button></div><div class="tabs" id="tb"></div><div class="body" id="bd"></div>`;
  const t=[cur,...cur.subs].filter(n=>can(n.id,"v",n===cur?null:cur.id));$("#tb").innerHTML=t.map((n,j)=>`<div class="tab ${j?"":"on"}" onclick="tab('${n.id}',this)">${n===cur?"Overview":esc(n.name)}</div>`).join("");
  if(t[0])tab(t[0].id);else $("#bd").innerHTML='<div class="empty">No access.</div>'}
