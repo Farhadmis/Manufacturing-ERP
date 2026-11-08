@@ -91,7 +91,8 @@ async function load(){
 /* ---------- filters ---------- */
 const FD=[["y","Year",r=>r.y],["m","Month",r=>r.m],["buyer","Buyer",r=>r.buyer],["model","Model",r=>r.model],["prod","Prod. Type",r=>r.prod],["pay","Payment Terms",r=>r.pay],["region","Region",r=>r.region],["ot","Order Type",r=>r.ot]];
 const F={};FD.forEach(f=>F[f[0]]=new Set());let from="",to="",page="ov";
-const opts=k=>{const f=FD.find(x=>x[0]===k),s=[...new Set(R.map(f[2]).filter(v=>v!==""&&v!=null))];return s.sort((a,b)=>typeof a==="number"?a-b:String(a).localeCompare(String(b)))};
+const opts=k=>{const f=FD.find(x=>x[0]===k),src=k==="model"&&F.buyer.size?R.filter(r=>F.buyer.has(r.buyer)):R,s=[...new Set(src.map(f[2]).filter(v=>v!==""&&v!=null))];return s.sort((a,b)=>typeof a==="number"?a-b:String(a).localeCompare(String(b)))};
+function syncModel(){if(!F.buyer.size||!F.model.size)return;const ok=new Set(R.filter(r=>F.buyer.has(r.buyer)).map(r=>r.model));F.model=new Set([...F.model].filter(m=>ok.has(m)))}
 const lab=(k,v)=>k==="m"?MN[v-1]:v;
 function fbuild(){if(msg){$("#fb").innerHTML="";return}
  const o=FD.slice(0,1).concat(FD.slice(1,2));
@@ -104,8 +105,8 @@ function pnl(b){const k=b.dataset.k,p=$("#pn"),r=b.getBoundingClientRect(),L=opt
  p.style.left=Math.min(r.left,innerWidth-240)+"px";p.style.top=r.bottom+4+"px";p.style.display="block";
  const upd=()=>{fbuild();draw()};
  p.querySelector("input[type=text]").oninput=e=>p.querySelectorAll("label").forEach(l=>l.style.display=l.textContent.toLowerCase().includes(e.target.value.toLowerCase())?"":"none");
- p.querySelectorAll(".ls input").forEach(c=>c.onchange=()=>{const v=typeof L[0]==="number"?+c.value:c.value;c.checked?F[k].add(v):F[k].delete(v);b.textContent=FD.find(x=>x[0]===k)[1]+(F[k].size?" ("+F[k].size+")":"");b.classList.toggle("on",!!F[k].size);draw()});
- p.querySelectorAll(".ac button").forEach(x=>x.onclick=()=>{F[k]=new Set(x.dataset.a==="all"?L:[]);pnl(document.querySelector(`button[data-k=${k}]`)||b);b.textContent=FD.find(z=>z[0]===k)[1]+(F[k].size?" ("+F[k].size+")":"");b.classList.toggle("on",!!F[k].size);draw()})}
+ p.querySelectorAll(".ls input").forEach(c=>c.onchange=()=>{const v=typeof L[0]==="number"?+c.value:c.value;c.checked?F[k].add(v):F[k].delete(v);b.textContent=FD.find(x=>x[0]===k)[1]+(F[k].size?" ("+F[k].size+")":"");b.classList.toggle("on",!!F[k].size);if(k==="buyer"){syncModel();fbuild()}draw()});
+ p.querySelectorAll(".ac button").forEach(x=>x.onclick=()=>{F[k]=new Set(x.dataset.a==="all"?L:[]);pnl(document.querySelector(`button[data-k=${k}]`)||b);b.textContent=FD.find(z=>z[0]===k)[1]+(F[k].size?" ("+F[k].size+")":"");b.classList.toggle("on",!!F[k].size);if(k==="buyer"){syncModel();fbuild()}draw()})}
 function reset(){FD.forEach(f=>F[f[0]]=new Set());from=to="";fbuild();draw()}
 const flt=()=>R.filter(r=>FD.every(f=>!F[f[0]].size||F[f[0]].has(f[2](r)))&&(!from||r.ds>=from)&&(!to||r.ds<=to));
 const sum=(a,k)=>a.reduce((s,r)=>s+r[k],0);
