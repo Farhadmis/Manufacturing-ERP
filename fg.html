@@ -46,7 +46,8 @@ main{flex:1;min-width:0;overflow:auto;padding:0 22px 30px}
 @media(max-width:900px){.cg{grid-template-columns:1fr}.kp{overflow-x:auto}.k{min-width:150px}aside{width:62px}.nv span{display:none}.ttl span{display:none}}
 .g3{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .pv th.yh{cursor:pointer;text-align:center;background:#e9f1fc;color:var(--navy);user-select:none}.pv th.r{text-align:right}.pv tr.h2 th{top:37px}.pv th{z-index:2}
-.pv td.s,.pv th.s{position:sticky;left:0;background:#fff;z-index:3;min-width:110px;max-width:110px;overflow:hidden;text-overflow:ellipsis;font-weight:700}.pv th.s{background:#f4f8ff;z-index:4}.pv .s2{left:110px;border-right:2px solid var(--line)}.pv td.r{min-width:78px}
+.pv td.s,.pv th.s{position:sticky;left:0;background:#fff;z-index:3;min-width:110px;max-width:110px;overflow:hidden;text-overflow:ellipsis;font-weight:700}.pv th.s{background:#f4f8ff;z-index:4}.pv td.db{position:relative;padding:0;min-width:92px}.pv td.db i{position:absolute;left:3px;top:4px;bottom:4px;max-width:calc(100% - 6px);border:1px solid #63be7b;border-radius:2px;background:linear-gradient(90deg,#63be7b,#d5f0dd)}
+.pv td.db span{position:relative;display:block;padding:9px 12px;text-align:right}.pv td em{font-style:normal;color:#3a4d73;font-weight:600}.pv th.r{min-width:92px}
 @media(max-width:900px){.g3{grid-template-columns:1fr}}
 </style></head><body>
 <header><button class="bk" onclick="location.href='portal.html'" title="Back to portal">←</button><div class="logo">MAINETTI<small>BANGLADESH</small></div><div class="sep"></div><div class="ttl"><b>Finish Good</b><span>Production output &amp; analytics</span></div>
@@ -123,20 +124,25 @@ const CH={};function mk(id,cfg){CH[id]&&CH[id].destroy();CH[id]=new Chart($("#"+
 const PAL=["#a61935","#2b5bb8","#e08a00","#1f9d55","#7c4dff","#0b8aa6","#d6336c","#51607a"];
 function opt(leg,horiz){return{responsive:true,maintainAspectRatio:false,indexAxis:horiz?"y":"x",plugins:{legend:{display:leg,position:"bottom",labels:{boxWidth:10,font:{size:11}}},tooltip:{callbacks:{label:c=>` ${c.dataset.label?c.dataset.label+": ":""}${n0(c.parsed[horiz?"x":"y"])}`}}},scales:{[horiz?"x":"y"]:{beginAtZero:true,ticks:{callback:ab},grid:{color:"#edf2fa"}},[horiz?"y":"x"]:{grid:{display:false},ticks:{font:{size:11},maxRotation:0,autoSkipPadding:12,autoSkip:!horiz}}}}}
 
+const bpl=f=>({id:"bp",afterDatasetsDraw(ch){const{ctx}=ch;ctx.save();ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="700 11px Inter,sans-serif";
+ ch.data.datasets.forEach((ds,di)=>ch.getDatasetMeta(di).data.forEach((b,i)=>{const t=f(di,i);if(!t)return;const h=b.base-b.y;if(h>=22){ctx.fillStyle="#fff";ctx.fillText(t,b.x,b.y+11)}else{ctx.fillStyle="#0f2a5a";ctx.fillText(t,b.x,b.y-9)}}));ctx.restore()}});
+const pct1=(v,t)=>t&&v?(v/t*100).toFixed(1)+"%":"";
 const cards=a=>{const u={};a.forEach(r=>u[r.unit]=(u[r.unit]||0)+r.q);
  return`<div class="kp"><div class="k"><small>Total Qty</small><b>${n0(sumq(a))}</b></div>${UN.map(x=>`<div class="k b"><small>${x} Qty</small><b>${n0(u[x]||0)}</b></div>`).join("")}</div>`};
 function ov(a){
  $("#pgc").innerHTML=cards(a)+`<div class="cg"><div class="c"><h4>Month wise Trend</h4><div class="cv"><canvas id="c1"></canvas></div></div><div class="c"><h4>Year to Year Trend</h4><div class="cv"><canvas id="c2"></canvas></div></div>
  <div class="c w"><h4>Year &amp; Month wise Heatmap</h4><div class="hm" id="hm"></div></div>
  <div class="c w"><h4>Year to Year Trend · Unit wise</h4><div class="cv"><canvas id="c3"></canvas></div></div>
- <div class="g3"><div class="c"><h4>Shift wise</h4><div class="cv"><canvas id="p1"></canvas></div></div><div class="c"><h4>MC Type wise</h4><div class="cv"><canvas id="p2"></canvas></div></div><div class="c"><h4>Process wise</h4><div class="cv"><canvas id="p3"></canvas></div></div></div>
+ <div class="c"><h4>Shift wise</h4><div class="cv"><canvas id="p1"></canvas></div></div><div class="c"><h4>MC Type wise</h4><div class="cv"><canvas id="p2"></canvas></div></div><div class="c w"><h4>Process wise</h4><div class="cv" style="height:360px"><canvas id="p3"></canvas></div></div>
  <div class="c w"><h4>Top 15 Buyer</h4><div class="cv" style="height:330px"><canvas id="c4"></canvas></div></div></div>`;
  const mm=grp(a,r=>r.y*100+r.m).sort((x,y)=>x.k-y.k);
  mk("c1",{type:"line",data:{labels:mm.map(x=>MN[x.k%100-1]+" "+String(Math.floor(x.k/100)).slice(2)),datasets:[{label:"Total Qty",data:mm.map(x=>x.q),borderColor:"#a61935",backgroundColor:"#a6193522",fill:true,tension:.3,pointRadius:mm.length>40?0:3,borderWidth:2}]},options:opt(false)});
  const yy=grp(a,r=>r.y).sort((x,y)=>x.k-y.k);
- mk("c2",{type:"bar",data:{labels:yy.map(x=>x.k),datasets:[{label:"Total Qty",data:yy.map(x=>x.q),backgroundColor:"#a61935",borderRadius:6}]},options:opt(false)});
+ const yT=yy.reduce((s,x)=>s+x.q,0),o2=opt(false);o2.layout={padding:{top:18}};
+ mk("c2",{type:"bar",data:{labels:yy.map(x=>x.k),datasets:[{label:"Total Qty",data:yy.map(x=>x.q),backgroundColor:"#a61935",borderRadius:6}]},options:o2,plugins:[bpl((d,i)=>pct1(yy[i].q,yT))]});
  const Y=yy.map(x=>x.k),UL=[...new Set(a.map(r=>r.unit))].sort(),yu=new Map();a.forEach(r=>{const k=r.y+"|"+r.unit;yu.set(k,(yu.get(k)||0)+r.q)});
- mk("c3",{type:"bar",data:{labels:Y,datasets:UL.map((u,i)=>({label:u,data:Y.map(y=>yu.get(y+"|"+u)||0),backgroundColor:PAL[i%8],borderRadius:5}))},options:opt(true)});
+ const o3=opt(true);o3.layout={padding:{top:18}};
+ mk("c3",{type:"bar",data:{labels:Y,datasets:UL.map((u,i)=>({label:u,data:Y.map(y=>yu.get(y+"|"+u)||0),backgroundColor:PAL[i%8],borderRadius:5}))},options:o3,plugins:[bpl((di,i)=>pct1(yu.get(Y[i]+"|"+UL[di])||0,yy[i].q))]});
  const pie=(id,key)=>{let g=grp(a,r=>r[key]||"N/A").sort((x,y)=>y.q-x.q);
   if(g.length>8)g=g.slice(0,7).concat({k:"Others",q:g.slice(7).reduce((s,x)=>s+x.q,0)});
   const v=g.map(x=>x.q),T=v.reduce((x,y)=>x+y,0),P=x=>T?(x/T*100).toFixed(1)+"%":"0%";
@@ -144,7 +150,15 @@ function ov(a){
    options:{responsive:true,maintainAspectRatio:false,cutout:"60%",plugins:{legend:{position:"bottom",labels:{boxWidth:10,font:{size:11}}},tooltip:{callbacks:{label:c=>` ${g[c.dataIndex].k}: ${n0(c.parsed)} (${P(c.parsed)})`}}}},
    plugins:[{id:"ctr",afterDraw(ch){const{ctx,chartArea:A}=ch,x=(A.left+A.right)/2,y=(A.top+A.bottom)/2;ctx.save();ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#0f2a5a";ctx.font="800 22px Inter,sans-serif";ctx.fillText(ab(T),x,y-8);ctx.fillStyle="#6d7c99";ctx.font="600 11px Inter,sans-serif";ctx.fillText("TOTAL",x,y+13);
     ch.getDatasetMeta(0).data.forEach((arc,i)=>{if(!T||v[i]/T<.03)return;const m=(arc.startAngle+arc.endAngle)/2,r=(arc.innerRadius+arc.outerRadius)/2;ctx.fillStyle="#fff";ctx.font="700 12px Inter,sans-serif";ctx.shadowColor="rgba(0,0,0,.35)";ctx.shadowBlur=3;ctx.fillText(P(v[i]),arc.x+Math.cos(m)*r,arc.y+Math.sin(m)*r)});ctx.restore()}}]})};
- pie("p1","shift");pie("p2","mc");pie("p3","proc");
+ pie("p1","shift");pie("p2","mc");
+ const pie2=(id,key)=>{const g=grp(a,r=>r[key]||"N/A").sort((x,y)=>y.q-x.q),v=g.map(x=>x.q),T=v.reduce((x,y)=>x+y,0),P=x=>T?(x/T*100).toFixed(1)+"%":"0%",
+  TC=["#3d7a87","#74cde4","#4a9db5","#6fcbe3","#4e9fb7","#b9e3ef","#5aa7bd","#86d3e8","#a6dcec","#2f6f7e","#9fd9ea","#c8eaf3"],cut=s=>s.length>26?s.slice(0,24)+"…":s;
+  mk(id,{type:"pie",data:{labels:g.map(x=>x.k),datasets:[{data:v,backgroundColor:g.map((x,i)=>TC[i%12]),borderColor:"#fff",borderWidth:2}]},
+   options:{responsive:true,maintainAspectRatio:false,layout:{padding:{left:170,right:170,top:28,bottom:28}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${g[c.dataIndex].k}: ${n0(c.parsed)} (${P(c.parsed)})`}}}},
+   plugins:[{id:"lbl",afterDatasetsDraw(ch){const{ctx}=ch;ctx.save();ctx.font="500 11px Inter,sans-serif";ctx.fillStyle="#3a4d73";ctx.strokeStyle="#9aa8c2";ctx.lineWidth=1;
+    ch.getDatasetMeta(0).data.forEach((arc,i)=>{if(!T||v[i]/T<.03)return;const m=(arc.startAngle+arc.endAngle)/2,c=Math.cos(m),s=Math.sin(m),R=arc.outerRadius,x1=arc.x+c*R,y1=arc.y+s*R,x2=arc.x+c*(R+16),y2=arc.y+s*(R+16),rt=c>=0,x3=x2+(rt?18:-18);
+     ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.lineTo(x3,y2);ctx.stroke();ctx.textAlign=rt?"left":"right";ctx.textBaseline="bottom";ctx.fillText(cut(g[i].k),x3+(rt?4:-4),y2+1);ctx.textBaseline="top";ctx.fillText(P(v[i]),x3+(rt?4:-4),y2+2)});ctx.restore()}}]})};
+ pie2("p3","proc");
  const T=sumq(a),tb=grp(a,r=>r.buyer||"N/A").sort((x,y)=>y.q-x.q).slice(0,15),P=x=>T?(x/T*100).toFixed(1)+"%":"0%",o=opt(false);
  o.scales.x.ticks.autoSkip=false;o.scales.x.ticks.maxRotation=40;o.layout={padding:{top:18}};
  mk("c4",{type:"bar",data:{labels:tb.map(x=>x.k),datasets:[{label:"Qty",data:tb.map(x=>x.q),backgroundColor:"#a61935",borderRadius:6}]},options:o,
@@ -153,23 +167,24 @@ function ov(a){
  const g=new Map();a.forEach(r=>{const q=r.y*100+r.m;g.set(q,(g.get(q)||0)+r.q)});let mx=0,mn=Infinity;g.forEach(v=>{if(v>0){mx=Math.max(mx,v);mn=Math.min(mn,v)}});
  $("#hm").innerHTML=`<table><tr><th class="y">Year</th>${MN.map(x=>`<th>${x}</th>`).join("")}<th>Total</th></tr>${Y.map(y=>{let t=0;return`<tr><td class="y">${y}</td>${MN.map((_,i)=>{const v=g.get(y*100+i+1)||0;t+=v;const p=mx>mn?(v-mn)/(mx-mn):1,h=Math.round(p*120),dk=h>38&&h<92;return`<td style="background:${v?`hsl(${h} 68% ${dk?58:42}%)`:"#f6f8fc"};color:${v&&!dk?"#fff":"#0f2a5a"}">${v?n0(v):"–"}</td>`}).join("")}<td class="t">${n0(t)}</td></tr>`}).join("")}</table><div style="display:flex;align-items:center;gap:8px;margin-top:8px;font-size:11px;color:var(--mute)">Low<i style="flex:0 0 150px;height:8px;border-radius:99px;background:linear-gradient(90deg,hsl(0 68% 42%),hsl(60 68% 58%),hsl(120 68% 42%))"></i>High</div>`}
 /* ---------- raw data : Model · Color × Year(collapsible) · Month ---------- */
-let PV=[],YR=[],OPEN=new Set(),opened=false,pgn=0;const PS=100;
+let PV=[],YR=[],OPEN=new Set(),CM={},CG=0,GT=0,MX=0,pgn=0;const PS=100;
 function raw(a){
  const m=new Map();a.forEach(r=>{const k=r.model+"|"+r.color;let o=m.get(k);if(!o)m.set(k,o={model:r.model,color:r.color,v:new Map(),t:0});const q=r.y*100+r.m;o.v.set(q,(o.v.get(q)||0)+r.q);o.t+=r.q});
  PV=[...m.values()].sort((x,y)=>y.t-x.t||x.model.localeCompare(y.model));
- YR=[...new Set(a.map(r=>r.y))].sort((x,y)=>x-y);if(!opened&&YR.length){OPEN.add(YR[YR.length-1]);opened=true}
+ YR=[...new Set(a.map(r=>r.y))].sort((x,y)=>x-y);PV.forEach(o=>{o.yt={};YR.forEach(y=>{let t=0;for(let i=1;i<=12;i++)t+=o.v.get(y*100+i)||0;o.yt[y]=t})});
+ CM={};YR.forEach(y=>CM[y]=PV.reduce((x,o)=>Math.max(x,o.yt[y]),0));CG=PV.reduce((x,o)=>Math.max(x,o.t),0);GT=PV.reduce((x,o)=>x+o.t,0);MX=0;PV.forEach(o=>o.v.forEach(v=>{if(v>MX)MX=v}));
  pgn=0;$("#pgc").innerHTML=cards(a)+`<div class="pg"><span id="pi"></span><div style="display:flex;gap:8px"><button class="btn g" onclick="ya(1)">Expand all</button><button class="btn g" onclick="ya(0)">Collapse all</button><button class="btn g" onclick="pp(-1)">‹ Prev</button><button class="btn g" onclick="pp(1)">Next ›</button><button class="btn red" onclick="dx()">⬇ Download Excel</button></div></div><div class="tb" id="tb"></div>`;rt()}
 const ya=f=>{OPEN=new Set(f?YR:[]);rt()},tg=y=>{OPEN.has(y)?OPEN.delete(y):OPEN.add(y);rt()};
-function rt(){const s=pgn*PS,p=PV.slice(s,s+PS);let mx=0;p.forEach(o=>o.v.forEach(v=>{if(v>mx)mx=v}));
+const pc=(v,t)=>t?(v/t*100).toFixed(1)+"%":"0%",bar=(txt,v,m)=>v?`<td class="r db"><i style="width:${m?Math.max(4,Math.round(v/m*100)):0}%"></i><span>${txt}</span></td>`:`<td class="db"></td>`;
+function rt(){const s=pgn*PS,p=PV.slice(s,s+PS);
  $("#pi").textContent=PV.length?`${s+1}–${Math.min(s+PS,PV.length)} of ${PV.length} models`:"0 rows";
  const h1=YR.map(y=>OPEN.has(y)?`<th colspan="12" class="yh" onclick="tg(${y})">▾ ${y}</th>`:`<th class="yh" onclick="tg(${y})">▸ ${y}</th>`).join(""),
- h2=YR.map(y=>OPEN.has(y)?MN.map(x=>`<th class="r">${x}</th>`).join(""):`<th class="r">Total</th>`).join("");
- const body=p.map(o=>`<tr><td class="s">${esc(o.model)}</td><td class="s s2">${esc(o.color)}</td>${YR.map(y=>{if(!OPEN.has(y)){let t=0;for(let i=1;i<=12;i++)t+=o.v.get(y*100+i)||0;return`<td class="r">${t?n0(t):""}</td>`}
-  return MN.map((_,i)=>{const v=o.v.get(y*100+i+1)||0,w=mx?Math.round(v/mx*100):0;return`<td class="r" style="${v?`background:linear-gradient(90deg,#b9e4c6 ${w}%,transparent ${w}%)`:""}">${v?n0(v):""}</td>`}).join("")}).join("")}<td class="r"><b>${n0(o.t)}</b></td></tr>`).join("");
- $("#tb").innerHTML=`<table class="pv"><tr><th class="s" rowspan="2">Model</th><th class="s s2" rowspan="2">Color</th>${h1}<th class="r" rowspan="2">Grand Total</th></tr><tr class="h2">${h2}</tr>${body||`<tr><td colspan="${YR.length+3}" style="text-align:center;padding:40px;color:#6d7c99">No data for the selected filters</td></tr>`}</table>`}
+ h2=YR.map(y=>OPEN.has(y)?MN.map(x=>`<th class="r">${x}</th>`).join(""):`<th class="r">Total Quantity || Contribution %</th>`).join("");
+ const body=p.map(o=>`<tr><td class="s">${esc(o.model)}</td><td>${esc(o.color)}</td>${YR.map(y=>OPEN.has(y)?MN.map((_,i)=>{const v=o.v.get(y*100+i+1)||0;return bar(n0(v),v,MX)}).join(""):bar(`${n0(o.yt[y])} <em>|| ${pc(o.yt[y],o.t)}</em>`,o.yt[y],CM[y])).join("")}${bar(`<b>${n0(o.t)}</b> <em>|| ${pc(o.t,GT)}</em>`,o.t,CG)}</tr>`).join("");
+ $("#tb").innerHTML=`<table class="pv"><tr><th class="s" rowspan="2">Model</th><th rowspan="2">Color</th>${h1}<th class="r" rowspan="2">Grand Total || Contribution %</th></tr><tr class="h2">${h2}</tr>${body||`<tr><td colspan="${YR.length+3}" style="text-align:center;padding:40px;color:#6d7c99">No data for the selected filters</td></tr>`}</table>`}
 function pp(d){const mx=Math.max(0,Math.ceil(PV.length/PS)-1);pgn=Math.min(mx,Math.max(0,pgn+d));rt();$("#tb").scrollTop=0}
 function dx(){if(!PV.length||!window.XLSX)return alert("Nothing to download.");
- const rows=PV.map(o=>{const r={Model:o.model,Color:o.color};YR.forEach(y=>MN.forEach((n,i)=>{r[y+"-"+n]=o.v.get(y*100+i+1)||0}));r["Grand Total"]=o.t;return r});
+ const rows=PV.map(o=>{const r={Model:o.model,Color:o.color};YR.forEach(y=>{r[y+" Total Qty"]=o.yt[y];r[y+" Contribution %"]=o.t?+(o.yt[y]/o.t*100).toFixed(1):0;MN.forEach((n,i)=>{r[y+"-"+n]=o.v.get(y*100+i+1)||0})});r["Grand Total"]=o.t;return r});
  const w=XLSX.utils.book_new();XLSX.utils.book_append_sheet(w,XLSX.utils.json_to_sheet(rows),"Finish Good");XLSX.writeFile(w,"FG_Raw_Data_"+new Date().toISOString().slice(0,10)+".xlsx")}
 async function init(){$("#pgc").innerHTML='<div class="empty"><b>Finish Good</b>Loading data…</div>';
  try{if(!(await load()))return}catch(e){console.error(e);msg="Could not load data: "+(e.message||e)}
