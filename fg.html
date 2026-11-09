@@ -773,6 +773,7 @@
       const tree = await ERP.tree(); mod = tree.find(m => /finish|\bfg\b/i.test(m.name));
       if (!mod) { msg = "The Finish Good module does not exist in the Admin Console."; return true }
       if (!ERP.can(ME, mod.id) && !mod.subs.some(s => ERP.can(ME, s.id, "v", mod.id))) { msg = "You do not have access to the Finish Good module."; return true }
+      ERP.sideBanner([mod.id, ...mod.subs.map(s => s.id)], [[mod.id, "fg"]]);
       const pk = await ERP.packed(mod.id, "fg");
       if (!pk) { msg = "No Finish Good data yet. Open fg-pack.html (admin) and upload the FG Excel."; return true }
       const D = pk.dict, C = pk.c, q = pk.q, N = q.length;
