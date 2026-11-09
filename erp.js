@@ -90,5 +90,27 @@ const ERP = {
     const obj = await new Response(r.body.pipeThrough(new DecompressionStream("gzip"))).json();
     await this._put(ck, obj);
     return obj;
+  },
+
+  /* ===== কোন module-এর ডেটা কীভাবে প্যাক হবে (নতুন module এখানে যোগ হবে) ===== */
+  PACK: {
+    fg: {
+      match: /finish|\bfg\b/i,
+      dims: ["date", "unit", "article", "model", "buyer", "color", "shift", "prodtype", "mctype", "process", "category"],
+      upper: ["model", "buyer", "color", "shift", "mctype", "process"],
+      meas: ["totalqty"], need: ["date", "totalqty"], legacyQ: true
+    },
+    delivery: {
+      match: /deliver/i,
+      dims: ["date", "customername", "buyer", "model", "modelcolor", "paymentterms", "region", "prodtype", "ordertype", "unitprice"],
+      upper: ["buyer", "model", "modelcolor", "paymentterms", "region"],
+      meas: ["hangerqty", "sizerqty", "hangervalue", "sizervalue"], need: ["date", "hangerqty"],
+      /* Value ফাঁকা থাকলে Qty × Unit Price ÷ 100 (আগের পেজের নিয়মই) */
+      fix(v, raw, d) {
+        const up = parseFloat(String(d.unitprice).replace(/,/g, "")) || 0;
+        if (raw[2] === "") v[2] = v[0] * up / 100;
+        if (raw[3] === "") v[3] = v[1] * up / 100;
+      }
+    }
   }
 };
