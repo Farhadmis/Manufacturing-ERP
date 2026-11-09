@@ -35,6 +35,8 @@ th,td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middl
 .pm td,.pm th{padding:6px 10px;text-align:center}.pm td:first-child,.pm th:first-child{text-align:left}.pm .s td:first-child{padding-left:28px;color:var(--mute)}input[type=checkbox]{width:auto;accent-color:var(--navy);transform:scale(1.15)}
 .empty{color:var(--mute);text-align:center;padding:30px}.toast{position:fixed;bottom:22px;right:22px;background:var(--navy);color:#fff;padding:12px 18px;border-radius:12px;display:none;z-index:20}
 @media(max-width:860px){.side{position:static;width:auto;flex-direction:row;flex-wrap:wrap}.main{margin:0;padding:16px}.split{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.brand,.sp{display:none}}
+.bar{height:10px;background:#e6ecf7;border-radius:8px;overflow:hidden;margin-top:5px}.bar i{display:block;height:100%}
+.lg{background:#0f1b33;color:#cfe0ff;padding:12px;border-radius:10px;font-size:12px;white-space:pre-wrap;max-height:240px;overflow:auto;margin-top:14px}
 </style></head><body>
 <div id="app"><aside class="side"><div class="brand">Mainetti Admin<small>Control Center</small></div><div id="nav"></div><div class="sp"></div>
 <div class="nav" onclick="logout()">Sign out</div></aside><main class="main" id="main"></main></div>
@@ -55,12 +57,12 @@ function go(v){view=v;$("#nav").innerHTML=[["dash","Dashboard"],["users","Users 
  ({dash,users,mods,data,bk})[v]().catch(err)}
 /* ---------- DASHBOARD ---------- */
 async function dash(){await Promise.all([loadMods(),loadUsers()]);
- const{data:ds}=await sb.from("datasets").select("node_id"),cnt={};
- await Promise.all((ds||[]).map(async d=>{const{count}=await sb.from("dataset_rows").select("*",{count:"exact",head:true}).eq("node_id",d.node_id);cnt[d.node_id]=count||0}));
- const subs=MODS.reduce((a,m)=>a+m.subs.length,0),rows=Object.values(cnt).reduce((a,b)=>a+b,0);
+ const MT={};await Promise.all(MODS.map(async m=>{const c=cfgOf(m);if(!c)return;try{MT[m.id]=await(await ERP._fetchStorage(m.id+"/"+c.key+"_meta.json")).json()}catch(e){}}));
+ const subs=MODS.reduce((a,m)=>a+m.subs.length,0),live=Object.keys(MT).length,rows=Object.values(MT).reduce((a,x)=>a+(x.raw||x.n||0),0),use=await usageHtml();
  $("#main").innerHTML=`<div class="top"><h2>Dashboard</h2><span class="tag">Signed in: ${esc(me.name)}</span></div><div class="kpis">
- ${[["Modules",MODS.length],["Sub-modules",subs],["Users",USERS.length],["Datasets",(ds||[]).length],["Data rows",rows]].map(k=>`<div class="kpi"><b>${k[1]}</b><span>${k[0]}</span></div>`).join("")}</div>
- <div class="card" style="margin-top:18px"><h3 style="margin-bottom:10px">Module overview</h3><table><tr><th>Module</th><th>Sub-modules</th><th>Rows</th></tr>${MODS.map(m=>`<tr><td>${esc(m.name)}</td><td>${m.subs.length}</td><td>${[m,...m.subs].reduce((a,n)=>a+(cnt[n.id]||0),0)}</td></tr>`).join("")}</table></div>`}
+ ${[["Modules",MODS.length],["Sub-modules",subs],["Users",USERS.length],["Live datasets",live],["Data rows",rows.toLocaleString()]].map(k=>`<div class="kpi"><b>${k[1]}</b><span>${k[0]}</span></div>`).join("")}</div>
+ <div class="card" style="margin-top:18px"><h3 style="margin-bottom:6px">Free plan usage</h3>${use}</div>
+ <div class="card"><h3 style="margin-bottom:10px">Module overview</h3><table><tr><th>Module</th><th>Sub-modules</th><th>Data</th><th>Rows</th><th>Updated</th></tr>${MODS.map(m=>{const x=MT[m.id];return`<tr><td>${esc(m.name)}</td><td>${m.subs.length}</td><td>${x?'<span class="tag on">Live</span>':"—"}</td><td>${x?(x.raw||x.n||0).toLocaleString():"—"}</td><td>${x&&x.at?x.at.slice(0,10):"—"}</td></tr>`}).join("")}</table></div>`}
 /* ---------- USERS ---------- */
 async function users(){await Promise.all([loadMods(),loadUsers()]);
  $("#main").innerHTML=`<div class="top"><h2>Users & Access</h2><button class="btn red" onclick="uForm()">+ Create user</button></div><div class="card scroll"><table><tr><th>Login ID</th><th>Name</th><th>Role</th><th>Status</th><th>Access</th><th></th></tr>
@@ -107,6 +109,7 @@ async function mRen(mid,sid){const m=MODS.find(x=>x.id===mid),t=sid?m.subs.find(
 async function mDel(mid,sid){const m=MODS.find(x=>x.id===mid);if(!confirm(sid?"Delete this sub-module and its data?":"Delete module, ALL its sub-modules and data?"))return;
  try{await loadUsers();const ids=sid?[sid]:[mid,...m.subs.map(s=>s.id)];
   let r=await sb.from("datasets").delete().in("node_id",ids);if(r.error)throw r.error;
+  try{await sb.storage.from("erp-data").remove(ids.flatMap(i=>Object.keys(ERP.PACK).flatMap(k=>[i+"/"+k+".json.gz",i+"/"+k+"_meta.json"])))}catch(e){}
   for(const u of USERS){const p={...(u.perm||{})};let ch=false;ids.forEach(i=>{if(p[i]){delete p[i];ch=true}});if(ch){r=await sb.from("profiles").update({perm:p}).eq("id",u.id);if(r.error)throw r.error}}
   r=sid?await sb.from("submodules").delete().eq("id",sid):await sb.from("modules").delete().eq("id",mid);if(r.error)throw r.error;
   sel=null;await mods();toast("Deleted")}catch(e){err(e)}}
