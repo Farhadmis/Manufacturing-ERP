@@ -686,21 +686,23 @@
       const tree = await ERP.tree(); mod = tree.find(m => /deliver/i.test(m.name));
       if (!mod) { msg = "The Delivery module does not exist in the Admin Console."; return true }
       if (!ERP.can(ME, mod.id) && !mod.subs.some(s => ERP.can(ME, s.id, "v", mod.id))) { msg = "You do not have access to the Delivery module."; return true }
-      const pk = await ERP.packed(mod.id, "delivery");
-      if (!pk) { msg = "No Delivery data yet. Upload the Delivery Excel from Admin Console → Data Manager → Delivery."; return true }
-      const D = pk.dict, C = pk.c, M = pk.m, N = M.hangerqty.length, up = s => clean(s).toUpperCase();
-      const T = {
-        date: D.date.map(s => { const d = pdate(s); return d ? { y: d[0], m: d[1], d: d[2], ds: `${d[0]}-${String(d[1]).padStart(2, "0")}-${String(d[2]).padStart(2, "0")}` } : null }),
-        cust: D.customername.map(clean), buyer: D.buyer.map(up), model: D.model.map(up), mc: D.modelcolor.map(up), pay: D.paymentterms.map(up), region: D.region.map(up),
-        prod: D.prodtype.map(clean), ot: D.ordertype.map(v => isIC(v) ? "IC Order" : "Others Order"), upr: D.unitprice.map(num)
-      };
-      R = new Array(N); let n = 0;
-      for (let i = 0; i < N; i++) {
-        const dd = T.date[C.date[i]]; if (!dd) continue;
-        R[n++] = { y: dd.y, m: dd.m, d: dd.d, ds: dd.ds, cust: T.cust[C.customername[i]], buyer: T.buyer[C.buyer[i]], model: T.model[C.model[i]], mc: T.mc[C.modelcolor[i]], pay: T.pay[C.paymentterms[i]], region: T.region[C.region[i]], prod: T.prod[C.prodtype[i]], ot: T.ot[C.ordertype[i]], hq: M.hangerqty[i], sq: M.sizerqty[i], up: T.upr[C.unitprice[i]], hv: M.hangervalue[i], sv: M.sizervalue[i] }
+      ERP.sideBanner([mod.id, ...mod.subs.map(s => s.id)], []);
+      let ds = null; for (const id of [mod.id, ...mod.subs.map(s => s.id)]) {
+        const { data: x } = await sb.from("datasets").select("cols").eq("node_id", id).maybeSingle();
+        if (x && x.cols.map(norm).includes("hangerqty")) { ds = await ERP.dataset(id); break }
       }
-      R.length = n;
-      if (!R.length) msg = "The uploaded sheet has no valid rows (check the DATE column).";
+      if (!ds) { msg = "No Delivery data yet. Upload the Delivery Excel from Admin Console → Data Manager → Delivery."; return true }
+      const ix = {}; ds.cols.forEach((c, i) => { const k = norm(c); if (!(k in ix)) ix[k] = i });
+      const g = (r, k) => ix[k] == null ? "" : r.data[ix[k]];
+      ds.rows.forEach(r => {
+        const d = pdate(g(r, "date")); if (!d) return; const hq = num(g(r, "hangerqty")), sq = num(g(r, "sizerqty")), up = num(g(r, "unitprice"));
+        let hv = g(r, "hangervalue"), sv = g(r, "sizervalue"); hv = hv === "" ? hq * up / 100 : num(hv); sv = sv === "" ? sq * up / 100 : num(sv);   // Value = Qty × Unit Price ÷ 100
+        R.push({
+          y: d[0], m: d[1], d: d[2], ds: `${d[0]}-${String(d[1]).padStart(2, "0")}-${String(d[2]).padStart(2, "0")}`, cust: clean(g(r, "customername")), buyer: clean(g(r, "buyer")).toUpperCase(), model: clean(g(r, "model")).toUpperCase(), mc: clean(g(r, "modelcolor")).toUpperCase(),
+          pay: clean(g(r, "paymentterms")).toUpperCase(), region: clean(g(r, "region")).toUpperCase(), prod: clean(g(r, "prodtype")), ot: isIC(g(r, "ordertype")) ? "IC Order" : "Others Order", hq, sq, up, hv, sv
+        })
+      });
+      if (!R.length) msg = "The uploaded sheet has no valid rows (check the DATE column)."
       return true
     }
     /* ---------- filters ---------- */
