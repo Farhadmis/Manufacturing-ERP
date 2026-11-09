@@ -1,171 +1,815 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><title>Mainetti · Delivery</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="erp.js"></script>
-<style>
-:root{--navy:#0f2a5a;--red:#a61935;--blue:#2b5bb8;--mute:#6d7c99;--line:#dbe4f2;--bg:#f1f5fb}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--navy);height:100vh;display:flex;flex-direction:column;overflow:hidden;font-size:13px}
-header{flex:none;height:64px;background:linear-gradient(100deg,#5c0716,#8d0b20 45%,#b3122f);color:#fff;padding:0 22px;display:flex;align-items:center;gap:14px;box-shadow:0 6px 20px rgba(100,10,30,.25);z-index:6}
-.bk{width:36px;height:36px;border-radius:10px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff;font-size:18px;cursor:pointer}
-.logo{font-weight:800;letter-spacing:.06em;font-size:16px;line-height:1}.logo small{display:block;font-size:8px;font-weight:600;letter-spacing:.2em;opacity:.8;margin-top:3px}
-.sep{width:1px;height:30px;background:rgba(255,255,255,.35)}.ttl{flex:1}.ttl b{font-size:18px;display:block}.ttl span{font-size:12px;opacity:.85}
-.user{position:relative}.ub{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:999px;padding:5px 14px 5px 5px;font-weight:600;cursor:pointer;font-size:13px}
-.av{width:28px;height:28px;border-radius:50%;background:#fff;color:var(--red);display:grid;place-items:center;font-weight:800;font-size:11px}
-.menu{position:absolute;right:0;top:44px;background:#fff;color:var(--navy);border-radius:12px;box-shadow:0 14px 34px rgba(16,44,92,.25);min-width:150px;display:none;overflow:hidden}.menu div{padding:11px 16px;cursor:pointer;font-weight:600}.menu div:hover{background:#f1f5fc}
-.lay{flex:1;min-height:0;display:flex}
-aside{flex:none;width:214px;background:#fff;border-right:1px solid var(--line);padding:10px 0;transition:.2s;overflow:hidden}
-aside.col{width:62px}.nv{display:flex;align-items:center;gap:14px;padding:12px 20px;cursor:pointer;font-weight:600;color:#3a4d73;border-left:3px solid transparent;white-space:nowrap}
-.nv svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}.nv:hover{background:#f5f8fd}.nv.on{color:var(--red);background:#fdeff2;border-left-color:var(--red)}
-.nv.t{color:var(--mute);margin-bottom:6px}
-main{flex:1;min-width:0;overflow:auto;padding:0 22px 30px}
-.fb{display:flex;gap:8px;align-items:center;overflow-x:auto;padding:12px 0 10px;position:sticky;top:0;z-index:4;background:var(--bg)}
-.f{flex:1 1 0;min-width:108px;position:relative}.f button,.f input{width:100%;height:36px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--navy);font:600 12px Inter,sans-serif;padding:0 10px;text-align:left;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.f button.on{border-color:var(--red);background:#fdf3f5;color:var(--red)}.f button{display:flex;align-items:center;justify-content:space-between;gap:4px}.f button:after{content:"▾";opacity:.6;flex:none}
-.f.d{display:flex;align-items:center;gap:6px;min-width:150px;flex:1.2 1 0}.f.d span{font-weight:700;font-size:11px;color:var(--mute)}.f.d input{padding:0 6px}
-.rs{flex:none;height:36px;border:0;border-radius:10px;background:var(--navy);color:#fff;padding:0 14px;font-weight:700;cursor:pointer}
-#pn{position:fixed;z-index:50;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 14px 34px rgba(16,44,92,.22);width:230px;display:none}
-#pn input[type=text]{width:calc(100% - 16px);margin:8px;border:1px solid var(--line);border-radius:8px;padding:7px 10px;font:12px Inter}
-#pn .ls{max-height:240px;overflow:auto}#pn label{display:flex;gap:8px;align-items:center;padding:6px 12px;cursor:pointer;font-size:12px}#pn label:hover{background:#f3f7fd}
-#pn .ac{display:flex;gap:8px;padding:8px;border-top:1px solid var(--line)}#pn .ac button{flex:1;border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px;font-weight:600;cursor:pointer;color:var(--navy)}
-.kp{display:flex;gap:12px;margin:6px 0 14px}.k{flex:1;background:#fff;border-radius:14px;padding:13px 16px;border-top:3px solid var(--red);box-shadow:0 5px 16px rgba(16,44,92,.07);min-width:0}
-.k.b{border-top-color:var(--blue)}.k.o{flex:1.5;border-top-color:#e08a00}.k small{color:var(--mute);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
-.k b{display:block;font-size:21px;margin-top:4px;white-space:nowrap}.k .oo{display:flex;gap:16px;margin-top:4px}.k .oo div{flex:1}.k .oo b{font-size:15px;margin:0}.k .oo i{font-style:normal;font-size:11px;color:var(--mute);display:block}
-.cg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.c{background:#fff;border-radius:14px;padding:16px;box-shadow:0 5px 16px rgba(16,44,92,.07);min-width:0}
-.c.w{grid-column:1/-1}.c h4{margin:0 0 10px;font-size:14px;display:flex;justify-content:space-between;align-items:center;gap:8px}.cv{position:relative;height:270px}
-.c select{border:1px solid var(--line);border-radius:8px;padding:5px 8px;font:600 12px Inter;color:var(--navy)}
-.hm{overflow:auto}.hm table{border-collapse:separate;border-spacing:3px;width:100%}.hm th{font-size:11px;color:var(--mute);padding:6px;text-align:center}.hm td{padding:10px 6px;text-align:center;border-radius:6px;font-size:12px;font-weight:600;min-width:62px}.hm td.y,.hm th.y{background:none;text-align:left;font-weight:800;color:var(--navy)}.hm td.t{background:#eef3fb}
-.tb{overflow:auto;background:#fff;border-radius:14px;box-shadow:0 5px 16px rgba(16,44,92,.07);max-height:calc(100vh - 290px)}.tb table{width:100%;border-collapse:collapse}
-.tb th{position:sticky;top:0;background:#f4f8ff;color:var(--mute);font-size:11px;text-transform:uppercase;letter-spacing:.04em;text-align:left;padding:11px 12px;white-space:nowrap}.tb td{padding:9px 12px;border-bottom:1px solid #edf2fa;white-space:nowrap}
-.tb td.r,.tb th.r{text-align:right}.tb td:nth-child(2){max-width:230px;overflow:hidden;text-overflow:ellipsis}.tb tr:hover td{background:#fafcff}.tag{padding:2px 9px;border-radius:99px;font-size:11px;font-weight:700;background:#fff1d6;color:#a86400}.tag.ic{background:#dcf0ff;color:#1d5fa8}
-.pg{display:flex;justify-content:space-between;align-items:center;margin:10px 2px;color:var(--mute);gap:10px}.btn{border:0;border-radius:10px;padding:9px 16px;font-weight:700;cursor:pointer;background:var(--navy);color:#fff;font-size:12px}.btn.g{background:#fff;color:var(--navy);border:1px solid var(--line)}.btn.red{background:var(--red)}
-.empty{background:#fff;border-radius:16px;padding:60px 20px;text-align:center;color:var(--mute);margin-top:18px}.empty b{display:block;color:var(--navy);font-size:17px;margin-bottom:6px}
-@media(max-width:900px){.cg{grid-template-columns:1fr}.kp{overflow-x:auto}.k{min-width:150px}aside{width:62px}.nv span{display:none}.ttl span{display:none}}
-</style></head><body>
-<header><button class="bk" onclick="location.href='portal.html'" title="Back to portal">←</button><div class="logo">MAINETTI<small>BANGLADESH</small></div><div class="sep"></div><div class="ttl"><b>Delivery</b><span>Orders, shipments &amp; analytics</span></div>
-<div class="user"><button class="ub" id="ub"><span class="av" id="av"></span><span id="un"></span> ▾</button><div class="menu" id="mn"><div onclick="location.href='portal.html'">Portal</div><div onclick="out()">Sign out</div></div></div></header>
-<div class="lay"><aside id="sd"><div class="nv t" onclick="$('#sd').classList.toggle('col')"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Menu</span></div>
-<div class="nv on" data-p="ov" onclick="show('ov')"><svg viewBox="0 0 24 24"><path d="M4 4h7v9H4zM13 4h7v5h-7zM13 11h7v9h-7zM4 15h7v5H4z"/></svg><span>Overview</span></div>
-<div class="nv" data-p="raw" onclick="show('raw')"><svg viewBox="0 0 24 24"><path d="M3 5h18v14H3zM3 10h18M9 5v14"/></svg><span>Raw Data</span></div></aside>
-<main id="mn2"><div class="fb" id="fb"></div><div id="pgc"></div></main></div><div id="pn"></div>
-<script>
-const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-let ME=null;const out=()=>ERP.signOut();
-$("#ub").onclick=e=>{e.stopPropagation();const m=$("#mn");m.style.display=m.style.display==="block"?"none":"block"};
-document.addEventListener("click",e=>{$("#mn").style.display="none";if(!e.target.closest("#pn,.f"))$("#pn").style.display="none"});
-const MN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-const n0=v=>Math.round(v).toLocaleString("en-US"),m2=v=>v.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
-const ab=v=>Math.abs(v)>=1e6?+(v/1e6).toFixed(1)+"M":Math.abs(v)>=1e3?+(v/1e3).toFixed(0)+"K":v;
-/* ---------- load & normalise the uploaded sheet ---------- */
-const norm=s=>String(s).toLowerCase().replace(/[^a-z0-9]/g,"");
-const clean=s=>String(s??"").replace(/\s+/g," ").trim();
-const num=v=>{const x=parseFloat(String(v??"").replace(/,/g,""));return isNaN(x)?0:x};
-function pdate(v){if(v==null||v==="")return null;
- if(typeof v==="number"&&v>20000){const d=new Date(Math.round((v-25569)*864e5));return[d.getUTCFullYear(),d.getUTCMonth()+1,d.getUTCDate()]}
- v=String(v).trim();let m=v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);if(m)return[+m[1],+m[2],+m[3]];
- m=v.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/);if(m){let a=+m[1],b=+m[2],y=+m[3];if(y<100)y+=2000;return a>12?[y,b,a]:[y,a,b]}
- const d=new Date(v);return isNaN(d)?null:[d.getFullYear(),d.getMonth()+1,d.getDate()]}
-const isIC=v=>/(^|[^a-z])ic([^a-z]|$)/i.test(String(v||""));
-let R=[],mod=null,msg="";
-async function load(){
- ME=await ERP.require();if(!ME)return false;
- const nm=ME.name||ME.login_id;$("#un").textContent=nm;$("#av").textContent=nm.slice(0,2).toUpperCase();
- const tree=await ERP.tree();mod=tree.find(m=>/deliver/i.test(m.name));
- if(!mod){msg="The Delivery module does not exist in the Admin Console.";return true}
- if(!ERP.can(ME,mod.id)&&!mod.subs.some(s=>ERP.can(ME,s.id,"v",mod.id))){msg="You do not have access to the Delivery module.";return true}
- let ds=null;for(const id of [mod.id,...mod.subs.map(s=>s.id)]){
-  const{data:x}=await sb.from("datasets").select("cols").eq("node_id",id).maybeSingle();
-  if(x&&x.cols.map(norm).includes("hangerqty")){ds=await ERP.dataset(id);break}}
- if(!ds){msg="No Delivery data yet. Upload the Delivery Excel from Admin Console → Data Manager → Delivery.";return true}
- const ix={};ds.cols.forEach((c,i)=>{const k=norm(c);if(!(k in ix))ix[k]=i});
- const g=(r,k)=>ix[k]==null?"":r.data[ix[k]];
- ds.rows.forEach(r=>{const d=pdate(g(r,"date"));if(!d)return;const hq=num(g(r,"hangerqty")),sq=num(g(r,"sizerqty")),up=num(g(r,"unitprice"));
-  let hv=g(r,"hangervalue"),sv=g(r,"sizervalue");hv=hv===""?hq*up/100:num(hv);sv=sv===""?sq*up/100:num(sv);   // Value = Qty × Unit Price ÷ 100
-  R.push({y:d[0],m:d[1],d:d[2],ds:`${d[0]}-${String(d[1]).padStart(2,"0")}-${String(d[2]).padStart(2,"0")}`,cust:clean(g(r,"customername")),buyer:clean(g(r,"buyer")).toUpperCase(),model:clean(g(r,"model")).toUpperCase(),mc:clean(g(r,"modelcolor")).toUpperCase(),
-   pay:clean(g(r,"paymentterms")).toUpperCase(),region:clean(g(r,"region")).toUpperCase(),prod:clean(g(r,"prodtype")),ot:isIC(g(r,"ordertype"))?"IC Order":"Others Order",hq,sq,up,hv,sv})});
- if(!R.length)msg="The uploaded sheet has no valid rows (check the DATE column)."
- return true}
-/* ---------- filters ---------- */
-const FD=[["y","Year",r=>r.y],["m","Month",r=>r.m],["buyer","Buyer",r=>r.buyer],["model","Model",r=>r.model],["prod","Prod. Type",r=>r.prod],["pay","Payment Terms",r=>r.pay],["region","Region",r=>r.region],["ot","Order Type",r=>r.ot]];
-const F={};FD.forEach(f=>F[f[0]]=new Set());let from="",to="",page="ov";
-const opts=k=>{const f=FD.find(x=>x[0]===k),src=k==="model"&&F.buyer.size?R.filter(r=>F.buyer.has(r.buyer)):R,s=[...new Set(src.map(f[2]).filter(v=>v!==""&&v!=null))];return s.sort((a,b)=>typeof a==="number"?a-b:String(a).localeCompare(String(b)))};
-function syncModel(){if(!F.buyer.size||!F.model.size)return;const ok=new Set(R.filter(r=>F.buyer.has(r.buyer)).map(r=>r.model));F.model=new Set([...F.model].filter(m=>ok.has(m)))}
-const lab=(k,v)=>k==="m"?MN[v-1]:v;
-function fbuild(){if(msg){$("#fb").innerHTML="";return}
- const o=FD.slice(0,1).concat(FD.slice(1,2));
- const btn=f=>`<div class="f"><button data-k="${f[0]}" class="${F[f[0]].size?"on":""}">${f[1]}${F[f[0]].size?" ("+F[f[0]].size+")":""}</button></div>`;
- $("#fb").innerHTML=btn(FD[0])+btn(FD[1])+`<div class="f d"><span>From</span><input type="date" id="df" value="${from}"></div><div class="f d"><span>To</span><input type="date" id="dt" value="${to}"></div>`+FD.slice(2).map(btn).join("")+`<button class="rs" onclick="reset()">Reset</button>`;
- $("#fb").querySelectorAll("button[data-k]").forEach(b=>b.onclick=e=>{e.stopPropagation();pnl(b)});
- $("#df").onchange=e=>{from=e.target.value;draw()};$("#dt").onchange=e=>{to=e.target.value;draw()}}
-function pnl(b){const k=b.dataset.k,p=$("#pn"),r=b.getBoundingClientRect(),L=opts(k);
- p.innerHTML=`<input type="text" placeholder="Search…"><div class="ls">${L.map(v=>`<label><input type="checkbox" value="${esc(v)}" ${F[k].has(v)?"checked":""}> ${esc(lab(k,v))}</label>`).join("")}</div><div class="ac"><button data-a="all">Select all</button><button data-a="clr">Clear</button></div>`;
- p.style.left=Math.min(r.left,innerWidth-240)+"px";p.style.top=r.bottom+4+"px";p.style.display="block";
- const upd=()=>{fbuild();draw()};
- p.querySelector("input[type=text]").oninput=e=>p.querySelectorAll("label").forEach(l=>l.style.display=l.textContent.toLowerCase().includes(e.target.value.toLowerCase())?"":"none");
- p.querySelectorAll(".ls input").forEach(c=>c.onchange=()=>{const v=typeof L[0]==="number"?+c.value:c.value;c.checked?F[k].add(v):F[k].delete(v);b.textContent=FD.find(x=>x[0]===k)[1]+(F[k].size?" ("+F[k].size+")":"");b.classList.toggle("on",!!F[k].size);if(k==="buyer"){syncModel();fbuild()}draw()});
- p.querySelectorAll(".ac button").forEach(x=>x.onclick=()=>{F[k]=new Set(x.dataset.a==="all"?L:[]);pnl(document.querySelector(`button[data-k=${k}]`)||b);b.textContent=FD.find(z=>z[0]===k)[1]+(F[k].size?" ("+F[k].size+")":"");b.classList.toggle("on",!!F[k].size);if(k==="buyer"){syncModel();fbuild()}draw()})}
-function reset(){FD.forEach(f=>F[f[0]]=new Set());from=to="";fbuild();draw()}
-const flt=()=>R.filter(r=>FD.every(f=>!F[f[0]].size||F[f[0]].has(f[2](r)))&&(!from||r.ds>=from)&&(!to||r.ds<=to));
-const sum=(a,k)=>a.reduce((s,r)=>s+r[k],0);
-function grp(a,kf){const m=new Map();a.forEach(r=>{const k=kf(r);let o=m.get(k);if(!o)m.set(k,o={k,hq:0,sq:0,hv:0,sv:0});o.hq+=r.hq;o.sq+=r.sq;o.hv+=r.hv;o.sv+=r.sv});return[...m.values()]}
-/* ---------- pages ---------- */
-function show(p){page=p;document.querySelectorAll(".nv[data-p]").forEach(n=>n.classList.toggle("on",n.dataset.p===p));draw()}
-function draw(){const c=$("#pgc");if(msg){c.innerHTML=`<div class="empty"><b>Delivery</b>${esc(msg)}</div>`;return}
- const a=flt();page==="ov"?ov(a):raw(a)}
-const CH={};function mk(id,cfg){CH[id]&&CH[id].destroy();CH[id]=new Chart($("#"+id),cfg)}
-const PAL=["#a61935","#2b5bb8","#e08a00","#1f9d55","#7c4dff","#0b8aa6","#d6336c","#51607a"];
-function opt(leg,horiz){return{responsive:true,maintainAspectRatio:false,indexAxis:horiz?"y":"x",plugins:{legend:{display:leg,position:"bottom",labels:{boxWidth:10,font:{size:11}}},tooltip:{callbacks:{label:c=>` ${c.dataset.label?c.dataset.label+": ":""}${n0(c.parsed[horiz?"x":"y"])}`}}},scales:{[horiz?"x":"y"]:{beginAtZero:true,ticks:{callback:ab},grid:{color:"#edf2fa"}},[horiz?"y":"x"]:{grid:{display:false},ticks:{font:{size:11},maxRotation:0,autoSkipPadding:12,autoSkip:!horiz}}}}}
-function ov(a){
- const hq=sum(a,"hq"),sq=sum(a,"sq"),hv=sum(a,"hv"),sv=sum(a,"sv"),ic=a.filter(r=>r.ot==="IC Order"),ot=a.filter(r=>r.ot!=="IC Order");
- const O=(t,x)=>`<div><i>${t}</i><b>H ${n0(sum(x,"hq"))}</b><i>S ${n0(sum(x,"sq"))}</i></div>`;
- $("#pgc").innerHTML=`<div class="kp"><div class="k"><small>Hanger Qty</small><b>${n0(hq)}</b></div><div class="k"><small>Hanger Value</small><b>${m2(hv)}</b></div><div class="k b"><small>Sizer Qty</small><b>${n0(sq)}</b></div><div class="k b"><small>Sizer Value</small><b>${m2(sv)}</b></div>
- <div class="k o"><small>Order Type · Hanger / Sizer Qty</small><div class="oo">${O("IC Order",ic)}${O("Others Order",ot)}</div></div></div>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Mainetti · Delivery</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="erp.js"></script>
+  <style>
+    :root {
+      --navy: #0f2a5a;
+      --red: #a61935;
+      --blue: #2b5bb8;
+      --mute: #6d7c99;
+      --line: #dbe4f2;
+      --bg: #f1f5fb
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--navy);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      font-size: 13px
+    }
+
+    header {
+      flex: none;
+      height: 64px;
+      background: linear-gradient(100deg, #5c0716, #8d0b20 45%, #b3122f);
+      color: #fff;
+      padding: 0 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 6px 20px rgba(100, 10, 30, .25);
+      z-index: 6
+    }
+
+    .bk {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, .4);
+      background: rgba(255, 255, 255, .12);
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer
+    }
+
+    .logo {
+      font-weight: 800;
+      letter-spacing: .06em;
+      font-size: 16px;
+      line-height: 1
+    }
+
+    .logo small {
+      display: block;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: .2em;
+      opacity: .8;
+      margin-top: 3px
+    }
+
+    .sep {
+      width: 1px;
+      height: 30px;
+      background: rgba(255, 255, 255, .35)
+    }
+
+    .ttl {
+      flex: 1
+    }
+
+    .ttl b {
+      font-size: 18px;
+      display: block
+    }
+
+    .ttl span {
+      font-size: 12px;
+      opacity: .85
+    }
+
+    .user {
+      position: relative
+    }
+
+    .ub {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, .14);
+      border: 1px solid rgba(255, 255, 255, .4);
+      color: #fff;
+      border-radius: 999px;
+      padding: 5px 14px 5px 5px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 13px
+    }
+
+    .av {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--red);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 11px
+    }
+
+    .menu {
+      position: absolute;
+      right: 0;
+      top: 44px;
+      background: #fff;
+      color: var(--navy);
+      border-radius: 12px;
+      box-shadow: 0 14px 34px rgba(16, 44, 92, .25);
+      min-width: 150px;
+      display: none;
+      overflow: hidden
+    }
+
+    .menu div {
+      padding: 11px 16px;
+      cursor: pointer;
+      font-weight: 600
+    }
+
+    .menu div:hover {
+      background: #f1f5fc
+    }
+
+    .lay {
+      flex: 1;
+      min-height: 0;
+      display: flex
+    }
+
+    aside {
+      flex: none;
+      width: 214px;
+      background: #fff;
+      border-right: 1px solid var(--line);
+      padding: 10px 0;
+      transition: .2s;
+      overflow: hidden
+    }
+
+    aside.col {
+      width: 62px
+    }
+
+    .nv {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 20px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #3a4d73;
+      border-left: 3px solid transparent;
+      white-space: nowrap
+    }
+
+    .nv svg {
+      width: 20px;
+      height: 20px;
+      flex: none;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .nv:hover {
+      background: #f5f8fd
+    }
+
+    .nv.on {
+      color: var(--red);
+      background: #fdeff2;
+      border-left-color: var(--red)
+    }
+
+    .nv.t {
+      color: var(--mute);
+      margin-bottom: 6px
+    }
+
+    main {
+      flex: 1;
+      min-width: 0;
+      overflow: auto;
+      padding: 0 22px 30px
+    }
+
+    .fb {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      overflow-x: auto;
+      padding: 12px 0 10px;
+      position: sticky;
+      top: 0;
+      z-index: 4;
+      background: var(--bg)
+    }
+
+    .f {
+      flex: 1 1 0;
+      min-width: 108px;
+      position: relative
+    }
+
+    .f button,
+    .f input {
+      width: 100%;
+      height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--navy);
+      font: 600 12px Inter, sans-serif;
+      padding: 0 10px;
+      text-align: left;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .f button.on {
+      border-color: var(--red);
+      background: #fdf3f5;
+      color: var(--red)
+    }
+
+    .f button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px
+    }
+
+    .f button:after {
+      content: "▾";
+      opacity: .6;
+      flex: none
+    }
+
+    .f.d {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 150px;
+      flex: 1.2 1 0
+    }
+
+    .f.d span {
+      font-weight: 700;
+      font-size: 11px;
+      color: var(--mute)
+    }
+
+    .f.d input {
+      padding: 0 6px
+    }
+
+    .rs {
+      flex: none;
+      height: 36px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--navy);
+      color: #fff;
+      padding: 0 14px;
+      font-weight: 700;
+      cursor: pointer
+    }
+
+    #pn {
+      position: fixed;
+      z-index: 50;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 14px 34px rgba(16, 44, 92, .22);
+      width: 230px;
+      display: none
+    }
+
+    #pn input[type=text] {
+      width: calc(100% - 16px);
+      margin: 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 7px 10px;
+      font: 12px Inter
+    }
+
+    #pn .ls {
+      max-height: 240px;
+      overflow: auto
+    }
+
+    #pn label {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 12px
+    }
+
+    #pn label:hover {
+      background: #f3f7fd
+    }
+
+    #pn .ac {
+      display: flex;
+      gap: 8px;
+      padding: 8px;
+      border-top: 1px solid var(--line)
+    }
+
+    #pn .ac button {
+      flex: 1;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 8px;
+      padding: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--navy)
+    }
+
+    .kp {
+      display: flex;
+      gap: 12px;
+      margin: 6px 0 14px
+    }
+
+    .k {
+      flex: 1;
+      background: #fff;
+      border-radius: 14px;
+      padding: 13px 16px;
+      border-top: 3px solid var(--red);
+      box-shadow: 0 5px 16px rgba(16, 44, 92, .07);
+      min-width: 0
+    }
+
+    .k.b {
+      border-top-color: var(--blue)
+    }
+
+    .k.o {
+      flex: 1.5;
+      border-top-color: #e08a00
+    }
+
+    .k small {
+      color: var(--mute);
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .05em
+    }
+
+    .k b {
+      display: block;
+      font-size: 21px;
+      margin-top: 4px;
+      white-space: nowrap
+    }
+
+    .k .oo {
+      display: flex;
+      gap: 16px;
+      margin-top: 4px
+    }
+
+    .k .oo div {
+      flex: 1
+    }
+
+    .k .oo b {
+      font-size: 15px;
+      margin: 0
+    }
+
+    .k .oo i {
+      font-style: normal;
+      font-size: 11px;
+      color: var(--mute);
+      display: block
+    }
+
+    .cg {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px
+    }
+
+    .c {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 5px 16px rgba(16, 44, 92, .07);
+      min-width: 0
+    }
+
+    .c.w {
+      grid-column: 1/-1
+    }
+
+    .c h4 {
+      margin: 0 0 10px;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px
+    }
+
+    .cv {
+      position: relative;
+      height: 270px
+    }
+
+    .c select {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 5px 8px;
+      font: 600 12px Inter;
+      color: var(--navy)
+    }
+
+    .hm {
+      overflow: auto
+    }
+
+    .hm table {
+      border-collapse: separate;
+      border-spacing: 3px;
+      width: 100%
+    }
+
+    .hm th {
+      font-size: 11px;
+      color: var(--mute);
+      padding: 6px;
+      text-align: center
+    }
+
+    .hm td {
+      padding: 10px 6px;
+      text-align: center;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      min-width: 62px
+    }
+
+    .hm td.y,
+    .hm th.y {
+      background: none;
+      text-align: left;
+      font-weight: 800;
+      color: var(--navy)
+    }
+
+    .hm td.t {
+      background: #eef3fb
+    }
+
+    .tb {
+      overflow: auto;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 5px 16px rgba(16, 44, 92, .07);
+      max-height: calc(100vh - 290px)
+    }
+
+    .tb table {
+      width: 100%;
+      border-collapse: collapse
+    }
+
+    .tb th {
+      position: sticky;
+      top: 0;
+      background: #f4f8ff;
+      color: var(--mute);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      text-align: left;
+      padding: 11px 12px;
+      white-space: nowrap
+    }
+
+    .tb td {
+      padding: 9px 12px;
+      border-bottom: 1px solid #edf2fa;
+      white-space: nowrap
+    }
+
+    .tb td.r,
+    .tb th.r {
+      text-align: right
+    }
+
+    .tb td:nth-child(2) {
+      max-width: 230px;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .tb tr:hover td {
+      background: #fafcff
+    }
+
+    .tag {
+      padding: 2px 9px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+      background: #fff1d6;
+      color: #a86400
+    }
+
+    .tag.ic {
+      background: #dcf0ff;
+      color: #1d5fa8
+    }
+
+    .pg {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 2px;
+      color: var(--mute);
+      gap: 10px
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 9px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--navy);
+      color: #fff;
+      font-size: 12px
+    }
+
+    .btn.g {
+      background: #fff;
+      color: var(--navy);
+      border: 1px solid var(--line)
+    }
+
+    .btn.red {
+      background: var(--red)
+    }
+
+    .empty {
+      background: #fff;
+      border-radius: 16px;
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--mute);
+      margin-top: 18px
+    }
+
+    .empty b {
+      display: block;
+      color: var(--navy);
+      font-size: 17px;
+      margin-bottom: 6px
+    }
+
+    @media(max-width:900px) {
+      .cg {
+        grid-template-columns: 1fr
+      }
+
+      .kp {
+        overflow-x: auto
+      }
+
+      .k {
+        min-width: 150px
+      }
+
+      aside {
+        width: 62px
+      }
+
+      .nv span {
+        display: none
+      }
+
+      .ttl span {
+        display: none
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header><button class="bk" onclick="location.href='portal.html'" title="Back to portal">←</button>
+    <div class="logo">MAINETTI<small>BANGLADESH</small></div>
+    <div class="sep"></div>
+    <div class="ttl"><b>Delivery</b><span>Orders, shipments &amp; analytics</span></div>
+    <div class="user"><button class="ub" id="ub"><span class="av" id="av"></span><span id="un"></span> ▾</button>
+      <div class="menu" id="mn">
+        <div onclick="location.href='portal.html'">Portal</div>
+        <div onclick="out()">Sign out</div>
+      </div>
+    </div>
+  </header>
+  <div class="lay">
+    <aside id="sd">
+      <div class="nv t" onclick="$('#sd').classList.toggle('col')"><svg viewBox="0 0 24 24">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg><span>Menu</span></div>
+      <div class="nv on" data-p="ov" onclick="show('ov')"><svg viewBox="0 0 24 24">
+          <path d="M4 4h7v9H4zM13 4h7v5h-7zM13 11h7v9h-7zM4 15h7v5H4z" />
+        </svg><span>Overview</span></div>
+      <div class="nv" data-p="raw" onclick="show('raw')"><svg viewBox="0 0 24 24">
+          <path d="M3 5h18v14H3zM3 10h18M9 5v14" />
+        </svg><span>Raw Data</span></div>
+    </aside>
+    <main id="mn2">
+      <div class="fb" id="fb"></div>
+      <div id="pgc"></div>
+    </main>
+  </div>
+  <div id="pn"></div>
+  <script>
+    const $ = s => document.querySelector(s), esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    let ME = null; const out = () => ERP.signOut();
+    $("#ub").onclick = e => { e.stopPropagation(); const m = $("#mn"); m.style.display = m.style.display === "block" ? "none" : "block" };
+    document.addEventListener("click", e => { $("#mn").style.display = "none"; if (!e.target.closest("#pn,.f")) $("#pn").style.display = "none" });
+    const MN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const n0 = v => Math.round(v).toLocaleString("en-US"), m2 = v => v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const ab = v => Math.abs(v) >= 1e6 ? +(v / 1e6).toFixed(1) + "M" : Math.abs(v) >= 1e3 ? +(v / 1e3).toFixed(0) + "K" : v;
+    /* ---------- load & normalise the uploaded sheet ---------- */
+    const norm = s => String(s).toLowerCase().replace(/[^a-z0-9]/g, "");
+    const clean = s => String(s ?? "").replace(/\s+/g, " ").trim();
+    const num = v => { const x = parseFloat(String(v ?? "").replace(/,/g, "")); return isNaN(x) ? 0 : x };
+    function pdate(v) {
+      if (v == null || v === "") return null;
+      if (typeof v === "number" && v > 20000) { const d = new Date(Math.round((v - 25569) * 864e5)); return [d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate()] }
+      v = String(v).trim(); let m = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/); if (m) return [+m[1], +m[2], +m[3]];
+      m = v.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/); if (m) { let a = +m[1], b = +m[2], y = +m[3]; if (y < 100) y += 2000; return a > 12 ? [y, b, a] : [y, a, b] }
+      const d = new Date(v); return isNaN(d) ? null : [d.getFullYear(), d.getMonth() + 1, d.getDate()]
+    }
+    const isIC = v => /(^|[^a-z])ic([^a-z]|$)/i.test(String(v || ""));
+    let R = [], mod = null, msg = "";
+    async function load() {
+      ME = await ERP.require(); if (!ME) return false;
+      const nm = ME.name || ME.login_id; $("#un").textContent = nm; $("#av").textContent = nm.slice(0, 2).toUpperCase();
+      const tree = await ERP.tree(); mod = tree.find(m => /deliver/i.test(m.name));
+      if (!mod) { msg = "The Delivery module does not exist in the Admin Console."; return true }
+      if (!ERP.can(ME, mod.id) && !mod.subs.some(s => ERP.can(ME, s.id, "v", mod.id))) { msg = "You do not have access to the Delivery module."; return true }
+      const pk = await ERP.packed(mod.id, "delivery");
+      if (!pk) { msg = "No Delivery data yet. Upload the Delivery Excel from Admin Console → Data Manager → Delivery."; return true }
+      const D = pk.dict, C = pk.c, M = pk.m, N = M.hangerqty.length, up = s => clean(s).toUpperCase();
+      const T = {
+        date: D.date.map(s => { const d = pdate(s); return d ? { y: d[0], m: d[1], d: d[2], ds: `${d[0]}-${String(d[1]).padStart(2, "0")}-${String(d[2]).padStart(2, "0")}` } : null }),
+        cust: D.customername.map(clean), buyer: D.buyer.map(up), model: D.model.map(up), mc: D.modelcolor.map(up), pay: D.paymentterms.map(up), region: D.region.map(up),
+        prod: D.prodtype.map(clean), ot: D.ordertype.map(v => isIC(v) ? "IC Order" : "Others Order"), upr: D.unitprice.map(num)
+      };
+      R = new Array(N); let n = 0;
+      for (let i = 0; i < N; i++) {
+        const dd = T.date[C.date[i]]; if (!dd) continue;
+        R[n++] = { y: dd.y, m: dd.m, d: dd.d, ds: dd.ds, cust: T.cust[C.customername[i]], buyer: T.buyer[C.buyer[i]], model: T.model[C.model[i]], mc: T.mc[C.modelcolor[i]], pay: T.pay[C.paymentterms[i]], region: T.region[C.region[i]], prod: T.prod[C.prodtype[i]], ot: T.ot[C.ordertype[i]], hq: M.hangerqty[i], sq: M.sizerqty[i], up: T.upr[C.unitprice[i]], hv: M.hangervalue[i], sv: M.sizervalue[i] }
+      }
+      R.length = n;
+      if (!R.length) msg = "The uploaded sheet has no valid rows (check the DATE column).";
+      return true
+    }
+    /* ---------- filters ---------- */
+    const FD = [["y", "Year", r => r.y], ["m", "Month", r => r.m], ["buyer", "Buyer", r => r.buyer], ["model", "Model", r => r.model], ["prod", "Prod. Type", r => r.prod], ["pay", "Payment Terms", r => r.pay], ["region", "Region", r => r.region], ["ot", "Order Type", r => r.ot]];
+    const F = {}; FD.forEach(f => F[f[0]] = new Set()); let from = "", to = "", page = "ov";
+    const opts = k => { const f = FD.find(x => x[0] === k), src = k === "model" && F.buyer.size ? R.filter(r => F.buyer.has(r.buyer)) : R, s = [...new Set(src.map(f[2]).filter(v => v !== "" && v != null))]; return s.sort((a, b) => typeof a === "number" ? a - b : String(a).localeCompare(String(b))) };
+    function syncModel() { if (!F.buyer.size || !F.model.size) return; const ok = new Set(R.filter(r => F.buyer.has(r.buyer)).map(r => r.model)); F.model = new Set([...F.model].filter(m => ok.has(m))) }
+    const lab = (k, v) => k === "m" ? MN[v - 1] : v;
+    function fbuild() {
+      if (msg) { $("#fb").innerHTML = ""; return }
+      const o = FD.slice(0, 1).concat(FD.slice(1, 2));
+      const btn = f => `<div class="f"><button data-k="${f[0]}" class="${F[f[0]].size ? "on" : ""}">${f[1]}${F[f[0]].size ? " (" + F[f[0]].size + ")" : ""}</button></div>`;
+      $("#fb").innerHTML = btn(FD[0]) + btn(FD[1]) + `<div class="f d"><span>From</span><input type="date" id="df" value="${from}"></div><div class="f d"><span>To</span><input type="date" id="dt" value="${to}"></div>` + FD.slice(2).map(btn).join("") + `<button class="rs" onclick="reset()">Reset</button>`;
+      $("#fb").querySelectorAll("button[data-k]").forEach(b => b.onclick = e => { e.stopPropagation(); pnl(b) });
+      $("#df").onchange = e => { from = e.target.value; draw() }; $("#dt").onchange = e => { to = e.target.value; draw() }
+    }
+    function pnl(b) {
+      const k = b.dataset.k, p = $("#pn"), r = b.getBoundingClientRect(), L = opts(k);
+      p.innerHTML = `<input type="text" placeholder="Search…"><div class="ls">${L.map(v => `<label><input type="checkbox" value="${esc(v)}" ${F[k].has(v) ? "checked" : ""}> ${esc(lab(k, v))}</label>`).join("")}</div><div class="ac"><button data-a="all">Select all</button><button data-a="clr">Clear</button></div>`;
+      p.style.left = Math.min(r.left, innerWidth - 240) + "px"; p.style.top = r.bottom + 4 + "px"; p.style.display = "block";
+      const upd = () => { fbuild(); draw() };
+      p.querySelector("input[type=text]").oninput = e => p.querySelectorAll("label").forEach(l => l.style.display = l.textContent.toLowerCase().includes(e.target.value.toLowerCase()) ? "" : "none");
+      p.querySelectorAll(".ls input").forEach(c => c.onchange = () => { const v = typeof L[0] === "number" ? +c.value : c.value; c.checked ? F[k].add(v) : F[k].delete(v); b.textContent = FD.find(x => x[0] === k)[1] + (F[k].size ? " (" + F[k].size + ")" : ""); b.classList.toggle("on", !!F[k].size); if (k === "buyer") { syncModel(); fbuild() } draw() });
+      p.querySelectorAll(".ac button").forEach(x => x.onclick = () => { F[k] = new Set(x.dataset.a === "all" ? L : []); pnl(document.querySelector(`button[data-k=${k}]`) || b); b.textContent = FD.find(z => z[0] === k)[1] + (F[k].size ? " (" + F[k].size + ")" : ""); b.classList.toggle("on", !!F[k].size); if (k === "buyer") { syncModel(); fbuild() } draw() })
+    }
+    function reset() { FD.forEach(f => F[f[0]] = new Set()); from = to = ""; fbuild(); draw() }
+    const flt = () => R.filter(r => FD.every(f => !F[f[0]].size || F[f[0]].has(f[2](r))) && (!from || r.ds >= from) && (!to || r.ds <= to));
+    const sum = (a, k) => a.reduce((s, r) => s + r[k], 0);
+    function grp(a, kf) { const m = new Map(); a.forEach(r => { const k = kf(r); let o = m.get(k); if (!o) m.set(k, o = { k, hq: 0, sq: 0, hv: 0, sv: 0 }); o.hq += r.hq; o.sq += r.sq; o.hv += r.hv; o.sv += r.sv }); return [...m.values()] }
+    /* ---------- pages ---------- */
+    function show(p) { page = p; document.querySelectorAll(".nv[data-p]").forEach(n => n.classList.toggle("on", n.dataset.p === p)); draw() }
+    function draw() {
+      const c = $("#pgc"); if (msg) { c.innerHTML = `<div class="empty"><b>Delivery</b>${esc(msg)}</div>`; return }
+      const a = flt(); page === "ov" ? ov(a) : raw(a)
+    }
+    const CH = {}; function mk(id, cfg) { CH[id] && CH[id].destroy(); CH[id] = new Chart($("#" + id), cfg) }
+    const PAL = ["#a61935", "#2b5bb8", "#e08a00", "#1f9d55", "#7c4dff", "#0b8aa6", "#d6336c", "#51607a"];
+    function opt(leg, horiz) { return { responsive: true, maintainAspectRatio: false, indexAxis: horiz ? "y" : "x", plugins: { legend: { display: leg, position: "bottom", labels: { boxWidth: 10, font: { size: 11 } } }, tooltip: { callbacks: { label: c => ` ${c.dataset.label ? c.dataset.label + ": " : ""}${n0(c.parsed[horiz ? "x" : "y"])}` } } }, scales: { [horiz ? "x" : "y"]: { beginAtZero: true, ticks: { callback: ab }, grid: { color: "#edf2fa" } }, [horiz ? "y" : "x"]: { grid: { display: false }, ticks: { font: { size: 11 }, maxRotation: 0, autoSkipPadding: 12, autoSkip: !horiz } } } } }
+    function ov(a) {
+      const hq = sum(a, "hq"), sq = sum(a, "sq"), hv = sum(a, "hv"), sv = sum(a, "sv"), ic = a.filter(r => r.ot === "IC Order"), ot = a.filter(r => r.ot !== "IC Order");
+      const O = (t, x) => `<div><i>${t}</i><b>H ${n0(sum(x, "hq"))}</b><i>S ${n0(sum(x, "sq"))}</i></div>`;
+      $("#pgc").innerHTML = `<div class="kp"><div class="k"><small>Hanger Qty</small><b>${n0(hq)}</b></div><div class="k"><small>Hanger Value</small><b>${m2(hv)}</b></div><div class="k b"><small>Sizer Qty</small><b>${n0(sq)}</b></div><div class="k b"><small>Sizer Value</small><b>${m2(sv)}</b></div>
+ <div class="k o"><small>Order Type · Hanger / Sizer Qty</small><div class="oo">${O("IC Order", ic)}${O("Others Order", ot)}</div></div></div>
  <div class="cg"><div class="c"><h4>Month wise Hanger Qty Trend</h4><div class="cv"><canvas id="c1"></canvas></div></div><div class="c"><h4>Month wise Sizer Qty Trend</h4><div class="cv"><canvas id="c2"></canvas></div></div>
  <div class="c w"><h4>Year &amp; Month wise Heatmap<select id="hs"><option value="hq">Hanger Qty</option><option value="sq">Sizer Qty</option><option value="hv">Hanger Value</option><option value="sv">Sizer Value</option></select></h4><div class="hm" id="hm"></div></div>
  <div class="c"><h4>Year to Year Hanger Qty Trend</h4><div class="cv"><canvas id="c3"></canvas></div></div><div class="c"><h4>Year to Year Sizer Qty Trend</h4><div class="cv"><canvas id="c4"></canvas></div></div>
  <div class="c"><h4>Region-wise Hanger Quantity Distribution</h4><div class="cv"><canvas id="c5"></canvas></div></div><div class="c"><h4>Region-wise Sizer Quantity Distribution</h4><div class="cv"><canvas id="c6"></canvas></div></div>
  <div class="c"><h4>Top 10 Buyer · Hanger Qty</h4><div class="cv"><canvas id="c7"></canvas></div></div><div class="c"><h4>Top 10 Buyer · Sizer Qty</h4><div class="cv"><canvas id="c8"></canvas></div></div>
  <div class="c w"><h4>Top 10 Hanger Model</h4><div class="cv"><canvas id="c9"></canvas></div></div></div>`;
- const mm=grp(a,r=>r.y*100+r.m).sort((x,y)=>x.k-y.k),ml=mm.map(x=>MN[x.k%100-1]+" "+String(Math.floor(x.k/100)).slice(2));
- const line=(id,l,d,col)=>mk(id,{type:"line",data:{labels:l,datasets:[{label:id==="c1"?"Hanger Qty":"Sizer Qty",data:d,borderColor:col,backgroundColor:col+"22",fill:true,tension:.3,pointRadius:d.length>40?0:3,borderWidth:2}]},options:opt(false)});
- line("c1",ml,mm.map(x=>x.hq),"#a61935");line("c2",ml,mm.map(x=>x.sq),"#2b5bb8");
- const yy=grp(a,r=>r.y).sort((x,y)=>x.k-y.k),yl=yy.map(x=>x.k);
- mk("c3",{type:"bar",data:{labels:yl,datasets:[{label:"Hanger Qty",data:yy.map(x=>x.hq),backgroundColor:"#a61935",borderRadius:6}]},options:opt(false)});
- mk("c4",{type:"bar",data:{labels:yl,datasets:[{label:"Sizer Qty",data:yy.map(x=>x.sq),backgroundColor:"#2b5bb8",borderRadius:6}]},options:opt(false)});
- const rg=[...new Set(a.map(r=>r.region||"N/A"))].sort(),
- pie=(id,k)=>{const v=rg.map(g=>sum(a.filter(r=>(r.region||"N/A")===g),k)),T=v.reduce((x,y)=>x+y,0),P=x=>T?(x/T*100).toFixed(1)+"%":"0%";
-  mk(id,{type:"doughnut",data:{labels:rg.map((g,i)=>g+" · "+P(v[i])),datasets:[{data:v,backgroundColor:rg.map((g,i)=>PAL[i%8]),borderColor:"#fff",borderWidth:2}]},
-   options:{responsive:true,maintainAspectRatio:false,cutout:"62%",plugins:{legend:{position:"bottom",labels:{boxWidth:10,font:{size:11}}},tooltip:{callbacks:{label:c=>` ${rg[c.dataIndex]}: ${n0(c.parsed)} (${P(c.parsed)})`}}}},
-   plugins:[{id:"ctr",afterDraw(ch){const{ctx,chartArea:A}=ch,x=(A.left+A.right)/2,y=(A.top+A.bottom)/2;ctx.save();ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#0f2a5a";ctx.font="800 24px Inter,sans-serif";ctx.fillText(ab(T),x,y-8);ctx.fillStyle="#6d7c99";ctx.font="600 11px Inter,sans-serif";ctx.fillText("TOTAL",x,y+14);
-   ch.getDatasetMeta(0).data.forEach((arc,i)=>{if(!T||v[i]/T<.03)return;const m=(arc.startAngle+arc.endAngle)/2,r=(arc.innerRadius+arc.outerRadius)/2;ctx.fillStyle="#fff";ctx.font="700 12px Inter,sans-serif";ctx.shadowColor="rgba(0,0,0,.35)";ctx.shadowBlur=3;ctx.fillText(P(v[i]),arc.x+Math.cos(m)*r,arc.y+Math.sin(m)*r)});
-   ctx.restore()}}]})};
- pie("c5","hq");pie("c6","sq");
- const top=(id,k,key,col)=>{const t=grp(a,r=>r[key]||"N/A").sort((x,y)=>y[k]-x[k]).filter(x=>x[k]>0).slice(0,10);mk(id,{type:"bar",data:{labels:t.map(x=>x.k),datasets:[{label:k==="hq"?"Hanger Qty":"Sizer Qty",data:t.map(x=>x[k]),backgroundColor:col,borderRadius:5}]},options:opt(false,true)})};
- top("c7","hq","buyer","#a61935");top("c8","sq","buyer","#2b5bb8");top("c9","hq","model","#e08a00");
- const hm=()=>{const k=$("#hs").value,Y=[...new Set(a.map(r=>r.y))].sort((x,y)=>x-y),g=new Map();a.forEach(r=>{const q=r.y*100+r.m;g.set(q,(g.get(q)||0)+r[k])});
-  let mx=0,mn=Infinity;g.forEach(v=>{if(v>0){mx=Math.max(mx,v);mn=Math.min(mn,v)}});const f=k[1]==="v"?m2:n0;
-  $("#hm").innerHTML=`<table><tr><th class="y">Year</th>${MN.map(x=>`<th>${x}</th>`).join("")}<th>Total</th></tr>${Y.map(y=>{let t=0;return`<tr><td class="y">${y}</td>${MN.map((_,i)=>{const v=g.get(y*100+i+1)||0;t+=v;const p=mx>mn?(v-mn)/(mx-mn):1,h=Math.round(p*120),dk=h>38&&h<92;return`<td style="background:${v?`hsl(${h} 68% ${dk?58:42}%)`:"#f6f8fc"};color:${v&&!dk?"#fff":"#0f2a5a"}">${v?f(v):"–"}</td>`}).join("")}<td class="t">${f(t)}</td></tr>`}).join("")}</table><div style="display:flex;align-items:center;gap:8px;margin-top:8px;font-size:11px;color:var(--mute)">Low<i style="flex:0 0 150px;height:8px;border-radius:99px;background:linear-gradient(90deg,hsl(0 68% 42%),hsl(60 68% 58%),hsl(120 68% 42%))"></i>High</div>`};
- $("#hs").onchange=hm;hm()}
-/* ---------- raw data ---------- */
-let rows=[],pgn=0;const PS=100;
-function raw(a){
- const m=new Map();a.forEach(r=>{const k=[r.ds,r.buyer,r.model,r.ot].join("|");let o=m.get(k);if(!o)m.set(k,o={ds:r.ds,cust:new Set(),buyer:r.buyer,model:r.model,mc:new Set(),ot:r.ot,hq:0,sq:0,hv:0,sv:0,up:new Set()});
-  if(r.cust)o.cust.add(r.cust);if(r.mc)o.mc.add(r.mc);o.up.add(r.up);o.hq+=r.hq;o.sq+=r.sq;o.hv+=r.hv;o.sv+=r.sv});
- rows=[...m.values()].map(o=>({Date:o.ds,"Customer Name":[...o.cust].join(", "),Buyer:o.buyer,Model:o.model,"Model & Color":[...o.mc].join(", "),"Hanger Qty":o.hq,"Sizer Qty":o.sq,
-  "Unit Price":o.up.size===1?[...o.up][0]:((o.hq+o.sq)?(o.hv+o.sv)/(o.hq+o.sq)*100:0),"Hanger Value":o.hv,"Sizer Value":o.sv,"Order Type":o.ot})).sort((x,y)=>y.Date.localeCompare(x.Date)||x.Buyer.localeCompare(y.Buyer));
- pgn=0;const hq=sum(a,"hq"),sq=sum(a,"sq"),hv=sum(a,"hv"),sv=sum(a,"sv"),up=(hq+sq)?(hv+sv)/(hq+sq)*100:0;
- $("#pgc").innerHTML=`<div class="kp"><div class="k"><small>Hanger Qty</small><b>${n0(hq)}</b></div><div class="k b"><small>Sizer Qty</small><b>${n0(sq)}</b></div><div class="k o"><small>Unit Price (weighted avg)</small><b>${m2(up)}</b></div><div class="k"><small>Hanger Value</small><b>${m2(hv)}</b></div><div class="k b"><small>Sizer Value</small><b>${m2(sv)}</b></div></div>
- <div class="pg"><span id="pi"></span><div style="display:flex;gap:8px"><button class="btn g" onclick="pp(-1)">‹ Prev</button><button class="btn g" onclick="pp(1)">Next ›</button><button class="btn red" onclick="dx()">⬇ Download Excel</button></div></div><div class="tb" id="tb"></div>`;rt()}
-function rt(){const C=["Date","Customer Name","Buyer","Model","Model & Color","Hanger Qty","Sizer Qty","Unit Price","Hanger Value","Sizer Value","Order Type"],NU={"Hanger Qty":n0,"Sizer Qty":n0,"Unit Price":m2,"Hanger Value":m2,"Sizer Value":m2},s=pgn*PS,p=rows.slice(s,s+PS);
- $("#pi").textContent=rows.length?`${s+1}–${Math.min(s+PS,rows.length)} of ${rows.length} rows`:"0 rows";
- $("#tb").innerHTML=`<table><tr>${C.map(c=>`<th class="${NU[c]?"r":""}">${c}</th>`).join("")}</tr>${p.map(r=>`<tr>${C.map(c=>c==="Order Type"?`<td><span class="tag ${r[c]==="IC Order"?"ic":""}">${r[c]}</span></td>`:NU[c]?`<td class="r">${NU[c](r[c])}</td>`:`<td title="${esc(r[c])}">${esc(r[c])}</td>`).join("")}</tr>`).join("")||`<tr><td colspan="11" style="text-align:center;padding:40px;color:#6d7c99">No data for the selected filters</td></tr>`}</table>`}
-function pp(d){const mx=Math.max(0,Math.ceil(rows.length/PS)-1);pgn=Math.min(mx,Math.max(0,pgn+d));rt();$("#tb").scrollTop=0}
-function dx(){if(!rows.length||!window.XLSX)return alert("Nothing to download.");const w=XLSX.utils.book_new();XLSX.utils.book_append_sheet(w,XLSX.utils.json_to_sheet(rows),"Delivery");XLSX.writeFile(w,"Delivery_Raw_Data_"+new Date().toISOString().slice(0,10)+".xlsx")}
-async function init(){$("#pgc").innerHTML='<div class="empty"><b>Delivery</b>Loading data…</div>';
- try{if(!(await load()))return}catch(e){console.error(e);msg="Could not load data: "+(e.message||e)}
- fbuild();draw()}
-init();
-</script></body></html>
+      const mm = grp(a, r => r.y * 100 + r.m).sort((x, y) => x.k - y.k), ml = mm.map(x => MN[x.k % 100 - 1] + " " + String(Math.floor(x.k / 100)).slice(2));
+      const line = (id, l, d, col) => mk(id, { type: "line", data: { labels: l, datasets: [{ label: id === "c1" ? "Hanger Qty" : "Sizer Qty", data: d, borderColor: col, backgroundColor: col + "22", fill: true, tension: .3, pointRadius: d.length > 40 ? 0 : 3, borderWidth: 2 }] }, options: opt(false) });
+      line("c1", ml, mm.map(x => x.hq), "#a61935"); line("c2", ml, mm.map(x => x.sq), "#2b5bb8");
+      const yy = grp(a, r => r.y).sort((x, y) => x.k - y.k), yl = yy.map(x => x.k);
+      mk("c3", { type: "bar", data: { labels: yl, datasets: [{ label: "Hanger Qty", data: yy.map(x => x.hq), backgroundColor: "#a61935", borderRadius: 6 }] }, options: opt(false) });
+      mk("c4", { type: "bar", data: { labels: yl, datasets: [{ label: "Sizer Qty", data: yy.map(x => x.sq), backgroundColor: "#2b5bb8", borderRadius: 6 }] }, options: opt(false) });
+      const rg = [...new Set(a.map(r => r.region || "N/A"))].sort(),
+        pie = (id, k) => {
+          const v = rg.map(g => sum(a.filter(r => (r.region || "N/A") === g), k)), T = v.reduce((x, y) => x + y, 0), P = x => T ? (x / T * 100).toFixed(1) + "%" : "0%";
+          mk(id, {
+            type: "doughnut", data: { labels: rg.map((g, i) => g + " · " + P(v[i])), datasets: [{ data: v, backgroundColor: rg.map((g, i) => PAL[i % 8]), borderColor: "#fff", borderWidth: 2 }] },
+            options: { responsive: true, maintainAspectRatio: false, cutout: "62%", plugins: { legend: { position: "bottom", labels: { boxWidth: 10, font: { size: 11 } } }, tooltip: { callbacks: { label: c => ` ${rg[c.dataIndex]}: ${n0(c.parsed)} (${P(c.parsed)})` } } } },
+            plugins: [{
+              id: "ctr", afterDraw(ch) {
+                const { ctx, chartArea: A } = ch, x = (A.left + A.right) / 2, y = (A.top + A.bottom) / 2; ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#0f2a5a"; ctx.font = "800 24px Inter,sans-serif"; ctx.fillText(ab(T), x, y - 8); ctx.fillStyle = "#6d7c99"; ctx.font = "600 11px Inter,sans-serif"; ctx.fillText("TOTAL", x, y + 14);
+                ch.getDatasetMeta(0).data.forEach((arc, i) => { if (!T || v[i] / T < .03) return; const m = (arc.startAngle + arc.endAngle) / 2, r = (arc.innerRadius + arc.outerRadius) / 2; ctx.fillStyle = "#fff"; ctx.font = "700 12px Inter,sans-serif"; ctx.shadowColor = "rgba(0,0,0,.35)"; ctx.shadowBlur = 3; ctx.fillText(P(v[i]), arc.x + Math.cos(m) * r, arc.y + Math.sin(m) * r) });
+                ctx.restore()
+              }
+            }]
+          })
+        };
+      pie("c5", "hq"); pie("c6", "sq");
+      const top = (id, k, key, col) => { const t = grp(a, r => r[key] || "N/A").sort((x, y) => y[k] - x[k]).filter(x => x[k] > 0).slice(0, 10); mk(id, { type: "bar", data: { labels: t.map(x => x.k), datasets: [{ label: k === "hq" ? "Hanger Qty" : "Sizer Qty", data: t.map(x => x[k]), backgroundColor: col, borderRadius: 5 }] }, options: opt(false, true) }) };
+      top("c7", "hq", "buyer", "#a61935"); top("c8", "sq", "buyer", "#2b5bb8"); top("c9", "hq", "model", "#e08a00");
+      const hm = () => {
+        const k = $("#hs").value, Y = [...new Set(a.map(r => r.y))].sort((x, y) => x - y), g = new Map(); a.forEach(r => { const q = r.y * 100 + r.m; g.set(q, (g.get(q) || 0) + r[k]) });
+        let mx = 0, mn = Infinity; g.forEach(v => { if (v > 0) { mx = Math.max(mx, v); mn = Math.min(mn, v) } }); const f = k[1] === "v" ? m2 : n0;
+        $("#hm").innerHTML = `<table><tr><th class="y">Year</th>${MN.map(x => `<th>${x}</th>`).join("")}<th>Total</th></tr>${Y.map(y => { let t = 0; return `<tr><td class="y">${y}</td>${MN.map((_, i) => { const v = g.get(y * 100 + i + 1) || 0; t += v; const p = mx > mn ? (v - mn) / (mx - mn) : 1, h = Math.round(p * 120), dk = h > 38 && h < 92; return `<td style="background:${v ? `hsl(${h} 68% ${dk ? 58 : 42}%)` : "#f6f8fc"};color:${v && !dk ? "#fff" : "#0f2a5a"}">${v ? f(v) : "–"}</td>` }).join("")}<td class="t">${f(t)}</td></tr>` }).join("")}</table><div style="display:flex;align-items:center;gap:8px;margin-top:8px;font-size:11px;color:var(--mute)">Low<i style="flex:0 0 150px;height:8px;border-radius:99px;background:linear-gradient(90deg,hsl(0 68% 42%),hsl(60 68% 58%),hsl(120 68% 42%))"></i>High</div>`
+      };
+      $("#hs").onchange = hm; hm()
+    }
+    /* ---------- raw data ---------- */
+    let rows = [], pgn = 0; const PS = 100;
+    function raw(a) {
+      const m = new Map(); a.forEach(r => {
+        const k = [r.ds, r.buyer, r.model, r.ot].join("|"); let o = m.get(k); if (!o) m.set(k, o = { ds: r.ds, cust: new Set(), buyer: r.buyer, model: r.model, mc: new Set(), ot: r.ot, hq: 0, sq: 0, hv: 0, sv: 0, up: new Set() });
+        if (r.cust) o.cust.add(r.cust); if (r.mc) o.mc.add(r.mc); o.up.add(r.up); o.hq += r.hq; o.sq += r.sq; o.hv += r.hv; o.sv += r.sv
+      });
+      rows = [...m.values()].map(o => ({
+        Date: o.ds, "Customer Name": [...o.cust].join(", "), Buyer: o.buyer, Model: o.model, "Model & Color": [...o.mc].join(", "), "Hanger Qty": o.hq, "Sizer Qty": o.sq,
+        "Unit Price": o.up.size === 1 ? [...o.up][0] : ((o.hq + o.sq) ? (o.hv + o.sv) / (o.hq + o.sq) * 100 : 0), "Hanger Value": o.hv, "Sizer Value": o.sv, "Order Type": o.ot
+      })).sort((x, y) => y.Date.localeCompare(x.Date) || x.Buyer.localeCompare(y.Buyer));
+      pgn = 0; const hq = sum(a, "hq"), sq = sum(a, "sq"), hv = sum(a, "hv"), sv = sum(a, "sv"), up = (hq + sq) ? (hv + sv) / (hq + sq) * 100 : 0;
+      $("#pgc").innerHTML = `<div class="kp"><div class="k"><small>Hanger Qty</small><b>${n0(hq)}</b></div><div class="k b"><small>Sizer Qty</small><b>${n0(sq)}</b></div><div class="k o"><small>Unit Price (weighted avg)</small><b>${m2(up)}</b></div><div class="k"><small>Hanger Value</small><b>${m2(hv)}</b></div><div class="k b"><small>Sizer Value</small><b>${m2(sv)}</b></div></div>
+ <div class="pg"><span id="pi"></span><div style="display:flex;gap:8px"><button class="btn g" onclick="pp(-1)">‹ Prev</button><button class="btn g" onclick="pp(1)">Next ›</button><button class="btn red" onclick="dx()">⬇ Download Excel</button></div></div><div class="tb" id="tb"></div>`; rt()
+    }
+    function rt() {
+      const C = ["Date", "Customer Name", "Buyer", "Model", "Model & Color", "Hanger Qty", "Sizer Qty", "Unit Price", "Hanger Value", "Sizer Value", "Order Type"], NU = { "Hanger Qty": n0, "Sizer Qty": n0, "Unit Price": m2, "Hanger Value": m2, "Sizer Value": m2 }, s = pgn * PS, p = rows.slice(s, s + PS);
+      $("#pi").textContent = rows.length ? `${s + 1}–${Math.min(s + PS, rows.length)} of ${rows.length} rows` : "0 rows";
+      $("#tb").innerHTML = `<table><tr>${C.map(c => `<th class="${NU[c] ? "r" : ""}">${c}</th>`).join("")}</tr>${p.map(r => `<tr>${C.map(c => c === "Order Type" ? `<td><span class="tag ${r[c] === "IC Order" ? "ic" : ""}">${r[c]}</span></td>` : NU[c] ? `<td class="r">${NU[c](r[c])}</td>` : `<td title="${esc(r[c])}">${esc(r[c])}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="11" style="text-align:center;padding:40px;color:#6d7c99">No data for the selected filters</td></tr>`}</table>`
+    }
+    function pp(d) { const mx = Math.max(0, Math.ceil(rows.length / PS) - 1); pgn = Math.min(mx, Math.max(0, pgn + d)); rt(); $("#tb").scrollTop = 0 }
+    function dx() { if (!rows.length || !window.XLSX) return alert("Nothing to download."); const w = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(w, XLSX.utils.json_to_sheet(rows), "Delivery"); XLSX.writeFile(w, "Delivery_Raw_Data_" + new Date().toISOString().slice(0, 10) + ".xlsx") }
+    async function init() {
+      $("#pgc").innerHTML = '<div class="empty"><b>Delivery</b>Loading data…</div>';
+      try { if (!(await load())) return } catch (e) { console.error(e); msg = "Could not load data: " + (e.message || e) }
+      fbuild(); draw()
+    }
+    init();
+  </script>
+</body>
+
+</html>
