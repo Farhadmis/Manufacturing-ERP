@@ -1,156 +1,704 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><title>Mainetti · Admin Console</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="erp.js"></script>
-<style>
-:root{--navy:#0f2a5a;--navy2:#16377a;--red:#a61935;--bg:#eef3fb;--line:#dbe4f2;--mute:#6d7c99;--ok:#1f9d55}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,"Segoe UI",sans-serif;background:var(--bg);color:#0c2250;font-size:14px}
-button,input,select{font:inherit}h1,h2,h3{margin:0}
-.btn{border:0;border-radius:10px;padding:9px 16px;font-weight:600;cursor:pointer;background:var(--navy);color:#fff}
-.btn.red{background:var(--red)}.btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}.btn.sm{padding:5px 10px;font-size:12px;border-radius:8px}.btn.del{background:#fff;color:var(--red);border:1px solid #f0c4cc}
-input,select{border:1px solid var(--line);border-radius:10px;padding:9px 12px;background:#fff;color:inherit;width:100%}
-label{display:block;font-size:12px;font-weight:600;color:var(--mute);margin:10px 0 4px}
-#login{min-height:100vh;display:grid;place-items:center;background:linear-gradient(135deg,var(--navy),#1d4a9c)}
-.lbox{width:380px;max-width:92vw;background:#fff;border-radius:22px;padding:34px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
-.lbox h1{font-size:22px;margin-bottom:4px}.lbox p{color:var(--mute);margin:0 0 14px}.err{color:#b3261e;font-size:13px;min-height:18px;margin-top:8px}
-#app{display:block;min-height:100vh}.side{position:fixed;inset:0 auto 0 0;width:236px;background:var(--navy);color:#fff;padding:22px 14px;display:flex;flex-direction:column;gap:4px}
-.brand{font-weight:800;font-size:17px;padding:0 10px 4px}.brand small{display:block;font-weight:500;font-size:11px;opacity:.65}
-.nav{padding:11px 14px;border-radius:10px;cursor:pointer;opacity:.82;font-weight:500}.nav:hover{background:rgba(255,255,255,.08)}.nav.on{background:#fff;color:var(--navy);opacity:1;font-weight:700}
-.side .sp{flex:1}.main{margin-left:236px;padding:26px 30px}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:12px;flex-wrap:wrap}.top h2{font-size:24px}
-.card{background:#fff;border-radius:16px;padding:20px;box-shadow:0 6px 20px rgba(16,44,92,.07);margin-bottom:18px}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}.kpi{background:#fff;border-radius:16px;padding:18px;box-shadow:0 6px 20px rgba(16,44,92,.07);border-top:4px solid var(--red)}
-.kpi b{font-size:30px;display:block}.kpi span{color:var(--mute);font-size:12px}
-table{width:100%;border-collapse:collapse}th{background:#f4f8ff;text-align:left;font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
-th,td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}.scroll{overflow:auto;max-height:60vh}
-.tag{padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;background:#e3ecfb;color:var(--navy)}.tag.on{background:#dcf5e6;color:var(--ok)}.tag.off{background:#fde4e8;color:var(--red)}
-.mrow{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}.mh{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#f7faff;font-weight:700}
-.mh .g{flex:1}.sub{display:flex;align-items:center;gap:8px;padding:8px 14px 8px 34px;border-top:1px solid var(--line)}.sub .g{flex:1}
-.add{display:flex;gap:8px;padding:8px 14px 10px 34px;border-top:1px dashed var(--line)}.add input{padding:6px 10px}
-.split{display:grid;grid-template-columns:260px 1fr;gap:18px}.tree .n{padding:8px 10px;border-radius:8px;cursor:pointer}.tree .n.s{padding-left:26px;font-size:13px}.tree .n:hover{background:#eef3fb}.tree .n.on{background:var(--navy);color:#fff}
-#ov{position:fixed;inset:0;background:rgba(10,25,60,.55);display:none;place-items:center;z-index:9;padding:16px}.mod{background:#fff;border-radius:18px;padding:24px;width:640px;max-width:100%;max-height:92vh;overflow:auto}
-.mod h3{margin-bottom:6px;font-size:18px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.acts{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
-.pm td,.pm th{padding:6px 10px;text-align:center}.pm td:first-child,.pm th:first-child{text-align:left}.pm .s td:first-child{padding-left:28px;color:var(--mute)}input[type=checkbox]{width:auto;accent-color:var(--navy);transform:scale(1.15)}
-.empty{color:var(--mute);text-align:center;padding:30px}.toast{position:fixed;bottom:22px;right:22px;background:var(--navy);color:#fff;padding:12px 18px;border-radius:12px;display:none;z-index:20}
-@media(max-width:860px){.side{position:static;width:auto;flex-direction:row;flex-wrap:wrap}.main{margin:0;padding:16px}.split{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.brand,.sp{display:none}}
-.bar{height:10px;background:#e6ecf7;border-radius:8px;overflow:hidden;margin-top:5px}.bar i{display:block;height:100%}
-.lg{background:#0f1b33;color:#cfe0ff;padding:12px;border-radius:10px;font-size:12px;white-space:pre-wrap;max-height:240px;overflow:auto;margin-top:14px}
-</style></head><body>
-<div id="app"><aside class="side"><div class="brand">Mainetti Admin<small>Control Center</small></div><div id="nav"></div><div class="sp"></div>
-<div class="nav" onclick="logout()">Sign out</div></aside><main class="main" id="main"></main></div>
-<div id="ov"><div class="mod" id="mod"></div></div><div class="toast" id="toast"></div>
-<script>const $=s=>document.querySelector(s),uid=()=>Math.random().toString(36).slice(2,8);
-const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-let me=null,MODS=[],USERS=[],view="dash",sel=null,CUR=null;
-const toast=m=>{const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(t._t);t._t=setTimeout(()=>t.style.display="none",2600)};
-const err=e=>{console.error(e);toast("Error: "+(e&&e.message||e))};
-const open=h=>{$("#mod").innerHTML=h;$("#ov").style.display="grid"},shut=()=>$("#ov").style.display="none";
-$("#ov").onclick=e=>{if(e.target.id==="ov")shut()};
-const logout=()=>ERP.signOut();
-const loadMods=async()=>{MODS=await ERP.tree()};
-const loadUsers=async()=>{const{data,error}=await sb.from("profiles").select("*").order("created_at");if(error)throw error;USERS=data};
-const nodes=()=>MODS.flatMap(m=>[{id:m.id,name:m.name,mod:m},...m.subs.map(s=>({id:s.id,name:s.name,sub:true,mod:m}))]);
-(async()=>{me=await ERP.require(true);if(!me)return;$("#app").style.display="block";await loadMods();go("dash")})().catch(err);
-function go(v){view=v;$("#nav").innerHTML=[["dash","Dashboard"],["users","Users & Access"],["mods","Modules"],["data","Data Manager"],["bk","Backup"]].map(([k,n])=>`<div class="nav ${k===v?"on":""}" onclick="go('${k}')">${n}</div>`).join("")+`<div class="nav" onclick="location.href='portal.html'">← Portal</div>`;
- ({dash,users,mods,data,bk})[v]().catch(err)}
-/* ---------- DASHBOARD ---------- */
-async function dash(){await Promise.all([loadMods(),loadUsers()]);
- const MT={};await Promise.all(MODS.map(async m=>{const c=cfgOf(m);if(!c)return;try{MT[m.id]=await(await ERP._fetchStorage(m.id+"/"+c.key+"_meta.json")).json()}catch(e){}}));
- const subs=MODS.reduce((a,m)=>a+m.subs.length,0),live=Object.keys(MT).length,rows=Object.values(MT).reduce((a,x)=>a+(x.raw||x.n||0),0),use=await usageHtml();
- $("#main").innerHTML=`<div class="top"><h2>Dashboard</h2><span class="tag">Signed in: ${esc(me.name)}</span></div><div class="kpis">
- ${[["Modules",MODS.length],["Sub-modules",subs],["Users",USERS.length],["Live datasets",live],["Data rows",rows.toLocaleString()]].map(k=>`<div class="kpi"><b>${k[1]}</b><span>${k[0]}</span></div>`).join("")}</div>
- <div class="card" style="margin-top:18px"><h3 style="margin-bottom:6px">Free plan usage</h3>${use}</div>
- <div class="card"><h3 style="margin-bottom:10px">Module overview</h3><table><tr><th>Module</th><th>Sub-modules</th><th>Data</th><th>Rows</th><th>Updated</th></tr>${MODS.map(m=>{const x=MT[m.id];return`<tr><td>${esc(m.name)}</td><td>${m.subs.length}</td><td>${x?'<span class="tag on">Live</span>':"—"}</td><td>${x?(x.raw||x.n||0).toLocaleString():"—"}</td><td>${x&&x.at?x.at.slice(0,10):"—"}</td></tr>`}).join("")}</table></div>`}
-/* ---------- USERS ---------- */
-async function users(){await Promise.all([loadMods(),loadUsers()]);
- $("#main").innerHTML=`<div class="top"><h2>Users & Access</h2><button class="btn red" onclick="uForm()">+ Create user</button></div><div class="card scroll"><table><tr><th>Login ID</th><th>Name</th><th>Role</th><th>Status</th><th>Access</th><th></th></tr>
- ${USERS.map(u=>`<tr><td><b>${esc(u.login_id)}</b></td><td>${esc(u.name)}</td><td><span class="tag">${u.role}</span></td><td><span class="tag ${u.active?"on":"off"}">${u.active?"Active":"Disabled"}</span></td>
- <td>${u.role==="admin"?"Full access":Object.values(u.perm||{}).filter(p=>p.v).length+" modules"}</td><td style="white-space:nowrap">${u.role==="admin"?"":`<button class="btn sm ghost" onclick="pForm('${u.login_id}')">Permissions</button> `}<button class="btn sm ghost" onclick="uForm('${u.login_id}')">Edit</button> ${u.id===me.id?"":`<button class="btn sm del" onclick="uDel('${u.login_id}')">Delete</button>`}</td></tr>`).join("")}</table></div>`}
-const getU=l=>USERS.find(x=>x.login_id===l);
-function uForm(id){const u=getU(id)||{login_id:"",name:"",role:"user",active:true,perm:{}};
- open(`<h3>${id?"Edit":"Create"} user</h3><div class="grid2"><div><label>Login ID</label><input id="f1" value="${esc(u.login_id)}" ${id?"disabled":""}></div><div><label>Full name</label><input id="f2" value="${esc(u.name)}"></div>
- <div><label>Password ${id?"(leave blank to keep)":""}</label><input id="f3" type="password" autocomplete="new-password"></div><div><label>Role</label><select id="f4" onchange="$('#pw').style.display=this.value==='admin'?'none':''"><option value="user" ${u.role==="user"?"selected":""}>User (module access)</option><option value="admin" ${u.role==="admin"?"selected":""}>Admin (full access)</option></select></div>
- <div><label>Status</label><select id="f5"><option value="1" ${u.active?"selected":""}>Active</option><option value="0" ${u.active?"":"selected"}>Disabled</option></select></div></div><div id="pw" style="${u.role==="admin"?"display:none":""}"><label style="margin-top:18px">Module access — V view · A add · E edit · D delete</label><div class="scroll" style="max-height:36vh;border:1px solid var(--line);border-radius:12px">${permTable(u)}</div></div><div class="err" id="fe"></div>
- <div class="acts"><button class="btn ghost" onclick="shut()">Cancel</button><button class="btn red" id="sv" onclick="uSave('${id||""}')">Save</button></div>`)}
-async function uSave(lid){const v=n=>$("#"+n).value.trim(),e=m=>{$("#fe").textContent=m;$("#sv").disabled=false},role=v("f4"),active=v("f5")==="1",name=v("f2"),pw=$("#f3").value,perm=role==="admin"?{}:collectPerm();
- $("#sv").disabled=true;
- try{if(!lid){const i=v("f1").toLowerCase();if(!/^[a-z0-9._-]{3,}$/.test(i))return e("ID: min 3 chars, letters/numbers . _ - only.");if(getU(i))return e("This ID already exists.");if(pw.length<6)return e("Password: min 6 characters.");
-   const c2=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
-   const{data,error}=await c2.auth.signUp({email:ERP.email(i),password:pw});if(error)return e(error.message);
-   if(!data.user||(data.user.identities&&!data.user.identities.length))return e("This ID already exists in Auth.");
-   const{error:e2}=await sb.from("profiles").insert({id:data.user.id,login_id:i,name:name||i,role,active,perm});if(e2)return e(e2.message)}
-  else{const u=getU(lid);if(u.id===me.id&&(role!=="admin"||!active))return e("You cannot demote or disable yourself.");if(pw&&pw.length<6)return e("Password: min 6 characters.");
-   const{error:e2}=await sb.from("profiles").update({name:name||lid,role,active,perm}).eq("id",u.id);if(e2)return e(e2.message);
-   if(pw){const{error:e3}=await sb.rpc("admin_set_password",{uid:u.id,new_pw:pw});if(e3)return e(e3.message)}}
-  shut();await users();toast("User saved")}catch(x){e(x.message||String(x))}}
-async function uDel(l){if(!confirm("Delete user "+l+"?"))return;const{error}=await sb.rpc("admin_delete_user",{uid:getU(l).id});if(error)return err(error);await users();toast("User deleted")}
-function permTable(u){const P=(n,k)=>u.perm&&u.perm[n]&&u.perm[n][k]?"checked":"";
- return `<table class="pm"><tr><th>Module / Sub-module</th>${["v","a","e","d"].map(k=>`<th>${k.toUpperCase()}<br><input type="checkbox" onchange="ha('${k}',this)"></th>`).join("")}</tr>
- ${nodes().map(n=>`<tr class="${n.sub?"s":""}"><td>${esc(n.name)}</td>${["v","a","e","d"].map(k=>`<td><input type="checkbox" class="p-${k}" data-n="${n.id}" data-k="${k}" ${P(n.id,k)} onchange="pc(this)"></td>`).join("")}</tr>`).join("")}</table>`}
-function pc(c){const r=c.closest("tr");if(c.dataset.k==="v"){if(!c.checked)r.querySelectorAll("input").forEach(x=>x.checked=false)}else if(c.checked)r.querySelector("[data-k=v]").checked=true}
-function ha(k,el){document.querySelectorAll(".p-"+k).forEach(c=>c.checked=el.checked);if(k==="v"&&!el.checked)document.querySelectorAll(".pm input").forEach(c=>c.checked=false);else if(el.checked)document.querySelectorAll(".p-v").forEach(c=>c.checked=true)}
-function collectPerm(){const o={};document.querySelectorAll(".pm input[data-n]").forEach(c=>{if(c.checked)(o[c.dataset.n]??={})[c.dataset.k]=1});return o}
-function pForm(id){const u=getU(id);
- open(`<h3>Permissions · ${esc(u.name)}</h3><p style="color:var(--mute);margin:0 0 8px">V = view · A = add · E = edit · D = delete</p><div class="scroll">${permTable(u)}</div>
- <div class="acts"><button class="btn ghost" onclick="shut()">Cancel</button><button class="btn red" onclick="pSave('${id}')">Save access</button></div>`)}
-async function pSave(id){const{error}=await sb.from("profiles").update({perm:collectPerm()}).eq("id",getU(id).id);if(error)return err(error);shut();await users();toast("Access saved")}
-/* ---------- MODULES ---------- */
-async function mods(){await loadMods();
- $("#main").innerHTML=`<div class="top"><h2>Modules</h2><div style="display:flex;gap:8px"><input id="nm" placeholder="New module name" style="width:230px"><button class="btn red" onclick="mAdd()">+ Add module</button></div></div>
- ${MODS.map(m=>`<div class="mrow"><div class="mh"><span class="g">${esc(m.name)} <span class="tag">${m.subs.length} sub</span></span><button class="btn sm ghost" onclick="mRen('${m.id}')">Rename</button><button class="btn sm del" onclick="mDel('${m.id}')">Delete</button></div>
- ${m.subs.map(s=>`<div class="sub"><span class="g">↳ ${esc(s.name)}</span><button class="btn sm ghost" onclick="mRen('${m.id}','${s.id}')">Rename</button><button class="btn sm del" onclick="mDel('${m.id}','${s.id}')">Delete</button></div>`).join("")}
- <div class="add"><input id="s-${m.id}" placeholder="Add sub-module to ${esc(m.name)}"><button class="btn sm" onclick="sAdd('${m.id}')">+ Add</button></div></div>`).join("")}`}
-async function mAdd(){const n=$("#nm").value.trim();if(!n)return;const{error}=await sb.from("modules").insert({id:"m"+uid(),name:n,sort:Math.max(0,...MODS.map(m=>m.sort))+1});if(error)return err(error);await mods();toast("Module added")}
-async function sAdd(mid){const n=$("#s-"+mid).value.trim();if(!n)return;const m=MODS.find(x=>x.id===mid);const{error}=await sb.from("submodules").insert({id:"s"+uid(),module_id:mid,name:n,sort:Math.max(0,...m.subs.map(s=>s.sort))+1});if(error)return err(error);await mods();toast("Sub-module added")}
-async function mRen(mid,sid){const m=MODS.find(x=>x.id===mid),t=sid?m.subs.find(s=>s.id===sid):m,n=prompt("New name",t.name);if(!n||!n.trim())return;
- const{error}=await sb.from(sid?"submodules":"modules").update({name:n.trim()}).eq("id",sid||mid);if(error)return err(error);await mods()}
-async function mDel(mid,sid){const m=MODS.find(x=>x.id===mid);if(!confirm(sid?"Delete this sub-module and its data?":"Delete module, ALL its sub-modules and data?"))return;
- try{await loadUsers();const ids=sid?[sid]:[mid,...m.subs.map(s=>s.id)];
-  let r=await sb.from("datasets").delete().in("node_id",ids);if(r.error)throw r.error;
-  try{await sb.storage.from("erp-data").remove(ids.flatMap(i=>Object.keys(ERP.PACK).flatMap(k=>[i+"/"+k+".json.gz",i+"/"+k+"_meta.json"])))}catch(e){}
-  for(const u of USERS){const p={...(u.perm||{})};let ch=false;ids.forEach(i=>{if(p[i]){delete p[i];ch=true}});if(ch){r=await sb.from("profiles").update({perm:p}).eq("id",u.id);if(r.error)throw r.error}}
-  r=sid?await sb.from("submodules").delete().eq("id",sid):await sb.from("modules").delete().eq("id",mid);if(r.error)throw r.error;
-  sel=null;await mods();toast("Deleted")}catch(e){err(e)}}
-/* ---------- DATA ---------- */
-const MAXV=500;
-async function data(){await loadMods();const ns=nodes();if(!sel||!ns.some(n=>n.id===sel))sel=ns[0]&&ns[0].id;
- const shell=body=>{const n=ns.find(x=>x.id===sel);$("#main").innerHTML=`<div class="top"><h2>Data Manager</h2></div><div class="split"><div class="card tree" style="padding:10px;align-self:start">${ns.map(x=>`<div class="n ${x.sub?"s":""} ${x.id===sel?"on":""}" onclick="sel='${x.id}';data().catch(err)">${x.sub?"↳ ":""}${esc(x.name)}</div>`).join("")}</div><div class="card">${n?body(n):'<div class="empty">Add a module first.</div>'}</div></div>`};
- shell(()=>'<div class="empty">Loading…</div>');if(!sel)return;
- const d=CUR=await ERP.dataset(sel);
- shell(n=>`<div class="top" style="margin-bottom:12px"><h3>${esc(n.name)} ${d?`<span class="tag">${d.total} rows</span>`:""}</h3><div style="display:flex;gap:8px;flex-wrap:wrap">
- <label class="btn red" style="margin:0;color:#fff;font-size:14px;cursor:pointer">⬆ Upload CSV / Excel<input type="file" accept=".csv,.xlsx,.xls" hidden onchange="upl(this)"></label>
- ${d?`<button class="btn ghost" onclick="rAdd()">+ Row</button><button class="btn ghost" onclick="dl()">Download CSV</button><button class="btn del" onclick="dClr()">Delete data</button>`:""}</div></div>
- ${d?`<div class="scroll"><table><tr>${d.cols.map(c=>`<th>${esc(c)}</th>`).join("")}<th></th></tr>${d.rows.slice(0,MAXV).map((r,i)=>`<tr>${d.cols.map((c,j)=>`<td>${esc(r.data[j])}</td>`).join("")}<td style="white-space:nowrap"><button class="btn sm ghost" onclick="rEdit(${i})">Edit</button> <button class="btn sm del" onclick="rDel(${i})">✕</button></td></tr>`).join("")}</table></div>${d.rows.length>MAXV?`<p style="color:var(--mute);font-size:12px">Showing first ${MAXV} of ${d.rows.length} rows (all rows are saved and used by the dashboards).</p>`:""}`:`<div class="empty">No data yet. Upload a CSV or Excel file — the first row becomes the column headers.</div>`}`)}
-function csv(t){const R=[];let r=[],c="",q=false;for(let i=0;i<t.length;i++){const ch=t[i];if(q){if(ch=='"'){if(t[i+1]=='"'){c+='"';i++}else q=false}else c+=ch}else if(ch=='"')q=true;else if(ch==","){r.push(c);c=""}else if(ch=="\n"||ch=="\r"){if(ch=="\r"&&t[i+1]=="\n")i++;r.push(c);c="";R.push(r);r=[]}else c+=ch}
- if(c||r.length){r.push(c);R.push(r)}return R.filter(x=>x.some(v=>String(v).trim()!==""))}
+<html lang="en">
 
-async function put(id,cols,rows,replace){
- if(replace){const r=await sb.from("dataset_rows").delete().eq("node_id",id);if(r.error)throw r.error}
- const r1=await sb.from("datasets").upsert({node_id:id,cols,updated_at:new Date().toISOString()});if(r1.error)throw r1.error;
- for(let i=0;i<rows.length;i+=500){const r=await sb.from("dataset_rows").insert(rows.slice(i,i+500).map(x=>({node_id:id,data:x})));if(r.error)throw r.error;if(rows.length>1000)toast("Uploading "+Math.min(i+500,rows.length)+" / "+rows.length)}}
-async function upl(inp){const f=inp.files[0];if(!f)return;let R;try{if(/\.csv$/i.test(f.name))R=csv((await f.text()).replace(/^\uFEFF/,""));else{if(!window.XLSX)throw 0;const w=XLSX.read(await f.arrayBuffer(),{cellDates:true}),iso=d=>{d=new Date(d.getTime()+43200000);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};R=XLSX.utils.sheet_to_json(w.Sheets[w.SheetNames[0]],{header:1,raw:true,defval:""}).map(r=>r.map(v=>v instanceof Date?iso(v):v))}}catch(e){inp.value="";return alert("Could not read this file.")}
- inp.value="";if(R.length<2)return alert("File needs a header row and at least one data row.");
- const cols=R[0].map((c,i)=>String(c||"Column "+(i+1)).trim()),rows=R.slice(1).map(r=>cols.map((_,i)=>r[i]??""));
- let replace=true;if(CUR){replace=confirm("Replace existing data? (OK = replace, Cancel = append)");if(!replace&&CUR.cols.join()!==cols.join())return alert("Columns differ — cannot append.")}
- try{toast("Uploading…");await put(sel,cols,rows,replace);await data();toast(rows.length+" rows uploaded")}catch(e){err(e)}}
-function rForm(i){const d=CUR,r=i==null?[]:d.rows[i].data;open(`<h3>${i==null?"Add":"Edit"} row</h3><div class="grid2">${d.cols.map((c,j)=>`<div><label>${esc(c)}</label><input class="rf" value="${esc(r[j]??"")}"></div>`).join("")}</div><div class="acts"><button class="btn ghost" onclick="shut()">Cancel</button><button class="btn red" onclick="rSave(${i==null?"null":i})">Save</button></div>`)}
-const rAdd=()=>rForm(null),rEdit=i=>rForm(i);
-async function rSave(i){const v=[...document.querySelectorAll(".rf")].map(x=>x.value);
- const r=i==null?await sb.from("dataset_rows").insert({node_id:sel,data:v}):await sb.from("dataset_rows").update({data:v}).eq("id",CUR.rows[i].id);
- if(r.error)return err(r.error);shut();await data()}
-async function rDel(i){if(!confirm("Delete this row?"))return;const r=await sb.from("dataset_rows").delete().eq("id",CUR.rows[i].id);if(r.error)return err(r.error);await data()}
-async function dClr(){if(!confirm("Delete ALL data of this module?"))return;const r=await sb.from("datasets").delete().eq("node_id",sel);if(r.error)return err(r.error);await data();toast("Data deleted")}
-function dl(){const d=CUR,q=v=>'"'+String(v).replace(/"/g,'""')+'"',t="\uFEFF"+[d.cols,...d.rows.map(r=>r.data)].map(r=>r.map(q).join(",")).join("\r\n"),a=document.createElement("a");a.href=URL.createObjectURL(new Blob([t],{type:"text/csv"}));a.download="export.csv";a.click()}
-/* ---------- BACKUP ---------- */
-async function bk(){$("#main").innerHTML=`<div class="top"><h2>Backup & Restore</h2></div><div class="card"><p>Your data lives safely in Supabase. Export a JSON backup of modules + data now and then. (User accounts are managed in Supabase Auth and are not part of this file.)</p>
+<head>
+  <meta charset="utf-8">
+  <title>Mainetti · Admin Console</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="erp.js"></script>
+  <style>
+    :root {
+      --navy: #0f2a5a;
+      --navy2: #16377a;
+      --red: #a61935;
+      --bg: #eef3fb;
+      --line: #dbe4f2;
+      --mute: #6d7c99;
+      --ok: #1f9d55
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: #0c2250;
+      font-size: 14px
+    }
+
+    button,
+    input,
+    select {
+      font: inherit
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 9px 16px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--navy);
+      color: #fff
+    }
+
+    .btn.red {
+      background: var(--red)
+    }
+
+    .btn.ghost {
+      background: #fff;
+      color: var(--navy);
+      border: 1px solid var(--line)
+    }
+
+    .btn.sm {
+      padding: 5px 10px;
+      font-size: 12px;
+      border-radius: 8px
+    }
+
+    .btn.del {
+      background: #fff;
+      color: var(--red);
+      border: 1px solid #f0c4cc
+    }
+
+    input,
+    select {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 9px 12px;
+      background: #fff;
+      color: inherit;
+      width: 100%
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--mute);
+      margin: 10px 0 4px
+    }
+
+    #login {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--navy), #1d4a9c)
+    }
+
+    .lbox {
+      width: 380px;
+      max-width: 92vw;
+      background: #fff;
+      border-radius: 22px;
+      padding: 34px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, .3)
+    }
+
+    .lbox h1 {
+      font-size: 22px;
+      margin-bottom: 4px
+    }
+
+    .lbox p {
+      color: var(--mute);
+      margin: 0 0 14px
+    }
+
+    .err {
+      color: #b3261e;
+      font-size: 13px;
+      min-height: 18px;
+      margin-top: 8px
+    }
+
+    #app {
+      display: block;
+      min-height: 100vh
+    }
+
+    .side {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: 236px;
+      background: var(--navy);
+      color: #fff;
+      padding: 22px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px
+    }
+
+    .brand {
+      font-weight: 800;
+      font-size: 17px;
+      padding: 0 10px 4px
+    }
+
+    .brand small {
+      display: block;
+      font-weight: 500;
+      font-size: 11px;
+      opacity: .65
+    }
+
+    .nav {
+      padding: 11px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      opacity: .82;
+      font-weight: 500
+    }
+
+    .nav:hover {
+      background: rgba(255, 255, 255, .08)
+    }
+
+    .nav.on {
+      background: #fff;
+      color: var(--navy);
+      opacity: 1;
+      font-weight: 700
+    }
+
+    .side .sp {
+      flex: 1
+    }
+
+    .main {
+      margin-left: 236px;
+      padding: 26px 30px
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 12px;
+      flex-wrap: wrap
+    }
+
+    .top h2 {
+      font-size: 24px
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(16, 44, 92, .07);
+      margin-bottom: 18px
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 14px
+    }
+
+    .kpi {
+      background: #fff;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 6px 20px rgba(16, 44, 92, .07);
+      border-top: 4px solid var(--red)
+    }
+
+    .kpi b {
+      font-size: 30px;
+      display: block
+    }
+
+    .kpi span {
+      color: var(--mute);
+      font-size: 12px
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse
+    }
+
+    th {
+      background: #f4f8ff;
+      text-align: left;
+      font-size: 12px;
+      color: var(--mute);
+      text-transform: uppercase;
+      letter-spacing: .04em
+    }
+
+    th,
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle
+    }
+
+    .scroll {
+      overflow: auto;
+      max-height: 60vh
+    }
+
+    .tag {
+      padding: 3px 10px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+      background: #e3ecfb;
+      color: var(--navy)
+    }
+
+    .tag.on {
+      background: #dcf5e6;
+      color: var(--ok)
+    }
+
+    .tag.off {
+      background: #fde4e8;
+      color: var(--red)
+    }
+
+    .mrow {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      overflow: hidden
+    }
+
+    .mh {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: #f7faff;
+      font-weight: 700
+    }
+
+    .mh .g {
+      flex: 1
+    }
+
+    .sub {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px 8px 34px;
+      border-top: 1px solid var(--line)
+    }
+
+    .sub .g {
+      flex: 1
+    }
+
+    .add {
+      display: flex;
+      gap: 8px;
+      padding: 8px 14px 10px 34px;
+      border-top: 1px dashed var(--line)
+    }
+
+    .add input {
+      padding: 6px 10px
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 18px
+    }
+
+    .tree .n {
+      padding: 8px 10px;
+      border-radius: 8px;
+      cursor: pointer
+    }
+
+    .tree .n.s {
+      padding-left: 26px;
+      font-size: 13px
+    }
+
+    .tree .n:hover {
+      background: #eef3fb
+    }
+
+    .tree .n.on {
+      background: var(--navy);
+      color: #fff
+    }
+
+    #ov {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 25, 60, .55);
+      display: none;
+      place-items: center;
+      z-index: 9;
+      padding: 16px
+    }
+
+    .mod {
+      background: #fff;
+      border-radius: 18px;
+      padding: 24px;
+      width: 640px;
+      max-width: 100%;
+      max-height: 92vh;
+      overflow: auto
+    }
+
+    .mod h3 {
+      margin-bottom: 6px;
+      font-size: 18px
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 14px
+    }
+
+    .acts {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 18px
+    }
+
+    .pm td,
+    .pm th {
+      padding: 6px 10px;
+      text-align: center
+    }
+
+    .pm td:first-child,
+    .pm th:first-child {
+      text-align: left
+    }
+
+    .pm .s td:first-child {
+      padding-left: 28px;
+      color: var(--mute)
+    }
+
+    input[type=checkbox] {
+      width: auto;
+      accent-color: var(--navy);
+      transform: scale(1.15)
+    }
+
+    .empty {
+      color: var(--mute);
+      text-align: center;
+      padding: 30px
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background: var(--navy);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 12px;
+      display: none;
+      z-index: 20
+    }
+
+    @media(max-width:860px) {
+      .side {
+        position: static;
+        width: auto;
+        flex-direction: row;
+        flex-wrap: wrap
+      }
+
+      .main {
+        margin: 0;
+        padding: 16px
+      }
+
+      .split {
+        grid-template-columns: 1fr
+      }
+
+      .grid2 {
+        grid-template-columns: 1fr
+      }
+
+      .brand,
+      .sp {
+        display: none
+      }
+    }
+
+    .bar {
+      height: 10px;
+      background: #e6ecf7;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 5px
+    }
+
+    .bar i {
+      display: block;
+      height: 100%
+    }
+
+    .lg {
+      background: #0f1b33;
+      color: #cfe0ff;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      white-space: pre-wrap;
+      max-height: 240px;
+      overflow: auto;
+      margin-top: 14px
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <aside class="side">
+      <div class="brand">Mainetti Admin<small>Control Center</small></div>
+      <div id="nav"></div>
+      <div class="sp"></div>
+      <div class="nav" onclick="logout()">Sign out</div>
+    </aside>
+    <main class="main" id="main"></main>
+  </div>
+  <div id="ov">
+    <div class="mod" id="mod"></div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script>const $ = s => document.querySelector(s), uid = () => Math.random().toString(36).slice(2, 8);
+    const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    let me = null, MODS = [], USERS = [], view = "dash", sel = null, CUR = null;
+    const toast = m => { const t = $("#toast"); t.textContent = m; t.style.display = "block"; clearTimeout(t._t); t._t = setTimeout(() => t.style.display = "none", 2600) };
+    const err = e => { console.error(e); toast("Error: " + (e && e.message || e)) };
+    const open = h => { $("#mod").innerHTML = h; $("#ov").style.display = "grid" }, shut = () => $("#ov").style.display = "none";
+    $("#ov").onclick = e => { if (e.target.id === "ov") shut() };
+    const logout = () => ERP.signOut();
+    const loadMods = async () => { MODS = await ERP.tree() };
+    const loadUsers = async () => { const { data, error } = await sb.from("profiles").select("*").order("created_at"); if (error) throw error; USERS = data };
+    const nodes = () => MODS.flatMap(m => [{ id: m.id, name: m.name, mod: m }, ...m.subs.map(s => ({ id: s.id, name: s.name, sub: true, mod: m }))]);
+    (async () => { me = await ERP.require(true); if (!me) return; $("#app").style.display = "block"; await loadMods(); go("dash") })().catch(err);
+    function go(v) {
+      view = v; $("#nav").innerHTML = [["dash", "Dashboard"], ["users", "Users & Access"], ["mods", "Modules"], ["data", "Data Manager"], ["bk", "Backup"]].map(([k, n]) => `<div class="nav ${k === v ? "on" : ""}" onclick="go('${k}')">${n}</div>`).join("") + `<div class="nav" onclick="location.href='portal.html'">← Portal</div>`;
+      ({ dash, users, mods, data, bk })[v]().catch(err)
+    }
+    /* ---------- DASHBOARD ---------- */
+    async function dash() {
+      await Promise.all([loadMods(), loadUsers()]);
+      const MT = {}; await Promise.all(MODS.map(async m => { const c = cfgOf(m); if (!c) return; try { MT[m.id] = await (await ERP._fetchStorage(m.id + "/" + c.key + "_meta.json")).json() } catch (e) { } }));
+      const subs = MODS.reduce((a, m) => a + m.subs.length, 0), live = Object.keys(MT).length, rows = Object.values(MT).reduce((a, x) => a + (x.raw || x.n || 0), 0), use = await usageHtml();
+      $("#main").innerHTML = `<div class="top"><h2>Dashboard</h2><span class="tag">Signed in: ${esc(me.name)}</span></div><div class="kpis">
+ ${[["Modules", MODS.length], ["Sub-modules", subs], ["Users", USERS.length], ["Live datasets", live], ["Data rows", rows.toLocaleString()]].map(k => `<div class="kpi"><b>${k[1]}</b><span>${k[0]}</span></div>`).join("")}</div>
+ <div class="card" style="margin-top:18px"><h3 style="margin-bottom:6px">Free plan usage</h3>${use}</div>
+ <div class="card"><h3 style="margin-bottom:10px">Module overview</h3><table><tr><th>Module</th><th>Sub-modules</th><th>Data</th><th>Rows</th><th>Updated</th></tr>${MODS.map(m => { const x = MT[m.id]; return `<tr><td>${esc(m.name)}</td><td>${m.subs.length}</td><td>${x ? '<span class="tag on">Live</span>' : "—"}</td><td>${x ? (x.raw || x.n || 0).toLocaleString() : "—"}</td><td>${x && x.at ? x.at.slice(0, 10) : "—"}</td></tr>` }).join("")}</table></div>`
+    }
+    /* ---------- USERS ---------- */
+    async function users() {
+      await Promise.all([loadMods(), loadUsers()]);
+      $("#main").innerHTML = `<div class="top"><h2>Users & Access</h2><button class="btn red" onclick="uForm()">+ Create user</button></div><div class="card scroll"><table><tr><th>Login ID</th><th>Name</th><th>Role</th><th>Status</th><th>Access</th><th></th></tr>
+ ${USERS.map(u => `<tr><td><b>${esc(u.login_id)}</b></td><td>${esc(u.name)}</td><td><span class="tag">${u.role}</span></td><td><span class="tag ${u.active ? "on" : "off"}">${u.active ? "Active" : "Disabled"}</span></td>
+ <td>${u.role === "admin" ? "Full access" : Object.values(u.perm || {}).filter(p => p.v).length + " modules"}</td><td style="white-space:nowrap">${u.role === "admin" ? "" : `<button class="btn sm ghost" onclick="pForm('${u.login_id}')">Permissions</button> `}<button class="btn sm ghost" onclick="uForm('${u.login_id}')">Edit</button> ${u.id === me.id ? "" : `<button class="btn sm del" onclick="uDel('${u.login_id}')">Delete</button>`}</td></tr>`).join("")}</table></div>`
+    }
+    const getU = l => USERS.find(x => x.login_id === l);
+    function uForm(id) {
+      const u = getU(id) || { login_id: "", name: "", role: "user", active: true, perm: {} };
+      open(`<h3>${id ? "Edit" : "Create"} user</h3><div class="grid2"><div><label>Login ID</label><input id="f1" value="${esc(u.login_id)}" ${id ? "disabled" : ""}></div><div><label>Full name</label><input id="f2" value="${esc(u.name)}"></div>
+ <div><label>Password ${id ? "(leave blank to keep)" : ""}</label><input id="f3" type="password" autocomplete="new-password"></div><div><label>Role</label><select id="f4" onchange="$('#pw').style.display=this.value==='admin'?'none':''"><option value="user" ${u.role === "user" ? "selected" : ""}>User (module access)</option><option value="admin" ${u.role === "admin" ? "selected" : ""}>Admin (full access)</option></select></div>
+ <div><label>Status</label><select id="f5"><option value="1" ${u.active ? "selected" : ""}>Active</option><option value="0" ${u.active ? "" : "selected"}>Disabled</option></select></div></div><div id="pw" style="${u.role === "admin" ? "display:none" : ""}"><label style="margin-top:18px">Module access — V view · A add · E edit · D delete</label><div class="scroll" style="max-height:36vh;border:1px solid var(--line);border-radius:12px">${permTable(u)}</div></div><div class="err" id="fe"></div>
+ <div class="acts"><button class="btn ghost" onclick="shut()">Cancel</button><button class="btn red" id="sv" onclick="uSave('${id || ""}')">Save</button></div>`)
+    }
+    async function uSave(lid) {
+      const v = n => $("#" + n).value.trim(), e = m => { $("#fe").textContent = m; $("#sv").disabled = false }, role = v("f4"), active = v("f5") === "1", name = v("f2"), pw = $("#f3").value, perm = role === "admin" ? {} : collectPerm();
+      $("#sv").disabled = true;
+      try {
+        if (!lid) {
+          const i = v("f1").toLowerCase(); if (!/^[a-z0-9._-]{3,}$/.test(i)) return e("ID: min 3 chars, letters/numbers . _ - only."); if (getU(i)) return e("This ID already exists."); if (pw.length < 6) return e("Password: min 6 characters.");
+          const c2 = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } });
+          const { data, error } = await c2.auth.signUp({ email: ERP.email(i), password: pw }); if (error) return e(error.message);
+          if (!data.user || (data.user.identities && !data.user.identities.length)) return e("This ID already exists in Auth.");
+          const { error: e2 } = await sb.from("profiles").insert({ id: data.user.id, login_id: i, name: name || i, role, active, perm }); if (e2) return e(e2.message)
+        }
+        else {
+          const u = getU(lid); if (u.id === me.id && (role !== "admin" || !active)) return e("You cannot demote or disable yourself."); if (pw && pw.length < 6) return e("Password: min 6 characters.");
+          const { error: e2 } = await sb.from("profiles").update({ name: name || lid, role, active, perm }).eq("id", u.id); if (e2) return e(e2.message);
+          if (pw) { const { error: e3 } = await sb.rpc("admin_set_password", { uid: u.id, new_pw: pw }); if (e3) return e(e3.message) }
+        }
+        shut(); await users(); toast("User saved")
+      } catch (x) { e(x.message || String(x)) }
+    }
+    async function uDel(l) { if (!confirm("Delete user " + l + "?")) return; const { error } = await sb.rpc("admin_delete_user", { uid: getU(l).id }); if (error) return err(error); await users(); toast("User deleted") }
+    function permTable(u) {
+      const P = (n, k) => u.perm && u.perm[n] && u.perm[n][k] ? "checked" : "";
+      return `<table class="pm"><tr><th>Module / Sub-module</th>${["v", "a", "e", "d"].map(k => `<th>${k.toUpperCase()}<br><input type="checkbox" onchange="ha('${k}',this)"></th>`).join("")}</tr>
+ ${nodes().map(n => `<tr class="${n.sub ? "s" : ""}"><td>${esc(n.name)}</td>${["v", "a", "e", "d"].map(k => `<td><input type="checkbox" class="p-${k}" data-n="${n.id}" data-k="${k}" ${P(n.id, k)} onchange="pc(this)"></td>`).join("")}</tr>`).join("")}</table>`
+    }
+    function pc(c) { const r = c.closest("tr"); if (c.dataset.k === "v") { if (!c.checked) r.querySelectorAll("input").forEach(x => x.checked = false) } else if (c.checked) r.querySelector("[data-k=v]").checked = true }
+    function ha(k, el) { document.querySelectorAll(".p-" + k).forEach(c => c.checked = el.checked); if (k === "v" && !el.checked) document.querySelectorAll(".pm input").forEach(c => c.checked = false); else if (el.checked) document.querySelectorAll(".p-v").forEach(c => c.checked = true) }
+    function collectPerm() { const o = {}; document.querySelectorAll(".pm input[data-n]").forEach(c => { if (c.checked) (o[c.dataset.n] ??= {})[c.dataset.k] = 1 }); return o }
+    function pForm(id) {
+      const u = getU(id);
+      open(`<h3>Permissions · ${esc(u.name)}</h3><p style="color:var(--mute);margin:0 0 8px">V = view · A = add · E = edit · D = delete</p><div class="scroll">${permTable(u)}</div>
+ <div class="acts"><button class="btn ghost" onclick="shut()">Cancel</button><button class="btn red" onclick="pSave('${id}')">Save access</button></div>`)
+    }
+    async function pSave(id) { const { error } = await sb.from("profiles").update({ perm: collectPerm() }).eq("id", getU(id).id); if (error) return err(error); shut(); await users(); toast("Access saved") }
+    /* ---------- MODULES ---------- */
+    async function mods() {
+      await loadMods();
+      $("#main").innerHTML = `<div class="top"><h2>Modules</h2><div style="display:flex;gap:8px"><input id="nm" placeholder="New module name" style="width:230px"><button class="btn red" onclick="mAdd()">+ Add module</button></div></div>
+ ${MODS.map(m => `<div class="mrow"><div class="mh"><span class="g">${esc(m.name)} <span class="tag">${m.subs.length} sub</span></span><button class="btn sm ghost" onclick="mRen('${m.id}')">Rename</button><button class="btn sm del" onclick="mDel('${m.id}')">Delete</button></div>
+ ${m.subs.map(s => `<div class="sub"><span class="g">↳ ${esc(s.name)}</span><button class="btn sm ghost" onclick="mRen('${m.id}','${s.id}')">Rename</button><button class="btn sm del" onclick="mDel('${m.id}','${s.id}')">Delete</button></div>`).join("")}
+ <div class="add"><input id="s-${m.id}" placeholder="Add sub-module to ${esc(m.name)}"><button class="btn sm" onclick="sAdd('${m.id}')">+ Add</button></div></div>`).join("")}`
+    }
+    async function mAdd() { const n = $("#nm").value.trim(); if (!n) return; const { error } = await sb.from("modules").insert({ id: "m" + uid(), name: n, sort: Math.max(0, ...MODS.map(m => m.sort)) + 1 }); if (error) return err(error); await mods(); toast("Module added") }
+    async function sAdd(mid) { const n = $("#s-" + mid).value.trim(); if (!n) return; const m = MODS.find(x => x.id === mid); const { error } = await sb.from("submodules").insert({ id: "s" + uid(), module_id: mid, name: n, sort: Math.max(0, ...m.subs.map(s => s.sort)) + 1 }); if (error) return err(error); await mods(); toast("Sub-module added") }
+    async function mRen(mid, sid) {
+      const m = MODS.find(x => x.id === mid), t = sid ? m.subs.find(s => s.id === sid) : m, n = prompt("New name", t.name); if (!n || !n.trim()) return;
+      const { error } = await sb.from(sid ? "submodules" : "modules").update({ name: n.trim() }).eq("id", sid || mid); if (error) return err(error); await mods()
+    }
+    async function mDel(mid, sid) {
+      const m = MODS.find(x => x.id === mid); if (!confirm(sid ? "Delete this sub-module and its data?" : "Delete module, ALL its sub-modules and data?")) return;
+      try {
+        await loadUsers(); const ids = sid ? [sid] : [mid, ...m.subs.map(s => s.id)];
+        let r = await sb.from("datasets").delete().in("node_id", ids); if (r.error) throw r.error;
+        try { await sb.storage.from("erp-data").remove(ids.flatMap(i => Object.keys(ERP.PACK).flatMap(k => [i + "/" + k + ".json.gz", i + "/" + k + "_meta.json"]))) } catch (e) { }
+        for (const u of USERS) { const p = { ...(u.perm || {}) }; let ch = false; ids.forEach(i => { if (p[i]) { delete p[i]; ch = true } }); if (ch) { r = await sb.from("profiles").update({ perm: p }).eq("id", u.id); if (r.error) throw r.error } }
+        r = sid ? await sb.from("submodules").delete().eq("id", sid) : await sb.from("modules").delete().eq("id", mid); if (r.error) throw r.error;
+        sel = null; await mods(); toast("Deleted")
+      } catch (e) { err(e) }
+    }
+    /* ---------- DATA · Excel → Supabase Storage ---------- */
+    const LIM_DB = 500 * 1048576, LIM_ST = 1024 * 1048576; let USE = null, LOG = "";
+    const cfgOf = m => { for (const [k, c] of Object.entries(ERP.PACK)) if (c.match.test(m.name)) return { key: k, ...c }; return null };
+    const mbf = b => (b / 1048576).toFixed(1) + " MB", p2 = n => String(n).padStart(2, "0"), nrm = s => String(s).toLowerCase().replace(/[^a-z0-9]/g, ""), cln = s => String(s ?? "").replace(/\s+/g, " ").trim();
+    function isoD(v, df) {
+      if (v == null || v === "") return null;
+      if (v instanceof Date) { if (isNaN(v)) return null; const d = new Date(v.getTime() + 43200000); return d.getFullYear() + "-" + p2(d.getMonth() + 1) + "-" + p2(d.getDate()) }
+      if (typeof v === "number" && v > 20000) { const d = new Date(Math.round((v - 25569) * 864e5)); return d.getUTCFullYear() + "-" + p2(d.getUTCMonth() + 1) + "-" + p2(d.getUTCDate()) }
+      v = String(v).trim(); let m = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/); if (m) return m[1] + "-" + p2(m[2]) + "-" + p2(m[3]);
+      m = v.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/); if (m) { let a = +m[1], b = +m[2], y = +m[3]; if (y < 100) y += 2000; const [mo, da] = (df || a > 12) ? [b, a] : [a, b]; return y + "-" + p2(mo) + "-" + p2(da) }
+      const d = new Date(v); return isNaN(d) ? null : d.getFullYear() + "-" + p2(d.getMonth() + 1) + "-" + p2(d.getDate())
+    }
+
+    async function usageHtml() {
+      const { data, error } = await sb.rpc("admin_usage");
+      if (error) { USE = null; return `<div class="err">Usage দেখা যায়নি (${esc(error.message)}) — Step 1-এর SQL চালিয়েছেন?</div>` }
+      USE = data;
+      const row = (n, u, l) => { const p = u / l * 100; return `<div style="margin-top:12px"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600"><span>${n}</span><span>${mbf(u)} / ${mbf(l)} · ${p.toFixed(1)}%</span></div><div class="bar"><i style="width:${Math.min(100, p)}%;background:${p > 80 ? "#b3261e" : p > 60 ? "#e0a100" : "#1f9d55"}"></i></div></div>` };
+      const w = []; if (data.storage / LIM_ST > .8) w.push("Storage ৮০% পার — অপ্রয়োজনীয় ডেটা মুছুন"); if (data.db / LIM_DB > .8) w.push("Database ৮০% পার — পুরনো raw row মুছুন (Phase 3)");
+      return row("Storage (ফ্রি ১ GB)", data.storage, LIM_ST) + row("Database (ফ্রি ৫০০ MB)", data.db, LIM_DB) + (w.length ? `<div class="err" style="font-weight:700;margin-top:10px">⚠ ${w.join(" · ")}</div>` : "")
+    }
+
+    async function data() {
+      await loadMods(); if (!sel || !MODS.some(m => m.id === sel)) sel = MODS[0] && MODS[0].id;
+      $("#main").innerHTML = `<div class="top"><h2>Data Manager</h2></div><div class="split"><div class="card tree" style="padding:10px;align-self:start">${MODS.map(x => `<div class="n ${x.id === sel ? "on" : ""}" onclick="sel='${x.id}';LOG='';data().catch(err)">${esc(x.name)}</div>`).join("")}</div><div class="card" id="dm"><div class="empty">Loading…</div></div></div>`;
+      const m = MODS.find(x => x.id === sel); if (!m) return;
+      const c = cfgOf(m), [use, meta] = await Promise.all([usageHtml(), c ? ERP._fetchStorage(m.id + "/" + c.key + "_meta.json").then(r => r.json()).catch(() => null) : null]);
+      CUR = { m, c, meta };
+      const kp = meta ? [["Packed rows", meta.n], ["Source rows", meta.raw ?? "—"], ["File size", meta.mb ? meta.mb + " MB" : "—"], ["Updated", meta.at ? meta.at.slice(0, 16).replace("T", " ") : "—"]] : [];
+      $("#dm").innerHTML = `<div class="top" style="margin-bottom:12px"><h3>${esc(m.name)} <span class="tag ${meta ? "on" : "off"}">${meta ? "Live" : "No data"}</span></h3><div style="display:flex;gap:8px;flex-wrap:wrap">
+  ${c ? `<label class="btn red" style="margin:0;color:#fff;font-size:14px;cursor:pointer">⬆ Upload Excel / CSV<input type="file" accept=".csv,.xlsx,.xls" hidden onchange="pack(this)"></label>` : ""}${meta ? `<button class="btn del" onclick="dClr()">Delete data</button>` : ""}</div></div>
+  ${c ? `<div style="max-width:320px"><label>তারিখ লেখা থাকলে (যেমন 05/03/2025)</label><select id="df"><option value="0">Month first (MM/DD/YYYY)</option><option value="1">Day first (DD/MM/YYYY)</option></select></div>` : `<div class="empty">এই module-এর জন্য Storage প্যাক এখনো সেটআপ হয়নি। Module-এর পেজ তৈরি হলে এখানে চালু হবে।</div>`}
+  ${meta ? `<div class="kpis" style="margin-top:14px">${kp.map(k => `<div class="kpi"><b style="font-size:22px">${typeof k[1] === "number" ? k[1].toLocaleString() : k[1]}</b><span>${k[0]}</span></div>`).join("")}</div>${meta.totals ? `<p style="color:var(--mute);font-size:12px">Totals: ${Object.entries(meta.totals).map(([k, v]) => k + " = " + v.toLocaleString()).join(" | ")}</p>` : ""}` : ""}
+  <pre class="lg" id="lg" style="display:${LOG ? "block" : "none"}">${esc(LOG)}</pre><div style="margin-top:6px">${use}</div>`
+    }
+
+    async function pack(inp) {
+      const f = inp.files[0]; inp.value = ""; if (!f) return;
+      const { m, c } = CUR, df = $("#df").value === "1", st = sb.storage.from("erp-data"), dm = $("#dm"), lg = $("#lg");
+      const log = t => { LOG += t + "\n"; lg.style.display = "block"; lg.textContent = LOG; lg.scrollTop = lg.scrollHeight }, tick = () => new Promise(r => setTimeout(r, 30));
+      LOG = ""; dm.style.pointerEvents = "none"; dm.style.opacity = ".75";
+      try {
+        log("1/5 ফাইল পড়া হচ্ছে… (বড় ফাইলে ১–৩ মিনিট লাগতে পারে, ট্যাব বন্ধ করবেন না)"); await tick();
+        const wb = XLSX.read(await f.arrayBuffer(), { type: "array", cellDates: true });
+        let A = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, raw: true, defval: "" });
+        const ix = {}; A[0].map(nrm).forEach((h, i) => { if (!(h in ix)) ix[h] = i });
+        const miss = c.need.filter(k => ix[k] == null); if (miss.length) throw new Error("Column পাওয়া যায়নি: " + miss.join(", ") + " | ফাইলের column: " + A[0].join(", "));
+        const raw = A.length - 1; log("   মোট row: " + raw.toLocaleString());
+        log("2/5 ডেটা ছোট করা হচ্ছে…"); await tick();
+        const dims = c.dims, meas = c.meas, UP = new Set(c.upper), dict = {}, mp = {}; dims.forEach(k => { dict[k] = []; mp[k] = new Map() });
+        const col = dims.map(k => ix[k]), mcol = meas.map(k => ix[k]), acc = new Map(), tot = meas.map(() => 0); let bad = 0;
+        for (let r = 1; r < A.length; r++) {
+          const row = A[r], d = isoD(row[ix.date], df); if (!d) { bad++; continue }
+          const codes = new Array(dims.length), dv = c.fix ? {} : null;
+          for (let j = 0; j < dims.length; j++) {
+            const k = dims[j]; let v = j === 0 ? d : cln(col[j] == null ? "" : row[col[j]]); if (UP.has(k)) v = v.toUpperCase();
+            let z = mp[k].get(v); if (z === undefined) { z = dict[k].length; dict[k].push(v); mp[k].set(v, z) } codes[j] = z; if (dv) dv[k] = v
+          }
+          const rw = mcol.map(j => j == null ? "" : row[j]), vals = rw.map(x => parseFloat(String(x ?? "").replace(/,/g, "")) || 0);
+          if (c.fix) c.fix(vals, rw, dv);
+          vals.forEach((x, j) => tot[j] += x);
+          const key = codes.join("|"), e = acc.get(key); if (e) { for (let j = 0; j < vals.length; j++)e.m[j] += vals[j] } else acc.set(key, { c: codes, m: vals })
+        }
+        A = null;
+        const C = {}, M = {}; dims.forEach(k => C[k] = []); meas.forEach(k => M[k] = []);
+        for (const e of acc.values()) { dims.forEach((k, j) => C[k].push(e.c[j])); meas.forEach((k, j) => M[k].push(Math.round(e.m[j] * 1e4) / 1e4)) }
+        const n = M[meas[0]].length, totals = {}; meas.forEach((k, j) => totals[k] = Math.round(tot[j] * 100) / 100);
+        log("   তারিখ না পাওয়া row (বাদ): " + bad); log("   ছোট হওয়ার পর row: " + n.toLocaleString());
+        log("   Totals: " + meas.map(k => k + " = " + totals[k].toLocaleString()).join(" | "));
+        log("3/5 সংকুচিত (gzip) করা হচ্ছে…"); await tick();
+        const ver = Date.now(), out = { v: ver, dict, c: C }; if (c.legacyQ) out.q = M[meas[0]]; else out.m = M;
+        const gz = await new Response(new Blob([JSON.stringify(out)]).stream().pipeThrough(new CompressionStream("gzip"))).blob(), mb = +(gz.size / 1048576).toFixed(2);
+        log("   ফাইল সাইজ: " + mb + " MB");
+        if (gz.size > 50 * 1048576) throw new Error("ফাইল ৫০ MB ছাড়িয়েছে (ফ্রি সীমা)। আমাকে জানান।");
+        if (USE && USE.storage + gz.size > LIM_ST * .95) throw new Error("Storage ৯৫% পার হয়ে যাবে, তাই আপলোড বন্ধ। জায়গা খালি করুন।");
+        log("4/5 Storage-এ আপলোড হচ্ছে…"); await tick();
+        let r = await st.upload(m.id + "/" + c.key + ".json.gz", gz, { upsert: true, contentType: "application/gzip", cacheControl: "0" }); if (r.error) throw r.error;
+        r = await st.upload(m.id + "/" + c.key + "_meta.json", new Blob([JSON.stringify({ v: ver, n, raw, bad, mb, at: new Date().toISOString(), file: f.name, totals })], { type: "application/json" }), { upsert: true, contentType: "application/json", cacheControl: "0" }); if (r.error) throw r.error;
+        log("5/5 ✔ সম্পন্ন! Totals উপরের মতো আপনার Excel-এর সাথে মিলিয়ে নিন।"); toast("Upload done")
+      } catch (e) { log("✖ ত্রুটি: " + (e.message || JSON.stringify(e))) }
+      await data().catch(err)
+    }
+
+    async function dClr() {
+      const { m, c } = CUR; if (!confirm("Delete ALL data of " + m.name + "? (আপনার মূল Excel আলাদা জায়গায় আছে তো?)")) return;
+      const { error } = await sb.storage.from("erp-data").remove([m.id + "/" + c.key + ".json.gz", m.id + "/" + c.key + "_meta.json"]); if (error) return err(error); LOG = ""; await data(); toast("Data deleted")
+    }
+
+    /* backup restore-এর জন্য পুরনো ফাংশন (রেখে দেওয়া হলো) */
+    async function put(id, cols, rows, replace) {
+      if (replace) { const r = await sb.from("dataset_rows").delete().eq("node_id", id); if (r.error) throw r.error }
+      const r1 = await sb.from("datasets").upsert({ node_id: id, cols, updated_at: new Date().toISOString() }); if (r1.error) throw r1.error;
+      for (let i = 0; i < rows.length; i += 500) { const r = await sb.from("dataset_rows").insert(rows.slice(i, i + 500).map(x => ({ node_id: id, data: x }))); if (r.error) throw r.error }
+    }
+    /* ---------- BACKUP ---------- */
+    async function bk() {
+      $("#main").innerHTML = `<div class="top"><h2>Backup & Restore</h2></div><div class="card"><p>Your data lives safely in Supabase. Export a JSON backup of modules + data now and then. (User accounts are managed in Supabase Auth and are not part of this file.)</p>
  <button class="btn red" onclick="bkx().catch(err)">⬇ Export backup</button> <label class="btn ghost" style="display:inline-block;margin:0;cursor:pointer">⬆ Import backup<input type="file" accept=".json" hidden onchange="bki(this).catch(err)"></label></div>`}
-async function bkx(){toast("Preparing backup…");const[a,b,c]=await Promise.all([sb.from("modules").select("*"),sb.from("submodules").select("*"),sb.from("datasets").select("node_id")]);
- const dt={};for(const d of c.data){const x=await ERP.dataset(d.node_id);dt[d.node_id]={cols:x.cols,rows:x.rows.map(r=>r.data)}}
- const l=document.createElement("a");l.href=URL.createObjectURL(new Blob([JSON.stringify({v:2,modules:a.data,submodules:b.data,data:dt})],{type:"application/json"}));l.download="mainetti-backup-"+new Date().toISOString().slice(0,10)+".json";l.click();toast("Backup ready")}
-async function bki(i){const f=i.files[0];i.value="";if(!f)return;let j;try{j=JSON.parse(await f.text());if(j.v!==2||!j.modules)throw 0}catch(e){return alert("Invalid backup file.")}
- if(!confirm("Restore modules and data from this backup? Existing data of the same sections will be replaced."))return;
- let r=await sb.from("modules").upsert(j.modules);if(r.error)throw r.error;if(j.submodules.length){r=await sb.from("submodules").upsert(j.submodules);if(r.error)throw r.error}
- for(const[id,d]of Object.entries(j.data))await put(id,d.cols,d.rows,true);toast("Backup restored")}
-</script></body></html>
+    async function bkx() {
+      toast("Preparing backup…"); const [a, b, c] = await Promise.all([sb.from("modules").select("*"), sb.from("submodules").select("*"), sb.from("datasets").select("node_id")]);
+      const dt = {}; for (const d of c.data) { const x = await ERP.dataset(d.node_id); dt[d.node_id] = { cols: x.cols, rows: x.rows.map(r => r.data) } }
+      const l = document.createElement("a"); l.href = URL.createObjectURL(new Blob([JSON.stringify({ v: 2, modules: a.data, submodules: b.data, data: dt })], { type: "application/json" })); l.download = "mainetti-backup-" + new Date().toISOString().slice(0, 10) + ".json"; l.click(); toast("Backup ready")
+    }
+    async function bki(i) {
+      const f = i.files[0]; i.value = ""; if (!f) return; let j; try { j = JSON.parse(await f.text()); if (j.v !== 2 || !j.modules) throw 0 } catch (e) { return alert("Invalid backup file.") }
+      if (!confirm("Restore modules and data from this backup? Existing data of the same sections will be replaced.")) return;
+      let r = await sb.from("modules").upsert(j.modules); if (r.error) throw r.error; if (j.submodules.length) { r = await sb.from("submodules").upsert(j.submodules); if (r.error) throw r.error }
+      for (const [id, d] of Object.entries(j.data)) await put(id, d.cols, d.rows, true); toast("Backup restored")
+    }
+  </script>
+</body>
+
+</html>
