@@ -1,126 +1,216 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ERP Data Packer</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="erp.js"></script>
-<style>
-  body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:#f0f4fb;color:#0f2a5a}
-  .top{background:linear-gradient(90deg,#6b0719,#a61935);color:#fff;padding:16px 24px;font-weight:700;font-size:18px}
-  .card{max-width:760px;margin:28px auto;background:#fff;border-radius:16px;padding:26px;box-shadow:0 6px 24px #0f2a5a14}
-  label{display:block;margin:16px 0 6px;font-size:13px;font-weight:600;color:#4a5a78}
-  select,input[type=file]{width:100%;padding:10px;border:1px solid #d5dded;border-radius:10px;font-size:14px;background:#fff}
-  button{margin-top:20px;background:#a61935;color:#fff;border:0;border-radius:10px;padding:12px 22px;font-size:15px;font-weight:600;cursor:pointer}
-  button:disabled{opacity:.5;cursor:wait}
-  .bar{height:12px;background:#e6ecf7;border-radius:8px;overflow:hidden;margin-top:6px}
-  .bar i{display:block;height:100%;background:#2e9e6b}
-  pre{background:#0f1b33;color:#cfe0ff;padding:14px;border-radius:10px;font-size:12.5px;white-space:pre-wrap;min-height:90px;margin-top:18px}
-  .warn{color:#b3261e;font-weight:700}
-</style></head><body>
-<div class="top">ERP Data Packer · Excel → Supabase Storage</div>
-<div class="card">
-  <label>Module</label><select id="mod"></select>
-  <label>Excel / CSV ফাইল (প্রথম sheet)</label><input type="file" id="file" accept=".xlsx,.xls,.csv">
-  <label>তারিখ লেখা থাকলে (যেমন 05/03/2025)</label>
-  <select id="df"><option value="0">Month আগে (MM/DD/YYYY)</option><option value="1">Day আগে (DD/MM/YYYY)</option></select>
-  <button id="go">Pack &amp; Upload</button>
-  <div style="margin-top:22px;font-size:13px;font-weight:600">Storage ব্যবহার (ফ্রি সীমা ১ GB)</div>
-  <div class="bar"><i id="ub" style="width:0"></i></div>
-  <div id="ut" style="font-size:12.5px;margin-top:6px"></div>
-  <pre id="log"></pre>
-</div>
-<script>
-const $ = s => document.querySelector(s), p2 = n => String(n).padStart(2, "0");
-const log = t => { $("#log").textContent += t + "\n" }, tick = () => new Promise(r => setTimeout(r, 30));
-const norm = s => String(s).toLowerCase().replace(/[^a-z0-9]/g, ""), clean = s => String(s ?? "").replace(/\s+/g, " ").trim();
-const LIMIT = 1024 * 1048576;
+<html lang="en">
 
-function iso(v, dayfirst) {
-  if (v == null || v === "") return null;
-  if (v instanceof Date) { if (isNaN(v)) return null; const d = new Date(v.getTime() + 43200000); return d.getFullYear() + "-" + p2(d.getMonth() + 1) + "-" + p2(d.getDate()) }
-  if (typeof v === "number" && v > 20000) { const d = new Date(Math.round((v - 25569) * 864e5)); return d.getUTCFullYear() + "-" + p2(d.getUTCMonth() + 1) + "-" + p2(d.getUTCDate()) }
-  v = String(v).trim(); let m = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/); if (m) return m[1] + "-" + p2(m[2]) + "-" + p2(m[3]);
-  m = v.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/);
-  if (m) { let a = +m[1], b = +m[2], y = +m[3]; if (y < 100) y += 2000; const [mo, da] = (dayfirst || a > 12) ? [b, a] : [a, b]; return y + "-" + p2(mo) + "-" + p2(da) }
-  const d = new Date(v); return isNaN(d) ? null : d.getFullYear() + "-" + p2(d.getMonth() + 1) + "-" + p2(d.getDate());
-}
-
-async function usage() {
-  try {
-    const st = sb.storage.from("erp-data"); let total = 0;
-    const { data: top, error } = await st.list("", { limit: 1000 }); if (error) throw error;
-    for (const f of top) {
-      if (f.id) { total += (f.metadata && f.metadata.size) || 0; continue }
-      const { data: inner } = await st.list(f.name, { limit: 1000 });
-      (inner || []).forEach(x => total += (x.metadata && x.metadata.size) || 0);
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ERP Data Packer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="erp.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      background: #f0f4fb;
+      color: #0f2a5a
     }
-    const pct = total / LIMIT * 100;
-    $("#ub").style.width = Math.min(100, pct) + "%"; $("#ub").style.background = pct > 80 ? "#b3261e" : "#2e9e6b";
-    $("#ut").innerHTML = (total / 1048576).toFixed(1) + " MB / 1024 MB (" + pct.toFixed(1) + "%)" + (pct > 80 ? ' <span class="warn">⚠ ৮০% পার হয়েছে, জায়গা প্রায় শেষ!</span>' : "");
-    return total;
-  } catch (e) { $("#ut").textContent = "ব্যবহার দেখা যায়নি: " + (e.message || e); return 0 }
-}
 
-(async () => {
-  const ME = await ERP.require(true); if (!ME) return;
-  const tree = await ERP.tree(), o = [];
-  tree.forEach(m => { o.push(`<option value="${m.id}">${m.name} (${m.id})</option>`); m.subs.forEach(s => o.push(`<option value="${s.id}">&nbsp;&nbsp;↳ ${s.name} (${s.id})</option>`)) });
-  $("#mod").innerHTML = o.join("");
-  const fg = tree.find(m => /finish|\bfg\b/i.test(m.name)); if (fg) $("#mod").value = fg.id;
-  usage();
-})();
-
-$("#go").onclick = async () => {
-  const f = $("#file").files[0]; if (!f) return alert("আগে ফাইল বাছুন");
-  const id = $("#mod").value, dayfirst = $("#df").value === "1", st = sb.storage.from("erp-data");
-  $("#go").disabled = true; $("#log").textContent = "";
-  try {
-    log("১/৫ ফাইল পড়া হচ্ছে… (বড় ফাইলে ১–৩ মিনিট লাগতে পারে, ট্যাব বন্ধ করবেন না)"); await tick();
-    const wb = XLSX.read(await f.arrayBuffer(), { type: "array", cellDates: true });
-    let A = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, raw: true, defval: "" });
-    const ix = {}; A[0].map(norm).forEach((h, i) => { if (!(h in ix)) ix[h] = i });
-    if (ix.date == null || ix.totalqty == null) throw new Error("DATE বা TOTAL QTY column পাওয়া যায়নি। পাওয়া গেছে: " + A[0].join(", "));
-    const rawRows = A.length - 1; log("   মোট row: " + rawRows.toLocaleString());
-
-    log("২/৫ ডেটা ছোট করা হচ্ছে…"); await tick();
-    const dims = ["date", "unit", "article", "model", "buyer", "color", "shift", "prodtype", "mctype", "process", "category"];
-    const UP = new Set(["model", "buyer", "color", "shift", "mctype", "process"]);
-    const dict = {}, mp = {}; dims.forEach(k => { dict[k] = []; mp[k] = new Map() });
-    const col = dims.map(k => ix[k]), acc = new Map(); let bad = 0, sumRaw = 0;
-    for (let r = 1; r < A.length; r++) {
-      const row = A[r], d = iso(row[ix.date], dayfirst); if (!d) { bad++; continue }
-      const codes = new Array(dims.length);
-      for (let j = 0; j < dims.length; j++) {
-        const k = dims[j]; let v = j === 0 ? d : clean(col[j] == null ? "" : row[col[j]]);
-        if (UP.has(k)) v = v.toUpperCase();
-        let c = mp[k].get(v); if (c === undefined) { c = dict[k].length; dict[k].push(v); mp[k].set(v, c) }
-        codes[j] = c;
-      }
-      const q = parseFloat(String(row[ix.totalqty] ?? "").replace(/,/g, "")) || 0; sumRaw += q;
-      const key = codes.join("|"), e = acc.get(key); if (e) e.q += q; else acc.set(key, { c: codes, q });
+    .top {
+      background: linear-gradient(90deg, #6b0719, #a61935);
+      color: #fff;
+      padding: 16px 24px;
+      font-weight: 700;
+      font-size: 18px
     }
-    A = null;
-    const c = {}; dims.forEach(k => c[k] = []); const q = []; let sumPack = 0;
-    for (const e of acc.values()) { dims.forEach((k, j) => c[k].push(e.c[j])); const v = Math.round(e.q * 1000) / 1000; q.push(v); sumPack += v }
-    log("   তারিখ না পাওয়া row (বাদ): " + bad);
-    log("   ছোট হওয়ার পর row: " + q.length.toLocaleString());
-    log("   Total Qty (Excel): " + Math.round(sumRaw).toLocaleString() + "  |  Total Qty (packed): " + Math.round(sumPack).toLocaleString() + "  ← দুটো এক হতে হবে");
 
-    log("৩/৫ সংকুচিত (gzip) করা হচ্ছে…"); await tick();
-    const ver = Date.now(), json = JSON.stringify({ v: ver, dict, c, q });
-    const gz = await new Response(new Blob([json]).stream().pipeThrough(new CompressionStream("gzip"))).blob();
-    log("   ফাইল সাইজ: " + (gz.size / 1048576).toFixed(2) + " MB");
-    if (gz.size > 50 * 1048576) throw new Error("ফাইল ৫০ MB ছাড়িয়েছে, ফ্রি প্ল্যানে আপলোড হবে না। বলুন, আমি ভাগ করার পথ দেব।");
-    const used = await usage();
-    if (used + gz.size > LIMIT * 0.95) throw new Error("Storage-এর ১ GB প্রায় ভরে যাবে। পুরনো ফাইল মুছুন বা আমাকে জানান।");
+    .card {
+      max-width: 760px;
+      margin: 28px auto;
+      background: #fff;
+      border-radius: 16px;
+      padding: 26px;
+      box-shadow: 0 6px 24px #0f2a5a14
+    }
 
-    log("৪/৫ Storage-এ আপলোড হচ্ছে…"); await tick();
-    let r = await st.upload(id + "/fg.json.gz", gz, { upsert: true, contentType: "application/gzip", cacheControl: "0" }); if (r.error) throw r.error;
-    r = await st.upload(id + "/fg_meta.json", new Blob([JSON.stringify({ v: ver, n: q.length })], { type: "application/json" }), { upsert: true, contentType: "application/json", cacheControl: "0" }); if (r.error) throw r.error;
+    label {
+      display: block;
+      margin: 16px 0 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #4a5a78
+    }
 
-    log("৫/৫ ✔ সম্পন্ন! ফোল্ডার: erp-data/" + id + "/  — এখন Step 5 করুন।");
-    usage();
-  } catch (e) { log("✖ ত্রুটি: " + (e.message || JSON.stringify(e))) }
-  $("#go").disabled = false;
-};
-</script></body></html>
+    select,
+    input[type=file] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d5dded;
+      border-radius: 10px;
+      font-size: 14px;
+      background: #fff
+    }
+
+    button {
+      margin-top: 20px;
+      background: #a61935;
+      color: #fff;
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 22px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer
+    }
+
+    button:disabled {
+      opacity: .5;
+      cursor: wait
+    }
+
+    .bar {
+      height: 12px;
+      background: #e6ecf7;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 6px
+    }
+
+    .bar i {
+      display: block;
+      height: 100%;
+      background: #2e9e6b
+    }
+
+    pre {
+      background: #0f1b33;
+      color: #cfe0ff;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      white-space: pre-wrap;
+      min-height: 90px;
+      margin-top: 18px
+    }
+
+    .warn {
+      color: #b3261e;
+      font-weight: 700
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top">ERP Data Packer · Excel → Supabase Storage</div>
+  <div class="card">
+    <label>Module</label><select id="mod"></select>
+    <label>Excel / CSV ফাইল (প্রথম sheet)</label><input type="file" id="file" accept=".xlsx,.xls,.csv">
+    <label>তারিখ লেখা থাকলে (যেমন 05/03/2025)</label>
+    <select id="df">
+      <option value="0">Month আগে (MM/DD/YYYY)</option>
+      <option value="1">Day আগে (DD/MM/YYYY)</option>
+    </select>
+    <button id="go">Pack &amp; Upload</button>
+    <div style="margin-top:22px;font-size:13px;font-weight:600">Storage ব্যবহার (ফ্রি সীমা ১ GB)</div>
+    <div class="bar"><i id="ub" style="width:0"></i></div>
+    <div id="ut" style="font-size:12.5px;margin-top:6px"></div>
+    <pre id="log"></pre>
+  </div>
+  <script>
+    const $ = s => document.querySelector(s), p2 = n => String(n).padStart(2, "0");
+    const log = t => { $("#log").textContent += t + "\n" }, tick = () => new Promise(r => setTimeout(r, 30));
+    const norm = s => String(s).toLowerCase().replace(/[^a-z0-9]/g, ""), clean = s => String(s ?? "").replace(/\s+/g, " ").trim();
+    const LIMIT = 1024 * 1048576;
+
+    function iso(v, dayfirst) {
+      if (v == null || v === "") return null;
+      if (v instanceof Date) { if (isNaN(v)) return null; const d = new Date(v.getTime() + 43200000); return d.getFullYear() + "-" + p2(d.getMonth() + 1) + "-" + p2(d.getDate()) }
+      if (typeof v === "number" && v > 20000) { const d = new Date(Math.round((v - 25569) * 864e5)); return d.getUTCFullYear() + "-" + p2(d.getUTCMonth() + 1) + "-" + p2(d.getUTCDate()) }
+      v = String(v).trim(); let m = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/); if (m) return m[1] + "-" + p2(m[2]) + "-" + p2(m[3]);
+      m = v.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/);
+      if (m) { let a = +m[1], b = +m[2], y = +m[3]; if (y < 100) y += 2000; const [mo, da] = (dayfirst || a > 12) ? [b, a] : [a, b]; return y + "-" + p2(mo) + "-" + p2(da) }
+      const d = new Date(v); return isNaN(d) ? null : d.getFullYear() + "-" + p2(d.getMonth() + 1) + "-" + p2(d.getDate());
+    }
+
+    async function usage() {
+      try {
+        const st = sb.storage.from("erp-data"); let total = 0;
+        const { data: top, error } = await st.list("", { limit: 1000 }); if (error) throw error;
+        for (const f of top) {
+          if (f.id) { total += (f.metadata && f.metadata.size) || 0; continue }
+          const { data: inner } = await st.list(f.name, { limit: 1000 });
+          (inner || []).forEach(x => total += (x.metadata && x.metadata.size) || 0);
+        }
+        const pct = total / LIMIT * 100;
+        $("#ub").style.width = Math.min(100, pct) + "%"; $("#ub").style.background = pct > 80 ? "#b3261e" : "#2e9e6b";
+        $("#ut").innerHTML = (total / 1048576).toFixed(1) + " MB / 1024 MB (" + pct.toFixed(1) + "%)" + (pct > 80 ? ' <span class="warn">⚠ ৮০% পার হয়েছে, জায়গা প্রায় শেষ!</span>' : "");
+        return total;
+      } catch (e) { $("#ut").textContent = "ব্যবহার দেখা যায়নি: " + (e.message || e); return 0 }
+    }
+
+    (async () => {
+      const ME = await ERP.require(true); if (!ME) return;
+      const tree = await ERP.tree(), o = [];
+      tree.forEach(m => { o.push(`<option value="${m.id}">${m.name} (${m.id})</option>`); m.subs.forEach(s => o.push(`<option value="${s.id}">&nbsp;&nbsp;↳ ${s.name} (${s.id})</option>`)) });
+      $("#mod").innerHTML = o.join("");
+      const fg = tree.find(m => /finish|\bfg\b/i.test(m.name)); if (fg) $("#mod").value = fg.id;
+      usage();
+    })();
+
+    $("#go").onclick = async () => {
+      const f = $("#file").files[0]; if (!f) return alert("আগে ফাইল বাছুন");
+      const id = $("#mod").value, dayfirst = $("#df").value === "1", st = sb.storage.from("erp-data");
+      $("#go").disabled = true; $("#log").textContent = "";
+      try {
+        log("১/৫ ফাইল পড়া হচ্ছে… (বড় ফাইলে ১–৩ মিনিট লাগতে পারে, ট্যাব বন্ধ করবেন না)"); await tick();
+        const wb = XLSX.read(await f.arrayBuffer(), { type: "array", cellDates: true });
+        let A = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, raw: true, defval: "" });
+        const ix = {}; A[0].map(norm).forEach((h, i) => { if (!(h in ix)) ix[h] = i });
+        if (ix.date == null || ix.totalqty == null) throw new Error("DATE বা TOTAL QTY column পাওয়া যায়নি। পাওয়া গেছে: " + A[0].join(", "));
+        const rawRows = A.length - 1; log("   মোট row: " + rawRows.toLocaleString());
+
+        log("২/৫ ডেটা ছোট করা হচ্ছে…"); await tick();
+        const dims = ["date", "unit", "article", "model", "buyer", "color", "shift", "prodtype", "mctype", "process", "category", "timesofprocess"];
+        const UP = new Set(["model", "buyer", "color", "shift", "mctype", "process", "timesofprocess"]);
+        const dict = {}, mp = {}; dims.forEach(k => { dict[k] = []; mp[k] = new Map() });
+        const col = dims.map(k => ix[k]), acc = new Map(); let bad = 0, sumRaw = 0;
+        for (let r = 1; r < A.length; r++) {
+          const row = A[r], d = iso(row[ix.date], dayfirst); if (!d) { bad++; continue }
+          const codes = new Array(dims.length);
+          for (let j = 0; j < dims.length; j++) {
+            const k = dims[j]; let v = j === 0 ? d : clean(col[j] == null ? "" : row[col[j]]);
+            if (UP.has(k)) v = v.toUpperCase();
+            let c = mp[k].get(v); if (c === undefined) { c = dict[k].length; dict[k].push(v); mp[k].set(v, c) }
+            codes[j] = c;
+          }
+          const q = parseFloat(String(row[ix.totalqty] ?? "").replace(/,/g, "")) || 0; sumRaw += q;
+          const key = codes.join("|"), e = acc.get(key); if (e) e.q += q; else acc.set(key, { c: codes, q });
+        }
+        A = null;
+        const c = {}; dims.forEach(k => c[k] = []); const q = []; let sumPack = 0;
+        for (const e of acc.values()) { dims.forEach((k, j) => c[k].push(e.c[j])); const v = Math.round(e.q * 1000) / 1000; q.push(v); sumPack += v }
+        log("   তারিখ না পাওয়া row (বাদ): " + bad);
+        log("   ছোট হওয়ার পর row: " + q.length.toLocaleString());
+        log("   Total Qty (Excel): " + Math.round(sumRaw).toLocaleString() + "  |  Total Qty (packed): " + Math.round(sumPack).toLocaleString() + "  ← দুটো এক হতে হবে");
+
+        log("৩/৫ সংকুচিত (gzip) করা হচ্ছে…"); await tick();
+        const ver = Date.now(), json = JSON.stringify({ v: ver, dict, c, q });
+        const gz = await new Response(new Blob([json]).stream().pipeThrough(new CompressionStream("gzip"))).blob();
+        log("   ফাইল সাইজ: " + (gz.size / 1048576).toFixed(2) + " MB");
+        if (gz.size > 50 * 1048576) throw new Error("ফাইল ৫০ MB ছাড়িয়েছে, ফ্রি প্ল্যানে আপলোড হবে না। বলুন, আমি ভাগ করার পথ দেব।");
+        const used = await usage();
+        if (used + gz.size > LIMIT * 0.95) throw new Error("Storage-এর ১ GB প্রায় ভরে যাবে। পুরনো ফাইল মুছুন বা আমাকে জানান।");
+
+        log("৪/৫ Storage-এ আপলোড হচ্ছে…"); await tick();
+        let r = await st.upload(id + "/fg.json.gz", gz, { upsert: true, contentType: "application/gzip", cacheControl: "0" }); if (r.error) throw r.error;
+        r = await st.upload(id + "/fg_meta.json", new Blob([JSON.stringify({ v: ver, n: q.length })], { type: "application/json" }), { upsert: true, contentType: "application/json", cacheControl: "0" }); if (r.error) throw r.error;
+
+        log("৫/৫ ✔ সম্পন্ন! ফোল্ডার: erp-data/" + id + "/  — এখন Step 5 করুন।");
+        usage();
+      } catch (e) { log("✖ ত্রুটি: " + (e.message || JSON.stringify(e))) }
+      $("#go").disabled = false;
+    };
+  </script>
+</body>
+
+</html>
