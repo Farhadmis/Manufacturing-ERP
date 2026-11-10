@@ -964,7 +964,7 @@
 .c.yt .yt-p{background:#f5f7fb;border-radius:16px;padding:14px 16px;margin:14px 0 8px}
 .c.yt .yt-r{display:flex;justify-content:space-between;align-items:flex-end;gap:16px 24px;flex-wrap:wrap}
 .c.yt .yt-r small{display:block;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--mute);text-transform:uppercase}
-.c.yt .yt-big{font-size:clamp(24px,2.6vw,34px);font-weight:800;color:var(--navy);letter-spacing:-.02em;line-height:1.1;margin-top:5px;white-space:nowrap}
+.c.yt .yt-big{font-size:clamp(20px,2vw,26px);font-weight:800;color:var(--navy);letter-spacing:-.02em;line-height:1.1;margin-top:6px;white-space:nowrap}
 .c.yt .yt-md{font-size:clamp(20px,2vw,28px);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-top:5px;white-space:nowrap;color:var(--navy)}
 .c.yt .yt-md.g{color:${YT_GREEN}}.c.yt .yt-md span{font-size:12.5px;font-weight:600;color:var(--mute);letter-spacing:0;margin-left:6px}
 .c.yt .yt-sp{border-left:1px solid #dfe5f0;padding-left:20px}
@@ -1075,6 +1075,13 @@
 .hxc .hx-gt b{display:block;font-size:16px}.hxc .hx-gt small{font-size:9.5px;font-weight:700;letter-spacing:.06em}
 .hxc .hx-ft{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--mute);margin-top:14px;align-items:center}
 .hxc .hx-ft i{display:inline-block;width:18px;height:14px;border-radius:4px;vertical-align:middle;margin-right:6px}
+.hxc.cmp .hx-k{margin:10px 0}.hxc.cmp .hx-k>div{padding:10px 14px}.hxc.cmp .hx-k b{font-size:clamp(20px,1.9vw,25px);margin:4px 0 3px}
+.hxc.cmp .hx-g{gap:5px}.hxc.cmp .hx-hd{padding:2px 0}.hxc.cmp .hx-y{font-size:15px}
+.hxc.cmp .hx-c{height:40px;font-size:14px;border-radius:9px}.hxc.cmp .hx-c em{font-size:9px;margin-top:1px}
+.hxc.cmp .hx-c.pk,.hxc.cmp .hx-c.lw{box-shadow:0 0 0 1.5px #fff,0 0 0 3.5px var(--navy)}
+.hxc.cmp .hx-tt{padding:4px 10px;gap:4px}.hxc.cmp .hx-tt b{font-size:13.5px}
+.hxc.cmp .hx-av{padding-top:6px}.hxc.cmp .hx-av span{padding:4px 12px}
+.hxc.cmp .hx-gt{margin-top:4px;padding:7px 10px}.hxc.cmp .hx-ft{margin-top:10px}
 #hx-tip{position:fixed;z-index:9999;pointer-events:none;background:var(--navy);color:#fff;padding:7px 11px;border-radius:9px;font-size:12.5px;box-shadow:0 6px 18px rgba(15,42,90,.3);display:none;white-space:nowrap}
 #hx-tip b{font-size:14px;margin-left:6px}
 @media(max-width:900px){.hxc .hx-k{grid-template-columns:1fr}}`;
@@ -1131,10 +1138,10 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
 
     function ov(a) {
       $("#pgc").innerHTML = cards(a) + `<div class="cg">${mtHTML(a)}${ytHTML(a)}
- <div class="c w hxc" id="hmc"></div>
+ <div class="c w hxc cmp" id="hmc"></div>
  <div class="c w"><h4>Year to Year Trend · Unit wise</h4><div class="cv"><canvas id="c3"></canvas></div><div id="c3n" style="font-size:12px;color:var(--mute);margin-top:6px"></div></div>
  <div class="c"><h4>Shift wise</h4><div class="cv"><canvas id="p1"></canvas></div></div><div class="c"><h4>MC Type wise</h4><div class="cv"><canvas id="p2"></canvas></div></div><div class="c"><h4>Process wise</h4><div class="cv" style="height:360px"><canvas id="p3"></canvas></div></div><div class="c"><h4>Types of Process</h4><div class="cv" style="height:360px"><canvas id="p4"></canvas></div></div>
- <div class="c w"><h4>Top 15 Buyer</h4><div class="cv" style="height:330px"><canvas id="c4"></canvas></div></div></div>`;
+ <div class="c w"><div style="font-size:19px;font-weight:800;color:var(--navy);letter-spacing:.01em;line-height:1.2">TOP BUYER CONTRIBUTION ANALYSIS</div><div id="c4s" style="font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--mute);margin:6px 0 10px"></div><div class="cv" style="height:400px"><canvas id="c4"></canvas></div><div style="text-align:right;font-size:12px;color:var(--mute);margin-top:6px">Share of total volume &nbsp;·&nbsp; Darker green = higher share</div></div></div>`;
       const mm = grp(a, r => r.y * 100 + r.m).sort((x, y) => x.k - y.k);
       mtChart();
       const yy = grp(a, r => r.y).sort((x, y) => x.k - y.k);
@@ -1191,6 +1198,7 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
           }]
         })
       };
+      let fm, mkExt;
       {
         const fq = v => Math.abs(v) >= 1e6 ? (v / 1e6).toFixed(2) + "M" : Math.abs(v) >= 1e3 ? (v / 1e3).toFixed(1) + "K" : n0(v);
         let g = grp(a, r => r.proc || "N/A").sort((x, y) => y.q - x.q); if (g.length > 7) g = g.slice(0, 6).concat({ k: "Others", q: g.slice(6).reduce((t, x) => t + x.q, 0) });
@@ -1198,7 +1206,7 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
         const isO = (x, i) => x.k === "Others" && g.length > 1 && i === g.length - 1 && g.length === 7;
         const bc = g.map((x, i) => isO(x, i) ? "#d9d9d9" : i === 0 ? "#2f6f7e" : "#a8d8e6");
         /* hover tooltip: Top 10 models of the hovered process (value like 6.49M / 735K / 12.0K) */
-        const fm = x => x >= 1e6 ? (x / 1e6).toFixed(2) + "M" : x >= 1e5 ? Math.round(x / 1e3) + "K" : x >= 1e3 ? (x / 1e3).toFixed(1) + "K" : n0(x);
+        fm = x => x >= 1e6 ? (x / 1e6).toFixed(2) + "M" : x >= 1e5 ? Math.round(x / 1e3) + "K" : x >= 1e3 ? (x / 1e3).toFixed(1) + "K" : n0(x);
         const pm = new Map(); a.forEach(r => { const pr = r.proc || "N/A"; let m = pm.get(pr); if (!m) pm.set(pr, m = new Map()); m.set(r.model, (m.get(r.model) || 0) + r.q) });
         const topM = i => {
           let m; if (isO(g[i], i)) { m = new Map(); const keep = new Set(g.slice(0, -1).map(x => x.k)); pm.forEach((mm, pr) => { if (!keep.has(pr)) mm.forEach((q, k) => m.set(k, (m.get(k) || 0) + q)) }) } else m = pm.get(g[i].k) || new Map();
@@ -1216,7 +1224,7 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
 #pt-tip .r b{text-align:right;color:#0f2a5a;font-weight:800}`;
           document.head.appendChild(st); const d = document.createElement("div"); d.id = "pt-tip"; document.body.appendChild(d)
         }
-        const mkExt = (names, vals, pf, tm) => c => {
+        mkExt = (names, vals, pf, tm) => c => {
           const tp = document.getElementById("pt-tip"), t = c.tooltip; if (!t || t.opacity === 0 || !t.dataPoints || !t.dataPoints.length) { tp.style.display = "none"; return }
           const i = t.dataPoints[0].dataIndex, L = tm(i), mx = L.length ? L[0].q : 1;
           tp.innerHTML = `<div class="h">${esc(names[i])}<span>${fm(vals[i])} · ${pf(vals[i])}</span></div><div class="by">By model · Top ${L.length}</div>` + L.map(x => `<div class="r"><em title="${esc(x.k)}">${esc(x.k)}</em><u><i style="width:${(x.q / mx * 100).toFixed(1)}%"></i></u><b>${fm(x.q)}</b></div>`).join("");
@@ -1258,17 +1266,28 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
           }]
         })
       }
-      const T = sumq(a), tb = grp(a, r => r.buyer || "N/A").sort((x, y) => y.q - x.q).slice(0, 15), P = x => T ? (x / T * 100).toFixed(1) + "%" : "0%", o = opt(false);
-      o.scales.x.ticks.autoSkip = false; o.scales.x.ticks.maxRotation = 40; o.layout = { padding: { top: 18 } };
-      mk("c4", {
-        type: "bar", data: { labels: tb.map(x => x.k), datasets: [{ label: "Qty", data: tb.map(x => x.q), backgroundColor: "#a61935", borderRadius: 6 }] }, options: o,
-        plugins: [{
-          id: "pc", afterDatasetsDraw(ch) {
-            const { ctx } = ch; ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.font = "700 11px Inter,sans-serif";
-            ch.getDatasetMeta(0).data.forEach((b, i) => { const h = b.base - b.y, t = P(tb[i].q); if (h >= 22) { ctx.fillStyle = "#fff"; ctx.fillText(t, b.x, b.y + 11) } else { ctx.fillStyle = "#0f2a5a"; ctx.fillText(t, b.x, b.y - 9) } }); ctx.restore()
-          }
-        }]
-      });
+      {
+        const T = sumq(a), tb = grp(a, r => r.buyer || "N/A").sort((x, y) => y.q - x.q).slice(0, 15), P = x => T ? (x / T * 100).toFixed(1) + "%" : "0%";
+        const sb = document.getElementById("c4s"); if (sb) sb.textContent = "TOP " + tb.length + " BUYERS  |  SHARE OF TOTAL VOLUME";
+        const mxq = tb.length ? tb[0].q : 1, mix = (x, t) => { const L = [191, 230, 205], D = [18, 77, 47]; return "rgb(" + L.map((l, k) => Math.round(l + (D[k] - l) * t)).join(",") + ")" };
+        const bc = tb.map(x => mix(x, mxq ? Math.pow(x.q / mxq, .55) : 0));
+        const bm = new Map(); a.forEach(r => { const b = r.buyer || "N/A"; let m = bm.get(b); if (!m) bm.set(b, m = new Map()); m.set(r.model, (m.get(r.model) || 0) + r.q) });
+        const tmB = i => [...(bm.get(tb[i].k) || new Map())].map(([k, q]) => ({ k: k || "N/A", q })).sort((x, y) => y.q - x.q).slice(0, 10);
+        mk("c4", {
+          type: "bar", data: { labels: tb.map(x => x.k), datasets: [{ label: "Share", data: tb.map(x => T ? x.q / T * 100 : 0), backgroundColor: bc, borderRadius: 0, barPercentage: .66, categoryPercentage: 1 }] },
+          options: {
+            responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: { top: 28, right: 8 } },
+            plugins: { legend: { display: false }, tooltip: { enabled: false, external: mkExt(tb.map(x => x.k), tb.map(x => x.q), P, tmB) } },
+            scales: { x: { grid: { display: false }, border: { color: "#c9d2e3" }, ticks: { autoSkip: false, minRotation: 30, maxRotation: 30, color: "#0f2a5a", font: { size: 12 } } }, y: { beginAtZero: true, border: { display: false }, grid: { color: "#eceff5" }, ticks: { callback: v => v + "%", color: "#6d7c99", font: { size: 11.5 }, maxTicksLimit: 6 } } }
+          },
+          plugins: [{
+            id: "pc", afterDatasetsDraw(ch) {
+              const { ctx } = ch; ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.fillStyle = "#0f2a5a"; ctx.font = "800 13.5px Inter,sans-serif";
+              ch.getDatasetMeta(0).data.forEach((b, i) => ctx.fillText(P(tb[i].q), b.x, b.y - 10)); ctx.restore()
+            }
+          }]
+        })
+      }
       hmRender(a)
     }
     /* ---------- raw data : Model · Color × Year(collapsible) · Month ---------- */
