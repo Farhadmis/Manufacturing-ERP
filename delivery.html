@@ -626,6 +626,306 @@
         display: none
       }
     }
+
+    /* ===== v3: KPI cards (same as FG) ===== */
+    .rkp {
+      display: flex;
+      gap: 14px;
+      margin: 6px 0 16px
+    }
+
+    .rk {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(10, 40, 100, .22), inset 0 0 0 1px rgba(255, 255, 255, .18)
+    }
+
+    .rk:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(120% 90% at 0% 0%, rgba(255, 255, 255, .22), transparent 55%);
+      pointer-events: none
+    }
+
+    .rk-t {
+      background: linear-gradient(135deg, #0d3b99, #06214f)
+    }
+
+    .rk-1 {
+      background: linear-gradient(135deg, #2158e0, #0b2f8f)
+    }
+
+    .rk-2 {
+      background: linear-gradient(135deg, #14b8d4, #0c6f8c)
+    }
+
+    .rk-3 {
+      background: linear-gradient(135deg, #34c759, #15803d)
+    }
+
+    .rk-5 {
+      background: linear-gradient(135deg, #8b5cf6, #4c1d95)
+    }
+
+    .rk-ic {
+      position: relative;
+      flex: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, .18);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35)
+    }
+
+    .rk-ic svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .rk-tx {
+      position: relative;
+      min-width: 0;
+      flex: 1
+    }
+
+    .rk-tx small {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      opacity: .95
+    }
+
+    .rk-tx b {
+      display: block;
+      font-size: 20px;
+      font-weight: 800;
+      margin: 2px 0 4px;
+      white-space: nowrap;
+      letter-spacing: -.01em
+    }
+
+    .rk-g {
+      font-size: 11.5px;
+      font-weight: 700;
+      white-space: nowrap
+    }
+
+    .rk-g.up {
+      color: #9bffc0
+    }
+
+    .rk-g.dn {
+      color: #ffc2c2
+    }
+
+    .rk-g.na {
+      opacity: .7
+    }
+
+    .rk-bars {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 26px
+    }
+
+    .rk-bars i {
+      display: block;
+      width: 5px;
+      border-radius: 2px 2px 0 0;
+      background: rgba(255, 255, 255, .35)
+    }
+
+    .rk-bars i.l {
+      background: rgba(255, 255, 255, .85)
+    }
+
+    /* ===== v3: Raw Data KPI cards — glossy style ===== */
+    .rkp {
+      gap: clamp(8px, 1vw, 16px) !important
+    }
+
+    .rk {
+      min-height: 92px;
+      padding: 14px clamp(10px, 1.1vw, 18px) !important;
+      gap: clamp(8px, .9vw, 14px) !important;
+      border-radius: 16px !important;
+      box-shadow: 0 10px 24px rgba(10, 40, 100, .25), inset 0 0 0 1.5px rgba(255, 255, 255, .38), inset 0 2px 10px rgba(255, 255, 255, .18) !important
+    }
+
+    .rk:before {
+      background: radial-gradient(110% 80% at 0% 0%, rgba(255, 255, 255, .30), transparent 55%), linear-gradient(180deg, rgba(255, 255, 255, .10), transparent 40%) !important
+    }
+
+    .rk-t {
+      background: linear-gradient(135deg, #0b4fd0, #061f5e) !important
+    }
+
+    .rk-1 {
+      background: linear-gradient(135deg, #2f6bf0, #102c9c) !important
+    }
+
+    .rk-2 {
+      background: linear-gradient(135deg, #27d3ee, #0a6f8f) !important
+    }
+
+    .rk-3 {
+      background: linear-gradient(135deg, #46d868, #0f7a36) !important
+    }
+
+    .rk-5 {
+      background: linear-gradient(135deg, #9a6bff, #45199a) !important
+    }
+
+    .rk-ic {
+      width: clamp(40px, 3.6vw, 54px) !important;
+      height: clamp(40px, 3.6vw, 54px) !important;
+      background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, .38), rgba(255, 255, 255, .12)) !important;
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .55), 0 4px 10px rgba(0, 0, 0, .18) !important;
+      z-index: 1
+    }
+
+    .rk-ic svg {
+      width: 56% !important;
+      height: 56% !important;
+      stroke: none !important;
+      fill: #fff !important;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .25))
+    }
+
+    .rk-tx {
+      z-index: 1
+    }
+
+    .rk-tx small {
+      font-size: clamp(11px, .9vw, 13px) !important;
+      font-weight: 700 !important;
+      opacity: 1 !important
+    }
+
+    .rk-tx b {
+      font-size: clamp(17px, 1.65vw, 24px) !important;
+      font-weight: 800 !important;
+      margin: 3px 0 6px !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, .2)
+    }
+
+    .rk-g {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: #fff !important;
+      font-size: clamp(10.5px, .85vw, 12.5px) !important;
+      font-weight: 700 !important;
+      opacity: 1 !important
+    }
+
+    .rk-g em {
+      font-style: normal;
+      font-size: 10px;
+      line-height: 1
+    }
+
+    .rk-g.up em {
+      color: #5dff8f
+    }
+
+    .rk-g.dn em {
+      color: #ff8f8f
+    }
+
+    .rk-bars {
+      right: 10px !important;
+      bottom: 8px !important;
+      gap: 3px !important;
+      height: 40px !important;
+      align-items: flex-end;
+      z-index: 0
+    }
+
+    .rk-bars i {
+      width: 6px !important;
+      border-radius: 2px 2px 0 0 !important;
+      background: linear-gradient(180deg, rgba(255, 255, 255, .5), rgba(255, 255, 255, .12)) !important
+    }
+
+    .rk-bars i.l {
+      background: linear-gradient(180deg, rgba(255, 255, 255, .95), rgba(255, 255, 255, .35)) !important
+    }
+
+    .rk-bars svg {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      pointer-events: none;
+      overflow: visible
+    }
+
+    @media(max-width:1250px) {
+      .rk-bars {
+        opacity: .55;
+        transform: scale(.8);
+        transform-origin: right bottom
+      }
+    }
+
+    .rk-o {
+      flex: 1.5 1 0 !important
+    }
+
+    .rk-oo {
+      display: flex;
+      gap: clamp(8px, 1vw, 16px);
+      margin-top: 4px
+    }
+
+    .rk-oo>div {
+      flex: 1;
+      min-width: 0
+    }
+
+    .rk-oo i {
+      display: block;
+      font-style: normal;
+      font-size: clamp(10px, .8vw, 12px);
+      font-weight: 700;
+      opacity: .95
+    }
+
+    .rk-tx .rk-oo b {
+      font-size: clamp(11px, .95vw, 14px) !important;
+      margin: 1px 0 0 !important;
+      text-shadow: none
+    }
+
+    @media(max-width:900px) {
+      .rkp {
+        overflow-x: auto
+      }
+
+      .rk {
+        min-width: 210px
+      }
+    }
   </style>
 </head>
 
@@ -1072,11 +1372,40 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
     }
 
 
+
+    /* ---------- KPI cards (glossy · icon · value · vs LY · yearly bars) ---------- */
+    const DIC = {
+      h: '<svg viewBox="0 0 24 24"><path fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" d="M12 9V7.4a2.4 2.4 0 1 0-2.4-2.4"/><path fill="#fff" stroke="none" d="M12 8.6 3.2 14.7a1 1 0 0 0 .6 1.8h16.4a1 1 0 0 0 .6-1.8z"/></svg>',
+      s: '<svg viewBox="0 0 24 24"><g transform="rotate(-35 12 12)"><rect x="1.5" y="7.5" width="21" height="9" rx="1.8" fill="#fff" stroke="none"/><path stroke="rgba(0,40,120,.45)" stroke-width="1.6" stroke-linecap="round" d="M6 7.5v3.2M9.5 7.5v2M13 7.5v3.2M16.5 7.5v2"/></g></svg>',
+      v: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#fff" stroke="none"/><text x="12" y="17.2" text-anchor="middle" font-size="14" font-weight="800" font-family="Inter,Arial,sans-serif" fill="rgba(0,40,120,.75)" stroke="none">$</text></svg>',
+      t: '<svg viewBox="0 0 24 24"><path fill="#fff" stroke="none" d="M3 3h8.5l9.5 9.5-8.5 8.5L3 11.5z"/><circle cx="7.6" cy="7.6" r="1.7" fill="rgba(0,40,120,.45)" stroke="none"/></svg>',
+      c: '<svg viewBox="0 0 24 24"><path fill="#fff" stroke="none" d="M12 2l9 5-9 5-9-5z"/><path fill="#fff" fill-opacity=".85" stroke="none" d="M3 8.9l8.4 4.7V22L3 17.2z"/><path fill="#fff" fill-opacity=".62" stroke="none" d="M21 8.9l-8.4 4.7V22l8.4-4.8z"/></svg>'
+    };
+    /* vs LY = latest year (up to its last data day) ÷ same period of previous year − 1 */
+    function dLY(a, f) {
+      let Y = 0, last = ""; a.forEach(r => { if (r.y > Y) { Y = r.y; last = r.ds } else if (r.y === Y && r.ds > last) last = r.ds });
+      const lm = +last.slice(5, 7), ld = +last.slice(8, 10); let c = 0, l = 0;
+      a.forEach(r => { if (r.y === Y) c += r[f]; else if (r.y === Y - 1 && (r.m < lm || (r.m === lm && r.d <= ld))) l += r[f] });
+      return l > 0 ? (c / l - 1) * 100 : null
+    }
+    function dBars(vs) {
+      const mx = Math.max(...vs, 1), H = 40, BW = 6, GP = 3, hs = vs.map(v => Math.max(10, Math.round(v / mx * 100)));
+      const bars = hs.map((h, i) => `<i style="height:${h}%"${i === vs.length - 1 ? ' class="l"' : ""}></i>`).join("");
+      const W = vs.length * (BW + GP) - GP, pts = hs.map((h, i) => [i * (BW + GP) + BW / 2, H - H * h / 100 - 4]);
+      let tr = ""; if (pts.length > 1) { const [lx, ly] = pts[pts.length - 1], [px, py] = pts[pts.length - 2], an = Math.atan2(ly - py, lx - px) * 180 / Math.PI; tr = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><polyline points="${pts.map(p => p.join(",")).join(" ")}" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><polygon points="0,-3.5 7,0 0,3.5" fill="rgba(255,255,255,.9)" transform="translate(${lx},${ly}) rotate(${an})"/></svg>` }
+      return `<div class="rk-bars">${bars}${tr}</div>`
+    }
+    function dCard(a, cls, ico, title, f, fmt) {
+      const ys = [...new Set(a.map(r => r.y))].sort((x, y) => x - y).slice(-7), yv = {}; a.forEach(r => yv[r.y] = (yv[r.y] || 0) + r[f]);
+      const pct = dLY(a, f), val = a.reduce((s, r) => s + r[f], 0);
+      const g = pct == null ? '<span class="rk-g na">– vs LY</span>' : `<span class="rk-g ${pct < 0 ? "dn" : "up"}"><em>${pct < 0 ? "▼" : "▲"}</em>${pct >= 0 ? "+" : ""}${pct.toFixed(1)}% vs LY</span>`;
+      return `<div class="rk ${cls}"><div class="rk-ic">${ico}</div><div class="rk-tx"><small>${title}</small><b>${fmt(val)}</b>${g}</div>${dBars(ys.map(y => yv[y] || 0))}</div>`
+    }
+
     function ov(a) {
       const hq = sum(a, "hq"), sq = sum(a, "sq"), hv = sum(a, "hv"), sv = sum(a, "sv"), ic = a.filter(r => r.ot === "IC Order"), ot = a.filter(r => r.ot !== "IC Order");
       const O = (t, x) => `<div><i>${t}</i><b>H ${n0(sum(x, "hq"))}</b><i>S ${n0(sum(x, "sq"))}</i></div>`;
-      $("#pgc").innerHTML = `<div class="kp"><div class="k"><small>Hanger Qty</small><b>${n0(hq)}</b></div><div class="k"><small>Hanger Value</small><b>${m2(hv)}</b></div><div class="k b"><small>Sizer Qty</small><b>${n0(sq)}</b></div><div class="k b"><small>Sizer Value</small><b>${m2(sv)}</b></div>
- <div class="k o"><small>Order Type · Hanger / Sizer Qty</small><div class="oo">${O("IC Order", ic)}${O("Others Order", ot)}</div></div></div>
+      $("#pgc").innerHTML = `<div class="rkp">${dCard(a, "rk-t", DIC.h, "Hanger Qty", "hq", n0)}${dCard(a, "rk-1", DIC.v, "Hanger Value", "hv", m2)}${dCard(a, "rk-2", DIC.s, "Sizer Qty", "sq", n0)}${dCard(a, "rk-3", DIC.v, "Sizer Value", "sv", m2)}<div class="rk rk-5 rk-o"><div class="rk-ic">${DIC.c}</div><div class="rk-tx"><small>Order Type · Hanger / Sizer Qty</small><div class="rk-oo">${[["IC Order", ic], ["Others Order", ot]].map(([t, x]) => `<div><i>${t}</i><b>H ${n0(sum(x, "hq"))}</b><b>S ${n0(sum(x, "sq"))}</b></div>`).join("")}</div></div></div></div>
  <div class="cg">${mtHTML(a, "hq", "Month-wise Hanger Qty Trend", "#a61935", "c1")}${mtHTML(a, "sq", "Month-wise Sizer Qty Trend", "#2b5bb8", "c2")}
  <div class="c w hxc cmp" id="hmc"></div>
  ${ytHTML(a, "hq", "Year-to-Year Hanger Qty Trend", "c3", "#a61935")}${ytHTML(a, "sq", "Year-to-Year Sizer Qty Trend", "c4", "#2b5bb8")}
@@ -1121,7 +1450,7 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
         "Unit Price": o.up.size === 1 ? [...o.up][0] : ((o.hq + o.sq) ? (o.hv + o.sv) / (o.hq + o.sq) * 100 : 0), "Hanger Value": o.hv, "Sizer Value": o.sv, "Order Type": o.ot
       })).sort((x, y) => y.Date.localeCompare(x.Date) || x.Buyer.localeCompare(y.Buyer));
       pgn = 0; const hq = sum(a, "hq"), sq = sum(a, "sq"), hv = sum(a, "hv"), sv = sum(a, "sv"), up = (hq + sq) ? (hv + sv) / (hq + sq) * 100 : 0;
-      $("#pgc").innerHTML = `<div class="kp"><div class="k"><small>Hanger Qty</small><b>${n0(hq)}</b></div><div class="k b"><small>Sizer Qty</small><b>${n0(sq)}</b></div><div class="k o"><small>Unit Price (weighted avg)</small><b>${m2(up)}</b></div><div class="k"><small>Hanger Value</small><b>${m2(hv)}</b></div><div class="k b"><small>Sizer Value</small><b>${m2(sv)}</b></div></div>
+      $("#pgc").innerHTML = `<div class="rkp">${dCard(a, "rk-t", DIC.h, "Hanger Qty", "hq", n0)}${dCard(a, "rk-2", DIC.s, "Sizer Qty", "sq", n0)}<div class="rk rk-5"><div class="rk-ic">${DIC.t}</div><div class="rk-tx"><small>Unit Price (weighted avg)</small><b>${m2(up)}</b><span class="rk-g na">Weighted average</span></div></div>${dCard(a, "rk-1", DIC.v, "Hanger Value", "hv", m2)}${dCard(a, "rk-3", DIC.v, "Sizer Value", "sv", m2)}</div>
  <div class="pg"><span id="pi"></span><div style="display:flex;gap:8px"><button class="btn g" onclick="pp(-1)">‹ Prev</button><button class="btn g" onclick="pp(1)">Next ›</button><button class="btn red" onclick="dx()">⬇ Download Excel</button></div></div><div class="tb" id="tb"></div>`; rt()
     }
     function rt() {
