@@ -96,8 +96,8 @@ const ERP = {
   PACK: {
     fg: {
       match: /finish|\bfg\b/i,
-      dims: ["date", "unit", "article", "model", "buyer", "color", "shift", "prodtype", "mctype", "process", "category"],
-      upper: ["model", "buyer", "color", "shift", "mctype", "process"],
+      dims: ["date", "unit", "article", "model", "buyer", "color", "shift", "prodtype", "mctype", "process", "category", "timesofprocess"],
+      upper: ["model", "buyer", "color", "shift", "mctype", "process", "timesofprocess"],
       meas: ["totalqty"], need: ["date", "totalqty"], legacyQ: true
     },
     delivery: {
