@@ -782,12 +782,13 @@
         date: D.date.map(s => { const d = pdate(s); return d ? { y: d[0], m: d[1], d: d[2], ds: `${d[0]}-${String(d[1]).padStart(2, "0")}-${String(d[2]).padStart(2, "0")}` } : null }),
         unit: D.unit.map(unit), article: D.article.map(clean), model: D.model.map(up), buyer: D.buyer.map(up),
         color: D.color.map(up), shift: D.shift.map(up), prodtype: D.prodtype.map(clean), mctype: D.mctype.map(up),
-        process: D.process.map(up), category: D.category.map(clean)
+        process: D.process.map(up), category: D.category.map(clean),
+        tp: D.timesofprocess && C.timesofprocess ? D.timesofprocess.map(up) : null
       };
       R = new Array(N); let n = 0;
       for (let i = 0; i < N; i++) {
         const dd = T.date[C.date[i]]; if (!dd) continue;
-        R[n++] = { y: dd.y, m: dd.m, d: dd.d, ds: dd.ds, unit: T.unit[C.unit[i]], art: T.article[C.article[i]], model: T.model[C.model[i]], buyer: T.buyer[C.buyer[i]], color: T.color[C.color[i]], shift: T.shift[C.shift[i]], prod: T.prodtype[C.prodtype[i]], mc: T.mctype[C.mctype[i]], proc: T.process[C.process[i]], cat: T.category[C.category[i]], q: q[i] }
+        R[n++] = { y: dd.y, m: dd.m, d: dd.d, ds: dd.ds, unit: T.unit[C.unit[i]], art: T.article[C.article[i]], model: T.model[C.model[i]], buyer: T.buyer[C.buyer[i]], color: T.color[C.color[i]], shift: T.shift[C.shift[i]], prod: T.prodtype[C.prodtype[i]], mc: T.mctype[C.mctype[i]], proc: T.process[C.process[i]], cat: T.category[C.category[i]], tp: T.tp ? T.tp[C.timesofprocess[i]] : "", q: q[i] }
       }
       R.length = n;
       if (!R.length) msg = "The uploaded sheet has no valid rows (check the DATE column).";
@@ -841,20 +842,322 @@
       const u = {}; a.forEach(r => u[r.unit] = (u[r.unit] || 0) + r.q);
       return `<div class="kp"><div class="k"><small>Total Qty</small><b>${n0(sumq(a))}</b></div>${UN.map(x => `<div class="k b"><small>${x} Qty</small><b>${n0(u[x] || 0)}</b></div>`).join("")}</div>`
     };
+    /* ---------- Month-wise Trend · premium card ---------- */
+    let MTM = null;
+    const MFN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const fmtM = v => { const x = Math.abs(v); return x >= 1e9 ? (v / 1e9).toFixed(1) + "B" : x >= 5e5 ? (v / 1e6).toFixed(1) + "M" : x >= 1e3 ? (v / 1e3).toFixed(0) + "K" : n0(v) };
+    function mtHTML(a) {
+      if (!document.getElementById("mt-css")) {
+        const s = document.createElement("style"); s.id = "mt-css";
+        s.textContent = `
+.c2f{display:flex;flex-direction:column}.c2f .cv{flex:1 1 0;height:auto;min-height:270px}
+.c.mt .mt-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.c.mt .mt-t{font-size:19px;font-weight:800;color:var(--navy);letter-spacing:-.01em;line-height:1.2}
+.c.mt .mt-s{font-size:12px;color:var(--mute);margin-top:5px}
+.c.mt .mt-lg{display:flex;gap:16px;font-size:12px;color:var(--mute);align-items:center;white-space:nowrap;padding-top:4px}
+.c.mt .mt-lg i{display:inline-block;width:22px;height:0;border-top:3px solid #a61935;vertical-align:middle;margin-right:6px;border-radius:2px}
+.c.mt .mt-lg i.d{border-top-style:dashed}
+.c.mt .mt-k{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:14px 0 6px}
+.c.mt .mt-k>div{background:#f5f7fb;border-radius:14px;padding:12px 14px;min-width:0}
+.c.mt .mt-k small{display:block;font-size:10.5px;font-weight:700;letter-spacing:.07em;color:var(--mute);text-transform:uppercase}
+.c.mt .mt-k b{display:block;font-size:clamp(20px,2vw,26px);font-weight:800;color:var(--navy);margin:6px 0 5px;letter-spacing:-.02em;line-height:1.1;white-space:nowrap}
+.c.mt .mt-k span{font-size:12px;color:var(--mute)}
+.c.mt .mt-k em{font-style:normal;display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px}
+.c.mt .mt-k em.up{background:#e3f6ea;color:#14703e}.c.mt .mt-k em.dn{background:#fde8ea;color:#b3261e}
+.c.mt .mt-cv{height:340px;margin-top:6px}`;
+        document.head.appendChild(s);
+      }
+      const mm = grp(a, r => r.y * 100 + r.m).sort((x, y) => x.k - y.k), N = mm.length;
+      const now = new Date(), curK = now.getFullYear() * 100 + now.getMonth() + 1;
+      const partial = N > 0 && mm[N - 1].k === curK, full = partial ? mm.slice(0, -1) : mm;
+      const lab = k => MN[k % 100 - 1] + " " + Math.floor(k / 100), mi = k => Math.floor(k / 100) * 12 + (k % 100 - 1);
+      let pk = null, tr = null; full.forEach(x => { if (!pk || x.q > pk.q) pk = x; if (!tr || x.q < tr.q) tr = x });
+      let avg = null, delta = null, bandFrom = -1;
+      if (full.length) {
+        const li = mi(full[full.length - 1].k), win = full.filter(x => mi(x.k) > li - 12), pri = full.filter(x => mi(x.k) <= li - 12 && mi(x.k) > li - 24);
+        const av = z => z.reduce((s, x) => s + x.q, 0) / z.length;
+        avg = av(win); bandFrom = full.findIndex(x => mi(x.k) > li - 12);
+        if (pri.length >= 6 && av(pri) > 0) delta = (avg / av(pri) - 1) * 100;
+      }
+      MTM = { mm, N, partial, full, pk, tr, avg, bandFrom, lab };
+      const sub = N ? `Monthly volume · ${lab(mm[0].k)} – ${lab(mm[N - 1].k)}${partial ? ` (${MFN[mm[N - 1].k % 100 - 1]} is still running)` : ""}` : "No data for the selected filters";
+      return `<div class="c mt"><div class="mt-h"><div><div class="mt-t">Month-wise Trend</div><div class="mt-s">${sub}</div></div>
+<div class="mt-lg"><span><i></i>Actual</span>${partial ? '<span><i class="d"></i>Month to date</span>' : ""}</div></div>
+<div class="mt-k"><div><small>Grand total</small><b>${n0(sumq(a))}</b><span>${N ? lab(mm[0].k) + " – " + lab(mm[N - 1].k) + (partial ? " MTD" : "") : "—"}</span></div>
+<div><small>Peak month</small><b>${pk ? fmtM(pk.q) : "—"}</b><span>${pk ? lab(pk.k) : "—"}</span></div>
+<div><small>Avg / month · last 12M</small><b>${avg != null ? "≈" + fmtM(avg) : "—"}</b>${delta != null ? `<em class="${delta >= 0 ? "up" : "dn"}">${delta >= 0 ? "▲" : "▼"} ${Math.abs(delta).toFixed(1)}% vs prior 12M</em>` : `<span>${full.length ? "Last " + Math.min(12, full.length) + " months" : "—"}</span>`}</div></div>
+<div class="cv mt-cv"><canvas id="c1"></canvas></div></div>`
+    }
+    function mtChart() {
+      const { mm, N, partial, full, pk, tr, avg, bandFrom, lab } = MTM; if (!N) return;
+      const yr = k => Math.floor(k / 100), yrIdx = new Set(); mm.forEach((x, i) => { if (!i || yr(x.k) !== yr(mm[i - 1].k)) yrIdx.add(i) });
+      const act = mm.map((x, i) => partial && i === N - 1 ? null : x.q), mtd = mm.map((x, i) => partial && i >= N - 2 ? x.q : null);
+      const pkI = pk ? mm.findIndex(x => x.k === pk.k) : -1, trI = tr ? mm.findIndex(x => x.k === tr.k) : -1, mx = Math.max(...mm.map(x => x.q));
+      const rr = (c, x, y, w, h, r) => { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath() };
+      const dot = (c, x, y, r, st) => { c.beginPath(); c.arc(x, y, r, 0, 7); c.fillStyle = "#fff"; c.fill(); c.lineWidth = 2.5; c.strokeStyle = st; c.stroke() };
+      const plug = {
+        id: "mtx",
+        beforeDatasetsDraw(ch) {
+          const { ctx, chartArea: A, scales: { x } } = ch; if (bandFrom < 0 || avg == null) return;
+          const st = N > 1 ? x.getPixelForValue(1) - x.getPixelForValue(0) : 0, x0 = Math.max(A.left, x.getPixelForValue(bandFrom) - st / 2), x1 = x.getPixelForValue(full.length - 1), ya = ch.scales.y.getPixelForValue(avg);
+          ctx.save(); ctx.fillStyle = "rgba(166,25,53,.07)"; ctx.fillRect(x0, A.top, Math.max(0, x1 - x0), A.bottom - A.top);
+          ctx.setLineDash([7, 6]); ctx.lineWidth = 2; ctx.strokeStyle = "#857b92"; ctx.beginPath(); ctx.moveTo(x0, ya); ctx.lineTo(x1, ya); ctx.stroke(); ctx.setLineDash([]);
+          ctx.fillStyle = "#0f2a5a"; ctx.font = "600 12px Inter,sans-serif"; ctx.textAlign = "right"; ctx.textBaseline = "alphabetic"; ctx.fillText("Last 12M avg ≈" + fmtM(avg), Math.min(A.right, x1 + 6), A.top - 10); ctx.restore()
+        },
+        afterDatasetsDraw(ch) {
+          const { ctx, chartArea: A, scales: { x, y } } = ch; ctx.save();
+          if (pk) {
+            const px = x.getPixelForValue(pkI), py = y.getPixelForValue(pk.q);
+            ctx.setLineDash([2, 4]); ctx.lineWidth = 1.5; ctx.strokeStyle = "#a79fb5"; ctx.beginPath(); ctx.moveTo(px, py + 8); ctx.lineTo(px, A.bottom); ctx.stroke(); ctx.setLineDash([]);
+            dot(ctx, px, py, 7, "#a61935");
+            const t = "Peak " + fmtM(pk.q) + " · " + lab(pk.k); ctx.font = "700 12.5px Inter,sans-serif"; const w = ctx.measureText(t).width + 26, h = 26;
+            let bx = px - 16 - w, by = Math.max(A.top + 2, py - h / 2 - 6);
+            if (bx < A.left) { bx = Math.min(Math.max(A.left, px - w / 2), A.right - w); by = Math.max(A.top - 30, py - h - 14) }
+            ctx.fillStyle = "#0f2a5a"; rr(ctx, bx, by, w, h, 8); ctx.fill(); ctx.fillStyle = "#fff"; ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.fillText(t, bx + 13, by + h / 2 + .5)
+          }
+          if (tr && trI !== pkI && full.length >= 4) {
+            const px = x.getPixelForValue(trI), py = y.getPixelForValue(tr.q); dot(ctx, px, py, 6, "#4d566b");
+            const t = lab(tr.k) + " · " + fmtM(tr.q); ctx.font = "500 12.5px Inter,sans-serif"; ctx.fillStyle = "#6d7c99"; ctx.textBaseline = "alphabetic";
+            if (px + 14 + ctx.measureText(t).width > A.right) { ctx.textAlign = "right"; ctx.fillText(t, px - 12, py - 10) } else { ctx.textAlign = "left"; ctx.fillText(t, px + 12, py - 10) }
+          }
+          if (partial) {
+            const px = x.getPixelForValue(N - 1), py = y.getPixelForValue(mm[N - 1].q), t = MN[mm[N - 1].k % 100 - 1] + " MTD · " + fmtM(mm[N - 1].q) + " · partial";
+            ctx.font = "600 12.5px Inter,sans-serif"; ctx.textAlign = "right"; ctx.textBaseline = "middle"; ctx.lineJoin = "round"; ctx.lineWidth = 4; ctx.strokeStyle = "rgba(255,255,255,.92)"; ctx.strokeText(t, px - 14, py); ctx.fillStyle = "#0f2a5a"; ctx.fillText(t, px - 14, py)
+          }
+          ctx.restore()
+        }
+      };
+      mk("c1", {
+        type: "line",
+        data: {
+          labels: mm.map(x => lab(x.k)), datasets: [
+            { label: "Actual", data: act, borderColor: "#a61935", borderWidth: 3, tension: 0, pointRadius: 0, pointHoverRadius: 5, pointHoverBackgroundColor: "#fff", pointHoverBorderColor: "#a61935", pointHoverBorderWidth: 2, fill: true, spanGaps: false, backgroundColor: c => { const a = c.chart.chartArea; if (!a) return "rgba(166,25,53,.10)"; const g = c.chart.ctx.createLinearGradient(0, a.top, 0, a.bottom); g.addColorStop(0, "rgba(166,25,53,.20)"); g.addColorStop(1, "rgba(166,25,53,.01)"); return g } },
+            { label: "Month to date", data: mtd, borderColor: "#a61935", borderWidth: 2.5, borderDash: [3, 5], borderCapStyle: "round", tension: 0, fill: false, spanGaps: true, pointRadius: c => c.dataIndex === N - 1 ? 6 : 0, pointBackgroundColor: "#fff", pointBorderColor: "#a61935", pointBorderWidth: 2.5 }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: { top: 34, right: 14 } }, interaction: { mode: "index", intersect: false },
+          plugins: { legend: { display: false }, tooltip: { filter: it => it.raw != null && (it.datasetIndex === 0 || it.dataIndex === N - 1), callbacks: { title: it => lab(mm[it[0].dataIndex].k) + (partial && it[0].dataIndex === N - 1 ? " (month to date)" : ""), label: c => " " + n0(c.parsed.y) } } },
+          scales: {
+            x: { grid: { color: c => yrIdx.has(c.index) ? "#ebe6ef" : "transparent", drawTicks: false }, border: { display: false }, ticks: { autoSkip: false, maxRotation: 0, color: "#6d7c99", font: { size: 12 }, callback: (v, i) => yrIdx.has(i) ? String(yr(mm[i].k)) : "" } },
+            y: { beginAtZero: true, suggestedMax: mx * 1.12, grid: { color: "#ece8f0" }, border: { display: false }, ticks: { callback: v => ab(v), color: "#6d7c99", font: { size: 12 }, maxTicksLimit: 6 } }
+          }
+        }, plugins: [plug]
+      })
+    }
+
+
+    /* ---------- Year-to-Year Trend · premium card (best year = green, running year = hatched) ---------- */
+    let YTM = null;
+    const YT_GREEN = "#1f9d55", YT_GREY = "#c9cfdd", YT_RED = "#a61935";
+    function ytHTML(a) {
+      if (!document.getElementById("yt-css")) {
+        const st = document.createElement("style"); st.id = "yt-css";
+        st.textContent = `
+.c.yt{display:flex;flex-direction:column}
+.c.yt .yt-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.c.yt .yt-t{font-size:19px;font-weight:800;color:var(--navy);letter-spacing:-.01em;line-height:1.2}
+.c.yt .yt-s{font-size:12px;color:var(--mute);margin-top:5px}
+.c.yt .yt-lg{display:flex;gap:14px;font-size:12px;color:var(--mute);align-items:center;white-space:nowrap;padding-top:4px;flex-wrap:wrap}
+.c.yt .yt-lg i{display:inline-block;width:12px;height:12px;border-radius:4px;vertical-align:middle;margin-right:6px}
+.c.yt .yt-lg i.b{background:${YT_GREEN}}.c.yt .yt-lg i.o{background:${YT_GREY}}
+.c.yt .yt-lg i.y{background:repeating-linear-gradient(135deg,#f3c9d2 0 3px,#fff 3px 6px);border:1.5px dashed ${YT_RED}}
+.c.yt .yt-p{background:#f5f7fb;border-radius:16px;padding:14px 16px;margin:14px 0 8px}
+.c.yt .yt-r{display:flex;justify-content:space-between;align-items:flex-end;gap:16px 24px;flex-wrap:wrap}
+.c.yt .yt-r small{display:block;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--mute);text-transform:uppercase}
+.c.yt .yt-big{font-size:clamp(24px,2.6vw,34px);font-weight:800;color:var(--navy);letter-spacing:-.02em;line-height:1.1;margin-top:5px;white-space:nowrap}
+.c.yt .yt-md{font-size:clamp(20px,2vw,28px);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-top:5px;white-space:nowrap;color:var(--navy)}
+.c.yt .yt-md.g{color:${YT_GREEN}}.c.yt .yt-md span{font-size:12.5px;font-weight:600;color:var(--mute);letter-spacing:0;margin-left:6px}
+.c.yt .yt-sp{border-left:1px solid #dfe5f0;padding-left:20px}
+.c.yt .yt-tl{display:flex;gap:6px;margin-top:12px}
+.c.yt .yt-tl div{min-width:0;flex:1 1 0;text-align:center;font-size:12px;font-weight:700;padding:9px 2px;border-radius:9px;background:${YT_GREY};color:var(--navy)}
+.c.yt .yt-tl div.b{background:${YT_GREEN};color:#fff}
+.c.yt .yt-tl div.y{background:repeating-linear-gradient(135deg,#f6d9df 0 4px,#fff 4px 8px);border:1.5px dashed ${YT_RED};color:var(--navy)}
+.c.yt .yt-cv{position:relative;flex:1 1 0;min-height:300px;margin-top:6px}`;
+        document.head.appendChild(st);
+      }
+      const yy = grp(a, r => r.y).sort((x, y) => x.k - y.k), N = yy.length, T = yy.reduce((s, x) => s + x.q, 0);
+      const partial = N > 0 && yy[N - 1].k === new Date().getFullYear(), full = partial ? yy.slice(0, -1) : yy;
+      let best = null; full.forEach(x => { if (!best || x.q > best.q) best = x });
+      const avg = full.length ? full.reduce((s, x) => s + x.q, 0) / full.length : null;
+      const P = v => T ? (v / T * 100).toFixed(1) + "%" : "0%";
+      YTM = { yy, N, T, partial, full, best, avg };
+      if (!N) return `<div class="c yt"><div class="yt-t">Year-to-Year Trend</div><div class="yt-s">No data for the selected filters</div></div>`;
+      const cur = partial ? yy[N - 1] : null, rng = yy[0].k + (N > 1 ? " – " + yy[N - 1].k + (partial ? " YTD" : "") : (partial ? " YTD" : ""));
+      const right = (best ? `<div><small>Best year</small><div class="yt-md g">${best.k}<span>${P(best.q)} · ${fmtM(best.q)}</span></div></div>` : "")
+        + (cur ? `<div class="yt-sp"><small>${cur.k} · year still running</small><div class="yt-md">${P(cur.q)}<span>${fmtM(cur.q)} so far</span></div></div>`
+          : (avg != null && full.length > 1 ? `<div class="yt-sp"><small>Avg / year</small><div class="yt-md">${fmtM(avg)}</div></div>` : ""));
+      return `<div class="c yt"><div class="yt-h"><div><div class="yt-t">Year-to-Year Trend</div><div class="yt-s">% on each bar = that year's contribution to the grand total</div></div>
+<div class="yt-lg"><span><i class="b"></i>Best year</span><span><i class="o"></i>Other years</span>${partial ? '<span><i class="y"></i>Year to date</span>' : ""}</div></div>
+<div class="yt-p"><div class="yt-r"><div><small>Grand total · ${rng}</small><div class="yt-big">${n0(T)}</div></div>${right}</div>
+<div class="yt-tl">${yy.map(x => `<div class="${best && x.k === best.k ? "b" : partial && x.k === cur.k ? "y" : ""}" style="flex-grow:${Math.max(.6, x.q / T * N)}">${x.k}</div>`).join("")}</div></div>
+<div class="yt-cv"><canvas id="c2"></canvas></div></div>`
+    }
+    function ytChart() {
+      const { yy, N, T, partial, full, best, avg } = YTM; if (!N) return;
+      const mx = Math.max(...yy.map(x => x.q)), P = v => T ? (v / T * 100).toFixed(1) + "%" : "0%";
+      const isB = i => best && yy[i].k === best.k, isY = i => partial && i === N - 1;
+      const pat = (() => { const c = document.createElement("canvas"); c.width = c.height = 12; const g = c.getContext("2d"); g.fillStyle = "#fbe4e9"; g.fillRect(0, 0, 12, 12); g.strokeStyle = "#efb5c1"; g.lineWidth = 3; g.beginPath(); g.moveTo(-2, 14); g.lineTo(14, -2); g.moveTo(-2, 2); g.lineTo(2, -2); g.moveTo(10, 14); g.lineTo(14, 10); g.stroke(); return c })();
+      const bg = yy.map((x, i) => isY(i) ? document.createElement("canvas").getContext("2d").createPattern(pat, "repeat") : isB(i) ? YT_GREEN : YT_GREY);
+      const pill = (c, x, y, t, fg, bgc) => { c.font = "700 13px Inter,sans-serif"; const w = c.measureText(t).width + 22, h = 24; c.fillStyle = bgc; c.beginPath(); c.roundRect(x - w / 2, y - h / 2, w, h, 12); c.fill(); c.fillStyle = fg; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(t, x, y + .5) };
+      const plug = {
+        id: "ytx",
+        beforeDatasetsDraw(ch) {
+          if (avg == null || full.length < 2) return; const { ctx, chartArea: A, scales: { y } } = ch, ya = y.getPixelForValue(avg);
+          ctx.save(); ctx.setLineDash([5, 4]); ctx.lineWidth = 1.5; ctx.strokeStyle = "#9aa3b8"; ctx.beginPath(); ctx.moveTo(A.left, ya); ctx.lineTo(A.right, ya); ctx.stroke(); ctx.restore()
+        },
+        afterDatasetsDraw(ch) {
+          const { ctx, chartArea: A, scales: { y } } = ch; ctx.save();
+          ch.getDatasetMeta(0).data.forEach((b, i) => {
+            const h = b.base - b.y, v = yy[i].q, pc = P(v);
+            ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.fillStyle = "#0f2a5a"; ctx.font = "500 12px Inter,sans-serif";
+            if (h >= 34) { ctx.fillText(fmtM(v), b.x, b.y - 7); ctx.textBaseline = "middle"; ctx.font = "700 12px Inter,sans-serif"; ctx.fillStyle = isB(i) ? "#fff" : "#0f2a5a"; ctx.fillText(pc, b.x, b.y + 16) }
+            else { ctx.font = "700 11.5px Inter,sans-serif"; ctx.fillText(pc, b.x, b.y - 7); ctx.font = "500 12px Inter,sans-serif"; ctx.fillText(fmtM(v), b.x, b.y - 21) }
+            const t = Math.max(0, i), top = ch.height - 20;
+            if (i === 0) pill(ctx, b.x, top, "—", "#6d7c99", "#eef1f7");
+            else if (isY(i)) pill(ctx, b.x, top, "YTD", YT_RED, "#fbdde3");
+            else { const pv = yy[i - 1].q, d = pv ? (v / pv - 1) * 100 : 0, up = d >= 0; pill(ctx, b.x, top, (up ? "▲ " : "▼ ") + Math.abs(d).toFixed(0) + "%", up ? "#14703e" : "#b3261e", up ? "#e3f6ea" : "#fde8ea") }
+          });
+          if (avg != null && full.length > 1) { const ya = y.getPixelForValue(avg); ctx.font = "700 12.5px Inter,sans-serif"; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic"; ctx.lineJoin = "round"; ctx.lineWidth = 4; ctx.strokeStyle = "rgba(255,255,255,.9)"; const t = "Avg full year " + fmtM(avg); ctx.strokeText(t, A.left + 2, ya - 7); ctx.fillStyle = "#0f2a5a"; ctx.fillText(t, A.left + 2, ya - 7) }
+          ctx.restore()
+        }
+      };
+      mk("c2", {
+        type: "bar",
+        data: { labels: yy.map(x => x.k), datasets: [{ label: "Total Qty", data: yy.map(x => x.q), backgroundColor: bg, borderRadius: 8, borderSkipped: false, borderColor: YT_RED, borderDash: [5, 4], borderWidth: yy.map((x, i) => isY(i) ? 2 : 0), maxBarThickness: 120 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: { top: 24, bottom: 36 } },
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${n0(c.parsed.y)} (${P(c.parsed.y)})` } } },
+          scales: { x: { grid: { display: false }, border: { color: "#d9dfec" }, ticks: { color: "#0f2a5a", font: { size: 14, weight: "700" }, padding: 8 } }, y: { display: false, beginAtZero: true, suggestedMax: mx * 1.08 } }
+        }, plugins: [plug]
+      })
+    }
+
+
+    /* ---------- Year & Month wise Heatmap · premium card ---------- */
+    const HX_BIN = ["#c8303f", "#f4b6bd", "#eef1f7", "#bfe6cb", "#50b078", "#127d45"], HX_TX = ["#fff", "#0f2a5a", "#0f2a5a", "#0f2a5a", "#0f2a5a", "#fff"];
+    function hmRender(a) {
+      const box = document.getElementById("hmc"); if (!box) return;
+      if (!document.getElementById("hx-css")) {
+        const st = document.createElement("style"); st.id = "hx-css";
+        st.textContent = `
+.hxc .hx-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.hxc .hx-t{font-size:19px;font-weight:800;color:var(--navy);letter-spacing:-.01em;line-height:1.2}
+.hxc .hx-s{font-size:12px;color:var(--mute);margin-top:5px}
+.hxc .hx-lg{display:flex;gap:12px;font-size:12px;color:var(--mute);align-items:center;flex-wrap:wrap;padding-top:4px}
+.hxc .hx-lg i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:middle;margin-right:5px}
+.hxc .hx-k{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:12px;margin:14px 0}
+.hxc .hx-k>div{background:#f5f7fb;border-radius:14px;padding:12px 16px;min-width:0}
+.hxc .hx-k small{display:block;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--mute);text-transform:uppercase}
+.hxc .hx-k b{display:block;font-size:clamp(20px,2vw,28px);font-weight:800;color:var(--navy);margin:6px 0 4px;letter-spacing:-.02em;line-height:1.1;white-space:nowrap}
+.hxc .hx-k span{font-size:12px;color:var(--mute)}
+.hxc .hx-w{overflow-x:auto;padding:5px 4px 2px}
+.hxc .hx-g{display:grid;grid-template-columns:64px repeat(12,minmax(54px,1fr)) 150px;gap:6px;min-width:960px;align-items:stretch}
+.hxc .hx-hd{text-align:center;font-size:12.5px;color:var(--mute);font-weight:500;padding:4px 0}
+.hxc .hx-y{display:flex;flex-direction:column;justify-content:center;font-size:16px;font-weight:800;color:var(--navy)}
+.hxc .hx-y small{font-size:10.5px;font-weight:800;color:${YT_GREEN};letter-spacing:.06em}
+.hxc .hx-c{position:relative;height:52px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:15px;font-weight:700;cursor:default;line-height:1.1}
+.hxc .hx-c em{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.08em;margin-top:2px}
+.hxc .hx-c.pk,.hxc .hx-c.lw{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--navy)}
+.hxc .hx-c.run{background:repeating-linear-gradient(135deg,#dfe5f1 0 4px,#f6f8fc 4px 8px);border:1.5px dashed #8d9ab5;color:var(--navy)}
+.hxc .hx-c.no{background:#fafbfd;border:1.5px dashed #d5dbe8;color:var(--mute)}
+.hxc .hx-c:hover{filter:brightness(.95)}
+.hxc .hx-tt{background:#f5f7fb;border-radius:10px;padding:7px 10px;display:flex;flex-direction:column;justify-content:center;gap:5px;cursor:default}
+.hxc .hx-tt div{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+.hxc .hx-tt b{font-size:14px;color:var(--navy);font-weight:800}.hxc .hx-tt span{font-size:11.5px;color:var(--mute)}
+.hxc .hx-tt u{display:block;height:5px;border-radius:9px;background:#e3e8f2;text-decoration:none;overflow:hidden}
+.hxc .hx-tt u i{display:block;height:100%;background:var(--navy);border-radius:9px}
+.hxc .hx-tt u i.r{background:repeating-linear-gradient(135deg,${YT_GREEN} 0 4px,#9fd8b8 4px 8px)}
+.hxc .hx-av{text-align:center;padding-top:10px;font-size:14px;font-weight:700;color:var(--navy)}
+.hxc .hx-av span{display:inline-block;padding:6px 14px;border-radius:99px;background:#f1f4fa}
+.hxc .hx-av span.hi{background:var(--navy);color:#fff}.hxc .hx-av span.lo{background:#fff;border:1.5px solid var(--navy)}
+.hxc .hx-av small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:var(--mute);margin-top:3px}
+.hxc .hx-gt{background:var(--navy);color:#fff;border-radius:12px;padding:10px 12px;margin-top:8px}
+.hxc .hx-gt b{display:block;font-size:16px}.hxc .hx-gt small{font-size:9.5px;font-weight:700;letter-spacing:.06em}
+.hxc .hx-ft{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--mute);margin-top:14px;align-items:center}
+.hxc .hx-ft i{display:inline-block;width:18px;height:14px;border-radius:4px;vertical-align:middle;margin-right:6px}
+#hx-tip{position:fixed;z-index:9999;pointer-events:none;background:var(--navy);color:#fff;padding:7px 11px;border-radius:9px;font-size:12.5px;box-shadow:0 6px 18px rgba(15,42,90,.3);display:none;white-space:nowrap}
+#hx-tip b{font-size:14px;margin-left:6px}
+@media(max-width:900px){.hxc .hx-k{grid-template-columns:1fr}}`;
+        document.head.appendChild(st);
+        const tp = document.createElement("div"); tp.id = "hx-tip"; document.body.appendChild(tp);
+      }
+      const g = new Map(); a.forEach(r => { const q = r.y * 100 + r.m; g.set(q, (g.get(q) || 0) + r.q) });
+      const Ys = [...new Set(a.map(r => r.y))].sort((x, y) => x - y), T = sumq(a);
+      if (!Ys.length || !T) { box.innerHTML = `<div class="hx-t">Year &amp; Month wise Heatmap</div><div class="hx-s">No data for the selected filters</div>`; return }
+      const now = new Date(), cY = now.getFullYear(), cM = now.getMonth() + 1, cD = now.getDate();
+      const V = (y, m) => g.get(y * 100 + m) || 0, run = (y, m) => y === cY && m === cM && V(y, m) > 0;
+      const fullM = []; Ys.forEach(y => { for (let m = 1; m <= 12; m++) { const v = V(y, m); if (v > 0 && !run(y, m)) fullM.push({ y, m, v }) } });
+      const srt = fullM.map(x => x.v).sort((x, y) => x - y), med = srt.length ? srt[Math.floor(srt.length / 2)] : T;
+      const UN = med >= 1e6 ? ["M", 1e6] : ["K", 1e3], dec = med / UN[1] >= 10 ? 0 : 1;
+      const th = [.6, .82, .97, 1.09, 1.21].map(r => +(med * r / UN[1]).toFixed(dec));
+      const bin = v => { const x = v / UN[1]; let b = 0; while (b < 5 && x >= th[b]) b++; return b };
+      const f1 = v => (v / UN[1]).toFixed(1), fu = v => f1(v) + UN[0];
+      const tf = x => x.toFixed(dec), lg = [`&lt;${tf(th[0])}`, `${tf(th[0])}–${tf(th[1])}`, `${tf(th[1])}–${tf(th[2])}`, `${tf(th[2])}–${tf(th[3])}`, `${tf(th[3])}–${tf(th[4])}`, `${tf(th[4])}+`];
+      let pk = null, lw = null; if (fullM.length > 1) fullM.forEach(x => { if (!pk || x.v > pk.v) pk = x; if (!lw || x.v < lw.v) lw = x });
+      /* calendar-month averages over the full years (the first, start-up year is left out when enough years exist) */
+      let fy = Ys.filter(y => y < cY && Array.from({ length: 12 }, (_, i) => V(y, i + 1)).every(v => v > 0)); if (fy.length >= 3 && fy[0] === Ys[0]) fy = fy.slice(1);
+      let av = null, hi = -1, lo = -1;
+      if (fy.length) { av = Array.from({ length: 12 }, (_, i) => fy.reduce((s, y) => s + V(y, i + 1), 0) / fy.length); av.forEach((v, i) => { if (hi < 0 || v > av[hi]) hi = i; if (lo < 0 || v < av[lo]) lo = i }) }
+      const first = Ys[0], lastY = Ys[Ys.length - 1]; let lastM = 12; while (lastM > 1 && !V(lastY, lastM)) lastM--;
+      let firstM = 1; while (firstM < 12 && !V(first, firstM)) firstM++;
+      const partial = run(lastY, lastM), yt = Ys.map(y => { let t = 0; for (let m = 1; m <= 12; m++) t += V(y, m); return t }), mxY = Math.max(...yt);
+      const unL = UN[0] === "M" ? "millions (M)" : "thousands (K)";
+      const rows = Ys.map((y, yi) => {
+        const cells = MN.map((_, i) => {
+          const m = i + 1, v = V(y, m), tip = `${MN[i]} ${y}|${n0(v)}`;
+          if (v <= 0) return `<div class="hx-c no">–</div>`;
+          if (run(y, m)) return `<div class="hx-c run" data-t="${tip}">${f1(v)}<em>MTD</em></div>`;
+          const b = bin(v), isP = pk && pk.y === y && pk.m === m, isL = lw && lw.y === y && lw.m === m;
+          return `<div class="hx-c ${isP ? "pk" : ""} ${isL ? "lw" : ""}" style="background:${HX_BIN[b]};color:${HX_TX[b]}" data-t="${tip}">${f1(v)}${isP ? "<em>PEAK</em>" : isL ? "<em>LOW</em>" : ""}</div>`
+        }).join("");
+        const isRun = y === cY && partial;
+        return `<div class="hx-y">${y}${y === cY ? "<small>YTD</small>" : ""}</div>${cells}<div class="hx-tt" data-t="Total ${y}|${n0(yt[yi])}"><div><b>${fu(yt[yi])}</b><span>${(yt[yi] / T * 100).toFixed(1)}%</span></div><u><i class="${isRun ? "r" : ""}" style="width:${(yt[yi] / mxY * 100).toFixed(1)}%"></i></u></div>`
+      }).join("");
+      const avRow = av ? `<div class="hx-av" style="text-align:left;font-size:14px;padding-top:12px">Avg<small style="text-align:left;font-weight:600;letter-spacing:0">${fy[0]}–${String(fy[fy.length - 1]).slice(2)}</small></div>`
+        + av.map((v, i) => `<div class="hx-av"><span class="${i === hi ? "hi" : i === lo ? "lo" : ""}">${f1(v)}</span>${i === hi ? "<small>▲ HIGH</small>" : i === lo ? "<small>▼ LOW</small>" : ""}</div>`).join("") : `<div></div>${"<div></div>".repeat(12)}`;
+      const rngTxt = `${MN[firstM - 1]} ${first} – ${MN[lastM - 1]} ${lastY}${partial ? " (month to date)" : ""}`;
+      box.innerHTML = `<div class="hx-h"><div><div class="hx-t">Year &amp; Month wise Heatmap</div><div class="hx-s">Monthly volume in ${unL} · the darker the cell, the higher the month</div></div>
+<div class="hx-lg">${lg.map((t, i) => `<span><i style="background:${HX_BIN[i]}"></i>${t}</span>`).join("")}</div></div>
+<div class="hx-k"><div><small>Grand total</small><b>${n0(T)}</b><span>${rngTxt}</span></div>
+<div><small>Best single month</small><b>${pk ? fu(pk.v) : "—"}</b><span>${pk ? MN[pk.m - 1] + " " + pk.y + " · tagged PEAK in the grid" : "—"}</span></div>
+<div><small>Strongest · softest month</small><b>${av ? MN[hi] + " " + fu(av[hi]) + " · " + MN[lo] + " " + fu(av[lo]) : "—"}</b><span>${av ? "average of the full years " + fy[0] + (fy.length > 1 ? "–" + String(fy[fy.length - 1]).slice(2) : "") : "—"}</span></div></div>
+<div class="hx-w"><div class="hx-g"><div class="hx-hd" style="text-align:left">Year</div>${MN.map(x => `<div class="hx-hd">${x}</div>`).join("")}<div class="hx-hd">Total · share</div>${rows}
+${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></div></div></div>
+<div class="hx-ft">${partial ? `<span><i style="background:repeating-linear-gradient(135deg,#dfe5f1 0 3px,#f6f8fc 3px 6px);border:1.5px dashed #8d9ab5"></i>Month still running (${MN[lastM - 1]} ${lastY}, ${cD} days in)</span>` : ""}${pk ? `<span><i style="background:${HX_BIN[5]};box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--navy)"></i>Peak month</span><span><i style="background:${HX_BIN[0]};box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--navy)"></i>Lowest full month</span>` : ""}<span><i style="background:#fafbfd;border:1.5px dashed #d5dbe8"></i>No data yet</span></div>`;
+      const tip = document.getElementById("hx-tip");
+      box.onmousemove = e => { const c = e.target.closest("[data-t]"); if (!c) { tip.style.display = "none"; return } const [l, v] = c.dataset.t.split("|"); tip.innerHTML = `${l}<b>${v}</b>`; tip.style.display = "block"; tip.style.left = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8) + "px"; tip.style.top = e.clientY + 16 + "px" };
+      box.onmouseleave = () => tip.style.display = "none";
+    }
+
     function ov(a) {
-      $("#pgc").innerHTML = cards(a) + `<div class="cg"><div class="c"><h4>Month wise Trend</h4><div class="cv"><canvas id="c1"></canvas></div></div><div class="c"><h4>Year to Year Trend</h4><div class="cv"><canvas id="c2"></canvas></div></div>
- <div class="c w"><h4>Year &amp; Month wise Heatmap</h4><div class="hm" id="hm"></div></div>
- <div class="c w"><h4>Year to Year Trend · Unit wise</h4><div class="cv"><canvas id="c3"></canvas></div></div>
- <div class="c"><h4>Shift wise</h4><div class="cv"><canvas id="p1"></canvas></div></div><div class="c"><h4>MC Type wise</h4><div class="cv"><canvas id="p2"></canvas></div></div><div class="c w"><h4>Process wise</h4><div class="cv" style="height:360px"><canvas id="p3"></canvas></div></div>
+      $("#pgc").innerHTML = cards(a) + `<div class="cg">${mtHTML(a)}${ytHTML(a)}
+ <div class="c w hxc" id="hmc"></div>
+ <div class="c w"><h4>Year to Year Trend · Unit wise</h4><div class="cv"><canvas id="c3"></canvas></div><div id="c3n" style="font-size:12px;color:var(--mute);margin-top:6px"></div></div>
+ <div class="c"><h4>Shift wise</h4><div class="cv"><canvas id="p1"></canvas></div></div><div class="c"><h4>MC Type wise</h4><div class="cv"><canvas id="p2"></canvas></div></div><div class="c"><h4>Process wise</h4><div class="cv" style="height:360px"><canvas id="p3"></canvas></div></div><div class="c"><h4>Types of Process</h4><div class="cv" style="height:360px"><canvas id="p4"></canvas></div></div>
  <div class="c w"><h4>Top 15 Buyer</h4><div class="cv" style="height:330px"><canvas id="c4"></canvas></div></div></div>`;
       const mm = grp(a, r => r.y * 100 + r.m).sort((x, y) => x.k - y.k);
-      mk("c1", { type: "line", data: { labels: mm.map(x => MN[x.k % 100 - 1] + " " + String(Math.floor(x.k / 100)).slice(2)), datasets: [{ label: "Total Qty", data: mm.map(x => x.q), borderColor: "#a61935", backgroundColor: "#a6193522", fill: true, tension: .3, pointRadius: mm.length > 40 ? 0 : 3, borderWidth: 2 }] }, options: opt(false) });
+      mtChart();
       const yy = grp(a, r => r.y).sort((x, y) => x.k - y.k);
-      const yT = yy.reduce((s, x) => s + x.q, 0), o2 = opt(false); o2.layout = { padding: { top: 18 } };
-      mk("c2", { type: "bar", data: { labels: yy.map(x => x.k), datasets: [{ label: "Total Qty", data: yy.map(x => x.q), backgroundColor: "#a61935", borderRadius: 6 }] }, options: o2, plugins: [bpl((d, i) => pct1(yy[i].q, yT))] });
+      ytChart();
       const Y = yy.map(x => x.k), UL = [...new Set(a.map(r => r.unit))].sort(), yu = new Map(); a.forEach(r => { const k = r.y + "|" + r.unit; yu.set(k, (yu.get(k) || 0) + r.q) });
-      const o3 = opt(true); o3.layout = { padding: { top: 18 } };
-      mk("c3", { type: "bar", data: { labels: Y, datasets: UL.map((u, i) => ({ label: u, data: Y.map(y => yu.get(y + "|" + u) || 0), backgroundColor: PAL[i % 8], borderRadius: 5 })) }, options: o3, plugins: [bpl((di, i) => pct1(yu.get(Y[i] + "|" + UL[di]) || 0, yy[i].q))] });
+      const uc = u => UN.indexOf(u) >= 0 ? PAL[UN.indexOf(u) % 8] : "#51607a", ysum = Y.map(y => UL.reduce((t, u) => t + (yu.get(y + "|" + u) || 0), 0));
+      const sh = (y, u, i) => ysum[i] ? (yu.get(y + "|" + u) || 0) / ysum[i] * 100 : 0;
+      mk("c3", {
+        type: "bar",
+        data: { labels: Y, datasets: UL.map(u => ({ label: u, data: Y.map((y, i) => sh(y, u, i)), backgroundColor: uc(u), borderColor: "#fff", borderWidth: 1.5, borderSkipped: false, barPercentage: .62, categoryPercentage: .92 })) },
+        options: {
+          responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: { top: 6 } },
+          plugins: { legend: { display: true, position: "bottom", labels: { boxWidth: 26, boxHeight: 10, padding: 18, font: { size: 13 }, color: "#0f2a5a" } }, tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${n0(yu.get(Y[c.dataIndex] + "|" + c.dataset.label) || 0)} (${c.parsed.y.toFixed(1)}%)` } } },
+          scales: { x: { stacked: true, grid: { display: false }, border: { color: "#9aa3b8" }, ticks: { color: "#0f2a5a", font: { size: 13 } } }, y: { stacked: true, min: 0, max: 100, border: { display: false }, grid: { color: "#e9ebf0" }, ticks: { stepSize: 25, callback: v => v + "%", color: "#6d7c99", font: { size: 12 } } } }
+        },
+        plugins: [{
+          id: "sp", afterDatasetsDraw(ch) {
+            const { ctx } = ch; ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#fff"; ctx.font = "700 12.5px Inter,sans-serif";
+            ch.data.datasets.forEach((ds, di) => ch.getDatasetMeta(di).data.forEach((b, i) => { const v = ds.data[i], h = Math.abs(b.base - b.y); if (v > 0 && h >= 13) ctx.fillText(v.toFixed(1) + "%", b.x, (b.y + b.base) / 2) })); ctx.restore()
+          }
+        }]
+      });
+      const cn = document.getElementById("c3n"); if (cn) cn.textContent = Y.length && Y[Y.length - 1] === new Date().getFullYear() ? Y[Y.length - 1] + " = year-to-date" : "";
       const pie = (id, key) => {
         let g = grp(a, r => r[key] || "N/A").sort((x, y) => y.q - x.q);
         if (g.length > 8) g = g.slice(0, 7).concat({ k: "Others", q: g.slice(7).reduce((s, x) => s + x.q, 0) });
@@ -888,7 +1191,73 @@
           }]
         })
       };
-      pie2("p3", "proc");
+      {
+        const fq = v => Math.abs(v) >= 1e6 ? (v / 1e6).toFixed(2) + "M" : Math.abs(v) >= 1e3 ? (v / 1e3).toFixed(1) + "K" : n0(v);
+        let g = grp(a, r => r.proc || "N/A").sort((x, y) => y.q - x.q); if (g.length > 7) g = g.slice(0, 6).concat({ k: "Others", q: g.slice(6).reduce((t, x) => t + x.q, 0) });
+        const v = g.map(x => x.q), T = v.reduce((x, y) => x + y, 0), P = x => T ? (x / T * 100).toFixed(1) + "%" : "0%", cut = t => t.length > 28 ? t.slice(0, 26) + "…" : t;
+        const isO = (x, i) => x.k === "Others" && g.length > 1 && i === g.length - 1 && g.length === 7;
+        const bc = g.map((x, i) => isO(x, i) ? "#d9d9d9" : i === 0 ? "#2f6f7e" : "#a8d8e6");
+        /* hover tooltip: Top 10 models of the hovered process (value like 6.49M / 735K / 12.0K) */
+        const fm = x => x >= 1e6 ? (x / 1e6).toFixed(2) + "M" : x >= 1e5 ? Math.round(x / 1e3) + "K" : x >= 1e3 ? (x / 1e3).toFixed(1) + "K" : n0(x);
+        const pm = new Map(); a.forEach(r => { const pr = r.proc || "N/A"; let m = pm.get(pr); if (!m) pm.set(pr, m = new Map()); m.set(r.model, (m.get(r.model) || 0) + r.q) });
+        const topM = i => {
+          let m; if (isO(g[i], i)) { m = new Map(); const keep = new Set(g.slice(0, -1).map(x => x.k)); pm.forEach((mm, pr) => { if (!keep.has(pr)) mm.forEach((q, k) => m.set(k, (m.get(k) || 0) + q)) }) } else m = pm.get(g[i].k) || new Map();
+          return [...m].map(([k, q]) => ({ k: k || "N/A", q })).sort((x, y) => y.q - x.q).slice(0, 10)
+        };
+        if (!document.getElementById("pt-css")) {
+          const st = document.createElement("style"); st.id = "pt-css";
+          st.textContent = `#pt-tip{position:fixed;z-index:9999;pointer-events:none;display:none;width:300px;background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 10px 30px rgba(15,42,90,.22);border:1px solid #e3e8f2;font-family:Inter,sans-serif}
+#pt-tip .h{font-size:13px;font-weight:800;color:#0f2a5a;line-height:1.3;word-break:break-word}#pt-tip .h span{display:block;font-size:11.5px;font-weight:600;color:#6d7c99;margin-top:2px}
+#pt-tip .by{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#6d7c99;margin:10px 0 6px;text-transform:uppercase}
+#pt-tip .r{display:grid;grid-template-columns:86px 1fr 52px;align-items:center;gap:8px;margin:5px 0;font-size:12.5px}
+#pt-tip .r em{font-style:normal;color:#0b5fa5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#pt-tip .r u{display:block;height:8px;border-radius:9px;background:#e8ecf3;text-decoration:none;overflow:hidden}
+#pt-tip .r u i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#0a84c6,#00bcd4)}
+#pt-tip .r b{text-align:right;color:#0f2a5a;font-weight:800}`;
+          document.head.appendChild(st); const d = document.createElement("div"); d.id = "pt-tip"; document.body.appendChild(d)
+        }
+        const mkExt = (names, vals, pf, tm) => c => {
+          const tp = document.getElementById("pt-tip"), t = c.tooltip; if (!t || t.opacity === 0 || !t.dataPoints || !t.dataPoints.length) { tp.style.display = "none"; return }
+          const i = t.dataPoints[0].dataIndex, L = tm(i), mx = L.length ? L[0].q : 1;
+          tp.innerHTML = `<div class="h">${esc(names[i])}<span>${fm(vals[i])} · ${pf(vals[i])}</span></div><div class="by">By model · Top ${L.length}</div>` + L.map(x => `<div class="r"><em title="${esc(x.k)}">${esc(x.k)}</em><u><i style="width:${(x.q / mx * 100).toFixed(1)}%"></i></u><b>${fm(x.q)}</b></div>`).join("");
+          tp.style.display = "block"; const R = c.chart.canvas.getBoundingClientRect(); let x = R.left + t.caretX + 16, y = R.top + t.caretY - 20;
+          if (x + tp.offsetWidth > innerWidth - 8) x = R.left + t.caretX - tp.offsetWidth - 16; if (y + tp.offsetHeight > innerHeight - 8) y = innerHeight - tp.offsetHeight - 8; tp.style.left = Math.max(8, x) + "px"; tp.style.top = Math.max(8, y) + "px"
+        };
+        const tt = { enabled: false, external: mkExt(g.map(x => x.k), v, P, topM) };
+        mk("p3", {
+          type: "bar", data: { labels: g.map(x => x.k), datasets: [{ data: v, backgroundColor: bc, borderRadius: 0, barPercentage: .62, categoryPercentage: 1 }] },
+          options: {
+            indexAxis: "y", responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: { right: 56, top: 4, bottom: 4 } },
+            plugins: { legend: { display: false }, tooltip: tt },
+            scales: { x: { display: false, beginAtZero: true }, y: { grid: { display: false }, border: { color: "#b9c0cc" }, ticks: { color: "#3a4d73", font: { size: 11.5 }, padding: 8, callback: function (val) { return cut(String(this.getLabelForValue(val))) } } } }
+          },
+          plugins: [{
+            id: "pl", afterDatasetsDraw(ch) {
+              const { ctx } = ch; ctx.save(); ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.fillStyle = "#3a4d73";
+              ch.getDatasetMeta(0).data.forEach((b, i) => { ctx.font = (i === 0 ? "800 13px" : "500 12.5px") + " Inter,sans-serif"; ctx.fillStyle = i === 0 ? "#0f2a5a" : "#3a4d73"; ctx.fillText(P(v[i]), b.x + 8, b.y) }); ctx.restore()
+            }
+          }]
+        });
+        /* Types of Process doughnut = "Times of Process" column of the uploaded file (1 TIME / 2 TIME / 3 TIME PROCESS) */
+        const g2 = grp(a, r => r.tp || "N/A").sort((x, y) => String(x.k).localeCompare(String(y.k), undefined, { numeric: true })), v2 = g2.map(x => x.q), T2 = v2.reduce((x, y) => x + y, 0), P2 = x => T2 ? (x / T2 * 100).toFixed(1) + "%" : "0%";
+        const hasTP = a.some(r => r.tp), cv = document.getElementById("p4");
+        let nt = document.getElementById("p4n"); if (!nt) { nt = document.createElement("div"); nt.id = "p4n"; nt.style.cssText = "font-size:12.5px;color:var(--mute);padding:8px 2px"; cv.parentNode.appendChild(nt) }
+        nt.textContent = hasTP || !a.length ? "" : "Times of Process data not found. Re-upload the FG file with fg-pack.html (column: Times of Process).";
+        const PC = ["#2f6f7e", "#74cde4", "#e08a00", "#a61935", "#7c4dff", "#1f9d55"], PT = ["#fff", "#0f2a5a", "#fff", "#fff", "#fff", "#fff"];
+        const dc = g2.map((x, i) => x.k === "N/A" ? "#d9d9d9" : PC[i % 6]), dtx = g2.map((x, i) => x.k === "N/A" ? "#0f2a5a" : PT[i % 6]);
+        const pm2 = new Map(); a.forEach(r => { const tk = r.tp || "N/A"; let m = pm2.get(tk); if (!m) pm2.set(tk, m = new Map()); m.set(r.model, (m.get(r.model) || 0) + r.q) });
+        const topM2 = i => [...(pm2.get(g2[i].k) || new Map())].map(([k, q]) => ({ k: k || "N/A", q })).sort((x, y) => y.q - x.q).slice(0, 10);
+        mk("p4", {
+          type: "doughnut", data: { labels: g2.map(x => x.k), datasets: [{ data: v2, backgroundColor: dc, borderColor: "#fff", borderWidth: 2 }] },
+          options: { responsive: true, maintainAspectRatio: false, cutout: "58%", animation: false, plugins: { legend: { position: "bottom", labels: { boxWidth: 10, font: { size: 11 } } }, tooltip: { enabled: false, external: mkExt(g2.map(x => x.k), v2, P2, topM2) } } },
+          plugins: [{
+            id: "ctr", afterDraw(ch) {
+              const { ctx, chartArea: A } = ch, x = (A.left + A.right) / 2, y = (A.top + A.bottom) / 2; ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#0f2a5a"; ctx.font = "800 22px Inter,sans-serif"; ctx.fillText(ab(T2), x, y - 8); ctx.fillStyle = "#6d7c99"; ctx.font = "600 11px Inter,sans-serif"; ctx.fillText("TOTAL", x, y + 13);
+              ch.getDatasetMeta(0).data.forEach((arc, i) => { if (!T2 || v2[i] / T2 < .03) return; const m = (arc.startAngle + arc.endAngle) / 2, r = (arc.innerRadius + arc.outerRadius) / 2; ctx.fillStyle = dtx[i]; ctx.font = "700 13px Inter,sans-serif"; ctx.fillText(P2(v2[i]), arc.x + Math.cos(m) * r, arc.y + Math.sin(m) * r) }); ctx.restore()
+            }
+          }]
+        })
+      }
       const T = sumq(a), tb = grp(a, r => r.buyer || "N/A").sort((x, y) => y.q - x.q).slice(0, 15), P = x => T ? (x / T * 100).toFixed(1) + "%" : "0%", o = opt(false);
       o.scales.x.ticks.autoSkip = false; o.scales.x.ticks.maxRotation = 40; o.layout = { padding: { top: 18 } };
       mk("c4", {
@@ -900,8 +1269,7 @@
           }
         }]
       });
-      const g = new Map(); a.forEach(r => { const q = r.y * 100 + r.m; g.set(q, (g.get(q) || 0) + r.q) }); let mx = 0, mn = Infinity; g.forEach(v => { if (v > 0) { mx = Math.max(mx, v); mn = Math.min(mn, v) } });
-      $("#hm").innerHTML = `<table><tr><th class="y">Year</th>${MN.map(x => `<th>${x}</th>`).join("")}<th>Total</th></tr>${Y.map(y => { let t = 0; return `<tr><td class="y">${y}</td>${MN.map((_, i) => { const v = g.get(y * 100 + i + 1) || 0; t += v; const p = mx > mn ? (v - mn) / (mx - mn) : 1, h = Math.round(p * 120), dk = h > 38 && h < 92; return `<td style="background:${v ? `hsl(${h} 68% ${dk ? 58 : 42}%)` : "#f6f8fc"};color:${v && !dk ? "#fff" : "#0f2a5a"}">${v ? n0(v) : "–"}</td>` }).join("")}<td class="t">${n0(t)}</td></tr>` }).join("")}</table><div style="display:flex;align-items:center;gap:8px;margin-top:8px;font-size:11px;color:var(--mute)">Low<i style="flex:0 0 150px;height:8px;border-radius:99px;background:linear-gradient(90deg,hsl(0 68% 42%),hsl(60 68% 58%),hsl(120 68% 42%))"></i>High</div>`
+      hmRender(a)
     }
     /* ---------- raw data : Model · Color × Year(collapsible) · Month ---------- */
     let PV = [], YR = [], OPEN = new Set(), CM = {}, CG = 0, GT = 0, MX = 0, pgn = 0; const PS = 100;
