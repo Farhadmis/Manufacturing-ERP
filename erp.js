@@ -125,10 +125,10 @@ ERP.sideBanner = async function (ids, packs) {
       "aside.sbx{display:flex;flex-direction:column;overflow-x:hidden;overflow-y:auto}" +
       "aside.sbx>.nv{flex:none}" +
       /* বাকি জায়গা কার্ড নেবে; জায়গা কম হলে min-height রেখে সাইডবার স্ক্রল হবে */
-      ".sbc{flex:none;margin:auto 12px 12px;border-radius:14px;position:relative;overflow:hidden;" +
+      ".sbc{flex:0 1 auto;min-height:0;margin:auto 12px 12px;border-radius:14px;position:relative;overflow:hidden;" +
       "display:flex;flex-direction:column;" +
       "background:#fff;box-shadow:0 4px 14px rgba(16,44,92,.12)}" +
-      ".sbc img{flex:none;width:100%;height:auto;display:block;" +
+      ".sbc img{flex:0 1 auto;min-height:0;width:100%;height:auto;object-fit:cover;object-position:center top;display:block;" +
       "image-rendering:auto;-webkit-backface-visibility:hidden;backface-visibility:hidden}" +
       ".sbc .sbf{flex:none;display:flex;align-items:center;gap:10px;padding:12px;" +
       "color:#fff;background:linear-gradient(180deg,#0c3a8f,#052a72);font-family:Inter,sans-serif}" +
