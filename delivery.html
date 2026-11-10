@@ -667,8 +667,8 @@
     const MN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const n0 = v => Math.round(v).toLocaleString("en-US"), m2 = v => v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const ab = v => Math.abs(v) >= 1e6 ? +(v / 1e6).toFixed(1) + "M" : Math.abs(v) >= 1e3 ? +(v / 1e3).toFixed(0) + "K" : v;
-    /* ---------- load & normalise the uploaded sheet ---------- */
-    const norm = s => String(s).toLowerCase().replace(/[^a-z0-9]/g, "");
+
+    /* ---------- helpers ---------- */
     const clean = s => String(s ?? "").replace(/\s+/g, " ").trim();
     const num = v => { const x = parseFloat(String(v ?? "").replace(/,/g, "")); return isNaN(x) ? 0 : x };
     function pdate(v) {
@@ -676,35 +676,64 @@
       if (typeof v === "number" && v > 20000) { const d = new Date(Math.round((v - 25569) * 864e5)); return [d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate()] }
       v = String(v).trim(); let m = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/); if (m) return [+m[1], +m[2], +m[3]];
       m = v.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/); if (m) { let a = +m[1], b = +m[2], y = +m[3]; if (y < 100) y += 2000; return a > 12 ? [y, b, a] : [y, a, b] }
+      if (/^\d{5}(\.\d+)?$/.test(v) && +v > 20000) return pdate(+v);
       const d = new Date(v); return isNaN(d) ? null : [d.getFullYear(), d.getMonth() + 1, d.getDate()]
     }
     const isIC = v => /(^|[^a-z])ic([^a-z]|$)/i.test(String(v || ""));
     let R = [], mod = null, msg = "";
+
+    /* ---------- packed ডেটা পড়া (Data Manager যেটা Storage-এ রাখে) ---------- */
+    function decodePacked(pk) {
+      const cfg = ERP.PACK.delivery, dims = cfg.dims, meas = cfg.meas;
+      const pick = (src, k, i) => Array.isArray(src) ? src[i] : (src ? src[k] : undefined);
+      const shared = Array.isArray(pk.dict) && pk.dict.length && !Array.isArray(pk.dict[0]) ? pk.dict : null;
+      const D = {};
+      dims.forEach((k, i) => { D[k] = { codes: pick(pk.c, k, i), dc: shared || pick(pk.dict, k, i) } });
+      const Q = {};
+      meas.forEach((k, i) => { Q[k] = Array.isArray(pk.m) ? pk.m[i] : (pk.m && pk.m[k]) || pick(pk.q, k, i) });
+      const n = D.date && D.date.codes ? D.date.codes.length : 0;
+      if (!n) throw new Error("Unknown packed format. keys=" + Object.keys(pk).join(","));
+      const dv = (k, j) => { const o = D[k]; if (!o || !o.codes) return ""; const c = o.codes[j]; return o.dc ? o.dc[c] : c };
+      const mv = (k, j) => Q[k] ? Q[k][j] : null;
+      return { n, dv, mv };
+    }
+
+    async function findPacked() {
+      const ids = [mod.id, ...mod.subs.map(s => s.id)];
+      for (const id of ids) { const pk = await ERP.packed(id, "delivery"); if (pk) return { id, pk } }
+      return null;
+    }
+
     async function load() {
       ME = await ERP.require(); if (!ME) return false;
       const nm = ME.name || ME.login_id; $("#un").textContent = nm; $("#av").textContent = nm.slice(0, 2).toUpperCase();
       const tree = await ERP.tree(); mod = tree.find(m => /deliver/i.test(m.name));
       if (!mod) { msg = "The Delivery module does not exist in the Admin Console."; return true }
       if (!ERP.can(ME, mod.id) && !mod.subs.some(s => ERP.can(ME, s.id, "v", mod.id))) { msg = "You do not have access to the Delivery module."; return true }
-      ERP.sideBanner([mod.id, ...mod.subs.map(s => s.id)], []);
-      let ds = null; for (const id of [mod.id, ...mod.subs.map(s => s.id)]) {
-        const { data: x } = await sb.from("datasets").select("cols").eq("node_id", id).maybeSingle();
-        if (x && x.cols.map(norm).includes("hangerqty")) { ds = await ERP.dataset(id); break }
-      }
-      if (!ds) { msg = "No Delivery data yet. Upload the Delivery Excel from Admin Console → Data Manager → Delivery."; return true }
-      const ix = {}; ds.cols.forEach((c, i) => { const k = norm(c); if (!(k in ix)) ix[k] = i });
-      const g = (r, k) => ix[k] == null ? "" : r.data[ix[k]];
-      ds.rows.forEach(r => {
-        const d = pdate(g(r, "date")); if (!d) return; const hq = num(g(r, "hangerqty")), sq = num(g(r, "sizerqty")), up = num(g(r, "unitprice"));
-        let hv = g(r, "hangervalue"), sv = g(r, "sizervalue"); hv = hv === "" ? hq * up / 100 : num(hv); sv = sv === "" ? sq * up / 100 : num(sv);   // Value = Qty × Unit Price ÷ 100
+      ERP.sideBanner([mod.id, ...mod.subs.map(s => s.id)], [[mod.id, "delivery"]]);
+
+      const found = await findPacked();
+      if (!found) { msg = "No Delivery data yet. Upload the Delivery Excel from Admin Console → Data Manager → Delivery."; return true }
+      let P;
+      try { P = decodePacked(found.pk) } catch (e) { console.error("Delivery packed:", found.pk, e); msg = "Delivery data format could not be read: " + e.message; return true }
+
+      for (let j = 0; j < P.n; j++) {
+        const d = pdate(P.dv("date", j)); if (!d) continue;
+        const hq = num(P.mv("hangerqty", j)), sq = num(P.mv("sizerqty", j)), up = num(P.dv("unitprice", j));
+        let hv = P.mv("hangervalue", j), sv = P.mv("sizervalue", j);
+        hv = (hv == null || hv === "") ? hq * up / 100 : num(hv);
+        sv = (sv == null || sv === "") ? sq * up / 100 : num(sv);
         R.push({
-          y: d[0], m: d[1], d: d[2], ds: `${d[0]}-${String(d[1]).padStart(2, "0")}-${String(d[2]).padStart(2, "0")}`, cust: clean(g(r, "customername")), buyer: clean(g(r, "buyer")).toUpperCase(), model: clean(g(r, "model")).toUpperCase(), mc: clean(g(r, "modelcolor")).toUpperCase(),
-          pay: clean(g(r, "paymentterms")).toUpperCase(), region: clean(g(r, "region")).toUpperCase(), prod: clean(g(r, "prodtype")), ot: isIC(g(r, "ordertype")) ? "IC Order" : "Others Order", hq, sq, up, hv, sv
+          y: d[0], m: d[1], d: d[2], ds: `${d[0]}-${String(d[1]).padStart(2, "0")}-${String(d[2]).padStart(2, "0")}`,
+          cust: clean(P.dv("customername", j)), buyer: clean(P.dv("buyer", j)).toUpperCase(), model: clean(P.dv("model", j)).toUpperCase(),
+          mc: clean(P.dv("modelcolor", j)).toUpperCase(), pay: clean(P.dv("paymentterms", j)).toUpperCase(), region: clean(P.dv("region", j)).toUpperCase(),
+          prod: clean(P.dv("prodtype", j)), ot: isIC(P.dv("ordertype", j)) ? "IC Order" : "Others Order", hq, sq, up, hv, sv
         })
-      });
+      }
       if (!R.length) msg = "The uploaded sheet has no valid rows (check the DATE column)."
       return true
     }
+
     /* ---------- filters ---------- */
     const FD = [["y", "Year", r => r.y], ["m", "Month", r => r.m], ["buyer", "Buyer", r => r.buyer], ["model", "Model", r => r.model], ["prod", "Prod. Type", r => r.prod], ["pay", "Payment Terms", r => r.pay], ["region", "Region", r => r.region], ["ot", "Order Type", r => r.ot]];
     const F = {}; FD.forEach(f => F[f[0]] = new Set()); let from = "", to = "", page = "ov";
@@ -713,7 +742,6 @@
     const lab = (k, v) => k === "m" ? MN[v - 1] : v;
     function fbuild() {
       if (msg) { $("#fb").innerHTML = ""; return }
-      const o = FD.slice(0, 1).concat(FD.slice(1, 2));
       const btn = f => `<div class="f"><button data-k="${f[0]}" class="${F[f[0]].size ? "on" : ""}">${f[1]}${F[f[0]].size ? " (" + F[f[0]].size + ")" : ""}</button></div>`;
       $("#fb").innerHTML = btn(FD[0]) + btn(FD[1]) + `<div class="f d"><span>From</span><input type="date" id="df" value="${from}"></div><div class="f d"><span>To</span><input type="date" id="dt" value="${to}"></div>` + FD.slice(2).map(btn).join("") + `<button class="rs" onclick="reset()">Reset</button>`;
       $("#fb").querySelectorAll("button[data-k]").forEach(b => b.onclick = e => { e.stopPropagation(); pnl(b) });
@@ -723,7 +751,6 @@
       const k = b.dataset.k, p = $("#pn"), r = b.getBoundingClientRect(), L = opts(k);
       p.innerHTML = `<input type="text" placeholder="Search…"><div class="ls">${L.map(v => `<label><input type="checkbox" value="${esc(v)}" ${F[k].has(v) ? "checked" : ""}> ${esc(lab(k, v))}</label>`).join("")}</div><div class="ac"><button data-a="all">Select all</button><button data-a="clr">Clear</button></div>`;
       p.style.left = Math.min(r.left, innerWidth - 240) + "px"; p.style.top = r.bottom + 4 + "px"; p.style.display = "block";
-      const upd = () => { fbuild(); draw() };
       p.querySelector("input[type=text]").oninput = e => p.querySelectorAll("label").forEach(l => l.style.display = l.textContent.toLowerCase().includes(e.target.value.toLowerCase()) ? "" : "none");
       p.querySelectorAll(".ls input").forEach(c => c.onchange = () => { const v = typeof L[0] === "number" ? +c.value : c.value; c.checked ? F[k].add(v) : F[k].delete(v); b.textContent = FD.find(x => x[0] === k)[1] + (F[k].size ? " (" + F[k].size + ")" : ""); b.classList.toggle("on", !!F[k].size); if (k === "buyer") { syncModel(); fbuild() } draw() });
       p.querySelectorAll(".ac button").forEach(x => x.onclick = () => { F[k] = new Set(x.dataset.a === "all" ? L : []); pnl(document.querySelector(`button[data-k=${k}]`) || b); b.textContent = FD.find(z => z[0] === k)[1] + (F[k].size ? " (" + F[k].size + ")" : ""); b.classList.toggle("on", !!F[k].size); if (k === "buyer") { syncModel(); fbuild() } draw() })
@@ -732,6 +759,7 @@
     const flt = () => R.filter(r => FD.every(f => !F[f[0]].size || F[f[0]].has(f[2](r))) && (!from || r.ds >= from) && (!to || r.ds <= to));
     const sum = (a, k) => a.reduce((s, r) => s + r[k], 0);
     function grp(a, kf) { const m = new Map(); a.forEach(r => { const k = kf(r); let o = m.get(k); if (!o) m.set(k, o = { k, hq: 0, sq: 0, hv: 0, sv: 0 }); o.hq += r.hq; o.sq += r.sq; o.hv += r.hv; o.sv += r.sv }); return [...m.values()] }
+
     /* ---------- pages ---------- */
     function show(p) { page = p; document.querySelectorAll(".nv[data-p]").forEach(n => n.classList.toggle("on", n.dataset.p === p)); draw() }
     function draw() {
@@ -783,6 +811,7 @@
       };
       $("#hs").onchange = hm; hm()
     }
+
     /* ---------- raw data ---------- */
     let rows = [], pgn = 0; const PS = 100;
     function raw(a) {
