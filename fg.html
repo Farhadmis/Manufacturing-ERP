@@ -711,6 +711,590 @@
         grid-template-columns: 1fr
       }
     }
+
+    /* ===== Raw Data · premium cards & table (scoped: rk-* / pv2 / rwt only) ===== */
+    .rkp {
+      display: flex;
+      gap: 14px;
+      margin: 6px 0 16px
+    }
+
+    .rk {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(10, 40, 100, .22), inset 0 0 0 1px rgba(255, 255, 255, .18)
+    }
+
+    .rk:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(120% 90% at 0% 0%, rgba(255, 255, 255, .22), transparent 55%);
+      pointer-events: none
+    }
+
+    .rk-t {
+      background: linear-gradient(135deg, #0d3b99, #06214f)
+    }
+
+    .rk-1 {
+      background: linear-gradient(135deg, #2158e0, #0b2f8f)
+    }
+
+    .rk-2 {
+      background: linear-gradient(135deg, #14b8d4, #0c6f8c)
+    }
+
+    .rk-3 {
+      background: linear-gradient(135deg, #34c759, #15803d)
+    }
+
+    .rk-5 {
+      background: linear-gradient(135deg, #8b5cf6, #4c1d95)
+    }
+
+    .rk-ic {
+      position: relative;
+      flex: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, .18);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35)
+    }
+
+    .rk-ic svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .rk-tx {
+      position: relative;
+      min-width: 0;
+      flex: 1
+    }
+
+    .rk-tx small {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      opacity: .95
+    }
+
+    .rk-tx b {
+      display: block;
+      font-size: 20px;
+      font-weight: 800;
+      margin: 2px 0 4px;
+      white-space: nowrap;
+      letter-spacing: -.01em
+    }
+
+    .rk-g {
+      font-size: 11.5px;
+      font-weight: 700;
+      white-space: nowrap
+    }
+
+    .rk-g.up {
+      color: #9bffc0
+    }
+
+    .rk-g.dn {
+      color: #ffc2c2
+    }
+
+    .rk-g.na {
+      opacity: .7
+    }
+
+    .rk-bars {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 26px
+    }
+
+    .rk-bars i {
+      display: block;
+      width: 5px;
+      border-radius: 2px 2px 0 0;
+      background: rgba(255, 255, 255, .35)
+    }
+
+    .rk-bars i.l {
+      background: rgba(255, 255, 255, .85)
+    }
+
+    .rwt {
+      overflow: auto;
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid #c9d9f2;
+      box-shadow: 0 8px 22px rgba(16, 44, 92, .10);
+      max-height: calc(100vh - 300px)
+    }
+
+    .pv2 {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 12.5px;
+      font-variant-numeric: tabular-nums
+    }
+
+    .pv2 th {
+      position: sticky;
+      z-index: 3;
+      color: #fff;
+      white-space: nowrap;
+      padding: 0 10px;
+      text-align: center
+    }
+
+    .pv2 thead tr:first-child th {
+      top: 0;
+      height: 42px
+    }
+
+    .pv2 thead tr:nth-child(2) th {
+      top: 42px;
+      height: 28px
+    }
+
+    .pv2 th.mh {
+      background: linear-gradient(180deg, #0c3a8f, #052a72);
+      font-size: 14px;
+      font-weight: 800;
+      z-index: 6
+    }
+
+    .pv2 th.yh {
+      background: linear-gradient(180deg, #154aa8, #0e3d96);
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      user-select: none;
+      border-left: 1px solid rgba(255, 255, 255, .22)
+    }
+
+    .pv2 th.yh i {
+      font-style: normal;
+      font-size: 10px;
+      opacity: .7;
+      margin-left: 6px;
+      vertical-align: middle
+    }
+
+    .pv2 th.sh {
+      background: #0e3d96;
+      font-size: 11px;
+      font-weight: 600;
+      color: #dbe8ff;
+      border-top: 1px solid rgba(255, 255, 255, .18)
+    }
+
+    .pv2 th.ys {
+      border-left: 1px solid rgba(255, 255, 255, .22)
+    }
+
+    .pv2 th.c1,
+    .pv2 td.c1 {
+      left: 0;
+      min-width: 96px;
+      max-width: 96px
+    }
+
+    .pv2 th.c2,
+    .pv2 td.c2 {
+      left: 96px;
+      min-width: 84px;
+      max-width: 84px
+    }
+
+    .pv2 th.gh {
+      right: 0
+    }
+
+    .pv2 td {
+      height: 34px;
+      padding: 0;
+      border-bottom: 1px solid #e3ebf7;
+      white-space: nowrap
+    }
+
+    .pv2 td.c1,
+    .pv2 td.c2 {
+      position: sticky;
+      background: #fff;
+      z-index: 2;
+      font-weight: 800;
+      padding: 0 10px;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .pv2 td.c2 {
+      border-right: 1px solid #e3ebf7
+    }
+
+    .pv2 td.bc {
+      position: relative;
+      min-width: 128px
+    }
+
+    .pv2 td.bc i {
+      position: absolute;
+      left: 3px;
+      top: 5px;
+      bottom: 5px;
+      max-width: calc(100% - 6px);
+      border-radius: 3px;
+      background: linear-gradient(90deg, #3fcf6b 0%, #8fe3a9 55%, rgba(220, 247, 228, .55) 100%)
+    }
+
+    .pv2 td.bc span {
+      position: relative;
+      display: block;
+      text-align: center;
+      padding: 0 10px;
+      font-weight: 600;
+      color: #10285a;
+      line-height: 34px
+    }
+
+    .pv2 td.bc.z span {
+      color: #7b89a6
+    }
+
+    .pv2 td.bc.gc {
+      position: sticky;
+      right: 0;
+      z-index: 2;
+      background: #fff;
+      min-width: 150px;
+      box-shadow: -6px 0 8px -6px rgba(16, 44, 92, .22)
+    }
+
+    .pv2 td.bc.gc span {
+      font-weight: 700
+    }
+
+    .pv2 td.bc.gc em {
+      font-style: normal;
+      margin-left: 8px;
+      font-weight: 700;
+      color: #3a4d73
+    }
+
+    .pv2 td.ys {
+      border-left: 1px solid #d3e0f4
+    }
+
+    .pv2 tbody tr:hover td {
+      background-color: #f6faff
+    }
+
+    .pv2 tfoot td {
+      position: sticky;
+      bottom: 0;
+      z-index: 3;
+      height: 46px;
+      padding: 0 10px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 14px;
+      color: #fff;
+      background: linear-gradient(180deg, #0c3a8f, #052a72);
+      border-left: 1px solid rgba(255, 255, 255, .18);
+      border-bottom: 0
+    }
+
+    .pv2 tfoot td.f1 {
+      left: 0;
+      z-index: 5;
+      text-align: left;
+      font-size: 13px;
+      min-width: 180px;
+      max-width: none
+    }
+
+    .pv2 tfoot td.f1 svg {
+      width: 18px;
+      height: 18px;
+      vertical-align: -4px;
+      margin-right: 8px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .pv2 tfoot td.gt {
+      right: 0;
+      z-index: 5;
+      background: linear-gradient(180deg, #1a6dff, #0a4fd6);
+      font-size: 15px
+    }
+
+    @media(max-width:900px) {
+      .rkp {
+        overflow-x: auto
+      }
+
+      .rk {
+        min-width: 210px
+      }
+    }
+
+    /* ===== v2: filter bar সবসময় এক লাইনে (zoom করলেও scroll নেই) ===== */
+    .fb {
+      overflow: hidden !important;
+      flex-wrap: nowrap !important;
+      gap: clamp(3px, .5vw, 8px) !important
+    }
+
+    .f,
+    .f.d {
+      min-width: 0 !important;
+      flex: 1 1 0 !important
+    }
+
+    .f.d {
+      flex: 1.5 1 0 !important;
+      gap: 3px !important
+    }
+
+    .f button,
+    .f input {
+      min-width: 0;
+      font-size: clamp(9px, .82vw, 12px) !important;
+      padding: 0 clamp(4px, .6vw, 10px) !important;
+      height: clamp(28px, 2.6vw, 36px) !important
+    }
+
+    .f.d input {
+      padding: 0 2px !important;
+      letter-spacing: -.2px
+    }
+
+    .f.d span {
+      font-size: clamp(8px, .75vw, 11px) !important
+    }
+
+    .rs {
+      padding: 0 clamp(8px, 1vw, 14px) !important;
+      font-size: clamp(10px, .85vw, 13px) !important;
+      height: clamp(28px, 2.6vw, 36px) !important
+    }
+
+    /* ===== v2: Raw Data বাটন (Expand/Collapse/Prev/Next/Download) ===== */
+    .pg .bx {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 38px;
+      padding: 0 16px;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--navy);
+      border: 1.5px solid #cfdcf3;
+      font: 700 13px Inter, sans-serif;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(16, 44, 92, .08);
+      transition: .15s;
+      white-space: nowrap
+    }
+
+    .pg .bx:hover {
+      border-color: #2f6fe4;
+      box-shadow: 0 4px 12px rgba(47, 111, 228, .2)
+    }
+
+    .pg .bx i {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #2f6fe4;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: none
+    }
+
+    .pg .bx i svg {
+      width: 12px;
+      height: 12px;
+      stroke: #fff;
+      stroke-width: 2.6;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .pg .bx.dk {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy)
+    }
+
+    .pg .bx.dk svg {
+      width: 15px;
+      height: 15px;
+      stroke: #fff;
+      stroke-width: 2.2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    /* ===== v3: Raw Data KPI cards — glossy style ===== */
+    .rkp {
+      gap: clamp(8px, 1vw, 16px) !important
+    }
+
+    .rk {
+      min-height: 92px;
+      padding: 14px clamp(10px, 1.1vw, 18px) !important;
+      gap: clamp(8px, .9vw, 14px) !important;
+      border-radius: 16px !important;
+      box-shadow: 0 10px 24px rgba(10, 40, 100, .25), inset 0 0 0 1.5px rgba(255, 255, 255, .38), inset 0 2px 10px rgba(255, 255, 255, .18) !important
+    }
+
+    .rk:before {
+      background: radial-gradient(110% 80% at 0% 0%, rgba(255, 255, 255, .30), transparent 55%), linear-gradient(180deg, rgba(255, 255, 255, .10), transparent 40%) !important
+    }
+
+    .rk-t {
+      background: linear-gradient(135deg, #0b4fd0, #061f5e) !important
+    }
+
+    .rk-1 {
+      background: linear-gradient(135deg, #2f6bf0, #102c9c) !important
+    }
+
+    .rk-2 {
+      background: linear-gradient(135deg, #27d3ee, #0a6f8f) !important
+    }
+
+    .rk-3 {
+      background: linear-gradient(135deg, #46d868, #0f7a36) !important
+    }
+
+    .rk-5 {
+      background: linear-gradient(135deg, #9a6bff, #45199a) !important
+    }
+
+    .rk-ic {
+      width: clamp(40px, 3.6vw, 54px) !important;
+      height: clamp(40px, 3.6vw, 54px) !important;
+      background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, .38), rgba(255, 255, 255, .12)) !important;
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .55), 0 4px 10px rgba(0, 0, 0, .18) !important;
+      z-index: 1
+    }
+
+    .rk-ic svg {
+      width: 56% !important;
+      height: 56% !important;
+      stroke: none !important;
+      fill: #fff !important;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .25))
+    }
+
+    .rk-tx {
+      z-index: 1
+    }
+
+    .rk-tx small {
+      font-size: clamp(11px, .9vw, 13px) !important;
+      font-weight: 700 !important;
+      opacity: 1 !important
+    }
+
+    .rk-tx b {
+      font-size: clamp(17px, 1.65vw, 24px) !important;
+      font-weight: 800 !important;
+      margin: 3px 0 6px !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, .2)
+    }
+
+    .rk-g {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: #fff !important;
+      font-size: clamp(10.5px, .85vw, 12.5px) !important;
+      font-weight: 700 !important;
+      opacity: 1 !important
+    }
+
+    .rk-g em {
+      font-style: normal;
+      font-size: 10px;
+      line-height: 1
+    }
+
+    .rk-g.up em {
+      color: #5dff8f
+    }
+
+    .rk-g.dn em {
+      color: #ff8f8f
+    }
+
+    .rk-bars {
+      right: 10px !important;
+      bottom: 8px !important;
+      gap: 3px !important;
+      height: 40px !important;
+      align-items: flex-end;
+      z-index: 0
+    }
+
+    .rk-bars i {
+      width: 6px !important;
+      border-radius: 2px 2px 0 0 !important;
+      background: linear-gradient(180deg, rgba(255, 255, 255, .5), rgba(255, 255, 255, .12)) !important
+    }
+
+    .rk-bars i.l {
+      background: linear-gradient(180deg, rgba(255, 255, 255, .95), rgba(255, 255, 255, .35)) !important
+    }
+
+    .rk-bars svg {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      pointer-events: none;
+      overflow: visible
+    }
+
+    @media(max-width:1250px) {
+      .rk-bars {
+        opacity: .55;
+        transform: scale(.8);
+        transform-origin: right bottom
+      }
+    }
   </style>
 </head>
 
@@ -838,10 +1422,7 @@
       }
     });
     const pct1 = (v, t) => t && v ? (v / t * 100).toFixed(1) + "%" : "";
-    const cards = a => {
-      const u = {}; a.forEach(r => u[r.unit] = (u[r.unit] || 0) + r.q);
-      return `<div class="kp"><div class="k"><small>Total Qty</small><b>${n0(sumq(a))}</b></div>${UN.map(x => `<div class="k b"><small>${x} Qty</small><b>${n0(u[x] || 0)}</b></div>`).join("")}</div>`
-    };
+    const cards = a => rawCards(a); /* Overview = Raw Data-র মতো একই কার্ড */
     /* ---------- Month-wise Trend · premium card ---------- */
     let MTM = null;
     const MFN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -1290,6 +1871,29 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
       }
       hmRender(a)
     }
+    /* ---------- raw data cards (icon · qty · vs LY · yearly mini bars) ---------- */
+    const IC_F = '<svg viewBox="0 0 24 24"><path fill="#fff" stroke="none" d="M2 21V10l6 3.6V10l6 3.6V3h3.4v10.6H22V21z"/><path fill="rgba(0,40,120,.35)" stroke="none" d="M5 17h2.2v2.2H5zM10 17h2.2v2.2H10zM15 17h2.2v2.2H15zM18.6 17H20v2.2h-1.4z"/></svg>';
+    const IC_C = '<svg viewBox="0 0 24 24"><path fill="#fff" stroke="none" d="M12 2l9 5-9 5-9-5z"/><path fill="#fff" fill-opacity=".85" stroke="none" d="M3 8.9l8.4 4.7V22L3 17.2z"/><path fill="#fff" fill-opacity=".62" stroke="none" d="M21 8.9l-8.4 4.7V22l8.4-4.8z"/></svg>';
+    /* vs LY = latest year (up to its last data day) ÷ same period of the previous year − 1 */
+    function lyInfo(a) {
+      let Y = 0, last = ""; a.forEach(r => { if (r.y > Y) { Y = r.y; last = r.ds } else if (r.y === Y && r.ds > last) last = r.ds });
+      const lm = +last.slice(5, 7), ld = +last.slice(8, 10);
+      return pred => { let c = 0, l = 0; a.forEach(r => { if (!pred(r)) return; if (r.y === Y) c += r.q; else if (r.y === Y - 1 && (r.m < lm || (r.m === lm && r.d <= ld))) l += r.q }); return l > 0 ? (c / l - 1) * 100 : null }
+    }
+    function rawCards(a) {
+      const u = {}, yu = {}, ys = [...new Set(a.map(r => r.y))].sort((x, y) => x - y).slice(-7);
+      a.forEach(r => { u[r.unit] = (u[r.unit] || 0) + r.q; const k = r.unit + "|" + r.y; yu[k] = (yu[k] || 0) + r.q; yu["*|" + r.y] = (yu["*|" + r.y] || 0) + r.q });
+      const ly = lyInfo(a), CL = ["rk-1", "rk-2", "rk-3", "rk-5"];
+      const card = (cls, ico, title, val, pct, key) => {
+        const vs = ys.map(y => yu[key + "|" + y] || 0), mx = Math.max(...vs, 1);
+        const H = 40, BW = 6, GP = 3, hs = vs.map(v => Math.max(10, Math.round(v / mx * 100))), bars = hs.map((h, i) => `<i style="height:${h}%"${i === vs.length - 1 ? ' class="l"' : ""}></i>`).join("");
+        const W = vs.length * (BW + GP) - GP, pts = hs.map((h, i) => [i * (BW + GP) + BW / 2, H - H * h / 100 - 4]);
+        let tr = ""; if (pts.length > 1) { const [lx, ly2] = pts[pts.length - 1], [px, py] = pts[pts.length - 2], an = Math.atan2(ly2 - py, lx - px) * 180 / Math.PI; tr = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><polyline points="${pts.map(p => p.join(",")).join(" ")}" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><polygon points="0,-3.5 7,0 0,3.5" fill="rgba(255,255,255,.9)" transform="translate(${lx},${ly2}) rotate(${an})"/></svg>` }
+        const g = pct == null ? '<span class="rk-g na">– vs LY</span>' : `<span class="rk-g ${pct < 0 ? "dn" : "up"}"><em>${pct < 0 ? "▼" : "▲"}</em>${pct >= 0 ? "+" : ""}${pct.toFixed(1)}% vs LY</span>`;
+        return `<div class="rk ${cls}"><div class="rk-ic">${ico}</div><div class="rk-tx"><small>${esc(title)}</small><b>${n0(val)}</b>${g}</div><div class="rk-bars">${bars}${tr}</div></div>`
+      };
+      return `<div class="rkp">${card("rk-t", IC_F, "Total Qty", sumq(a), ly(() => true), "*")}${UN.map((x, i) => card(CL[i] || "rk-1", IC_C, x + " Qty", u[x] || 0, ly(r => r.unit === x), x)).join("")}</div>`
+    }
     /* ---------- raw data : Model · Color × Year(collapsible) · Month ---------- */
     let PV = [], YR = [], OPEN = new Set(), CM = {}, CG = 0, GT = 0, MX = 0, pgn = 0; const PS = 100;
     function raw(a) {
@@ -1297,17 +1901,21 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
       PV = [...m.values()].sort((x, y) => y.t - x.t || x.model.localeCompare(y.model));
       YR = [...new Set(a.map(r => r.y))].sort((x, y) => x - y); PV.forEach(o => { o.yt = {}; YR.forEach(y => { let t = 0; for (let i = 1; i <= 12; i++)t += o.v.get(y * 100 + i) || 0; o.yt[y] = t }) });
       CM = {}; YR.forEach(y => CM[y] = PV.reduce((x, o) => Math.max(x, o.yt[y]), 0)); CG = PV.reduce((x, o) => Math.max(x, o.t), 0); GT = PV.reduce((x, o) => x + o.t, 0); MX = 0; PV.forEach(o => o.v.forEach(v => { if (v > MX) MX = v }));
-      pgn = 0; $("#pgc").innerHTML = cards(a) + `<div class="pg"><span id="pi"></span><div style="display:flex;gap:8px"><button class="btn g" onclick="ya(1)">Expand all</button><button class="btn g" onclick="ya(0)">Collapse all</button><button class="btn g" onclick="pp(-1)">‹ Prev</button><button class="btn g" onclick="pp(1)">Next ›</button><button class="btn red" onclick="dx()">⬇ Download Excel</button></div></div><div class="tb" id="tb"></div>`; rt()
+      pgn = 0; $("#pgc").innerHTML = rawCards(a) + `<div class="pg"><span id="pi"></span><div style="display:flex;gap:8px"><button class="bx" onclick="ya(1)"><i><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></i>Expand All</button><button class="bx" onclick="ya(0)"><i><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></i>Collapse All</button><button class="bx" onclick="pp(-1)">‹ Prev</button><button class="bx" onclick="pp(1)">Next ›</button><button class="bx dk" onclick="dx()"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>Download Excel</button></div></div><div class="rwt" id="tb"></div>`; rt()
     }
     const ya = f => { OPEN = new Set(f ? YR : []); rt() }, tg = y => { OPEN.has(y) ? OPEN.delete(y) : OPEN.add(y); rt() };
     const pc = (v, t) => t ? (v / t * 100).toFixed(1) + "%" : "0%", bar = (txt, v, m) => v ? `<td class="r db"><i style="width:${m ? Math.max(4, Math.round(v / m * 100)) : 0}%"></i><span>${txt}</span></td>` : `<td class="db"></td>`;
     function rt() {
       const s = pgn * PS, p = PV.slice(s, s + PS);
       $("#pi").textContent = PV.length ? `${s + 1}–${Math.min(s + PS, PV.length)} of ${PV.length} models` : "0 rows";
-      const h1 = YR.map(y => OPEN.has(y) ? `<th colspan="12" class="yh" onclick="tg(${y})">▾ ${y}</th>` : `<th class="yh" onclick="tg(${y})">▸ ${y}</th>`).join(""),
-        h2 = YR.map(y => OPEN.has(y) ? MN.map(x => `<th class="r">${x}</th>`).join("") : `<th class="r">Total Quantity || Contribution %</th>`).join("");
-      const body = p.map(o => `<tr><td class="s">${esc(o.model)}</td><td>${esc(o.color)}</td>${YR.map(y => OPEN.has(y) ? MN.map((_, i) => { const v = o.v.get(y * 100 + i + 1) || 0; return bar(n0(v), v, MX) }).join("") : bar(`${n0(o.yt[y])} <em>|| ${pc(o.yt[y], o.t)}</em>`, o.yt[y], CM[y])).join("")}${bar(`<b>${n0(o.t)}</b> <em>|| ${pc(o.t, GT)}</em>`, o.t, CG)}</tr>`).join("");
-      $("#tb").innerHTML = `<table class="pv"><tr><th class="s" rowspan="2">Model</th><th rowspan="2">Color</th>${h1}<th class="r" rowspan="2">Grand Total || Contribution %</th></tr><tr class="h2">${h2}</tr>${body || `<tr><td colspan="${YR.length + 3}" style="text-align:center;padding:40px;color:#6d7c99">No data for the selected filters</td></tr>`}</table>`
+      const YT = {}, MT = new Map(); PV.forEach(o => { YR.forEach(y => YT[y] = (YT[y] || 0) + o.yt[y]); o.v.forEach((v, k) => MT.set(k, (MT.get(k) || 0) + v)) });
+      const yh = YR.map(y => OPEN.has(y) ? `<th colspan="12" class="yh" onclick="tg(${y})">${y}<i>▾</i></th>` : `<th class="yh" onclick="tg(${y})">${y}<i>▸</i></th>`).join(""),
+        sh = YR.map(y => OPEN.has(y) ? MN.map((x, i) => `<th class="sh${i ? "" : " ys"}">${x}</th>`).join("") : `<th class="sh ys">Qty | % Contribution</th>`).join("");
+      const cell = (txt, v, m, f) => v ? `<td class="bc${f ? " ys" : ""}"><i style="width:${m ? Math.max(4, Math.round(v / m * 100)) : 0}%"></i><span>${txt}</span></td>` : `<td class="bc z${f ? " ys" : ""}"><span>-</span></td>`;
+      const body = p.map(o => `<tr><td class="c1">${esc(o.model)}</td><td class="c2">${esc(o.color)}</td>${YR.map(y => OPEN.has(y) ? MN.map((_, i) => { const v = o.v.get(y * 100 + i + 1) || 0; return cell(n0(v), v, MX, i === 0) }).join("") : cell(`${n0(o.yt[y])} | ${pc(o.yt[y], o.t)}`, o.yt[y], CM[y], true)).join("")}<td class="bc gc"><i style="width:${CG ? Math.max(4, Math.round(o.t / CG * 100)) : 0}%"></i><span><b>${n0(o.t)}</b><em>${pc(o.t, GT)}</em></span></td></tr>`).join("");
+      const ft = YR.map(y => OPEN.has(y) ? MN.map((_, i) => `<td${i ? "" : ' class="ys"'}>${n0(MT.get(y * 100 + i + 1) || 0)}</td>`).join("") : `<td>${n0(YT[y] || 0)}</td>`).join("");
+      const foot = PV.length ? `<tfoot><tr><td class="f1" colspan="2"><svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>Total Production</td>${ft}<td class="gt">${n0(GT)}</td></tr></tfoot>` : "";
+      $("#tb").innerHTML = `<table class="pv2"><thead><tr><th class="mh c1" rowspan="2">Model</th><th class="mh c2" rowspan="2">Color</th>${yh}<th class="mh gh" rowspan="2">Grand Total</th></tr><tr>${sh}</tr></thead><tbody>${body || `<tr><td colspan="${YR.length + 3}" style="text-align:center;padding:40px;color:#6d7c99">No data for the selected filters</td></tr>`}</tbody>${foot}</table>`
     }
     function pp(d) { const mx = Math.max(0, Math.ceil(PV.length / PS) - 1); pgn = Math.min(mx, Math.max(0, pgn + d)); rt(); $("#tb").scrollTop = 0 }
     function dx() {
