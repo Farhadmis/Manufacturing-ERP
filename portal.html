@@ -862,7 +862,7 @@
         }
 
         function openM(id) {
-            cur = mods.find(m => m.id === id); if (/deliver/i.test(cur.name)) { location.href = "delivery.html"; return } if (/finish/i.test(cur.name)) { location.href = "fg.html"; return } const i = mods.indexOf(cur), [bg, ac] = CL[i % 13]; $("#ov").style.display = "grid";
+            cur = mods.find(m => m.id === id); if (/^order\b/i.test(cur.name.trim())) { location.href = "order.html"; return } if (/deliver/i.test(cur.name)) { location.href = "delivery.html"; return } if (/finish/i.test(cur.name)) { location.href = "fg.html"; return } const i = mods.indexOf(cur), [bg, ac] = CL[i % 13]; $("#ov").style.display = "grid";
             $("#md").innerHTML = `<div class="mh" style="background:${ac}"><h3>${esc(cur.name)}</h3><button class="x" onclick="shut()">✕</button></div><div class="tabs" id="tb"></div><div class="body" id="bd"></div>`;
             const t = [cur, ...cur.subs].filter(n => can(n.id, "v", n === cur ? null : cur.id)); $("#tb").innerHTML = t.map((n, j) => `<div class="tab ${j ? "" : "on"}" onclick="tab('${n.id}',this)">${n === cur ? "Overview" : esc(n.name)}</div>`).join("");
             if (t[0]) tab(t[0].id); else $("#bd").innerHTML = '<div class="empty">No access.</div>'
