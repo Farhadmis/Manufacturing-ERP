@@ -100,6 +100,14 @@ const ERP = {
       upper: ["model", "buyer", "color", "shift", "mctype", "process", "timesofprocess"],
       meas: ["totalqty"], need: ["date", "totalqty"], legacyQ: true
     },
+    /* Order module · Outstanding snapshot (তারিখ নেই; প্রতি upload-এ আগেরটা বদলে যায়) */
+    order: {
+      match: /^order\b/i, snap: true,
+      dims: ["date", "buyer", "model", "color", "art"],
+      upper: ["buyer", "model", "color"],
+      meas: ["availablestock", "totaldemand", "totallcrequirement", "productionrequirement"],
+      need: ["buyer", "availablestock", "totaldemand", "totallcrequirement", "productionrequirement"]
+    },
     delivery: {
       match: /deliver/i,
       dims: ["date", "customername", "buyer", "model", "modelcolor", "paymentterms", "region", "prodtype", "ordertype", "unitprice"],
