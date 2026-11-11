@@ -926,18 +926,655 @@
         min-width: 210px
       }
     }
+
+    /* ===== Top 10 Buyer cards (banner header · gradient bars · customer tooltip) ===== */
+    .c.bq {
+      padding: 0;
+      overflow: hidden;
+      border-radius: 18px
+    }
+
+    .bq .bh {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 13px 20px;
+      color: #fff;
+      font-weight: 800;
+      font-size: clamp(15px, 1.35vw, 21px)
+    }
+
+    .bq.bh-h .bh {
+      background: linear-gradient(90deg, #6b0719, #a61935 60%, #c8102e)
+    }
+
+    .bq.bh-s .bh {
+      background: linear-gradient(90deg, #0a3a8f, #1259c4 60%, #1b7fe0)
+    }
+
+    .bq .bh svg {
+      width: 30px;
+      height: 30px;
+      flex: none
+    }
+
+    .bq .bh i {
+      width: 1px;
+      height: 26px;
+      background: rgba(255, 255, 255, .55)
+    }
+
+    .bq .bb {
+      padding: 12px 20px 16px
+    }
+
+    .br {
+      display: grid;
+      grid-template-columns: minmax(90px, 150px) 1fr 62px;
+      align-items: center;
+      gap: 14px;
+      padding: 5px 6px;
+      border-radius: 8px;
+      cursor: default
+    }
+
+    .br:hover {
+      background: #f3f6fc
+    }
+
+    .br em {
+      font-style: normal;
+      text-align: right;
+      font-weight: 700;
+      font-size: 13px;
+      color: #2b4270;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .br u {
+      display: block;
+      height: 14px;
+      border-radius: 9px;
+      background: #e9edf5;
+      overflow: hidden;
+      text-decoration: none
+    }
+
+    .br u s {
+      display: block;
+      height: 100%;
+      border-radius: 9px;
+      text-decoration: none
+    }
+
+    .bq.bh-h .br u s {
+      background: linear-gradient(90deg, #7a0a1c, #e0142f)
+    }
+
+    .bq.bh-s .br u s {
+      background: linear-gradient(90deg, #0a5fb5, #19b6e8)
+    }
+
+    .br b {
+      font-weight: 800;
+      color: #0f2a5a;
+      font-size: 13.5px
+    }
+
+    .c.bsum {
+      display: flex;
+      align-items: center;
+      padding: 14px 6px
+    }
+
+    .bsum .bi {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 24px;
+      border-right: 1px solid #d8e0ee;
+      min-width: 0
+    }
+
+    .bsum .bi:last-child {
+      border-right: 0
+    }
+
+    .bsum .ci {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex: none
+    }
+
+    .bsum .ci svg {
+      width: 26px;
+      height: 26px
+    }
+
+    .bsum small {
+      display: block;
+      font-size: 13px;
+      color: #4a5a78
+    }
+
+    .bsum b {
+      display: block;
+      font-size: clamp(16px, 1.6vw, 22px);
+      font-weight: 800;
+      color: #0f2a5a;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    @media(max-width:900px) {
+      .c.bsum {
+        flex-wrap: wrap
+      }
+
+      .bsum .bi {
+        flex: 1 1 100%;
+        border-right: 0;
+        padding: 6px 14px
+      }
+
+      .br {
+        grid-template-columns: 90px 1fr 56px;
+        gap: 8px
+      }
+    }
+
+    #by-tip {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      display: none;
+      width: 380px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 10px 30px rgba(15, 42, 90, .22);
+      border: 1px solid #e3e8f2;
+      font-family: Inter, sans-serif
+    }
+
+    #by-tip .h {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0f2a5a;
+      line-height: 1.3;
+      word-break: break-word
+    }
+
+    #by-tip .h span {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #6d7c99;
+      margin-top: 2px
+    }
+
+    #by-tip .by {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: #6d7c99;
+      margin: 10px 0 6px;
+      text-transform: uppercase
+    }
+
+    #by-tip .r {
+      display: grid;
+      grid-template-columns: 165px 1fr 54px;
+      align-items: center;
+      gap: 8px;
+      margin: 5px 0;
+      font-size: 12.5px
+    }
+
+    #by-tip .r em {
+      font-style: normal;
+      color: #0b5fa5;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    #by-tip .r u {
+      display: block;
+      height: 8px;
+      border-radius: 9px;
+      background: #e8ecf3;
+      text-decoration: none;
+      overflow: hidden
+    }
+
+    #by-tip .r u i {
+      display: block;
+      height: 100%;
+      border-radius: 9px;
+      background: linear-gradient(90deg, #0a84c6, #00bcd4)
+    }
+
+    #by-tip .r b {
+      text-align: right;
+      color: #0f2a5a;
+      font-weight: 800
+    }
+  
+    /* ===== Delivery Raw Data pivot (same look as FG) ===== */
+    .rwt {
+      overflow: auto;
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid #c9d9f2;
+      box-shadow: 0 8px 22px rgba(16, 44, 92, .10);
+      max-height: calc(100vh - 300px)
+    }
+
+    .pv2 {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 12.5px;
+      font-variant-numeric: tabular-nums
+    }
+
+    .pv2 th {
+      position: sticky;
+      z-index: 3;
+      color: #fff;
+      white-space: nowrap;
+      padding: 0 10px;
+      text-align: center
+    }
+
+    .pv2 thead tr:first-child th {
+      top: 0;
+      height: 42px
+    }
+
+    .pv2 thead tr:nth-child(2) th {
+      top: 42px;
+      height: 28px
+    }
+
+    .pv2 th.mh {
+      background: linear-gradient(180deg, #0c3a8f, #052a72);
+      font-size: 14px;
+      font-weight: 800;
+      z-index: 6
+    }
+
+    .pv2 th.yh {
+      background: linear-gradient(180deg, #154aa8, #0e3d96);
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      user-select: none;
+      border-left: 1px solid rgba(255, 255, 255, .22)
+    }
+
+    .pv2 th.yh i {
+      font-style: normal;
+      font-size: 10px;
+      opacity: .7;
+      margin-left: 6px;
+      vertical-align: middle
+    }
+
+    .pv2 th.sh {
+      background: #0e3d96;
+      font-size: 11px;
+      font-weight: 600;
+      color: #dbe8ff;
+      border-top: 1px solid rgba(255, 255, 255, .18)
+    }
+
+    .pv2 th.ys {
+      border-left: 1px solid rgba(255, 255, 255, .22)
+    }
+
+    .pv2 th.c1,
+    .pv2 td.c1 {
+      left: 0;
+      min-width: 96px;
+      max-width: 96px
+    }
+
+    .pv2 th.c2,
+    .pv2 td.c2 {
+      left: 96px;
+      min-width: 84px;
+      max-width: 84px
+    }
+
+    .pv2 th.gh {
+      right: 0
+    }
+
+    .pv2 td {
+      height: 34px;
+      padding: 0;
+      border-bottom: 1px solid #e3ebf7;
+      white-space: nowrap
+    }
+
+    .pv2 td.c1,
+    .pv2 td.c2 {
+      position: sticky;
+      background: #fff;
+      z-index: 2;
+      font-weight: 800;
+      padding: 0 10px;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .pv2 td.c2 {
+      border-right: 1px solid #e3ebf7
+    }
+
+    .pv2 td.bc {
+      position: relative;
+      min-width: 128px
+    }
+
+    .pv2 td.bc i {
+      position: absolute;
+      left: 3px;
+      top: 5px;
+      bottom: 5px;
+      max-width: calc(100% - 6px);
+      border-radius: 3px;
+      background: linear-gradient(90deg, #3fcf6b 0%, #8fe3a9 55%, rgba(220, 247, 228, .55) 100%)
+    }
+
+    .pv2 td.bc span {
+      position: relative;
+      display: block;
+      text-align: center;
+      padding: 0 10px;
+      font-weight: 600;
+      color: #10285a;
+      line-height: 34px
+    }
+
+    .pv2 td.bc.z span {
+      color: #7b89a6
+    }
+
+    .pv2 td.bc.gc {
+      position: sticky;
+      right: 0;
+      z-index: 2;
+      background: #fff;
+      min-width: 150px;
+      box-shadow: -6px 0 8px -6px rgba(16, 44, 92, .22)
+    }
+
+    .pv2 td.bc.gc span {
+      font-weight: 700
+    }
+
+    .pv2 td.bc.gc em {
+      font-style: normal;
+      margin-left: 8px;
+      font-weight: 700;
+      color: #3a4d73
+    }
+
+    .pv2 td.ys {
+      border-left: 1px solid #d3e0f4
+    }
+
+    .pv2 tbody tr:hover td {
+      background-color: #f6faff
+    }
+
+    .pv2 tfoot td {
+      position: sticky;
+      bottom: 0;
+      z-index: 3;
+      height: 46px;
+      padding: 0 10px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 14px;
+      color: #fff;
+      background: linear-gradient(180deg, #0c3a8f, #052a72);
+      border-left: 1px solid rgba(255, 255, 255, .18);
+      border-bottom: 0
+    }
+
+    .pv2 tfoot td.f1 {
+      left: 0;
+      z-index: 5;
+      text-align: left;
+      font-size: 13px;
+      min-width: 180px;
+      max-width: none
+    }
+
+    .pv2 tfoot td.f1 svg {
+      width: 18px;
+      height: 18px;
+      vertical-align: -4px;
+      margin-right: 8px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .pv2 tfoot td.gt {
+      right: 0;
+      z-index: 5;
+      background: linear-gradient(180deg, #1a6dff, #0a4fd6);
+      font-size: 15px
+    }
+
+    .pg .bx {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 38px;
+      padding: 0 16px;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--navy);
+      border: 1.5px solid #cfdcf3;
+      font: 700 13px Inter, sans-serif;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(16, 44, 92, .08);
+      transition: .15s;
+      white-space: nowrap
+    }
+
+    .pg .bx:hover {
+      border-color: #2f6fe4;
+      box-shadow: 0 4px 12px rgba(47, 111, 228, .2)
+    }
+
+    .pg .bx i {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #2f6fe4;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: none
+    }
+
+    .pg .bx i svg {
+      width: 12px;
+      height: 12px;
+      stroke: #fff;
+      stroke-width: 2.6;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .pg .bx.dk {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy)
+    }
+
+    .pg .bx.dk svg {
+      width: 15px;
+      height: 15px;
+      stroke: #fff;
+      stroke-width: 2.2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    /* Delivery: cell = Hanger Qty | Sizer Qty (wider columns) */
+    .pv2 th.c2,.pv2 td.c2{left:96px;min-width:170px;max-width:170px}
+    .pv2 td.bc{min-width:172px}
+    .pv2 td.bc.gc{min-width:190px}
+    .pv2 th.sh{min-width:150px}
+
+  
+    /* Top 20 Model chart tooltip */
+    #mt-tip {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      display: none;
+      width: 380px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 10px 30px rgba(15, 42, 90, .22);
+      border: 1px solid #e3e8f2;
+      font-family: Inter, sans-serif
+    }
+    #mt-tip .h {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0f2a5a;
+      line-height: 1.3;
+      word-break: break-word
+    }
+    #mt-tip .h span {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #6d7c99;
+      margin-top: 2px
+    }
+    #mt-tip .by {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: #6d7c99;
+      margin: 10px 0 6px;
+      text-transform: uppercase
+    }
+    #mt-tip .r {
+      display: grid;
+      grid-template-columns: 165px 1fr 54px;
+      align-items: center;
+      gap: 8px;
+      margin: 5px 0;
+      font-size: 12.5px
+    }
+    #mt-tip .r em {
+      font-style: normal;
+      color: #0b5fa5;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+    #mt-tip .r u {
+      display: block;
+      height: 8px;
+      border-radius: 9px;
+      background: #e8ecf3;
+      text-decoration: none;
+      overflow: hidden
+    }
+    #mt-tip .r u i {
+      display: block;
+      height: 100%;
+      border-radius: 9px;
+      background: linear-gradient(90deg, #0a84c6, #00bcd4)
+    }
+    #mt-tip .r b {
+      text-align: right;
+      color: #0f2a5a;
+      font-weight: 800
+    }
+  
+    /* ===== Portal-style header (same as Mainetti ERP Portal) ===== */
+    header {
+      height: clamp(66px, 9vh, 88px);
+      padding: 0;
+      gap: 0;
+      align-items: stretch;
+      color: var(--navy);
+      background: linear-gradient(90deg, #f8fbff, #e8f0fc);
+      box-shadow: 0 4px 18px rgba(16, 44, 92, .12);
+      position: relative;
+      z-index: 20
+    }
+    header .hl { display: flex; align-items: center; gap: clamp(12px, 1.5vw, 24px); padding: 0 clamp(14px, 1.8vw, 30px); position: relative; z-index: 2; flex: none }
+    header .hl img { height: clamp(40px, 6.2vh, 58px); display: block }
+    header .bk { width: 36px; height: 36px; flex: none; border-radius: 10px; border: 1px solid #b9c8e3; background: #fff; color: #12408f; font-size: 18px; cursor: pointer; box-shadow: 0 2px 8px rgba(16, 44, 92, .10) }
+    header .bk:hover { border-color: #2f6fe4 }
+    header .logo { font-weight: 800; letter-spacing: .06em; font-size: 20px; line-height: 1; color: var(--navy) }
+    header .logo small { display: block; font-size: 9px; letter-spacing: .2em; margin-top: 3px; color: #12408f; opacity: 1; font-weight: 700 }
+    header .sep { width: 1px; height: 46px; background: #9fb3d3; flex: none }
+    header .tag { background: none; padding: 0; border-radius: 0; font-style: italic; font-weight: 600; color: #12408f; font-size: clamp(12px, 1.15vw, 18px); white-space: nowrap }
+    header .tag i { font-style: normal; margin: 0 .7em; opacity: .55 }
+    header .gr { font-size: 11.5px; color: var(--mute); margin-top: 3px; white-space: nowrap }
+    header .hp { flex: 1; min-width: 0; position: relative; overflow: hidden }
+    header .hp:before { content: ""; position: absolute; inset: 0; background: url(assets/header-photo.jpg) right center/cover no-repeat; -webkit-mask-image: linear-gradient(90deg, transparent, #000 40%); mask-image: linear-gradient(90deg, transparent, #000 40%) }
+    header .hr { position: relative; display: flex; align-items: center; gap: clamp(10px, 1.2vw, 18px); padding: 0 clamp(14px, 1.6vw, 26px) 0 clamp(54px, 5vw, 84px); color: #fff; flex: none }
+    header .hr:before { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, #0a2a70, #0b3d94); clip-path: polygon(44px 0, 100% 0, 100% 100%, 0 100%); z-index: 0 }
+    header .hr > * { position: relative; z-index: 1 }
+    header .hr svg.fy { width: clamp(30px, 2.6vw, 42px); height: clamp(30px, 2.6vw, 42px); flex: none }
+    header .ht b { display: block; font-size: clamp(15px, 1.5vw, 23px); font-weight: 800; white-space: nowrap }
+    header .ht span { display: block; font-size: clamp(9.5px, .8vw, 12px); opacity: .92; margin-top: 2px; white-space: nowrap }
+    header .ub { padding: 4px 14px 4px 4px; font-family: inherit }
+    header .av { width: 30px; height: 30px; font-size: 12px; color: #0b3d94 }
+    header .menu { top: 46px }
+    @media(max-width:1000px) { header .hp, header .gr { display: none } header .hp { flex: 1 } }
+    @media(max-width:700px) { header .tag, header .sep { display: none } }
   </style>
 </head>
 
 <body>
-  <header><button class="bk" onclick="location.href='portal.html'" title="Back to portal">←</button>
-    <div class="logo">MAINETTI<small>BANGLADESH</small></div>
-    <div class="sep"></div>
-    <div class="ttl"><b>Delivery</b><span>Orders, shipments &amp; analytics</span></div>
-    <div class="user"><button class="ub" id="ub"><span class="av" id="av"></span><span id="un"></span> ▾</button>
-      <div class="menu" id="mn">
-        <div onclick="location.href='portal.html'">Portal</div>
-        <div onclick="out()">Sign out</div>
+  <header>
+    <div class="hl">
+      <button class="bk" onclick="location.href='portal.html'" title="Back to portal">←</button>
+      <img src="assets/logo.png" alt="Mainetti Bangladesh" onerror="this.outerHTML='&lt;div class=&quot;logo&quot;&gt;MAINETTI&lt;small&gt;BANGLADESH PVT. LTD.&lt;/small&gt;&lt;/div&gt;'">
+      <div class="sep"></div>
+      <div>
+        <div class="tag">Drive Efficiency<i>/</i>Ensure Quality<i>/</i>Grow Together</div>
+        <div class="gr" id="gr"></div>
+      </div>
+    </div>
+    <div class="hp"></div>
+    <div class="hr"><svg class="fy" viewBox="0 0 24 24"><path fill="#fff" d="M2 21V10l6 3.6V10l6 3.6V4h3.4v9.6H22V21z" /><path fill="rgba(11,61,148,.55)" d="M5 17h2.2v2.2H5zM10 17h2.2v2.2H10zM15 17h2.2v2.2H15z" /><path fill="#fff" opacity=".7" d="M16.2 1.5h2.6v2h-2.6z" /></svg>
+      <div class="ht"><b>Delivery</b><span>Orders, shipments &amp; analytics</span></div>
+      <div class="user"><button class="ub" id="ub"><span class="av" id="av"></span><span id="un"></span> ▾</button>
+        <div class="menu" id="mn">
+          <div onclick="location.href='portal.html'">Portal</div>
+          <div onclick="out()">Sign out</div>
+        </div>
       </div>
     </div>
   </header>
@@ -1006,7 +1643,7 @@
 
     async function load() {
       ME = await ERP.require(); if (!ME) return false;
-      const nm = ME.name || ME.login_id; $("#un").textContent = nm; $("#av").textContent = nm.slice(0, 2).toUpperCase();
+      const nm = ME.name || ME.login_id; $("#un").textContent = nm; { const h = new Date().getHours(); $("#gr").textContent = `Good ${h < 12 ? "morning" : h < 17 ? "afternoon" : "evening"}, ${String(nm).split(" ")[0]}. Here is your operation at a glance.` } $("#av").textContent = nm.slice(0, 2).toUpperCase();
       const tree = await ERP.tree(); mod = tree.find(m => /deliver/i.test(m.name));
       if (!mod) { msg = "The Delivery module does not exist in the Admin Console."; return true }
       if (!ERP.can(ME, mod.id) && !mod.subs.some(s => ERP.can(ME, s.id, "v", mod.id))) { msg = "You do not have access to the Delivery module."; return true }
@@ -1402,6 +2039,69 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
       return `<div class="rk ${cls}"><div class="rk-ic">${ico}</div><div class="rk-tx"><small>${title}</small><b>${fmt(val)}</b>${g}</div>${dBars(ys.map(y => yv[y] || 0))}</div>`
     }
 
+
+    /* ---------- Top 10 Buyer (Hanger / Sizer) ---------- */
+    const BY = { a: [], on: false };
+    function buyerCards(a) {
+      BY.a = a;
+      const E = x => String(x).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+      const fm = x => x >= 1e5 ? (x / 1e6).toFixed(2) + "M" : x >= 1e3 ? (x / 1e3).toFixed(1) + "K" : n0(x);
+      const pc = (x, T) => T ? (x / T * 100).toFixed(1) + "%" : "0%";
+      const one = (id, k, title, ico) => {
+        const g = grp(a, r => r.buyer || "N/A"), T = g.reduce((s, x) => s + x[k], 0), t = g.filter(x => x[k] > 0).sort((x, y) => y[k] - x[k]).slice(0, 10), mx = t.length ? t[0][k] : 1;
+        $("#" + id).innerHTML = `<div class="bh">${ico}<i></i>${title}</div><div class="bb">` + (t.length ? t.map(x => `<div class="br" data-b="${E(x.k)}"><em title="${E(x.k)}">${E(x.k)}</em><u><s style="width:${(x[k] / mx * 100).toFixed(1)}%"></s></u><b>${fm(x[k])}</b></div>`).join("") : '<div style="padding:30px;text-align:center;color:#6d7c99">No data</div>') + `</div>`;
+        return t.length ? `${E(t[0].k)} – ${pc(t[0][k], T)}` : "—"
+      };
+      const h = one("bqh", "hq", "Top 10 Buyer – Hanger Qty", DIC.h), z = one("bqs", "sq", "Top 10 Buyer – Sizer Qty", DIC.s);
+      $("#bsm").innerHTML = `<div class="bi"><div class="ci" style="background:linear-gradient(135deg,#c8102e,#7a0a1c)">${DIC.h}</div><div><small>Top Buyer (Hanger)</small><b>${h}</b></div></div><div class="bi"><div class="ci" style="background:linear-gradient(135deg,#1b7fe0,#0a3a8f)">${DIC.s}</div><div><small>Top Buyer (Sizer)</small><b>${z}</b></div></div>`;
+      if (BY.on) return; BY.on = true;
+      const tp = document.createElement("div"); tp.id = "by-tip"; document.body.appendChild(tp);
+      document.addEventListener("mousemove", e => {
+        const row = e.target.closest && e.target.closest(".bq .br"); if (!row) { tp.style.display = "none"; return }
+        const k = row.closest(".bq").dataset.k, name = row.dataset.b, rows = BY.a.filter(r => (r.buyer || "N/A") === name);
+        const tot = rows.reduce((s, r) => s + r[k], 0), all = BY.a.reduce((s, r) => s + r[k], 0);
+        const cs = grp(rows, r => r.cust || "N/A").filter(x => x[k] > 0).sort((x, y) => y[k] - x[k]).slice(0, 10), mx = cs.length ? cs[0][k] : 1;
+        tp.innerHTML = `<div class="h">${E(name)}<span>${fm(tot)} · ${pc(tot, all)}</span></div><div class="by">By customer · Top ${cs.length}</div>` + cs.map(x => `<div class="r"><em title="${E(x.k)}">${E(x.k)}</em><u><i style="width:${(x[k] / mx * 100).toFixed(1)}%"></i></u><b>${fm(x[k])}</b></div>`).join("");
+        tp.style.display = "block"; let x = e.clientX + 16, y = e.clientY - 20;
+        if (x + tp.offsetWidth > innerWidth - 8) x = e.clientX - tp.offsetWidth - 16; if (y + tp.offsetHeight > innerHeight - 8) y = innerHeight - tp.offsetHeight - 8;
+        tp.style.left = Math.max(8, x) + "px"; tp.style.top = Math.max(8, y) + "px"
+      });
+      document.addEventListener("mouseleave", () => tp.style.display = "none")
+    }
+
+    /* ---------- Top 20 Model (Hanger Qty) · green bars · Top 5 customer tooltip ---------- */
+    function topModel(a) {
+      const fq = v => Math.abs(v) >= 1e6 ? (v / 1e6).toFixed(2) + "M" : Math.abs(v) >= 1e3 ? Math.round(v / 1e3) + "K" : n0(v);
+      const tb = grp(a, r => r.model || "N/A").filter(x => x.hq > 0).sort((x, y) => y.hq - x.hq).slice(0, 20), T = sum(a, "hq");
+      const sb = $("#c9s"); if (sb) sb.textContent = "TOP " + tb.length + " MODELS  |  HANGER QTY";
+      const mxq = tb.length ? tb[0].hq : 1, mix = t => { const L = [191, 230, 205], D = [18, 77, 47]; return "rgb(" + L.map((l, k) => Math.round(l + (D[k] - l) * t)).join(",") + ")" };
+      const bc = tb.map(x => mix(mxq ? Math.pow(x.hq / mxq, .55) : 0));
+      const cm = new Map(); a.forEach(r => { const m = r.model || "N/A"; let o = cm.get(m); if (!o) cm.set(m, o = new Map()); const c = r.cust || "N/A"; o.set(c, (o.get(c) || 0) + r.hq) });
+      let tp = document.getElementById("mt-tip"); if (!tp) { tp = document.createElement("div"); tp.id = "mt-tip"; document.body.appendChild(tp) }
+      const ext = c => {
+        const t = c.tooltip; if (!t || t.opacity === 0 || !t.dataPoints || !t.dataPoints.length) { tp.style.display = "none"; return }
+        const i = t.dataPoints[0].dataIndex, L = [...(cm.get(tb[i].k) || new Map())].map(([k, q]) => ({ k, q })).filter(x => x.q > 0).sort((x, y) => y.q - x.q).slice(0, 5), mx = L.length ? L[0].q : 1;
+        tp.innerHTML = `<div class="h">${esc(tb[i].k)}<span>${fq(tb[i].hq)} · ${T ? (tb[i].hq / T * 100).toFixed(1) : 0}%</span></div><div class="by">By customer · Top ${L.length}</div>` + L.map(x => `<div class="r"><em title="${esc(x.k)}">${esc(x.k)}</em><u><i style="width:${(x.q / mx * 100).toFixed(1)}%"></i></u><b>${fq(x.q)}</b></div>`).join("");
+        tp.style.display = "block"; const R = c.chart.canvas.getBoundingClientRect(); let x = R.left + t.caretX + 16, y = R.top + t.caretY - 20;
+        if (x + tp.offsetWidth > innerWidth - 8) x = R.left + t.caretX - tp.offsetWidth - 16; if (y + tp.offsetHeight > innerHeight - 8) y = innerHeight - tp.offsetHeight - 8;
+        tp.style.left = Math.max(8, x) + "px"; tp.style.top = Math.max(8, y) + "px"
+      };
+      mk("c9", {
+        type: "bar", data: { labels: tb.map(x => x.k), datasets: [{ label: "Hanger Qty", data: tb.map(x => x.hq), backgroundColor: bc, borderRadius: 0, barPercentage: .66, categoryPercentage: 1 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: { top: 28, right: 8 } },
+          plugins: { legend: { display: false }, tooltip: { enabled: false, external: ext } },
+          scales: { x: { grid: { display: false }, border: { color: "#c9d2e3" }, ticks: { autoSkip: false, minRotation: 30, maxRotation: 30, color: "#0f2a5a", font: { size: 12 } } }, y: { beginAtZero: true, border: { display: false }, grid: { color: "#eceff5" }, ticks: { callback: v => fmtM(v), color: "#6d7c99", font: { size: 11.5 }, maxTicksLimit: 6 } } }
+        },
+        plugins: [{
+          id: "mq", afterDatasetsDraw(ch) {
+            const { ctx } = ch; ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.fillStyle = "#0f2a5a"; ctx.font = "800 12.5px Inter,sans-serif";
+            ch.getDatasetMeta(0).data.forEach((b, i) => ctx.fillText(fq(tb[i].hq), b.x, b.y - 10)); ctx.restore()
+          }
+        }]
+      })
+    }
+
     function ov(a) {
       const hq = sum(a, "hq"), sq = sum(a, "sq"), hv = sum(a, "hv"), sv = sum(a, "sv"), ic = a.filter(r => r.ot === "IC Order"), ot = a.filter(r => r.ot !== "IC Order");
       const O = (t, x) => `<div><i>${t}</i><b>H ${n0(sum(x, "hq"))}</b><i>S ${n0(sum(x, "sq"))}</i></div>`;
@@ -1410,8 +2110,8 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
  <div class="c w hxc cmp" id="hmc"></div>
  ${ytHTML(a, "hq", "Year-to-Year Hanger Qty Trend", "c3", "#a61935")}${ytHTML(a, "sq", "Year-to-Year Sizer Qty Trend", "c4", "#2b5bb8")}
  <div class="c"><h4>Region-wise Hanger Quantity Distribution</h4><div class="cv"><canvas id="c5"></canvas></div></div><div class="c"><h4>Region-wise Sizer Quantity Distribution</h4><div class="cv"><canvas id="c6"></canvas></div></div>
- <div class="c"><h4>Top 10 Buyer · Hanger Qty</h4><div class="cv"><canvas id="c7"></canvas></div></div><div class="c"><h4>Top 10 Buyer · Sizer Qty</h4><div class="cv"><canvas id="c8"></canvas></div></div>
- <div class="c w"><h4>Top 10 Hanger Model</h4><div class="cv"><canvas id="c9"></canvas></div></div></div>`;
+ <div class="c bq bh-h" id="bqh" data-k="hq"></div><div class="c bq bh-s" id="bqs" data-k="sq"></div><div class="c w bsum" id="bsm"></div>
+ <div class="c w"><div style="font-size:19px;font-weight:800;color:var(--navy);letter-spacing:.01em;line-height:1.2">TOP 20 MODEL – HANGER QTY</div><div id="c9s" style="font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--mute);margin:6px 0 10px"></div><div class="cv" style="height:400px"><canvas id="c9"></canvas></div><div style="text-align:right;font-size:12px;color:var(--mute);margin-top:6px">Hanger Qty by model &nbsp;·&nbsp; Darker green = higher qty</div></div></div>`;
       const mm = grp(a, r => r.y * 100 + r.m).sort((x, y) => x.k - y.k), ml = mm.map(x => MN[x.k % 100 - 1] + " " + String(Math.floor(x.k / 100)).slice(2));
       const line = (id, l, d, col) => mk(id, { type: "line", data: { labels: l, datasets: [{ label: id === "c1" ? "Hanger Qty" : "Sizer Qty", data: d, borderColor: col, backgroundColor: col + "22", fill: true, tension: .3, pointRadius: d.length > 40 ? 0 : 3, borderWidth: 2 }] }, options: opt(false) });
       mtChart("c1"); mtChart("c2");
@@ -1434,32 +2134,46 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
         };
       pie("c5", "hq"); pie("c6", "sq");
       const top = (id, k, key, col) => { const t = grp(a, r => r[key] || "N/A").sort((x, y) => y[k] - x[k]).filter(x => x[k] > 0).slice(0, 10); mk(id, { type: "bar", data: { labels: t.map(x => x.k), datasets: [{ label: k === "hq" ? "Hanger Qty" : "Sizer Qty", data: t.map(x => x[k]), backgroundColor: col, borderRadius: 5 }] }, options: opt(false, true) }) };
-      top("c7", "hq", "buyer", "#a61935"); top("c8", "sq", "buyer", "#2b5bb8"); top("c9", "hq", "model", "#e08a00");
+      buyerCards(a); topModel(a);
       hmRender(a)
     }
 
-    /* ---------- raw data ---------- */
-    let rows = [], pgn = 0; const PS = 100;
+    /* ---------- raw data : Model · Model & Color × Year(collapsible) · Month — cell = Hanger Qty | Sizer Qty ---------- */
+    let PVT = [], PYR = [], POPEN = new Set(), PCMX = {}, PCGX = 0, PGTH = 0, PGTS = 0, PMXH = 0, pgn = 0; const PS = 100;
     function raw(a) {
       const m = new Map(); a.forEach(r => {
-        const k = [r.ds, r.buyer, r.model, r.ot].join("|"); let o = m.get(k); if (!o) m.set(k, o = { ds: r.ds, cust: new Set(), buyer: r.buyer, model: r.model, mc: new Set(), ot: r.ot, hq: 0, sq: 0, hv: 0, sv: 0, up: new Set() });
-        if (r.cust) o.cust.add(r.cust); if (r.mc) o.mc.add(r.mc); o.up.add(r.up); o.hq += r.hq; o.sq += r.sq; o.hv += r.hv; o.sv += r.sv
+        const k = r.model + "|" + r.mc; let o = m.get(k); if (!o) m.set(k, o = { model: r.model, mc: r.mc, h: new Map(), s: new Map(), th: 0, ts: 0 });
+        const q = r.y * 100 + r.m; o.h.set(q, (o.h.get(q) || 0) + r.hq); o.s.set(q, (o.s.get(q) || 0) + r.sq); o.th += r.hq; o.ts += r.sq
       });
-      rows = [...m.values()].map(o => ({
-        Date: o.ds, "Customer Name": [...o.cust].join(", "), Buyer: o.buyer, Model: o.model, "Model & Color": [...o.mc].join(", "), "Hanger Qty": o.hq, "Sizer Qty": o.sq,
-        "Unit Price": o.up.size === 1 ? [...o.up][0] : ((o.hq + o.sq) ? (o.hv + o.sv) / (o.hq + o.sq) * 100 : 0), "Hanger Value": o.hv, "Sizer Value": o.sv, "Order Type": o.ot
-      })).sort((x, y) => y.Date.localeCompare(x.Date) || x.Buyer.localeCompare(y.Buyer));
+      PVT = [...m.values()].sort((x, y) => y.th - x.th || x.model.localeCompare(y.model));
+      PYR = [...new Set(a.map(r => r.y))].sort((x, y) => x - y);
+      PVT.forEach(o => { o.yh = {}; o.ys = {}; PYR.forEach(y => { let h = 0, s = 0; for (let i = 1; i <= 12; i++) { h += o.h.get(y * 100 + i) || 0; s += o.s.get(y * 100 + i) || 0 } o.yh[y] = h; o.ys[y] = s }) });
+      PCMX = {}; PYR.forEach(y => PCMX[y] = PVT.reduce((x, o) => Math.max(x, o.yh[y]), 0));
+      PCGX = PVT.reduce((x, o) => Math.max(x, o.th), 0); PGTH = PVT.reduce((x, o) => x + o.th, 0); PGTS = PVT.reduce((x, o) => x + o.ts, 0);
+      PMXH = 0; PVT.forEach(o => o.h.forEach(v => { if (v > PMXH) PMXH = v }));
       pgn = 0; const hq = sum(a, "hq"), sq = sum(a, "sq"), hv = sum(a, "hv"), sv = sum(a, "sv"), up = (hq + sq) ? (hv + sv) / (hq + sq) * 100 : 0;
       $("#pgc").innerHTML = `<div class="rkp">${dCard(a, "rk-t", DIC.h, "Hanger Qty", "hq", n0)}${dCard(a, "rk-2", DIC.s, "Sizer Qty", "sq", n0)}<div class="rk rk-5"><div class="rk-ic">${DIC.t}</div><div class="rk-tx"><small>Unit Price (weighted avg)</small><b>${m2(up)}</b><span class="rk-g na">Weighted average</span></div></div>${dCard(a, "rk-1", DIC.v, "Hanger Value", "hv", m2)}${dCard(a, "rk-3", DIC.v, "Sizer Value", "sv", m2)}</div>
- <div class="pg"><span id="pi"></span><div style="display:flex;gap:8px"><button class="btn g" onclick="pp(-1)">‹ Prev</button><button class="btn g" onclick="pp(1)">Next ›</button><button class="btn red" onclick="dx()">⬇ Download Excel</button></div></div><div class="tb" id="tb"></div>`; rt()
+ <div class="pg"><span id="pi"></span><div style="display:flex;gap:8px"><button class="bx" onclick="pvAll(1)"><i><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></i>Expand All</button><button class="bx" onclick="pvAll(0)"><i><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></i>Collapse All</button><button class="bx" onclick="pp(-1)">‹ Prev</button><button class="bx" onclick="pp(1)">Next ›</button><button class="bx dk" onclick="dx()"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>Download Excel</button></div></div><div class="rwt" id="tb"></div>`; rt()
     }
+    const pvAll = f => { POPEN = new Set(f ? PYR : []); rt() }, pvTog = y => { POPEN.has(y) ? POPEN.delete(y) : POPEN.add(y); rt() };
     function rt() {
-      const C = ["Date", "Customer Name", "Buyer", "Model", "Model & Color", "Hanger Qty", "Sizer Qty", "Unit Price", "Hanger Value", "Sizer Value", "Order Type"], NU = { "Hanger Qty": n0, "Sizer Qty": n0, "Unit Price": m2, "Hanger Value": m2, "Sizer Value": m2 }, s = pgn * PS, p = rows.slice(s, s + PS);
-      $("#pi").textContent = rows.length ? `${s + 1}–${Math.min(s + PS, rows.length)} of ${rows.length} rows` : "0 rows";
-      $("#tb").innerHTML = `<table><tr>${C.map(c => `<th class="${NU[c] ? "r" : ""}">${c}</th>`).join("")}</tr>${p.map(r => `<tr>${C.map(c => c === "Order Type" ? `<td><span class="tag ${r[c] === "IC Order" ? "ic" : ""}">${r[c]}</span></td>` : NU[c] ? `<td class="r">${NU[c](r[c])}</td>` : `<td title="${esc(r[c])}">${esc(r[c])}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="11" style="text-align:center;padding:40px;color:#6d7c99">No data for the selected filters</td></tr>`}</table>`
+      const s = pgn * PS, p = PVT.slice(s, s + PS), hs = (h, q) => (h || q) ? n0(h) + " | " + n0(q) : "";
+      $("#pi").textContent = PVT.length ? `${s + 1}–${Math.min(s + PS, PVT.length)} of ${PVT.length} models` : "0 rows";
+      const YH = {}, YS = {}, MH = new Map(), MS = new Map(); PVT.forEach(o => { PYR.forEach(y => { YH[y] = (YH[y] || 0) + o.yh[y]; YS[y] = (YS[y] || 0) + o.ys[y] }); o.h.forEach((v, k) => MH.set(k, (MH.get(k) || 0) + v)); o.s.forEach((v, k) => MS.set(k, (MS.get(k) || 0) + v)) });
+      const yh = PYR.map(y => POPEN.has(y) ? `<th colspan="12" class="yh" onclick="pvTog(${y})">${y}<i>▾</i></th>` : `<th class="yh" onclick="pvTog(${y})">${y}<i>▸</i></th>`).join(""),
+        sh = PYR.map(y => POPEN.has(y) ? MN.map((x, i) => `<th class="sh${i ? "" : " ys"}">${x}</th>`).join("") : `<th class="sh ys">Hanger Qty | Sizer Qty</th>`).join("");
+      const cell = (h, q, m, f) => (h || q) ? `<td class="bc${f ? " ys" : ""}">${h > 0 ? `<i style="width:${m ? Math.max(4, Math.round(h / m * 100)) : 0}%"></i>` : ""}<span>${hs(h, q)}</span></td>` : `<td class="bc z${f ? " ys" : ""}"><span>-</span></td>`;
+      const body = p.map(o => `<tr><td class="c1" title="${esc(o.model)}">${esc(o.model)}</td><td class="c2" title="${esc(o.mc)}">${esc(o.mc)}</td>${PYR.map(y => POPEN.has(y) ? MN.map((_, i) => { const k = y * 100 + i + 1; return cell(o.h.get(k) || 0, o.s.get(k) || 0, PMXH, i === 0) }).join("") : cell(o.yh[y], o.ys[y], PCMX[y], true)).join("")}<td class="bc gc">${o.th > 0 ? `<i style="width:${PCGX ? Math.max(4, Math.round(o.th / PCGX * 100)) : 0}%"></i>` : ""}<span><b>${hs(o.th, o.ts)}</b></span></td></tr>`).join("");
+      const ft = PYR.map(y => POPEN.has(y) ? MN.map((_, i) => { const k = y * 100 + i + 1; return `<td${i ? "" : ' class="ys"'}>${hs(MH.get(k) || 0, MS.get(k) || 0) || "-"}</td>` }).join("") : `<td>${hs(YH[y] || 0, YS[y] || 0) || "-"}</td>`).join("");
+      const foot = PVT.length ? `<tfoot><tr><td class="f1" colspan="2"><svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>Total Delivery</td>${ft}<td class="gt">${hs(PGTH, PGTS)}</td></tr></tfoot>` : "";
+      $("#tb").innerHTML = `<table class="pv2"><thead><tr><th class="mh c1" rowspan="2">Model</th><th class="mh c2" rowspan="2">Model &amp; Color</th>${yh}<th class="mh gh" rowspan="2">Grand Total</th></tr><tr>${sh}</tr></thead><tbody>${body || `<tr><td colspan="${PYR.length + 3}" style="text-align:center;padding:40px;color:#6d7c99">No data for the selected filters</td></tr>`}</tbody>${foot}</table>`
     }
-    function pp(d) { const mx = Math.max(0, Math.ceil(rows.length / PS) - 1); pgn = Math.min(mx, Math.max(0, pgn + d)); rt(); $("#tb").scrollTop = 0 }
-    function dx() { if (!rows.length || !window.XLSX) return alert("Nothing to download."); const w = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(w, XLSX.utils.json_to_sheet(rows), "Delivery"); XLSX.writeFile(w, "Delivery_Raw_Data_" + new Date().toISOString().slice(0, 10) + ".xlsx") }
+    function pp(d) { const mx = Math.max(0, Math.ceil(PVT.length / PS) - 1); pgn = Math.min(mx, Math.max(0, pgn + d)); rt(); $("#tb").scrollTop = 0 }
+    function dx() {
+      if (!PVT.length || !window.XLSX) return alert("Nothing to download.");
+      const rows = PVT.map(o => { const r = { Model: o.model, "Model & Color": o.mc }; PYR.forEach(y => { r[y + " Hanger Qty"] = o.yh[y]; r[y + " Sizer Qty"] = o.ys[y]; MN.forEach((n, i) => { r[y + "-" + n + " Hanger Qty"] = o.h.get(y * 100 + i + 1) || 0; r[y + "-" + n + " Sizer Qty"] = o.s.get(y * 100 + i + 1) || 0 }) }); r["Grand Total Hanger Qty"] = o.th; r["Grand Total Sizer Qty"] = o.ts; return r });
+      const w = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(w, XLSX.utils.json_to_sheet(rows), "Delivery"); XLSX.writeFile(w, "Delivery_Raw_Data_" + new Date().toISOString().slice(0, 10) + ".xlsx")
+    }
     async function init() {
       $("#pgc").innerHTML = '<div class="empty"><b>Delivery</b>Loading data…</div>';
       try { if (!(await load())) return } catch (e) { console.error(e); msg = "Could not load data: " + (e.message || e) }
