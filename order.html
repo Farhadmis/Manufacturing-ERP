@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Mainetti · Order Management</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0f2a5a;
+            --red: #a61935;
+            --mute: #6d7c99;
+            --line: #dbe4f2
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, sans-serif;
+            color: var(--navy);
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: radial-gradient(900px 500px at 15% 0%, #f6faff, transparent), linear-gradient(180deg, #e9f1fc, #dce8f9)
+        }
+
+        /* ===== header ===== */
+        header {
+            flex: none;
+            position: relative;
+            z-index: 20;
+            display: flex;
+            align-items: stretch;
+            height: clamp(66px, 9vh, 88px);
+            background: linear-gradient(90deg, #f8fbff, #e8f0fc);
+            box-shadow: 0 4px 18px rgba(16, 44, 92, .12)
+        }
+
+        .hl {
+            display: flex;
+            align-items: center;
+            gap: clamp(12px, 1.5vw, 24px);
+            padding: 0 clamp(14px, 1.8vw, 30px);
+            position: relative;
+            z-index: 2;
+            flex: none
+        }
+
+        .hl img {
+            height: clamp(40px, 6.2vh, 58px);
+            display: block;
+        }
+
+        .logo {
+            font-weight: 800;
+            letter-spacing: .06em;
+            font-size: 20px;
+            line-height: 1;
+            color: var(--navy)
+        }
+
+        .logo small {
+            display: block;
+            font-size: 9px;
+            letter-spacing: .2em;
+            margin-top: 3px;
+            color: #12408f
+        }
+
+        .sep {
+            width: 1px;
+            height: 46px;
+            background: #9fb3d3;
+            flex: none
+        }
+
+        .tag {
+            font-style: italic;
+            font-weight: 600;
+            color: #12408f;
+            font-size: clamp(12px, 1.15vw, 18px);
+            white-space: nowrap
+        }
+
+        .tag i {
+            font-style: normal;
+            margin: 0 .7em;
+            opacity: .55
+        }
+
+        .gr {
+            font-size: 11.5px;
+            color: var(--mute);
+            margin-top: 3px;
+            white-space: nowrap
+        }
+
+        .hp {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+            overflow: hidden
+        }
+
+        .hp:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url(assets/header-photo.jpg) right center/cover no-repeat;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 40%);
+            mask-image: linear-gradient(90deg, transparent, #000 40%)
+        }
+
+        .hr {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: clamp(10px, 1.2vw, 18px);
+            padding: 0 clamp(14px, 1.6vw, 26px) 0 clamp(54px, 5vw, 84px);
+            color: #fff;
+            flex: none
+        }
+
+        .hr:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(100deg, #0a2a70, #0b3d94);
+            clip-path: polygon(44px 0, 100% 0, 100% 100%, 0 100%);
+            z-index: 0
+        }
+
+        .hr>* {
+            position: relative;
+            z-index: 1
+        }
+
+        .hr svg.fy {
+            width: clamp(30px, 2.6vw, 42px);
+            height: clamp(30px, 2.6vw, 42px);
+            flex: none
+        }
+
+        .ht b {
+            display: block;
+            font-size: clamp(15px, 1.5vw, 23px);
+            font-weight: 800;
+            white-space: nowrap
+        }
+
+        .ht span {
+            display: block;
+            font-size: clamp(9.5px, .8vw, 12px);
+            opacity: .92;
+            margin-top: 2px;
+            white-space: nowrap
+        }
+
+        .user {
+            position: relative
+        }
+
+        .ub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, .14);
+            border: 1px solid rgba(255, 255, 255, .4);
+            color: #fff;
+            border-radius: 999px;
+            padding: 4px 14px 4px 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit
+        }
+
+        .av {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #fff;
+            color: #0b3d94;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: 12px
+        }
+
+        .menu {
+            position: absolute;
+            right: 0;
+            top: 46px;
+            background: #fff;
+            color: var(--navy);
+            border-radius: 12px;
+            box-shadow: 0 14px 34px rgba(16, 44, 92, .25);
+            min-width: 170px;
+            display: none;
+            overflow: hidden;
+            z-index: 30
+        }
+
+        .menu div {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-weight: 600
+        }
+
+        .menu div:hover {
+            background: #f1f5fc
+        }
+
+        /* ===== grid ===== */
+        main {
+            flex: 1;
+            min-height: 0;
+            width: 100%;
+            max-width: 1900px;
+            margin: 0 auto;
+            padding: clamp(10px, 1.8vh, 18px) clamp(12px, 1.6vw, 24px) clamp(6px, 1vh, 10px);
+            display: flex
+        }
+
+        .grid {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            column-gap: 0;
+            row-gap: 14px;
+            margin: 0 -7px;
+            grid-template-columns: repeat(120, minmax(0, 1fr))
+        }
+
+        .card {
+            container-type: inline-size;
+            position: relative;
+            overflow: hidden;
+            margin: 0 7px;
+            border-radius: 20px;
+            padding: clamp(10px, 1.5vh, 18px) clamp(12px, 1.2vw, 20px);
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: linear-gradient(135deg, var(--t1), var(--t2));
+            border: 2px solid rgba(255, 255, 255, .9);
+            outline: 1.5px solid var(--bd);
+            outline-offset: -1.5px;
+            box-shadow: 0 10px 24px color-mix(in srgb, var(--a1) 20%, transparent), inset 0 1px 0 rgba(255, 255, 255, .95), inset 0 0 22px rgba(255, 255, 255, .35);
+            transition: .2s
+        }
+
+        .card:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 26%;
+            height: clamp(14px, 2.4vh, 24px);
+            background: linear-gradient(225deg, var(--a1), transparent 75%);
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 100% 100%;
+            opacity: .85;
+            pointer-events: none
+        }
+
+        .card.ok {
+            cursor: pointer
+        }
+
+        .card.ok:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 34px color-mix(in srgb, var(--a1) 32%, transparent), inset 0 1px 0 rgba(255, 255, 255, .95)
+        }
+
+        .card.lock {
+            filter: grayscale(.6);
+            opacity: .7
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            gap: clamp(8px, .9vw, 14px);
+            flex-wrap: nowrap;
+            position: relative;
+            z-index: 1
+        }
+
+        .ic {
+            position: relative;
+            width: clamp(42px, 4vw, 68px);
+            aspect-ratio: 1;
+            border-radius: 50%;
+            flex: none;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: radial-gradient(circle at 30% 22%, var(--a2), var(--a1));
+            box-shadow: 0 8px 16px color-mix(in srgb, var(--a1) 50%, transparent), inset 0 0 0 3px rgba(255, 255, 255, .55), inset 0 -6px 10px rgba(0, 0, 0, .18)
+        }
+
+        .ic:before {
+            content: "";
+            position: absolute;
+            left: 14%;
+            right: 14%;
+            top: 5%;
+            height: 42%;
+            border-radius: 50%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, .6), rgba(255, 255, 255, 0))
+        }
+
+        .ic svg {
+            position: relative;
+            width: 62%;
+            height: 62%;
+            fill: currentColor;
+            fill-rule: evenodd;
+            stroke: none;
+            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .3))
+        }
+
+        .row h3 {
+            margin: 0;
+            font-weight: 800;
+            flex: 1 1 0;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--navy);
+            font-size: clamp(16px, 1.5vw, 24px)
+        }
+
+        .card p {
+            margin: 6px 0;
+            font-size: clamp(11px, .88vw, 14px);
+            line-height: 1.5;
+            color: #33466e;
+            max-width: 88%;
+            position: relative;
+            z-index: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden
+        }
+
+        .btn,
+        .no {
+            align-self: flex-start;
+            position: relative;
+            z-index: 1
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 99px;
+            padding: clamp(7px, 1.1vh, 11px) clamp(14px, 1.4vw, 22px);
+            font-weight: 700;
+            font-size: clamp(11px, .9vw, 15px);
+            color: #fff;
+            cursor: pointer;
+            font-family: inherit;
+            white-space: nowrap;
+            background: linear-gradient(180deg, var(--a2), var(--a1));
+            box-shadow: 0 6px 12px color-mix(in srgb, var(--a1) 40%, transparent), inset 0 1px 0 rgba(255, 255, 255, .35)
+        }
+
+        .no {
+            display: inline-block;
+            border: 1px dashed #aab6cc;
+            border-radius: 99px;
+            padding: 8px 16px;
+            font-size: 13px;
+            color: var(--mute);
+            font-weight: 600
+        }
+
+        .num {
+            position: absolute;
+            right: 12px;
+            bottom: 10px;
+            z-index: 1;
+            min-width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--a1);
+            background: rgba(255, 255, 255, .75);
+            border: 1px solid rgba(255, 255, 255, .9);
+            box-shadow: 0 2px 6px rgba(16, 44, 92, .12)
+        }
+
+        .wm {
+            position: absolute;
+            right: -4px;
+            bottom: -6px;
+            width: 44cqw;
+            max-width: 200px;
+            aspect-ratio: 1;
+            opacity: .2;
+            pointer-events: none;
+            color: var(--a1)
+        }
+
+        .wm svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+            fill-rule: evenodd;
+            stroke: none
+        }
+
+        .grid.tight p {
+            display: none
+        }
+
+        .grid.mini .btn,
+        .grid.mini .no {
+            display: none
+        }
+
+        .grid.mini .card {
+            justify-content: center
+        }
+
+        /* system status card */
+        .st {
+            justify-content: center;
+            gap: clamp(6px, 1.2vh, 12px)
+        }
+
+        .sh {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: clamp(13px, 1.1vw, 17px);
+            color: var(--navy)
+        }
+
+        .sh svg,
+        .sl svg {
+            width: 22px;
+            height: 22px;
+            flex: none;
+            fill: none;
+            stroke: #12408f;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .so {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #15803d;
+            font-weight: 800;
+            font-size: clamp(14px, 1.25vw, 20px)
+        }
+
+        .so.off {
+            color: #b3261e
+        }
+
+        .ck {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: grid;
+            place-items: center;
+            flex: none;
+            box-shadow: 0 4px 10px rgba(34, 197, 94, .4)
+        }
+
+        .ck svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .sl {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: 1px solid #cfdcf0;
+            padding-top: clamp(6px, 1vh, 10px)
+        }
+
+        .sl small {
+            display: block;
+            font-size: 10.5px;
+            color: var(--mute);
+            font-weight: 600
+        }
+
+        .sl b {
+            display: block;
+            font-size: clamp(11px, .9vw, 13px);
+            color: var(--navy);
+            font-weight: 700
+        }
+
+        .grid.mini .sl {
+            display: none
+        }
+
+        /* footer */
+        footer {
+            flex: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 0 clamp(14px, 2vw, 34px);
+            height: clamp(30px, 4.4vh, 42px);
+            color: #fff;
+            background: linear-gradient(90deg, #0a2a70, #0f4bb5 70%, #1a66d6);
+            border-top-left-radius: 60px 100%;
+            font-size: 12px
+        }
+
+        footer span {
+            opacity: .85
+        }
+
+        footer em {
+            font-weight: 600;
+            font-size: clamp(12px, 1.05vw, 16px)
+        }
+
+        #ov {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 25, 60, .55);
+            display: none;
+            place-items: center;
+            z-index: 9;
+            padding: 16px
+        }
+
+        .mod {
+            background: #fff;
+            border-radius: 20px;
+            width: 900px;
+            max-width: 100%;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden
+        }
+
+        .mh {
+            padding: 20px 24px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .mh h3 {
+            margin: 0;
+            flex: 1;
+            font-size: 20px
+        }
+
+        .x {
+            background: rgba(255, 255, 255, .2);
+            border: 0;
+            color: #fff;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            font-size: 18px;
+            cursor: pointer
+        }
+
+        .tabs {
+            display: flex;
+            gap: 6px;
+            padding: 12px 24px 0;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .tab {
+            padding: 8px 14px;
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--mute);
+            font-size: 13px
+        }
+
+        .tab.on {
+            background: #f1f5fc;
+            color: var(--navy)
+        }
+
+        .body {
+            padding: 18px 24px 24px;
+            overflow: auto
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px
+        }
+
+        th {
+            background: #f4f8ff;
+            color: var(--mute);
+            text-align: left;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            position: sticky;
+            top: 0
+        }
+
+        th,
+        td {
+            padding: 9px 12px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .empty {
+            text-align: center;
+            color: var(--mute);
+            padding: 36px
+        }
+
+        .perm {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px
+        }
+
+        .perm span {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 99px;
+            background: #e3ecfb
+        }
+
+        .perm .off {
+            opacity: .35
+        }
+
+
+        @media(max-width:900px) {
+            body {
+                height: auto;
+                min-height: 100dvh;
+                overflow: auto
+            }
+
+            header {
+                height: auto;
+                min-height: 60px
+            }
+
+            .tag,
+            .gr,
+            .sep,
+            .hp,
+            .ht span {
+                display: none
+            }
+
+            .hl {
+                padding: 8px 12px
+            }
+
+            .hl img {
+                height: 36px
+            }
+
+            .hr {
+                padding: 0 12px 0 40px;
+                margin-left: auto
+            }
+
+            main {
+                padding: 12px;
+                display: block
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                grid-template-rows: none !important;
+                grid-auto-rows: minmax(150px, auto);
+                gap: 10px;
+                margin: 0
+            }
+
+            .card {
+                grid-column: auto !important;
+                margin: 0
+            }
+
+            .grid.tight p {
+                display: -webkit-box
+            }
+
+            .grid.mini .btn,
+            .grid.mini .no {
+                display: inline-block
+            }
+
+            .wm {
+                display: none
+            }
+
+            footer {
+                border-radius: 0
+            }
+        }
+
+        @media(max-width:560px) {
+            .grid {
+                grid-template-columns: 1fr !important
+            }
+
+            .hr .ht {
+                display: none
+            }
+        }
+
+        /* ===== Order page (2 cards) ===== */
+        main {
+            overflow: auto
+        }
+
+        .oxg {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: clamp(12px, 1.6vw, 26px);
+            align-items: stretch;
+            width: 100%
+        }
+
+        .oxc {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            border-radius: 26px;
+            overflow: hidden;
+            background: linear-gradient(180deg, #f4f9ff, #e1ecfb);
+            border: 1px solid #cfe0f7;
+            box-shadow: 0 10px 30px rgba(16, 44, 92, .16)
+        }
+
+        .oxb {
+            position: relative;
+            flex: none;
+            display: flex;
+            align-items: center;
+            gap: clamp(14px, 1.6vw, 26px);
+            padding: clamp(14px, 2.6vh, 28px) clamp(18px, 2vw, 32px);
+            color: #fff;
+            overflow: hidden;
+            background: linear-gradient(100deg, #0a2a70, #0b3d94 68%, #1558d6)
+        }
+
+        .oxb>* {
+            position: relative;
+            z-index: 1
+        }
+
+        .oxb .bi {
+            width: clamp(44px, 4.2vw, 68px);
+            height: clamp(44px, 4.2vw, 68px);
+            flex: none;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .oxb .vl {
+            width: 2px;
+            align-self: stretch;
+            margin: 4px 0;
+            background: rgba(255, 255, 255, .85);
+            flex: none
+        }
+
+        .oxb h2 {
+            margin: 0;
+            font-size: clamp(28px, 3.3vw, 52px);
+            font-weight: 800;
+            line-height: 1
+        }
+
+        .oxb p {
+            margin: 6px 0 0;
+            font-size: clamp(12px, 1.2vw, 19px);
+            font-weight: 500;
+            color: #cfe0ff
+        }
+
+        .oxb .ph {
+            position: absolute;
+            z-index: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 40%;
+            background: url(assets/header-photo.jpg) right center/cover no-repeat;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 45%);
+            mask-image: linear-gradient(90deg, transparent, #000 45%);
+            opacity: .9
+        }
+
+        .oxb .hg {
+            position: absolute;
+            z-index: 0;
+            right: clamp(16px, 3vw, 50px);
+            top: 50%;
+            transform: translateY(-50%);
+            width: clamp(90px, 11vw, 170px);
+            fill: none;
+            stroke: #4d8ff0;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            opacity: .9
+        }
+
+        .oxb .sw,
+        .oxf .sw {
+            position: absolute;
+            z-index: 0;
+            right: 0;
+            bottom: 0;
+            width: 46%;
+            height: 34%;
+            min-height: 28px;
+            pointer-events: none
+        }
+
+        .oxt {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: 1.55fr 1fr 1fr 1fr;
+            grid-auto-rows: auto;
+            gap: 6px;
+            padding: clamp(10px, 1.6vh, 18px) clamp(10px, 1.2vw, 18px) 8px
+        }
+
+        .oxt .h {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 6px;
+            border-radius: 14px;
+            color: #fff;
+            font-weight: 700;
+            font-size: clamp(12px, 1.25vw, 20px);
+            background: linear-gradient(180deg, #1558d6, #0a2a70);
+            text-align: center
+        }
+
+        .oxt .h:first-child {
+            justify-content: flex-start;
+            padding-left: 16px
+        }
+
+        .oxt .h i {
+            width: clamp(24px, 2.4vw, 36px);
+            height: clamp(24px, 2.4vw, 36px);
+            flex: none;
+            border-radius: 50%;
+            display: grid;
+            place-items: center
+        }
+
+        .oxt .h i svg,
+        .oxt .l i svg {
+            width: 62%;
+            height: 62%;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .oxt .l {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 12px;
+            border-radius: 12px;
+            background: #fff;
+            font-weight: 600;
+            font-size: clamp(12px, 1.2vw, 19px);
+            box-shadow: 0 2px 8px rgba(16, 44, 92, .08)
+        }
+
+        .oxt .l i {
+            width: clamp(26px, 2.6vw, 40px);
+            height: clamp(26px, 2.6vw, 40px);
+            flex: none;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: #0b3d94
+        }
+
+        .oxt .v {
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: clamp(18px, 2.1vw, 34px);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7)
+        }
+
+        .oxf {
+            position: relative;
+            flex: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            overflow: hidden;
+            padding: clamp(10px, 1.8vh, 18px) 16px;
+            background: linear-gradient(100deg, #0a2a70, #0b3d94 70%, #1558d6)
+        }
+
+        .oxf>* {
+            position: relative;
+            z-index: 1
+        }
+
+        .oxf .sw {
+            left: 0;
+            right: auto;
+            transform: scaleX(-1);
+            width: 36%
+        }
+
+        .oxf .up {
+            position: absolute;
+            left: clamp(14px, 2vw, 30px);
+            z-index: 1;
+            font-size: 11.5px;
+            color: #cfe0ff;
+            line-height: 1.3
+        }
+
+        .oxf .up b {
+            display: block;
+            color: #fff;
+            font-size: 12px
+        }
+
+        .oxbtn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: clamp(9px, 1.4vh, 14px) clamp(22px, 2.6vw, 44px);
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, .35);
+            cursor: pointer;
+            font: 700 clamp(13px, 1.3vw, 20px) Inter, sans-serif;
+            color: #fff;
+            background: linear-gradient(180deg, #0f4bb5, #0a2a70);
+            box-shadow: 0 6px 16px rgba(5, 20, 60, .45), inset 0 1px 0 rgba(255, 255, 255, .25)
+        }
+
+        .oxbtn:hover {
+            filter: brightness(1.12)
+        }
+
+        .oxbtn svg {
+            width: 1.3em;
+            height: 1.3em;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex: none
+        }
+
+        .oxp {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin: 0 clamp(8px, 1vw, 14px) clamp(8px, 1vh, 12px);
+            padding: clamp(6px, 1vh, 12px);
+            border-radius: 20px;
+            background: linear-gradient(180deg, #fff, #f3f8ff)
+        }
+
+        .oxr {
+            flex: 1;
+            display: grid;
+            grid-template-columns: clamp(50px, 5vw, 76px) minmax(0, 1fr) minmax(150px, 44%);
+            align-items: stretch;
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(16, 44, 92, .07);
+            overflow: hidden
+        }
+
+        .oxr .oxi {
+            display: grid;
+            place-items: center;
+            border-right: 1px solid #dbe4f2;
+            margin: 12px 0
+        }
+
+        .oxr .oxi svg {
+            width: clamp(28px, 3vw, 46px);
+            height: clamp(28px, 3vw, 46px);
+            fill: #0b3d94
+        }
+
+        .oxr .lb {
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            font-weight: 600;
+            font-size: clamp(14px, 1.7vw, 28px);
+            line-height: 1.15;
+            color: #0b2a6b
+        }
+
+        .oxr .vv {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 14px;
+            padding: 0 clamp(16px, 1.8vw, 28px) 0 12px;
+            margin: 4px 4px 4px 0;
+            border-radius: 14px;
+            font-weight: 800;
+            font-size: clamp(22px, 2.7vw, 44px);
+            white-space: nowrap
+        }
+
+        .oxr .vv:after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 10%;
+            bottom: 10%;
+            width: 6px;
+            border-radius: 6px;
+            background: currentColor;
+            opacity: .85
+        }
+
+        .oxr .vv svg {
+            width: clamp(22px, 2.2vw, 36px);
+            flex: none;
+            margin-right: 6px
+        }
+
+        .oxn {
+            margin: 0 clamp(8px, 1vw, 14px) 8px;
+            font-size: 12px;
+            color: var(--mute);
+            text-align: center
+        }
+
+        #oxm {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(8, 22, 56, .55)
+        }
+
+        #oxm .bx {
+            width: min(900px, 100%);
+            max-height: 86vh;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, .35)
+        }
+
+        #oxm .bh {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            color: #fff;
+            font-weight: 800;
+            font-size: 18px;
+            background: linear-gradient(100deg, #0a2a70, #1558d6)
+        }
+
+        #oxm .bh button {
+            border: 0;
+            background: rgba(255, 255, 255, .18);
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px
+        }
+
+        #oxm .bd {
+            overflow: auto;
+            padding: 6px 14px 14px
+        }
+
+        #oxm table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px
+        }
+
+        #oxm th {
+            position: sticky;
+            top: 0;
+            background: #eef3fb;
+            text-align: right;
+            padding: 10px 12px;
+            font-size: 12px;
+            color: #4a5a78
+        }
+
+        #oxm th:first-child,
+        #oxm td:first-child {
+            text-align: left
+        }
+
+        #oxm td {
+            text-align: right;
+            padding: 9px 12px;
+            border-bottom: 1px solid #e6ecf6;
+            font-variant-numeric: tabular-nums
+        }
+
+        #oxm tfoot td {
+            font-weight: 800;
+            background: #f3f7fd;
+            position: sticky;
+            bottom: 0
+        }
+
+        @media(max-width:900px) {
+            main {
+                display: block
+            }
+
+            .oxg {
+                grid-template-columns: 1fr
+            }
+
+            .oxb .ph,
+            .oxb .hg {
+                opacity: .5
+            }
+
+            .oxr {
+                grid-template-columns: 50px minmax(0, 1fr) minmax(130px, 46%)
+            }
+
+            .oxf .up {
+                display: none
+            }
+        }
+
+        /* compact cards */
+        main {
+            align-items: flex-start
+        }
+
+        .oxg {
+            flex: none;
+            align-self: flex-start;
+            max-width: 1180px;
+            margin: 0 auto;
+            align-items: start
+        }
+
+        .oxb {
+            padding: 12px 20px;
+            gap: 16px
+        }
+
+        .oxb .bi {
+            width: clamp(32px, 2.8vw, 44px);
+            height: clamp(32px, 2.8vw, 44px)
+        }
+
+        .oxb h2 {
+            font-size: clamp(22px, 2.2vw, 32px)
+        }
+
+        .oxb p {
+            font-size: clamp(11px, 1vw, 14px);
+            margin-top: 3px
+        }
+
+        .oxb .hg {
+            width: clamp(60px, 7vw, 100px)
+        }
+
+        .oxt {
+            gap: 5px;
+            padding: 10px 10px 6px;
+            grid-auto-rows: minmax(44px, auto)
+        }
+
+        .oxt .h {
+            font-size: clamp(11px, 1vw, 14px);
+            padding: 6px;
+            border-radius: 12px
+        }
+
+        .oxt .h i {
+            width: 24px;
+            height: 24px
+        }
+
+        .oxt .l {
+            font-size: clamp(11px, 1vw, 14px);
+            padding: 4px 10px;
+            gap: 8px
+        }
+
+        .oxt .l i {
+            width: 26px;
+            height: 26px
+        }
+
+        .oxt .v {
+            font-size: clamp(16px, 1.5vw, 22px)
+        }
+
+        .oxp {
+            flex: none;
+            padding: 6px;
+            gap: 5px
+        }
+
+        .oxr {
+            flex: none;
+            min-height: 54px;
+            grid-template-columns: 46px minmax(0, 1fr) minmax(110px, 40%)
+        }
+
+        .oxr .oxi svg {
+            width: 24px;
+            height: 24px
+        }
+
+        .oxr .lb {
+            font-size: clamp(13px, 1.15vw, 17px)
+        }
+
+        .oxr .vv {
+            font-size: clamp(18px, 1.8vw, 26px);
+            padding-right: 16px
+        }
+
+        .oxr .vv svg {
+            width: 20px
+        }
+
+        .oxf {
+            padding: 9px 14px
+        }
+
+        .oxbtn {
+            font-size: clamp(12px, 1vw, 15px);
+            padding: 8px 24px
+        }
+
+        /* equal, balanced cards */
+        .oxg {
+            align-items: stretch;
+            max-width: 1240px;
+            gap: clamp(14px, 1.8vw, 28px)
+        }
+
+        .oxb {
+            padding: 16px 24px
+        }
+
+        .oxb h2 {
+            font-size: clamp(24px, 2.5vw, 36px)
+        }
+
+        .oxb p {
+            font-size: clamp(11.5px, 1.05vw, 15px)
+        }
+
+        .oxt {
+            flex: 1;
+            grid-template-columns: 1.65fr 1fr 1fr 1fr;
+            grid-template-rows: auto repeat(4, minmax(56px, 1fr));
+            gap: 6px;
+            padding: 12px 12px 8px
+        }
+
+        .oxt .h {
+            white-space: nowrap;
+            font-size: clamp(11px, 1vw, 14.5px);
+            padding: 8px 6px;
+            gap: 6px
+        }
+
+        .oxt .h:first-child {
+            padding-left: 14px
+        }
+
+        .oxt .l {
+            font-size: clamp(12px, 1.05vw, 15px)
+        }
+
+        .oxt .v {
+            font-size: clamp(18px, 1.7vw, 26px)
+        }
+
+        .oxp {
+            flex: 1;
+            padding: 8px;
+            gap: 6px
+        }
+
+        .oxr {
+            flex: 1;
+            min-height: 60px;
+            grid-template-columns: 52px minmax(0, 1fr) minmax(120px, 40%)
+        }
+
+        .oxr .oxi {
+            display: grid;
+            place-items: center;
+            border-right: 1px solid #dbe4f2;
+            margin: 12px 0
+        }
+
+        .oxr .lb {
+            font-size: clamp(14px, 1.25vw, 19px)
+        }
+
+        .oxr .vv {
+            font-size: clamp(20px, 2vw, 30px)
+        }
+
+        .oxf {
+            padding: 11px 14px
+        }
+
+        /* centered layout + soft background */
+        body {
+            background: radial-gradient(720px 440px at 10% 16%, rgba(59, 130, 246, .22), transparent 70%), radial-gradient(820px 480px at 90% 86%, rgba(21, 88, 214, .18), transparent 70%), radial-gradient(rgba(15, 42, 90, .075) 1.2px, transparent 1.5px) 0 0/22px 22px, linear-gradient(180deg, #eaf2fd, #d6e5f8)
+        }
+
+        main {
+            align-items: center;
+            justify-content: center;
+            padding-top: clamp(14px, 3vh, 34px);
+            padding-bottom: clamp(14px, 3vh, 34px)
+        }
+
+        .oxg {
+            flex: none;
+            width: 100%;
+            max-width: 1360px;
+            margin: 0 auto;
+            align-self: center
+        }
+
+        @media(max-width:900px) {
+            main {
+                display: block
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="hl" onclick="location.href='portal.html'" style="cursor:pointer">
+            <img src="assets/logo.png" alt="Mainetti Bangladesh"
+                onerror="this.outerHTML='<div class=&quot;logo&quot;>MAINETTI<small>BANGLADESH PVT. LTD.</small></div>'">
+            <div class="sep"></div>
+            <div>
+                <div class="tag">Drive Efficiency<i>/</i>Ensure Quality<i>/</i>Grow Together</div>
+                <div class="gr" id="gr"></div>
+            </div>
+        </div>
+        <div class="hp"></div>
+        <div class="hr"><svg class="fy" viewBox="0 0 24 24">
+                <path fill="#fff" d="M2 21V10l6 3.6V10l6 3.6V4h3.4v9.6H22V21z" />
+                <path fill="rgba(11,61,148,.55)" d="M5 17h2.2v2.2H5zM10 17h2.2v2.2H10zM15 17h2.2v2.2H15z" />
+                <path fill="#fff" opacity=".7" d="M16.2 1.5h2.6v2h-2.6z" />
+            </svg>
+            <div class="ht"><b>Order Management</b><span>Smart Manufacturing. Better Tomorrow.</span></div>
+            <div class="user"><button class="ub" id="ub"><span class="av" id="av"></span><span id="un"></span>
+                    ▾</button>
+                <div class="menu" id="mn">
+                    <div onclick="location.href='portal.html'">Portal</div>
+                    <div id="adm" style="display:none" onclick="location.href='admin.html'">Admin Console</div>
+                    <div onclick="out()">Sign out</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="oxg">
+            <section class="oxc">
+                <div class="oxb">
+                    <div class="ph"></div>
+                    <svg class="bi" viewBox="0 0 24 24">
+                        <path
+                            d="M9 4h6v3H9zM7 5.5H5v16h14v-16h-2M9 12l1.2 1.2L12.5 11M14 12.5h2.5M9 16.5l1.2 1.2 2.3-2.2M14 17h2.5" />
+                    </svg>
+                    <div class="vl"></div>
+                    <div>
+                        <h2>Order</h2>
+                        <p>Order &amp; Commitment Overview</p>
+                    </div>
+                </div>
+                <div class="oxt">
+                    <div class="h"><i style="background:transparent"><svg viewBox="0 0 24 24">
+                                <path d="M6 2h8l5 5v14H6zM9 12h7M9 16h5" />
+                            </svg></i>Criteria</div>
+                    <div class="h"><i style="background:#16a34a"><svg viewBox="0 0 24 24">
+                                <path d="M4 19V11M10 19V7M16 19v-6M3 9l5-4 4 3 7-6" />
+                            </svg></i>Running Year</div>
+                    <div class="h"><i style="background:#2563eb"><svg viewBox="0 0 24 24">
+                                <path d="M12 3v18M6 21h12M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z" />
+                            </svg></i>Last Week</div>
+                    <div class="h"><i style="background:#6d4aff"><svg viewBox="0 0 24 24">
+                                <rect x="3.5" y="5" width="17" height="15.5" rx="2.2" />
+                                <path d="M3.5 10h17M8 3v4M16 3v4M8 14h1.5M12 14h1.5M16 14h1.5M8 17.5h1.5M12 17.5h1.5" />
+                            </svg></i>Yesterday</div>
+                    <div class="l"><i><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 7.5a2.2 2.2 0 1 0-2.2-2.2M12 7.5v2.3L3 16.2a1 1 0 0 0 .6 1.8h16.8a1 1 0 0 0 .6-1.8L12 9.8" />
+                            </svg></i>Hanger Order Volume</div>
+                    <div class="v" id="or1a" style="background:#c6e1fb;color:#0f2a5a">—</div>
+                    <div class="v" id="or1b" style="background:#c6e1fb;color:#0f2a5a">—</div>
+                    <div class="v" id="or1c" style="background:#c6e1fb;color:#0f2a5a">—</div>
+                    <div class="l"><i><svg viewBox="0 0 24 24">
+                                <path d="M12 2.5 3.5 7v10L12 21.5 20.5 17V7zM3.5 7 12 11.5 20.5 7M12 11.5v10" />
+                            </svg></i>Accessories Order Volume</div>
+                    <div class="v" id="or2a" style="background:#c9ecd9;color:#0f2a5a">—</div>
+                    <div class="v" id="or2b" style="background:#c9ecd9;color:#0f2a5a">—</div>
+                    <div class="v" id="or2c" style="background:#c9ecd9;color:#0f2a5a">—</div>
+                    <div class="l"><i style="font-size:11px;font-weight:800;color:#fff">LC</i>LC Hanger Order Volume
+                    </div>
+                    <div class="v" id="or3a" style="background:#e1d9fb;color:#0f2a5a">—</div>
+                    <div class="v" id="or3b" style="background:#e1d9fb;color:#0f2a5a">—</div>
+                    <div class="v" id="or3c" style="background:#e1d9fb;color:#0f2a5a">—</div>
+                    <div class="l"><i style="font-size:11px;font-weight:800;color:#fff">LC</i>LC Accessories Order
+                        Volume</div>
+                    <div class="v" id="or4a" style="background:#fbe0c4;color:#0f2a5a">—</div>
+                    <div class="v" id="or4b" style="background:#fbe0c4;color:#0f2a5a">—</div>
+                    <div class="v" id="or4c" style="background:#fbe0c4;color:#0f2a5a">—</div>
+                </div>
+                <div class="oxf"><svg class="sw" viewBox="0 0 400 60" preserveAspectRatio="none">
+                        <path d="M0 60 C120 52 260 24 400 0 L400 60Z" fill="#e4262f" />
+                        <path d="M0 60 C140 58 280 38 400 16 L400 60Z" fill="#fff" opacity=".92" />
+                        <path d="M0 60 C150 60 290 46 400 30 L400 60Z" fill="#0a2a70" />
+                    </svg><button class="oxbtn" onclick="soon()"><svg viewBox="0 0 24 24">
+                            <rect x="3.5" y="5" width="17" height="15.5" rx="2.2" />
+                            <path d="M3.5 10h17M8 3v4M16 3v4M8 14h1.5M12 14h1.5M16 14h1.5M8 17.5h1.5M12 17.5h1.5" />
+                        </svg>View Order Details <svg viewBox="0 0 24 24">
+                            <path d="M4 12h16M14 6l6 6-6 6" />
+                        </svg></button></div>
+            </section>
+            <section class="oxc">
+                <div class="oxb">
+                    <svg class="bi" viewBox="0 0 24 24">
+                        <path d="M12 2.5 3.5 7v10L12 21.5 20.5 17V7zM3.5 7 12 11.5 20.5 7M12 11.5v10" />
+                    </svg>
+                    <div class="vl"></div>
+                    <div>
+                        <h2>Outstanding</h2>
+                        <p>Order &amp; Requirement Status</p>
+                    </div>
+                    <svg class="hg" viewBox="0 0 24 24">
+                        <path
+                            d="M12 7.5a2.2 2.2 0 1 0-2.2-2.2M12 7.5v2.3L3 16.2a1 1 0 0 0 .6 1.8h16.8a1 1 0 0 0 .6-1.8L12 9.8" />
+                    </svg><svg class="sw" viewBox="0 0 400 60" preserveAspectRatio="none">
+                        <path d="M0 60 C120 52 260 24 400 0 L400 60Z" fill="#e4262f" />
+                        <path d="M0 60 C140 58 280 38 400 16 L400 60Z" fill="#fff" opacity=".92" />
+                        <path d="M0 60 C150 60 290 46 400 30 L400 60Z" fill="#0a2a70" />
+                    </svg>
+                </div>
+                <div class="oxp">
+                    <div class="oxr">
+                        <div class="oxi"><svg viewBox="0 0 24 24">
+                                <path d="M12 2.3 2 9.6V21.5h20V9.6zM9 21.5v-7h6v7zM10.6 9.4h2.8v2.8h-2.8z" />
+                            </svg></div>
+                        <div class="lb">Available Stock</div>
+                        <div class="vv" id="ov1"
+                            style="background:linear-gradient(90deg,#cfe4fb,#e4f0fd);color:#1558d6"><span
+                                style="color:#0b2a6b">—</span><svg viewBox="0 0 36 28">
+                                <rect x="1" y="20" width="7" height="7" rx="1.5" fill="currentColor" opacity=".35" />
+                                <rect x="11" y="14" width="7" height="13" rx="1.5" fill="currentColor" opacity=".5" />
+                                <rect x="21" y="7" width="7" height="20" rx="1.5" fill="currentColor" opacity=".7" />
+                            </svg></div>
+                    </div>
+                    <div class="oxr">
+                        <div class="oxi"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M2 3.5h3.1l.7 2.5H21.5l-2.3 8.3a2 2 0 0 1-1.9 1.5H8.7a2 2 0 0 1-1.9-1.5L4.5 5.6 4 5H2z" />
+                                <circle cx="9" cy="19.3" r="1.8" />
+                                <circle cx="17" cy="19.3" r="1.8" />
+                            </svg></div>
+                        <div class="lb">Total Demand</div>
+                        <div class="vv" id="ov2"
+                            style="background:linear-gradient(90deg,#c9efd5,#e6f8ec);color:#16a34a"><span
+                                style="color:#06501f">—</span><svg viewBox="0 0 36 28">
+                                <rect x="1" y="20" width="7" height="7" rx="1.5" fill="currentColor" opacity=".35" />
+                                <rect x="11" y="14" width="7" height="13" rx="1.5" fill="currentColor" opacity=".5" />
+                                <rect x="21" y="7" width="7" height="20" rx="1.5" fill="currentColor" opacity=".7" />
+                            </svg></div>
+                    </div>
+                    <div class="oxr">
+                        <div class="oxi"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M6 2h8l5 5v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zM8 12h8v1.6H8zM8 15.6h5v1.6H8zM8 8.6h4v1.6H8z" />
+                            </svg></div>
+                        <div class="lb">Total LC Requirement</div>
+                        <div class="vv" id="ov3"
+                            style="background:linear-gradient(90deg,#e6d3f8,#f3eafc);color:#7e22ce"><span
+                                style="color:#3b0a73">—</span><svg viewBox="0 0 36 28">
+                                <rect x="1" y="20" width="7" height="7" rx="1.5" fill="currentColor" opacity=".35" />
+                                <rect x="11" y="14" width="7" height="13" rx="1.5" fill="currentColor" opacity=".5" />
+                                <rect x="21" y="7" width="7" height="20" rx="1.5" fill="currentColor" opacity=".7" />
+                            </svg></div>
+                    </div>
+                    <div class="oxr">
+                        <div class="oxi"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.48.48 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.48.48 0 0 0-.59.22L2.74 8.87a.48.48 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z" />
+                            </svg></div>
+                        <div class="lb">Production Requirement</div>
+                        <div class="vv" id="ov4"
+                            style="background:linear-gradient(90deg,#fbdcb4,#fdeed8);color:#ea7a0c"><span
+                                style="color:#7a3200">—</span><svg viewBox="0 0 36 28">
+                                <rect x="1" y="20" width="7" height="7" rx="1.5" fill="currentColor" opacity=".35" />
+                                <rect x="11" y="14" width="7" height="13" rx="1.5" fill="currentColor" opacity=".5" />
+                                <rect x="21" y="7" width="7" height="20" rx="1.5" fill="currentColor" opacity=".7" />
+                            </svg></div>
+                    </div>
+                </div>
+                <div class="oxn" id="oxn"></div>
+                <div class="oxf"><svg class="sw" viewBox="0 0 400 60" preserveAspectRatio="none">
+                        <path d="M0 60 C120 52 260 24 400 0 L400 60Z" fill="#e4262f" />
+                        <path d="M0 60 C140 58 280 38 400 16 L400 60Z" fill="#fff" opacity=".92" />
+                        <path d="M0 60 C150 60 290 46 400 30 L400 60Z" fill="#0a2a70" />
+                    </svg>
+                    <div class="up">Data Updated:<b id="oxu">—</b></div><button class="oxbtn" onclick="openOut()"><svg
+                            viewBox="0 0 24 24">
+                            <rect x="3.5" y="5" width="17" height="15.5" rx="2.2" />
+                            <path d="M3.5 10h17M8 3v4M16 3v4M8 14h1.5M12 14h1.5M16 14h1.5M8 17.5h1.5M12 17.5h1.5" />
+                        </svg>View Outstanding Details <svg viewBox="0 0 24 24">
+                            <path d="M4 12h16M14 6l6 6-6 6" />
+                        </svg></button>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer><span>Mainetti Bangladesh — Hanger Manufacturing ERP · v1.0.0</span><em>Together for a Smarter Future</em>
+    </footer>
+    <div id="oxm">
+        <div class="bx">
+            <div class="bh"><span>Outstanding Details · Buyer wise</span><button onclick="shut()">✕</button></div>
+            <div class="bd"></div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+    <script src="erp.js"></script>
+    <script>
+        const $ = s => document.querySelector(s), esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+        const fm = v => { const a = Math.abs(v); return a >= 1e6 ? (v / 1e6).toFixed(1) + " M" : a >= 1e3 ? (v / 1e3).toFixed(1) + " K" : String(Math.round(v)) };
+        const n0 = v => Math.round(v).toLocaleString("en-US"), out = () => ERP.signOut();
+        const MNs = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let PK = null; const KEYS = ["availablestock", "totaldemand", "totallcrequirement", "productionrequirement"], mv = j => (PK && PK.m && (PK.m[KEYS[j]] || PK.m[j])) || [];
+        function soon() { const n = $("#oxn"); n.textContent = "Order data এখনো যুক্ত করা হয়নি।"; setTimeout(() => { if (n.textContent.startsWith("Order data")) n.textContent = "" }, 3500) }
+        function openOut() {
+            if (!PK) { $("#oxn").textContent = "আগে Admin Console → Data Manager → Order থেকে Outstanding Excel upload করুন।"; return }
+            const B = PK.dict.buyer, M = new Map(); PK.c.buyer.forEach((c, i) => { const k = B[c] || "—", o = M.get(k) || [0, 0, 0, 0]; for (let j = 0; j < 4; j++) o[j] += mv(j)[i] || 0; M.set(k, o) });
+            const L = [...M].sort((x, y) => y[1][3] - x[1][3] || y[1][1] - x[1][1]), T = [0, 0, 0, 0]; L.forEach(([, o]) => o.forEach((v, j) => T[j] += v));
+            $("#oxm .bd").innerHTML = `<table><thead><tr><th>Buyer</th><th>Available Stock</th><th>Total Demand</th><th>Total LC Req.</th><th>Production Req.</th></tr></thead><tbody>${L.map(([k, o]) => `<tr><td>${esc(k)}</td>${o.map(v => `<td>${n0(v)}</td>`).join("")}</tr>`).join("")}</tbody><tfoot><tr><td>Total</td>${T.map(v => `<td>${n0(v)}</td>`).join("")}</tr></tfoot></table>`;
+            $("#oxm").style.display = "flex"
+        }
+        function shut() { $("#oxm").style.display = "none" }
+        $("#oxm").onclick = e => { if (e.target.id === "oxm") shut() };
+        (async () => {
+            const ME = await ERP.require(); if (!ME) return;
+            const nm = ME.name || ME.login_id; $("#un").textContent = nm; $("#av").textContent = nm.slice(0, 2).toUpperCase();
+            const hr = new Date().getHours(); $("#gr").textContent = `Good ${hr < 12 ? "morning" : hr < 17 ? "afternoon" : "evening"}, ${nm.split(" ")[0]}. Here is your operation at a glance.`;
+            if (ME.role === "admin") $("#adm").style.display = "block";
+            $("#ub").onclick = e => { e.stopPropagation(); const m = $("#mn"); m.style.display = m.style.display === "block" ? "none" : "block" }; document.onclick = () => $("#mn").style.display = "none";
+            const mods = await ERP.tree(), M = mods.find(x => /^order\b/i.test(String(x.name).trim()));
+            if (!M || !(ERP.can(ME, M.id) || M.subs.some(s => ERP.can(s.id, "v", M.id)))) { location.replace("portal.html"); return }
+            let meta = null; try { PK = await ERP.packed(M.id, "order") } catch (e) { console.error(e); PK = null }
+            try { meta = await (await ERP._fetchStorage(M.id + "/order_meta.json")).json() } catch (e) { }
+            if (PK && PK.m) {
+                for (let j = 0; j < 4; j++) { const t = mv(j).reduce((a, b) => a + b, 0); $("#ov" + (j + 1)).firstChild.textContent = fm(t) }
+                const d = meta && (meta.at ? new Date(meta.at) : meta.v ? new Date(+meta.v) : null); if (d && !isNaN(d)) $("#oxu").textContent = d.getDate() + " " + MNs[d.getMonth()] + " " + d.getFullYear()
+            } else $("#oxn").textContent = "Outstanding data নেই। Admin Console → Data Manager → Order থেকে Excel upload করুন।"
+        })().catch(e => { console.error(e); $("#oxn").textContent = "Load error: " + (e.message || e) });
+    </script>
+</body>
+
+</html>
