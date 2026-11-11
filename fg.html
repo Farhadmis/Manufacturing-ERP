@@ -1295,18 +1295,224 @@
         transform-origin: right bottom
       }
     }
+
+    /* ===== Portal-style header (same as Mainetti ERP Portal) ===== */
+    header {
+      height: clamp(66px, 9vh, 88px);
+      padding: 0;
+      gap: 0;
+      align-items: stretch;
+      color: var(--navy);
+      background: linear-gradient(90deg, #f8fbff, #e8f0fc);
+      box-shadow: 0 4px 18px rgba(16, 44, 92, .12);
+      position: relative;
+      z-index: 20
+    }
+
+    header .hl {
+      display: flex;
+      align-items: center;
+      gap: clamp(12px, 1.5vw, 24px);
+      padding: 0 clamp(14px, 1.8vw, 30px);
+      position: relative;
+      z-index: 2;
+      flex: none
+    }
+
+    header .hl img {
+      height: clamp(40px, 6.2vh, 58px);
+      display: block
+    }
+
+    header .bk {
+      width: 36px;
+      height: 36px;
+      flex: none;
+      border-radius: 10px;
+      border: 1px solid #b9c8e3;
+      background: #fff;
+      color: #12408f;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(16, 44, 92, .10)
+    }
+
+    header .bk:hover {
+      border-color: #2f6fe4
+    }
+
+    header .logo {
+      font-weight: 800;
+      letter-spacing: .06em;
+      font-size: 20px;
+      line-height: 1;
+      color: var(--navy)
+    }
+
+    header .logo small {
+      display: block;
+      font-size: 9px;
+      letter-spacing: .2em;
+      margin-top: 3px;
+      color: #12408f;
+      opacity: 1;
+      font-weight: 700
+    }
+
+    header .sep {
+      width: 1px;
+      height: 46px;
+      background: #9fb3d3;
+      flex: none
+    }
+
+    header .tag {
+      background: none;
+      padding: 0;
+      border-radius: 0;
+      font-style: italic;
+      font-weight: 600;
+      color: #12408f;
+      font-size: clamp(12px, 1.15vw, 18px);
+      white-space: nowrap
+    }
+
+    header .tag i {
+      font-style: normal;
+      margin: 0 .7em;
+      opacity: .55
+    }
+
+    header .gr {
+      font-size: 11.5px;
+      color: var(--mute);
+      margin-top: 3px;
+      white-space: nowrap
+    }
+
+    header .hp {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+      overflow: hidden
+    }
+
+    header .hp:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url(assets/header-photo.jpg) right center/cover no-repeat;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 40%);
+      mask-image: linear-gradient(90deg, transparent, #000 40%)
+    }
+
+    header .hr {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: clamp(10px, 1.2vw, 18px);
+      padding: 0 clamp(14px, 1.6vw, 26px) 0 clamp(54px, 5vw, 84px);
+      color: #fff;
+      flex: none
+    }
+
+    header .hr:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg, #0a2a70, #0b3d94);
+      clip-path: polygon(44px 0, 100% 0, 100% 100%, 0 100%);
+      z-index: 0
+    }
+
+    header .hr>* {
+      position: relative;
+      z-index: 1
+    }
+
+    header .hr svg.fy {
+      width: clamp(30px, 2.6vw, 42px);
+      height: clamp(30px, 2.6vw, 42px);
+      flex: none
+    }
+
+    header .ht b {
+      display: block;
+      font-size: clamp(15px, 1.5vw, 23px);
+      font-weight: 800;
+      white-space: nowrap
+    }
+
+    header .ht span {
+      display: block;
+      font-size: clamp(9.5px, .8vw, 12px);
+      opacity: .92;
+      margin-top: 2px;
+      white-space: nowrap
+    }
+
+    header .ub {
+      padding: 4px 14px 4px 4px;
+      font-family: inherit
+    }
+
+    header .av {
+      width: 30px;
+      height: 30px;
+      font-size: 12px;
+      color: #0b3d94
+    }
+
+    header .menu {
+      top: 46px
+    }
+
+    @media(max-width:1000px) {
+
+      header .hp,
+      header .gr {
+        display: none
+      }
+
+      header .hp {
+        flex: 1
+      }
+    }
+
+    @media(max-width:700px) {
+
+      header .tag,
+      header .sep {
+        display: none
+      }
+    }
   </style>
 </head>
 
 <body>
-  <header><button class="bk" onclick="location.href='portal.html'" title="Back to portal">←</button>
-    <div class="logo">MAINETTI<small>BANGLADESH</small></div>
-    <div class="sep"></div>
-    <div class="ttl"><b>Finish Good</b><span>Production output &amp; analytics</span></div>
-    <div class="user"><button class="ub" id="ub"><span class="av" id="av"></span><span id="un"></span> ▾</button>
-      <div class="menu" id="mn">
-        <div onclick="location.href='portal.html'">Portal</div>
-        <div onclick="out()">Sign out</div>
+  <header>
+    <div class="hl">
+      <button class="bk" onclick="location.href='portal.html'" title="Back to portal">←</button>
+      <img src="assets/logo.png" alt="Mainetti Bangladesh"
+        onerror="this.outerHTML='&lt;div class=&quot;logo&quot;&gt;MAINETTI&lt;small&gt;BANGLADESH PVT. LTD.&lt;/small&gt;&lt;/div&gt;'">
+      <div class="sep"></div>
+      <div>
+        <div class="tag">Drive Efficiency<i>/</i>Ensure Quality<i>/</i>Grow Together</div>
+        <div class="gr" id="gr"></div>
+      </div>
+    </div>
+    <div class="hp"></div>
+    <div class="hr"><svg class="fy" viewBox="0 0 24 24">
+        <path fill="#fff" d="M2 21V10l6 3.6V10l6 3.6V4h3.4v9.6H22V21z" />
+        <path fill="rgba(11,61,148,.55)" d="M5 17h2.2v2.2H5zM10 17h2.2v2.2H10zM15 17h2.2v2.2H15z" />
+        <path fill="#fff" opacity=".7" d="M16.2 1.5h2.6v2h-2.6z" />
+      </svg>
+      <div class="ht"><b>Finish Good</b><span>Production output &amp; analytics</span></div>
+      <div class="user"><button class="ub" id="ub"><span class="av" id="av"></span><span id="un"></span> ▾</button>
+        <div class="menu" id="mn">
+          <div onclick="location.href='portal.html'">Portal</div>
+          <div onclick="out()">Sign out</div>
+        </div>
       </div>
     </div>
   </header>
@@ -1353,7 +1559,7 @@
     let R = [], mod = null, msg = "";
     async function load() {
       ME = await ERP.require(); if (!ME) return false;
-      const nm = ME.name || ME.login_id; $("#un").textContent = nm; $("#av").textContent = nm.slice(0, 2).toUpperCase();
+      const nm = ME.name || ME.login_id; $("#un").textContent = nm; { const h = new Date().getHours(); $("#gr").textContent = `Good ${h < 12 ? "morning" : h < 17 ? "afternoon" : "evening"}, ${String(nm).split(" ")[0]}. Here is your operation at a glance.` } $("#av").textContent = nm.slice(0, 2).toUpperCase();
       const tree = await ERP.tree(); mod = tree.find(m => /finish|\bfg\b/i.test(m.name));
       if (!mod) { msg = "The Finish Good module does not exist in the Admin Console."; return true }
       if (!ERP.can(ME, mod.id) && !mod.subs.some(s => ERP.can(ME, s.id, "v", mod.id))) { msg = "You do not have access to the Finish Good module."; return true }
