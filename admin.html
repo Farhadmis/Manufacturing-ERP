@@ -641,7 +641,7 @@
         const dims = c.dims, meas = c.meas, UP = new Set(c.upper), dict = {}, mp = {}; dims.forEach(k => { dict[k] = []; mp[k] = new Map() });
         const col = dims.map(k => ix[k]), mcol = meas.map(k => ix[k]), acc = new Map(), tot = meas.map(() => 0); let bad = 0;
         for (let r = 1; r < A.length; r++) {
-          const row = A[r], d = isoD(row[ix.date], df); if (!d) { bad++; continue }
+          const row = A[r], d = c.snap ? "-" : isoD(row[ix.date], df); if (!d) { bad++; continue }
           const codes = new Array(dims.length), dv = c.fix ? {} : null;
           for (let j = 0; j < dims.length; j++) {
             const k = dims[j]; let v = j === 0 ? d : cln(col[j] == null ? "" : row[col[j]]); if (UP.has(k)) v = v.toUpperCase();
