@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Mainetti · Outstanding</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="erp.js"></script>
+  <style>
+    :root {
+      --navy: #0f2a5a;
+      --red: #a61935;
+      --blue: #2b5bb8;
+      --mute: #6d7c99;
+      --line: #dbe4f2;
+      --bg: #f1f5fb
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--navy);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      font-size: 13px
+    }
+
+    header {
+      flex: none;
+      height: 64px;
+      background: linear-gradient(100deg, #5c0716, #8d0b20 45%, #b3122f);
+      color: #fff;
+      padding: 0 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 6px 20px rgba(100, 10, 30, .25);
+      z-index: 6
+    }
+
+    .bk {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, .4);
+      background: rgba(255, 255, 255, .12);
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer
+    }
+
+    .logo {
+      font-weight: 800;
+      letter-spacing: .06em;
+      font-size: 16px;
+      line-height: 1
+    }
+
+    .logo small {
+      display: block;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: .2em;
+      opacity: .8;
+      margin-top: 3px
+    }
+
+    .sep {
+      width: 1px;
+      height: 30px;
+      background: rgba(255, 255, 255, .35)
+    }
+
+    .ttl {
+      flex: 1
+    }
+
+    .ttl b {
+      font-size: 18px;
+      display: block
+    }
+
+    .ttl span {
+      font-size: 12px;
+      opacity: .85
+    }
+
+    .user {
+      position: relative
+    }
+
+    .ub {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, .14);
+      border: 1px solid rgba(255, 255, 255, .4);
+      color: #fff;
+      border-radius: 999px;
+      padding: 5px 14px 5px 5px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 13px
+    }
+
+    .av {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--red);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 11px
+    }
+
+    .menu {
+      position: absolute;
+      right: 0;
+      top: 44px;
+      background: #fff;
+      color: var(--navy);
+      border-radius: 12px;
+      box-shadow: 0 14px 34px rgba(16, 44, 92, .25);
+      min-width: 150px;
+      display: none;
+      overflow: hidden
+    }
+
+    .menu div {
+      padding: 11px 16px;
+      cursor: pointer;
+      font-weight: 600
+    }
+
+    .menu div:hover {
+      background: #f1f5fc
+    }
+
+    .lay {
+      flex: 1;
+      min-height: 0;
+      display: flex
+    }
+
+    aside {
+      flex: none;
+      width: 214px;
+      background: #fff;
+      border-right: 1px solid var(--line);
+      padding: 10px 0;
+      transition: .2s;
+      overflow: hidden
+    }
+
+    aside.col {
+      width: 62px
+    }
+
+    .nv {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 20px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #3a4d73;
+      border-left: 3px solid transparent;
+      white-space: nowrap
+    }
+
+    .nv svg {
+      width: 20px;
+      height: 20px;
+      flex: none;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .nv:hover {
+      background: #f5f8fd
+    }
+
+    .nv.on {
+      color: var(--red);
+      background: #fdeff2;
+      border-left-color: var(--red)
+    }
+
+    .nv.t {
+      color: var(--mute);
+      margin-bottom: 6px
+    }
+
+    main {
+      flex: 1;
+      min-width: 0;
+      overflow: auto;
+      padding: 0 22px 30px
+    }
+
+    .fb {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      overflow-x: auto;
+      padding: 12px 0 10px;
+      position: sticky;
+      top: 0;
+      z-index: 4;
+      background: var(--bg)
+    }
+
+    .f {
+      flex: 1 1 0;
+      min-width: 108px;
+      position: relative
+    }
+
+    .f button,
+    .f input {
+      width: 100%;
+      height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--navy);
+      font: 600 12px Inter, sans-serif;
+      padding: 0 10px;
+      text-align: left;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .f button.on {
+      border-color: var(--red);
+      background: #fdf3f5;
+      color: var(--red)
+    }
+
+    .f button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px
+    }
+
+    .f button:after {
+      content: "▾";
+      opacity: .6;
+      flex: none
+    }
+
+    .f.d {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 150px;
+      flex: 1.2 1 0
+    }
+
+    .f.d span {
+      font-weight: 700;
+      font-size: 11px;
+      color: var(--mute)
+    }
+
+    .f.d input {
+      padding: 0 6px
+    }
+
+    .rs {
+      flex: none;
+      height: 36px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--navy);
+      color: #fff;
+      padding: 0 14px;
+      font-weight: 700;
+      cursor: pointer
+    }
+
+    #pn {
+      position: fixed;
+      z-index: 50;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 14px 34px rgba(16, 44, 92, .22);
+      width: 230px;
+      display: none
+    }
+
+    #pn input[type=text] {
+      width: calc(100% - 16px);
+      margin: 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 7px 10px;
+      font: 12px Inter
+    }
+
+    #pn .ls {
+      max-height: 240px;
+      overflow: auto
+    }
+
+    #pn label {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 12px
+    }
+
+    #pn label:hover {
+      background: #f3f7fd
+    }
+
+    #pn .ac {
+      display: flex;
+      gap: 8px;
+      padding: 8px;
+      border-top: 1px solid var(--line)
+    }
+
+    #pn .ac button {
+      flex: 1;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 8px;
+      padding: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--navy)
+    }
+
+    .kp {
+      display: flex;
+      gap: 12px;
+      margin: 6px 0 14px
+    }
+
+    .k {
+      flex: 1;
+      background: #fff;
+      border-radius: 14px;
+      padding: 13px 16px;
+      border-top: 3px solid var(--red);
+      box-shadow: 0 5px 16px rgba(16, 44, 92, .07);
+      min-width: 0
+    }
+
+    .k.b {
+      border-top-color: var(--blue)
+    }
+
+    .k.o {
+      flex: 1.5;
+      border-top-color: #e08a00
+    }
+
+    .k small {
+      color: var(--mute);
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .05em
+    }
+
+    .k b {
+      display: block;
+      font-size: 21px;
+      margin-top: 4px;
+      white-space: nowrap
+    }
+
+    .k .oo {
+      display: flex;
+      gap: 16px;
+      margin-top: 4px
+    }
+
+    .k .oo div {
+      flex: 1
+    }
+
+    .k .oo b {
+      font-size: 15px;
+      margin: 0
+    }
+
+    .k .oo i {
+      font-style: normal;
+      font-size: 11px;
+      color: var(--mute);
+      display: block
+    }
+
+    .cg {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px
+    }
+
+    .c {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 5px 16px rgba(16, 44, 92, .07);
+      min-width: 0
+    }
+
+    .c.w {
+      grid-column: 1/-1
+    }
+
+    .c h4 {
+      margin: 0 0 10px;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px
+    }
+
+    .cv {
+      position: relative;
+      height: 270px
+    }
+
+    .c select {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 5px 8px;
+      font: 600 12px Inter;
+      color: var(--navy)
+    }
+
+    .hm {
+      overflow: auto
+    }
+
+    .hm table {
+      border-collapse: separate;
+      border-spacing: 3px;
+      width: 100%
+    }
+
+    .hm th {
+      font-size: 11px;
+      color: var(--mute);
+      padding: 6px;
+      text-align: center
+    }
+
+    .hm td {
+      padding: 10px 6px;
+      text-align: center;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      min-width: 62px
+    }
+
+    .hm td.y,
+    .hm th.y {
+      background: none;
+      text-align: left;
+      font-weight: 800;
+      color: var(--navy)
+    }
+
+    .hm td.t {
+      background: #eef3fb
+    }
+
+    .tb {
+      overflow: auto;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 5px 16px rgba(16, 44, 92, .07);
+      max-height: calc(100vh - 290px)
+    }
+
+    .tb table {
+      width: 100%;
+      border-collapse: collapse
+    }
+
+    .tb th {
+      position: sticky;
+      top: 0;
+      background: #f4f8ff;
+      color: var(--mute);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      text-align: left;
+      padding: 11px 12px;
+      white-space: nowrap
+    }
+
+    .tb td {
+      padding: 9px 12px;
+      border-bottom: 1px solid #edf2fa;
+      white-space: nowrap
+    }
+
+    .tb td.r,
+    .tb th.r {
+      text-align: right
+    }
+
+    .tb td:nth-child(2) {
+      max-width: 230px;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .tb tr:hover td {
+      background: #fafcff
+    }
+
+    .tag {
+      padding: 2px 9px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+      background: #fff1d6;
+      color: #a86400
+    }
+
+    .tag.ic {
+      background: #dcf0ff;
+      color: #1d5fa8
+    }
+
+    .pg {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 2px;
+      color: var(--mute);
+      gap: 10px
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 9px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--navy);
+      color: #fff;
+      font-size: 12px
+    }
+
+    .btn.g {
+      background: #fff;
+      color: var(--navy);
+      border: 1px solid var(--line)
+    }
+
+    .btn.red {
+      background: var(--red)
+    }
+
+    .empty {
+      background: #fff;
+      border-radius: 16px;
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--mute);
+      margin-top: 18px
+    }
+
+    .empty b {
+      display: block;
+      color: var(--navy);
+      font-size: 17px;
+      margin-bottom: 6px
+    }
+
+    @media(max-width:900px) {
+      .cg {
+        grid-template-columns: 1fr
+      }
+
+      .kp {
+        overflow-x: auto
+      }
+
+      .k {
+        min-width: 150px
+      }
+
+      aside {
+        width: 62px
+      }
+
+      .nv span {
+        display: none
+      }
+
+      .ttl span {
+        display: none
+      }
+    }
+
+    /* ===== v3: KPI cards (same as FG) ===== */
+    .rkp {
+      display: flex;
+      gap: 14px;
+      margin: 6px 0 16px
+    }
+
+    .rk {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(10, 40, 100, .22), inset 0 0 0 1px rgba(255, 255, 255, .18)
+    }
+
+    .rk:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(120% 90% at 0% 0%, rgba(255, 255, 255, .22), transparent 55%);
+      pointer-events: none
+    }
+
+    .rk-t {
+      background: linear-gradient(135deg, #0d3b99, #06214f)
+    }
+
+    .rk-1 {
+      background: linear-gradient(135deg, #2158e0, #0b2f8f)
+    }
+
+    .rk-2 {
+      background: linear-gradient(135deg, #14b8d4, #0c6f8c)
+    }
+
+    .rk-3 {
+      background: linear-gradient(135deg, #34c759, #15803d)
+    }
+
+    .rk-5 {
+      background: linear-gradient(135deg, #8b5cf6, #4c1d95)
+    }
+
+    .rk-ic {
+      position: relative;
+      flex: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, .18);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35)
+    }
+
+    .rk-ic svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .rk-tx {
+      position: relative;
+      min-width: 0;
+      flex: 1
+    }
+
+    .rk-tx small {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      opacity: .95
+    }
+
+    .rk-tx b {
+      display: block;
+      font-size: 20px;
+      font-weight: 800;
+      margin: 2px 0 4px;
+      white-space: nowrap;
+      letter-spacing: -.01em
+    }
+
+    .rk-g {
+      font-size: 11.5px;
+      font-weight: 700;
+      white-space: nowrap
+    }
+
+    .rk-g.up {
+      color: #9bffc0
+    }
+
+    .rk-g.dn {
+      color: #ffc2c2
+    }
+
+    .rk-g.na {
+      opacity: .7
+    }
+
+    .rk-bars {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 26px
+    }
+
+    .rk-bars i {
+      display: block;
+      width: 5px;
+      border-radius: 2px 2px 0 0;
+      background: rgba(255, 255, 255, .35)
+    }
+
+    .rk-bars i.l {
+      background: rgba(255, 255, 255, .85)
+    }
+
+    /* ===== v3: Raw Data KPI cards — glossy style ===== */
+    .rkp {
+      gap: clamp(8px, 1vw, 16px) !important
+    }
+
+    .rk {
+      min-height: 92px;
+      padding: 14px clamp(10px, 1.1vw, 18px) !important;
+      gap: clamp(8px, .9vw, 14px) !important;
+      border-radius: 16px !important;
+      box-shadow: 0 10px 24px rgba(10, 40, 100, .25), inset 0 0 0 1.5px rgba(255, 255, 255, .38), inset 0 2px 10px rgba(255, 255, 255, .18) !important
+    }
+
+    .rk:before {
+      background: radial-gradient(110% 80% at 0% 0%, rgba(255, 255, 255, .30), transparent 55%), linear-gradient(180deg, rgba(255, 255, 255, .10), transparent 40%) !important
+    }
+
+    .rk-t {
+      background: linear-gradient(135deg, #0b4fd0, #061f5e) !important
+    }
+
+    .rk-1 {
+      background: linear-gradient(135deg, #2f6bf0, #102c9c) !important
+    }
+
+    .rk-2 {
+      background: linear-gradient(135deg, #27d3ee, #0a6f8f) !important
+    }
+
+    .rk-3 {
+      background: linear-gradient(135deg, #46d868, #0f7a36) !important
+    }
+
+    .rk-5 {
+      background: linear-gradient(135deg, #9a6bff, #45199a) !important
+    }
+
+    .rk-ic {
+      width: clamp(40px, 3.6vw, 54px) !important;
+      height: clamp(40px, 3.6vw, 54px) !important;
+      background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, .38), rgba(255, 255, 255, .12)) !important;
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .55), 0 4px 10px rgba(0, 0, 0, .18) !important;
+      z-index: 1
+    }
+
+    .rk-ic svg {
+      width: 56% !important;
+      height: 56% !important;
+      stroke: none !important;
+      fill: #fff !important;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .25))
+    }
+
+    .rk-tx {
+      z-index: 1
+    }
+
+    .rk-tx small {
+      font-size: clamp(11px, .9vw, 13px) !important;
+      font-weight: 700 !important;
+      opacity: 1 !important
+    }
+
+    .rk-tx b {
+      font-size: clamp(17px, 1.65vw, 24px) !important;
+      font-weight: 800 !important;
+      margin: 3px 0 6px !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, .2)
+    }
+
+    .rk-g {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: #fff !important;
+      font-size: clamp(10.5px, .85vw, 12.5px) !important;
+      font-weight: 700 !important;
+      opacity: 1 !important
+    }
+
+    .rk-g em {
+      font-style: normal;
+      font-size: 10px;
+      line-height: 1
+    }
+
+    .rk-g.up em {
+      color: #5dff8f
+    }
+
+    .rk-g.dn em {
+      color: #ff8f8f
+    }
+
+    .rk-bars {
+      right: 10px !important;
+      bottom: 8px !important;
+      gap: 3px !important;
+      height: 40px !important;
+      align-items: flex-end;
+      z-index: 0
+    }
+
+    .rk-bars i {
+      width: 6px !important;
+      border-radius: 2px 2px 0 0 !important;
+      background: linear-gradient(180deg, rgba(255, 255, 255, .5), rgba(255, 255, 255, .12)) !important
+    }
+
+    .rk-bars i.l {
+      background: linear-gradient(180deg, rgba(255, 255, 255, .95), rgba(255, 255, 255, .35)) !important
+    }
+
+    .rk-bars svg {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      pointer-events: none;
+      overflow: visible
+    }
+
+    @media(max-width:1250px) {
+      .rk-bars {
+        opacity: .55;
+        transform: scale(.8);
+        transform-origin: right bottom
+      }
+    }
+
+    .rk-o {
+      flex: 1.5 1 0 !important
+    }
+
+    .rk-oo {
+      display: flex;
+      gap: clamp(8px, 1vw, 16px);
+      margin-top: 4px
+    }
+
+    .rk-oo>div {
+      flex: 1;
+      min-width: 0
+    }
+
+    .rk-oo i {
+      display: block;
+      font-style: normal;
+      font-size: clamp(10px, .8vw, 12px);
+      font-weight: 700;
+      opacity: .95
+    }
+
+    .rk-tx .rk-oo b {
+      font-size: clamp(11px, .95vw, 14px) !important;
+      margin: 1px 0 0 !important;
+      text-shadow: none
+    }
+
+    @media(max-width:900px) {
+      .rkp {
+        overflow-x: auto
+      }
+
+      .rk {
+        min-width: 210px
+      }
+    }
+
+    /* ===== Top 10 Buyer cards (banner header · gradient bars · customer tooltip) ===== */
+    .c.bq {
+      padding: 0;
+      overflow: hidden;
+      border-radius: 18px
+    }
+
+    .bq .bh {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 13px 20px;
+      color: #fff;
+      font-weight: 800;
+      font-size: clamp(15px, 1.35vw, 21px)
+    }
+
+    .bq.bh-h .bh {
+      background: linear-gradient(90deg, #6b0719, #a61935 60%, #c8102e)
+    }
+
+    .bq.bh-s .bh {
+      background: linear-gradient(90deg, #0a3a8f, #1259c4 60%, #1b7fe0)
+    }
+
+    .bq .bh svg {
+      width: 30px;
+      height: 30px;
+      flex: none
+    }
+
+    .bq .bh i {
+      width: 1px;
+      height: 26px;
+      background: rgba(255, 255, 255, .55)
+    }
+
+    .bq .bb {
+      padding: 12px 20px 16px
+    }
+
+    .br {
+      display: grid;
+      grid-template-columns: minmax(90px, 150px) 1fr 62px;
+      align-items: center;
+      gap: 14px;
+      padding: 5px 6px;
+      border-radius: 8px;
+      cursor: default
+    }
+
+    .br:hover {
+      background: #f3f6fc
+    }
+
+    .br em {
+      font-style: normal;
+      text-align: right;
+      font-weight: 700;
+      font-size: 13px;
+      color: #2b4270;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .br u {
+      display: block;
+      height: 14px;
+      border-radius: 9px;
+      background: #e9edf5;
+      overflow: hidden;
+      text-decoration: none
+    }
+
+    .br u s {
+      display: block;
+      height: 100%;
+      border-radius: 9px;
+      text-decoration: none
+    }
+
+    .bq.bh-h .br u s {
+      background: linear-gradient(90deg, #7a0a1c, #e0142f)
+    }
+
+    .bq.bh-s .br u s {
+      background: linear-gradient(90deg, #0a5fb5, #19b6e8)
+    }
+
+    .br b {
+      font-weight: 800;
+      color: #0f2a5a;
+      font-size: 13.5px
+    }
+
+    .c.bsum {
+      display: flex;
+      align-items: center;
+      padding: 14px 6px
+    }
+
+    .bsum .bi {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 24px;
+      border-right: 1px solid #d8e0ee;
+      min-width: 0
+    }
+
+    .bsum .bi:last-child {
+      border-right: 0
+    }
+
+    .bsum .ci {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex: none
+    }
+
+    .bsum .ci svg {
+      width: 26px;
+      height: 26px
+    }
+
+    .bsum small {
+      display: block;
+      font-size: 13px;
+      color: #4a5a78
+    }
+
+    .bsum b {
+      display: block;
+      font-size: clamp(16px, 1.6vw, 22px);
+      font-weight: 800;
+      color: #0f2a5a;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    @media(max-width:900px) {
+      .c.bsum {
+        flex-wrap: wrap
+      }
+
+      .bsum .bi {
+        flex: 1 1 100%;
+        border-right: 0;
+        padding: 6px 14px
+      }
+
+      .br {
+        grid-template-columns: 90px 1fr 56px;
+        gap: 8px
+      }
+    }
+
+    #by-tip {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      display: none;
+      width: 380px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 10px 30px rgba(15, 42, 90, .22);
+      border: 1px solid #e3e8f2;
+      font-family: Inter, sans-serif
+    }
+
+    #by-tip .h {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0f2a5a;
+      line-height: 1.3;
+      word-break: break-word
+    }
+
+    #by-tip .h span {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #6d7c99;
+      margin-top: 2px
+    }
+
+    #by-tip .by {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: #6d7c99;
+      margin: 10px 0 6px;
+      text-transform: uppercase
+    }
+
+    #by-tip .r {
+      display: grid;
+      grid-template-columns: 165px 1fr 54px;
+      align-items: center;
+      gap: 8px;
+      margin: 5px 0;
+      font-size: 12.5px
+    }
+
+    #by-tip .r em {
+      font-style: normal;
+      color: #0b5fa5;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    #by-tip .r u {
+      display: block;
+      height: 8px;
+      border-radius: 9px;
+      background: #e8ecf3;
+      text-decoration: none;
+      overflow: hidden
+    }
+
+    #by-tip .r u i {
+      display: block;
+      height: 100%;
+      border-radius: 9px;
+      background: linear-gradient(90deg, #0a84c6, #00bcd4)
+    }
+
+    #by-tip .r b {
+      text-align: right;
+      color: #0f2a5a;
+      font-weight: 800
+    }
+  
+    /* ===== Delivery Raw Data pivot (same look as FG) ===== */
+    .rwt {
+      overflow: auto;
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid #c9d9f2;
+      box-shadow: 0 8px 22px rgba(16, 44, 92, .10);
+      max-height: calc(100vh - 300px)
+    }
+
+    .pv2 {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 12.5px;
+      font-variant-numeric: tabular-nums
+    }
+
+    .pv2 th {
+      position: sticky;
+      z-index: 3;
+      color: #fff;
+      white-space: nowrap;
+      padding: 0 10px;
+      text-align: center
+    }
+
+    .pv2 thead tr:first-child th {
+      top: 0;
+      height: 42px
+    }
+
+    .pv2 thead tr:nth-child(2) th {
+      top: 42px;
+      height: 28px
+    }
+
+    .pv2 th.mh {
+      background: linear-gradient(180deg, #0c3a8f, #052a72);
+      font-size: 14px;
+      font-weight: 800;
+      z-index: 6
+    }
+
+    .pv2 th.yh {
+      background: linear-gradient(180deg, #154aa8, #0e3d96);
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      user-select: none;
+      border-left: 1px solid rgba(255, 255, 255, .22)
+    }
+
+    .pv2 th.yh i {
+      font-style: normal;
+      font-size: 10px;
+      opacity: .7;
+      margin-left: 6px;
+      vertical-align: middle
+    }
+
+    .pv2 th.sh {
+      background: #0e3d96;
+      font-size: 11px;
+      font-weight: 600;
+      color: #dbe8ff;
+      border-top: 1px solid rgba(255, 255, 255, .18)
+    }
+
+    .pv2 th.ys {
+      border-left: 1px solid rgba(255, 255, 255, .22)
+    }
+
+    .pv2 th.c1,
+    .pv2 td.c1 {
+      left: 0;
+      min-width: 96px;
+      max-width: 96px
+    }
+
+    .pv2 th.c2,
+    .pv2 td.c2 {
+      left: 96px;
+      min-width: 84px;
+      max-width: 84px
+    }
+
+    .pv2 th.gh {
+      right: 0
+    }
+
+    .pv2 td {
+      height: 34px;
+      padding: 0;
+      border-bottom: 1px solid #e3ebf7;
+      white-space: nowrap
+    }
+
+    .pv2 td.c1,
+    .pv2 td.c2 {
+      position: sticky;
+      background: #fff;
+      z-index: 2;
+      font-weight: 800;
+      padding: 0 10px;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .pv2 td.c2 {
+      border-right: 1px solid #e3ebf7
+    }
+
+    .pv2 td.bc {
+      position: relative;
+      min-width: 128px
+    }
+
+    .pv2 td.bc i {
+      position: absolute;
+      left: 3px;
+      top: 5px;
+      bottom: 5px;
+      max-width: calc(100% - 6px);
+      border-radius: 3px;
+      background: linear-gradient(90deg, #3fcf6b 0%, #8fe3a9 55%, rgba(220, 247, 228, .55) 100%)
+    }
+
+    .pv2 td.bc span {
+      position: relative;
+      display: block;
+      text-align: center;
+      padding: 0 10px;
+      font-weight: 600;
+      color: #10285a;
+      line-height: 34px
+    }
+
+    .pv2 td.bc.z span {
+      color: #7b89a6
+    }
+
+    .pv2 td.bc.gc {
+      position: sticky;
+      right: 0;
+      z-index: 2;
+      background: #fff;
+      min-width: 150px;
+      box-shadow: -6px 0 8px -6px rgba(16, 44, 92, .22)
+    }
+
+    .pv2 td.bc.gc span {
+      font-weight: 700
+    }
+
+    .pv2 td.bc.gc em {
+      font-style: normal;
+      margin-left: 8px;
+      font-weight: 700;
+      color: #3a4d73
+    }
+
+    .pv2 td.ys {
+      border-left: 1px solid #d3e0f4
+    }
+
+    .pv2 tbody tr:hover td {
+      background-color: #f6faff
+    }
+
+    .pv2 tfoot td {
+      position: sticky;
+      bottom: 0;
+      z-index: 3;
+      height: 46px;
+      padding: 0 10px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 14px;
+      color: #fff;
+      background: linear-gradient(180deg, #0c3a8f, #052a72);
+      border-left: 1px solid rgba(255, 255, 255, .18);
+      border-bottom: 0
+    }
+
+    .pv2 tfoot td.f1 {
+      left: 0;
+      z-index: 5;
+      text-align: left;
+      font-size: 13px;
+      min-width: 180px;
+      max-width: none
+    }
+
+    .pv2 tfoot td.f1 svg {
+      width: 18px;
+      height: 18px;
+      vertical-align: -4px;
+      margin-right: 8px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .pv2 tfoot td.gt {
+      right: 0;
+      z-index: 5;
+      background: linear-gradient(180deg, #1a6dff, #0a4fd6);
+      font-size: 15px
+    }
+
+    .pg .bx {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 38px;
+      padding: 0 16px;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--navy);
+      border: 1.5px solid #cfdcf3;
+      font: 700 13px Inter, sans-serif;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(16, 44, 92, .08);
+      transition: .15s;
+      white-space: nowrap
+    }
+
+    .pg .bx:hover {
+      border-color: #2f6fe4;
+      box-shadow: 0 4px 12px rgba(47, 111, 228, .2)
+    }
+
+    .pg .bx i {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #2f6fe4;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: none
+    }
+
+    .pg .bx i svg {
+      width: 12px;
+      height: 12px;
+      stroke: #fff;
+      stroke-width: 2.6;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .pg .bx.dk {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy)
+    }
+
+    .pg .bx.dk svg {
+      width: 15px;
+      height: 15px;
+      stroke: #fff;
+      stroke-width: 2.2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    /* Delivery: cell = Hanger Qty | Sizer Qty (wider columns) */
+    .pv2 th.c2,.pv2 td.c2{left:96px;min-width:170px;max-width:170px}
+    .pv2 td.bc{min-width:172px}
+    .pv2 td.bc.gc{min-width:190px}
+    .pv2 th.sh{min-width:150px}
+
+  
+    /* Top 20 Model chart tooltip */
+    #mt-tip {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      display: none;
+      width: 380px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 10px 30px rgba(15, 42, 90, .22);
+      border: 1px solid #e3e8f2;
+      font-family: Inter, sans-serif
+    }
+    #mt-tip .h {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0f2a5a;
+      line-height: 1.3;
+      word-break: break-word
+    }
+    #mt-tip .h span {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #6d7c99;
+      margin-top: 2px
+    }
+    #mt-tip .by {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: #6d7c99;
+      margin: 10px 0 6px;
+      text-transform: uppercase
+    }
+    #mt-tip .r {
+      display: grid;
+      grid-template-columns: 165px 1fr 54px;
+      align-items: center;
+      gap: 8px;
+      margin: 5px 0;
+      font-size: 12.5px
+    }
+    #mt-tip .r em {
+      font-style: normal;
+      color: #0b5fa5;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+    #mt-tip .r u {
+      display: block;
+      height: 8px;
+      border-radius: 9px;
+      background: #e8ecf3;
+      text-decoration: none;
+      overflow: hidden
+    }
+    #mt-tip .r u i {
+      display: block;
+      height: 100%;
+      border-radius: 9px;
+      background: linear-gradient(90deg, #0a84c6, #00bcd4)
+    }
+    #mt-tip .r b {
+      text-align: right;
+      color: #0f2a5a;
+      font-weight: 800
+    }
+  
+    /* ===== Portal-style header (same as Mainetti ERP Portal) ===== */
+    header {
+      height: clamp(66px, 9vh, 88px);
+      padding: 0;
+      gap: 0;
+      align-items: stretch;
+      color: var(--navy);
+      background: linear-gradient(90deg, #f8fbff, #e8f0fc);
+      box-shadow: 0 4px 18px rgba(16, 44, 92, .12);
+      position: relative;
+      z-index: 20
+    }
+    header .hl { display: flex; align-items: center; gap: clamp(12px, 1.5vw, 24px); padding: 0 clamp(14px, 1.8vw, 30px); position: relative; z-index: 2; flex: none }
+    header .hl img { height: clamp(40px, 6.2vh, 58px); display: block }
+    header .bk { width: 36px; height: 36px; flex: none; border-radius: 10px; border: 1px solid #b9c8e3; background: #fff; color: #12408f; font-size: 18px; cursor: pointer; box-shadow: 0 2px 8px rgba(16, 44, 92, .10) }
+    header .bk:hover { border-color: #2f6fe4 }
+    header .logo { font-weight: 800; letter-spacing: .06em; font-size: 20px; line-height: 1; color: var(--navy) }
+    header .logo small { display: block; font-size: 9px; letter-spacing: .2em; margin-top: 3px; color: #12408f; opacity: 1; font-weight: 700 }
+    header .sep { width: 1px; height: 46px; background: #9fb3d3; flex: none }
+    header .tag { background: none; padding: 0; border-radius: 0; font-style: italic; font-weight: 600; color: #12408f; font-size: clamp(12px, 1.15vw, 18px); white-space: nowrap }
+    header .tag i { font-style: normal; margin: 0 .7em; opacity: .55 }
+    header .gr { font-size: 11.5px; color: var(--mute); margin-top: 3px; white-space: nowrap }
+    header .hp { flex: 1; min-width: 0; position: relative; overflow: hidden }
+    header .hp:before { content: ""; position: absolute; inset: 0; background: url(assets/header-photo.jpg) right center/cover no-repeat; -webkit-mask-image: linear-gradient(90deg, transparent, #000 40%); mask-image: linear-gradient(90deg, transparent, #000 40%) }
+    header .hr { position: relative; display: flex; align-items: center; gap: clamp(10px, 1.2vw, 18px); padding: 0 clamp(14px, 1.6vw, 26px) 0 clamp(54px, 5vw, 84px); color: #fff; flex: none }
+    header .hr:before { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, #0a2a70, #0b3d94); clip-path: polygon(44px 0, 100% 0, 100% 100%, 0 100%); z-index: 0 }
+    header .hr > * { position: relative; z-index: 1 }
+    header .hr svg.fy { width: clamp(30px, 2.6vw, 42px); height: clamp(30px, 2.6vw, 42px); flex: none }
+    header .ht b { display: block; font-size: clamp(15px, 1.5vw, 23px); font-weight: 800; white-space: nowrap }
+    header .ht span { display: block; font-size: clamp(9.5px, .8vw, 12px); opacity: .92; margin-top: 2px; white-space: nowrap }
+    header .ub { padding: 4px 14px 4px 4px; font-family: inherit }
+    header .av { width: 30px; height: 30px; font-size: 12px; color: #0b3d94 }
+    header .menu { top: 46px }
+    @media(max-width:1000px) { header .hp, header .gr { display: none } header .hp { flex: 1 } }
+    @media(max-width:700px) { header .tag, header .sep { display: none } }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="hl">
+      <button class="bk" onclick="location.href='order.html'" title="Back to Order Management">←</button>
+      <img src="assets/logo.png" alt="Mainetti Bangladesh" onerror="this.outerHTML='&lt;div class=&quot;logo&quot;&gt;MAINETTI&lt;small&gt;BANGLADESH PVT. LTD.&lt;/small&gt;&lt;/div&gt;'">
+      <div class="sep"></div>
+      <div>
+        <div class="tag">Drive Efficiency<i>/</i>Ensure Quality<i>/</i>Grow Together</div>
+        <div class="gr" id="gr"></div>
+      </div>
+    </div>
+    <div class="hp"></div>
+    <div class="hr"><svg class="fy" viewBox="0 0 24 24"><path fill="#fff" d="M2 21V10l6 3.6V10l6 3.6V4h3.4v9.6H22V21z" /><path fill="rgba(11,61,148,.55)" d="M5 17h2.2v2.2H5zM10 17h2.2v2.2H10zM15 17h2.2v2.2H15z" /><path fill="#fff" opacity=".7" d="M16.2 1.5h2.6v2h-2.6z" /></svg>
+      <div class="ht"><b>Outstanding</b><span>Order &amp; Requirement Status</span></div>
+      <div class="user"><button class="ub" id="ub"><span class="av" id="av"></span><span id="un"></span> ▾</button>
+        <div class="menu" id="mn">
+          <div onclick="location.href='order.html'">Order Management</div>
+          <div onclick="location.href='portal.html'">Portal</div>
+          <div onclick="out()">Sign out</div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="lay">
+    <aside id="sd">
+      <div class="nv t" onclick="$('#sd').classList.toggle('col')"><svg viewBox="0 0 24 24">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg><span>Menu</span></div>
+      <div class="nv on" data-p="ov" onclick="show('ov')"><svg viewBox="0 0 24 24">
+          <path d="M4 4h7v9H4zM13 4h7v5h-7zM13 11h7v9h-7zM4 15h7v5H4z" />
+        </svg><span>Overview</span></div>
+      <div class="nv" data-p="raw" onclick="show('raw')"><svg viewBox="0 0 24 24">
+          <path d="M3 5h18v14H3zM3 10h18M9 5v14" />
+        </svg><span>Raw Data</span></div>
+    </aside>
+    <main id="mn2">
+      <div class="fb" id="fb"></div>
+      <div id="pgc"></div>
+    </main>
+  </div>
+  <div id="pn"></div>
+  <script>
+    const $ = s => document.querySelector(s), esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    let ME = null, mod = null, msg = "", R = [], page = "ov"; const out = () => ERP.signOut();
+    $("#ub").onclick = e => { e.stopPropagation(); const m = $("#mn"); m.style.display = m.style.display === "block" ? "none" : "block" };
+    document.addEventListener("click", e => { $("#mn").style.display = "none"; if (!e.target.closest("#pn,.f")) $("#pn").style.display = "none" });
+    const n0 = v => Math.round(v).toLocaleString("en-US"), ab = v => Math.abs(v) >= 1e6 ? +(v / 1e6).toFixed(1) + "M" : Math.abs(v) >= 1e3 ? +(v / 1e3).toFixed(0) + "K" : v;
+    const fq = v => Math.abs(v) >= 1e6 ? (v / 1e6).toFixed(2) + "M" : Math.abs(v) >= 1e3 ? Math.round(v / 1e3) + "K" : n0(v);
+    const clean = s => String(s ?? "").replace(/\s+/g, " ").trim(), num = v => { const x = parseFloat(String(v ?? "").replace(/,/g, "")); return isNaN(x) ? 0 : x };
+    const KS = ["availablestock", "totaldemand", "totallcrequirement", "productionrequirement"], RK = ["av", "dm", "lc", "pr"];
+    const MT = { av: "Available Stock", dm: "Total Demand", lc: "Total LC Requirement", pr: "Production Requirement" };
+
+    async function load() {
+      ME = await ERP.require(); if (!ME) return false;
+      const nm = ME.name || ME.login_id; $("#un").textContent = nm; { const h = new Date().getHours(); $("#gr").textContent = `Good ${h < 12 ? "morning" : h < 17 ? "afternoon" : "evening"}, ${String(nm).split(" ")[0]}. Here is your operation at a glance.` } $("#av").textContent = nm.slice(0, 2).toUpperCase();
+      const tree = await ERP.tree(); mod = tree.find(m => /^order\b/i.test(String(m.name).trim()));
+      if (!mod) { msg = "The Order Management module does not exist in the Admin Console."; return true }
+      if (!ERP.can(ME, mod.id) && !mod.subs.some(s => ERP.can(ME, s.id, "v", mod.id))) { msg = "You do not have access to the Order Management module."; return true }
+      ERP.sideBanner([mod.id, ...mod.subs.map(s => s.id)], [[mod.id, "order"]]);
+      let P = null; try { P = await ERP.packed(mod.id, "order") } catch (e) { console.error(e) }
+      if (!P || !P.c || !P.c.buyer) { msg = "No Outstanding data yet. Upload the Outstanding Excel from Admin Console → Data Manager → Order Management."; return true }
+      const mv = j => (P.m && (P.m[KS[j]] || P.m[j])) || [], dv = (k, j) => P.c[k] ? clean((P.dict[k] || [])[P.c[k][j]]) : "", n = P.c.buyer.length, M = [0, 1, 2, 3].map(mv);
+      for (let j = 0; j < n; j++) R.push({ buyer: dv("buyer", j).toUpperCase() || "N/A", model: dv("model", j).toUpperCase() || "N/A", color: dv("color", j).toUpperCase(), art: dv("art", j), av: num(M[0][j]), dm: num(M[1][j]), lc: num(M[2][j]), pr: num(M[3][j]) });
+      if (!R.length) msg = "The uploaded sheet has no valid rows."
+      return true
+    }
+
+    /* ---------- filters ---------- */
+    const FD = [["buyer", "Buyer", r => r.buyer], ["model", "Model", r => r.model], ["color", "Color", r => r.color], ["art", "Art#", r => r.art]];
+    const F = {}; FD.forEach(f => F[f[0]] = new Set());
+    const opts = k => { const f = FD.find(x => x[0] === k), src = k === "model" && F.buyer.size ? R.filter(r => F.buyer.has(r.buyer)) : R; return [...new Set(src.map(f[2]).filter(v => v !== "" && v != null))].sort((a, b) => String(a).localeCompare(String(b), undefined, { numeric: true })) };
+    function syncModel() { if (!F.buyer.size || !F.model.size) return; const ok = new Set(R.filter(r => F.buyer.has(r.buyer)).map(r => r.model)); F.model = new Set([...F.model].filter(m => ok.has(m))) }
+    function fbuild() {
+      if (msg) { $("#fb").innerHTML = ""; return }
+      $("#fb").innerHTML = FD.map(f => `<div class="f"><button data-k="${f[0]}" class="${F[f[0]].size ? "on" : ""}">${f[1]}${F[f[0]].size ? " (" + F[f[0]].size + ")" : ""}</button></div>`).join("") + `<button class="rs" onclick="reset()">Reset</button>`;
+      $("#fb").querySelectorAll("button[data-k]").forEach(b => b.onclick = e => { e.stopPropagation(); pnl(b) })
+    }
+    function pnl(b) {
+      const k = b.dataset.k, p = $("#pn"), r = b.getBoundingClientRect(), L = opts(k), nm = FD.find(x => x[0] === k)[1];
+      p.innerHTML = `<input type="text" placeholder="Search…"><div class="ls">${L.map(v => `<label><input type="checkbox" value="${esc(v)}" ${F[k].has(v) ? "checked" : ""}> ${esc(v)}</label>`).join("")}</div><div class="ac"><button data-a="all">Select all</button><button data-a="clr">Clear</button></div>`;
+      p.style.left = Math.min(r.left, innerWidth - 240) + "px"; p.style.top = r.bottom + 4 + "px"; p.style.display = "block";
+      p.querySelector("input[type=text]").oninput = e => p.querySelectorAll("label").forEach(l => l.style.display = l.textContent.toLowerCase().includes(e.target.value.toLowerCase()) ? "" : "none");
+      const mark = () => { b.textContent = nm + (F[k].size ? " (" + F[k].size + ")" : ""); b.classList.toggle("on", !!F[k].size); if (k === "buyer") { syncModel(); fbuild() } draw() };
+      p.querySelectorAll(".ls input").forEach(c => c.onchange = () => { c.checked ? F[k].add(c.value) : F[k].delete(c.value); mark() });
+      p.querySelectorAll(".ac button").forEach(x => x.onclick = () => { F[k] = new Set(x.dataset.a === "all" ? L : []); pnl(document.querySelector(`button[data-k=${k}]`) || b); mark() })
+    }
+    function reset() { FD.forEach(f => F[f[0]] = new Set()); fbuild(); draw() }
+    const flt = () => R.filter(r => FD.every(f => !F[f[0]].size || F[f[0]].has(f[2](r))));
+    const sum = (a, k) => a.reduce((s, r) => s + r[k], 0);
+    function grp(a, kf) { const m = new Map(); a.forEach(r => { const k = kf(r); let o = m.get(k); if (!o) m.set(k, o = { k, av: 0, dm: 0, lc: 0, pr: 0 }); RK.forEach(x => o[x] += r[x]) }); return [...m.values()] }
+
+    /* ---------- pages ---------- */
+    function show(p) { page = p; document.querySelectorAll(".nv[data-p]").forEach(n => n.classList.toggle("on", n.dataset.p === p)); draw() }
+    function draw() {
+      const c = $("#pgc"); if (msg) { c.innerHTML = `<div class="empty"><b>Outstanding</b>${esc(msg)}</div>`; return }
+      const a = flt(); page === "ov" ? ov(a) : raw(a)
+    }
+    const CH = {}; function mk(id, cfg) { CH[id] && CH[id].destroy(); CH[id] = new Chart($("#" + id), cfg) }
+    function opt(leg, horiz) { return { responsive: true, maintainAspectRatio: false, indexAxis: horiz ? "y" : "x", plugins: { legend: { display: leg, position: "bottom", labels: { boxWidth: 10, font: { size: 11 } } }, tooltip: { callbacks: { label: c => ` ${c.dataset.label ? c.dataset.label + ": " : ""}${n0(c.parsed[horiz ? "x" : "y"])}` } } }, scales: { [horiz ? "x" : "y"]: { beginAtZero: true, ticks: { callback: ab }, grid: { color: "#edf2fa" } }, [horiz ? "y" : "x"]: { grid: { display: false }, ticks: { font: { size: 11 }, maxRotation: 0, autoSkipPadding: 12, autoSkip: !horiz } } } } }
+    const IC = {
+      av: '<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 2.3 2 9.6V21.5h20V9.6zM9 21.5v-7h6v7z"/></svg>',
+      dm: '<svg viewBox="0 0 24 24"><path fill="#fff" d="M2 3.5h3.1l.7 2.5H21.5l-2.3 8.3a2 2 0 0 1-1.9 1.5H8.7a2 2 0 0 1-1.9-1.5L4.5 5.6 4 5H2z"/><circle cx="9" cy="19.3" r="1.8" fill="#fff"/><circle cx="17" cy="19.3" r="1.8" fill="#fff"/></svg>',
+      lc: '<svg viewBox="0 0 24 24"><path fill="#fff" d="M6 2h8l5 5v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/><path stroke="rgba(0,40,120,.55)" stroke-width="1.6" stroke-linecap="round" d="M8 12h8M8 15.6h5M8 8.6h4"/></svg>',
+      pr: '<svg viewBox="0 0 24 24"><path fill="#fff" d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.48.48 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.48.48 0 0 0-.59.22L2.74 8.87a.48.48 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/></svg>'
+    };
+    function kcard(a, cls, k) {
+      const v = sum(a, k), t = grp(a, r => r.buyer).sort((x, y) => y[k] - x[k])[0], sub = t && t[k] > 0 && v ? `Top: ${esc(t.k)} · ${(t[k] / v * 100).toFixed(1)}%` : "–";
+      return `<div class="rk ${cls}"><div class="rk-ic">${IC[k]}</div><div class="rk-tx"><small>${MT[k]}</small><b>${n0(v)}</b><span class="rk-g na">${sub}</span></div></div>`
+    }
+    function topModel(a, k) {
+      const tb = grp(a, r => r.model || "N/A").filter(x => x[k] > 0).sort((x, y) => y[k] - x[k]).slice(0, 20), T = sum(a, k);
+      const sb = $("#c9s"); if (sb) sb.textContent = "TOP " + tb.length + " MODELS  |  " + MT[k].toUpperCase();
+      const mxq = tb.length ? tb[0][k] : 1, mix = t => { const L = [191, 230, 205], D = [18, 77, 47]; return "rgb(" + L.map((l, i) => Math.round(l + (D[i] - l) * t)).join(",") + ")" };
+      const bc = tb.map(x => mix(mxq ? Math.pow(x[k] / mxq, .55) : 0));
+      const cm = new Map(); a.forEach(r => { const m = r.model || "N/A"; let o = cm.get(m); if (!o) cm.set(m, o = new Map()); o.set(r.buyer, (o.get(r.buyer) || 0) + r[k]) });
+      let tp = document.getElementById("mt-tip"); if (!tp) { tp = document.createElement("div"); tp.id = "mt-tip"; document.body.appendChild(tp) }
+      const ext = c => {
+        const t = c.tooltip; if (!t || t.opacity === 0 || !t.dataPoints || !t.dataPoints.length) { tp.style.display = "none"; return }
+        const i = t.dataPoints[0].dataIndex, L = [...(cm.get(tb[i].k) || new Map())].map(([n, q]) => ({ k: n, q })).filter(x => x.q > 0).sort((x, y) => y.q - x.q).slice(0, 5), mx = L.length ? L[0].q : 1;
+        tp.innerHTML = `<div class="h">${esc(tb[i].k)}<span>${fq(tb[i][k])} · ${T ? (tb[i][k] / T * 100).toFixed(1) : 0}%</span></div><div class="by">By buyer · Top ${L.length}</div>` + L.map(x => `<div class="r"><em title="${esc(x.k)}">${esc(x.k)}</em><u><i style="width:${(x.q / mx * 100).toFixed(1)}%"></i></u><b>${fq(x.q)}</b></div>`).join("");
+        tp.style.display = "block"; const R2 = c.chart.canvas.getBoundingClientRect(); let x = R2.left + t.caretX + 16, y = R2.top + t.caretY - 20;
+        if (x + tp.offsetWidth > innerWidth - 8) x = R2.left + t.caretX - tp.offsetWidth - 16; if (y + tp.offsetHeight > innerHeight - 8) y = innerHeight - tp.offsetHeight - 8;
+        tp.style.left = Math.max(8, x) + "px"; tp.style.top = Math.max(8, y) + "px"
+      };
+      mk("c9", {
+        type: "bar", data: { labels: tb.map(x => x.k), datasets: [{ label: MT[k], data: tb.map(x => x[k]), backgroundColor: bc, borderRadius: 0, barPercentage: .66, categoryPercentage: 1 }] },
+        options: { responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: { top: 28, right: 8 } }, plugins: { legend: { display: false }, tooltip: { enabled: false, external: ext } }, scales: { x: { grid: { display: false }, border: { color: "#c9d2e3" }, ticks: { autoSkip: false, minRotation: 30, maxRotation: 30, color: "#0f2a5a", font: { size: 12 } } }, y: { beginAtZero: true, border: { display: false }, grid: { color: "#eceff5" }, ticks: { callback: v => ab(v), color: "#6d7c99", font: { size: 11.5 }, maxTicksLimit: 6 } } } },
+        plugins: [{ id: "mq", afterDatasetsDraw(ch) { const { ctx } = ch; ctx.save(); ctx.textAlign = "center"; ctx.fillStyle = "#0f2a5a"; ctx.font = "800 12.5px Inter,sans-serif"; ch.getDatasetMeta(0).data.forEach((b, i) => ctx.fillText(fq(tb[i][k]), b.x, b.y - 10)); ctx.restore() } }]
+      })
+    }
+    function ov(a) {
+      $("#pgc").innerHTML = `<div class="rkp">${kcard(a, "rk-t", "av")}${kcard(a, "rk-1", "dm")}${kcard(a, "rk-2", "lc")}${kcard(a, "rk-3", "pr")}</div>
+<div class="cg">
+ <div class="c"><h4>Top 10 Buyer – Production Requirement</h4><div class="cv"><canvas id="c1"></canvas></div></div>
+ <div class="c"><h4>Top 10 Buyer – Total Demand</h4><div class="cv"><canvas id="c2"></canvas></div></div>
+ <div class="c w"><h4>Buyer-wise Comparison (Top 10 by Total Demand)</h4><div class="cv" style="height:320px"><canvas id="c3"></canvas></div></div>
+ <div class="c w"><div style="font-size:19px;font-weight:800;color:var(--navy);letter-spacing:.01em;line-height:1.2">TOP 20 MODEL – PRODUCTION REQUIREMENT</div><div id="c9s" style="font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--mute);margin:6px 0 10px"></div><div class="cv" style="height:400px"><canvas id="c9"></canvas></div><div style="text-align:right;font-size:12px;color:var(--mute);margin-top:6px">Production Requirement by model &nbsp;·&nbsp; Darker green = higher qty</div></div></div>`;
+      const top = (id, k, col) => { const t = grp(a, r => r.buyer).filter(x => x[k] > 0).sort((x, y) => y[k] - x[k]).slice(0, 10); mk(id, { type: "bar", data: { labels: t.map(x => x.k), datasets: [{ label: MT[k], data: t.map(x => x[k]), backgroundColor: col, borderRadius: 5 }] }, options: opt(false, true) }) };
+      top("c1", "pr", "#e08a00"); top("c2", "dm", "#1f9d55");
+      const t3 = grp(a, r => r.buyer).sort((x, y) => y.dm - x.dm).slice(0, 10), cols = ["#2b5bb8", "#1f9d55", "#7c4dff", "#e08a00"];
+      mk("c3", { type: "bar", data: { labels: t3.map(x => x.k), datasets: RK.map((k, i) => ({ label: MT[k], data: t3.map(x => x[k]), backgroundColor: cols[i], borderRadius: 4 })) }, options: opt(true, false) });
+      topModel(a, "pr")
+    }
+
+    /* ---------- raw data ---------- */
+    let RQ = "", pgn = 0, RW = []; const PS = 100;
+    function raw(a) {
+      $("#pgc").innerHTML = `<div class="pg"><span id="pi"></span><div style="display:flex;gap:8px;align-items:center"><input id="rq" type="text" placeholder="Search buyer / model / color / art…" value="${esc(RQ)}" style="border:1px solid var(--line);border-radius:10px;padding:9px 12px;font:inherit;min-width:230px"><button class="bx" onclick="pp(-1)">‹ Prev</button><button class="bx" onclick="pp(1)">Next ›</button><button class="bx dk" onclick="dx()"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>Download Excel</button></div></div><div class="tb" id="tb"></div>`;
+      pgn = 0; window.RA = a; $("#rq").oninput = e => { RQ = e.target.value; pgn = 0; rt() }; rt()
+    }
+    function rt() {
+      const q = RQ.trim().toLowerCase(); RW = window.RA.filter(r => !q || (r.buyer + " " + r.model + " " + r.color + " " + r.art).toLowerCase().includes(q)).sort((x, y) => y.pr - x.pr || x.buyer.localeCompare(y.buyer));
+      const s = pgn * PS, p = RW.slice(s, s + PS), T = RK.map(k => sum(RW, k));
+      $("#pi").textContent = RW.length ? `${s + 1}–${Math.min(s + PS, RW.length)} of ${RW.length} rows` : "0 rows";
+      const R_ = 'style="text-align:right;font-variant-numeric:tabular-nums"';
+      $("#tb").innerHTML = `<table><thead><tr><th>Buyer</th><th>Model</th><th>Color</th><th>Art#</th>${RK.map(k => `<th ${R_}>${MT[k]}</th>`).join("")}</tr></thead><tbody>${p.map(r => `<tr><td>${esc(r.buyer)}</td><td>${esc(r.model)}</td><td>${esc(r.color)}</td><td>${esc(r.art)}</td>${RK.map(k => `<td ${R_}>${n0(r[k])}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="8" style="text-align:center;padding:40px;color:#6d7c99">No data for the selected filters</td></tr>`}</tbody><tfoot><tr style="font-weight:800;background:#f3f7fd;position:sticky;bottom:0"><td colspan="4">Total</td>${T.map(v => `<td ${R_}>${n0(v)}</td>`).join("")}</tr></tfoot></table>`
+    }
+    function pp(d) { const mx = Math.max(0, Math.ceil(RW.length / PS) - 1); pgn = Math.min(mx, Math.max(0, pgn + d)); rt(); $("#tb").scrollTop = 0 }
+    function dx() {
+      if (!RW.length || !window.XLSX) return alert("Nothing to download.");
+      const rows = RW.map(r => ({ Buyer: r.buyer, Model: r.model, Color: r.color, "Art#": r.art, "Available Stock": r.av, "Total Demand": r.dm, "Total LC Requirement": r.lc, "Production Requirement": r.pr }));
+      const w = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(w, XLSX.utils.json_to_sheet(rows), "Outstanding"); XLSX.writeFile(w, "Outstanding_" + new Date().toISOString().slice(0, 10) + ".xlsx")
+    }
+    async function init() {
+      $("#pgc").innerHTML = '<div class="empty"><b>Outstanding</b>Loading data…</div>';
+      try { if (!(await load())) return } catch (e) { console.error(e); msg = "Could not load data: " + (e.message || e) }
+      fbuild(); draw()
+    }
+    init();
+  </script>
+</body>
+
+</html>
