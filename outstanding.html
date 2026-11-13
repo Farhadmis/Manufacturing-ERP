@@ -2091,6 +2091,241 @@
     #ag-t {
       font-weight: 800
     }
+
+    /* ===== Stock Status Distribution card (donut + table) ===== */
+    .sdc .bh #sd-t .ts {
+      font-style: normal
+    }
+
+    @container (max-width: 640px) {
+      .sdc .bh #sd-t .ts {
+        display: none
+      }
+    }
+
+    .sdc .bh #sd-t {
+      flex: 1 1 0;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 800;
+      font-size: clamp(12px, 2.5cqw, 21px)
+    }
+
+    .sdc .bb {
+      padding: 14px 16px 16px
+    }
+
+    .sdw {
+      display: grid;
+      grid-template-columns: minmax(150px, 34%) minmax(0, 1fr);
+      gap: 16px;
+      align-items: center;
+      min-height: 300px
+    }
+
+    .sdd {
+      position: relative;
+      height: 250px;
+      min-width: 0
+    }
+
+    .sdt {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      text-align: center;
+      line-height: 1.2;
+      color: #0f2a5a
+    }
+
+    .sdt small {
+      font-size: 12px;
+      font-weight: 700;
+      color: #4a5a78
+    }
+
+    .sdt b {
+      font-size: clamp(18px, 2.2vw, 28px);
+      font-weight: 800
+    }
+
+    .sdl {
+      min-width: 0;
+      border: 1px solid #e3e9f4;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff
+    }
+
+    .sdh,
+    .sdr {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 76px 56px;
+      grid-template-areas: "n p q" "d p q";
+      column-gap: 8px;
+      align-items: center;
+      padding: 8px 12px
+    }
+
+    .sdh {
+      grid-template-areas: "n p q";
+      background: #12306b;
+      color: #fff;
+      font-size: 12.5px;
+      font-weight: 700
+    }
+
+    .sdh .d {
+      display: none
+    }
+
+    .sdh .p,
+    .sdr .p {
+      text-align: center
+    }
+
+    .sdh .q,
+    .sdr .q {
+      text-align: right
+    }
+
+    .sdr {
+      border-top: 1px solid #e8edf6
+    }
+
+    .sdr .n {
+      grid-area: n;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f2a5a;
+      min-width: 0
+    }
+
+    .sdr .n i {
+      flex: none;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%
+    }
+
+    .sdr .d {
+      grid-area: d;
+      font-size: 11px;
+      line-height: 1.3;
+      color: #6d7c99;
+      padding-left: 22px
+    }
+
+    .sdr .p {
+      grid-area: p
+    }
+
+    .sdr .p span {
+      display: inline-block;
+      min-width: 62px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 800
+    }
+
+    .sdr .q {
+      grid-area: q;
+      font-size: 14.5px;
+      font-weight: 800;
+      color: #0f2a5a
+    }
+
+    .sdh .n {
+      grid-area: n
+    }
+
+    .sdh .p {
+      grid-area: p
+    }
+
+    .sdh .q {
+      grid-area: q
+    }
+
+    @container (min-width: 820px) {
+
+      .sdh,
+      .sdr {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) 84px 60px;
+        grid-template-areas: "n d p q"
+      }
+
+      .sdh .d {
+        display: block;
+        grid-area: d
+      }
+
+      .sdr .d {
+        padding-left: 0;
+        font-size: 12px
+      }
+    }
+
+    @container (max-width: 560px) {
+      .sdw {
+        grid-template-columns: 1fr
+      }
+
+      .sdd {
+        height: 220px
+      }
+    }
+
+    /* header title: smaller, never truncated, not selectable */
+    .agc .bh #ag-t,
+    .agc .bh #sd-t,
+    .sdc .bh #sd-t {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      line-height: 1.2;
+      font-size: clamp(11px, 1.7cqw, 17px)
+    }
+
+    .agc .bh #ag-t .ts,
+    .agc .bh #sd-t .ts,
+    .sdc .bh #sd-t .ts {
+      display: inline !important
+    }
+
+    .bq .bh,
+    .bq .bh * {
+      -webkit-user-select: none;
+      user-select: none
+    }
+
+    /* header buttons: always all visible, never selectable */
+    .bq .bh .agt {
+      flex: none;
+      flex-wrap: nowrap
+    }
+
+    .agt button {
+      flex: none;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      outline: none
+    }
+
+    .agt button:focus-visible {
+      box-shadow: 0 0 0 2px #fff
+    }
   </style>
 </head>
 
@@ -2278,15 +2513,46 @@
         }]
       })
     }
+    /* ---------- Stock Status Distribution (donut + table) ----------
+       Qty follows the selected tab: Product Priority = Production Requirement, Order Analysis = Total Demand, Stock & Aging = Available Stock */
+    const SS = [
+      { k: "uncoveredorders", n: "Uncovered Orders", d: "Stock Not Available for Open Orders", c: "#2563eb", bg: "#dbe7ff", fg: "#1d4ed8" },
+      { k: "stockonly", n: "Stock Only", d: "No Pending Order, Stock Available", c: "#16a34a", bg: "#d5f3de", fg: "#15803d" },
+      { k: "extrastock", n: "Extra Stock", d: "Fulfilment Done, Then Stock Available", c: "#f59e0b", bg: "#ffe9c2", fg: "#a16207" },
+      { k: "stockshortage", n: "Stock Shortage", d: "Need to Produce More", c: "#dc2626", bg: "#ffd9d9", fg: "#b91c1c" },
+      { k: "stockmatched", n: "Stock Matched", d: "Order & Stock Aligned", c: "#7c3aed", bg: "#e6dcff", fg: "#6d28d9" },
+      { k: "norequirement", n: "No Requirement", d: "No Order & No Stock Required", c: "#9ca3af", bg: "#e9ecf2", fg: "#4b5563" }
+    ];
+    function ssCard(a) {
+      const T = SS.map(s => ({ ...s, q: Math.max(0, a.reduce((t, r) => t + (stn(r.st) === s.k ? (r[TB] || []).reduce((u, v) => u + v, 0) : 0), 0)) })), tot = T.reduce((s, x) => s + x.q, 0);
+      const pc1 = q => tot ? (q / tot * 100).toFixed(1) + "%" : "0.0%";
+      $("#sd-n").textContent = fv(tot); $("#sd-t").innerHTML = "Stock Status Distribution" + `<em class="ts"> – ${esc(AG[TB].s)}</em>`;
+      $("#sd-l").innerHTML = `<div class="sdh"><span class="n">Stock Status</span><span class="d">Description</span><span class="p">Percentage (%)</span><span class="q">Qty</span></div>` +
+        T.map(x => `<div class="sdr"><span class="n"><i style="background:${x.c}"></i>${esc(x.n)}</span><span class="d">${esc(x.d)}</span><span class="p"><span style="background:${x.bg};color:${x.fg}">${pc1(x.q)}</span></span><span class="q">${fv(x.q)}</span></div>`).join("");
+      mk("c2", {
+        type: "doughnut",
+        data: { labels: T.map(x => x.n), datasets: [{ data: tot ? T.map(x => x.q) : [1], backgroundColor: tot ? T.map(x => x.c) : ["#e5e9f2"], borderColor: "#fff", borderWidth: 3, hoverOffset: 6 }] },
+        options: { responsive: true, maintainAspectRatio: false, cutout: "58%", plugins: { legend: { display: false }, tooltip: { enabled: !!tot, callbacks: { label: c => ` ${c.label}: ${fv(c.parsed)} (${pc1(c.parsed)})` } } } },
+        plugins: [{
+          id: "sdp", afterDatasetsDraw(ch) {
+            if (!tot) return; const { ctx } = ch; ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#fff"; ctx.font = "800 12.5px Inter,sans-serif";
+            ch.getDatasetMeta(0).data.forEach((arc, i) => { if (T[i].q / tot < .045) return; const p = arc.getCenterPoint(); ctx.fillText(pc1(T[i].q), p.x, p.y) }); ctx.restore()
+          }
+        }]
+      })
+    }
+    /* header: double-click must never select text */
+    ["selectstart", "dblclick"].forEach(ev => document.addEventListener(ev, e => { if (e.target && e.target.closest && e.target.closest(".bq .bh")) e.preventDefault() }));
+    document.addEventListener("mousedown", e => { if (e.detail > 1 && e.target.closest && e.target.closest(".bq .bh")) e.preventDefault() });
     function ov(a) {
       $("#pgc").innerHTML = `<div class="rkp">${kcard(a, "rk-t", "av")}${kcard(a, "rk-1", "dm")}${kcard(a, "rk-2", "lc")}${kcard(a, "rk-3", "pr")}${scard(a)}</div>
 <div class="cg">
  <div class="c bq bh-s agc"><div class="bh"><svg viewBox="0 0 24 24"><path fill="#fff" d="M3 20h18v2H3zM4 11h4v8H4zm6-7h4v15h-4zm6 4h4v11h-4z"/></svg><span id="ag-t"></span><span class="agt"><button data-t="pri">Product Priority</button><button data-t="oa">Order Analysis</button><button data-t="sa">Stock &amp; Aging</button></span></div><div class="bb"><div class="cv" style="height:300px"><canvas id="c1"></canvas></div></div></div>
- <div class="c"><h4>Top 10 Buyer – Total Demand</h4><div class="cv" style="height:318px"><canvas id="c2"></canvas></div></div>
+ <div class="c bq bh-s agc sdc"><div class="bh"><svg viewBox="0 0 24 24"><path fill="#fff" d="M3 20h18v2H3zM4 11h4v8H4zm6-7h4v15h-4zm6 4h4v11h-4z"/></svg><span id="sd-t">Stock Status Distribution</span><span class="agt"><button data-t="pri">Product Priority</button><button data-t="oa">Order Analysis</button><button data-t="sa">Stock &amp; Aging</button></span></div><div class="bb"><div class="sdw"><div class="sdd"><canvas id="c2"></canvas><div class="sdt"><small>Total</small><b id="sd-n">0</b><small>Qty</small></div></div><div class="sdl" id="sd-l"></div></div></div></div>
  <div class="c w"><h4>Buyer-wise Comparison (Top 10 by Total Demand)</h4><div class="cv" style="height:320px"><canvas id="c3"></canvas></div></div>
  <div class="c w"><div style="font-size:19px;font-weight:800;color:var(--navy);letter-spacing:.01em;line-height:1.2">TOP 20 MODEL – PRODUCTION REQUIREMENT</div><div id="c9s" style="font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--mute);margin:6px 0 10px"></div><div class="cv" style="height:400px"><canvas id="c9"></canvas></div><div style="text-align:right;font-size:12px;color:var(--mute);margin-top:6px">Production Requirement by model &nbsp;·&nbsp; Darker green = higher qty</div></div></div>`;
       const top = (id, k, col) => { const t = grp(a, r => r.buyer).filter(x => x[k] > 0).sort((x, y) => y[k] - x[k]).slice(0, 10); mk(id, { type: "bar", data: { labels: t.map(x => x.k), datasets: [{ label: MT[k], data: t.map(x => x[k]), backgroundColor: col, borderRadius: 5 }] }, options: opt(false, true) }) };
-      document.querySelectorAll(".agt button").forEach(b => b.onclick = () => { TB = b.dataset.t; agChart(a) }); agChart(a); top("c2", "dm", "#1f9d55");
+      document.querySelectorAll(".agt button").forEach(b => b.onclick = () => { TB = b.dataset.t; agChart(a); ssCard(a) }); agChart(a); ssCard(a);
       const t3 = grp(a, r => r.buyer).sort((x, y) => y.dm - x.dm).slice(0, 10), cols = ["#2b5bb8", "#1f9d55", "#7c4dff", "#e08a00"];
       mk("c3", { type: "bar", data: { labels: t3.map(x => x.k), datasets: RK.map((k, i) => ({ label: MT[k], data: t3.map(x => x[k]), backgroundColor: cols[i], borderRadius: 4 })) }, options: opt(true, false) });
       topModel(a, "pr")
