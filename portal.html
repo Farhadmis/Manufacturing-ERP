@@ -797,7 +797,7 @@
         const out = () => ERP.signOut();
         const sn = n => n.replace(/^(\w+) – /, "");
         (async () => {
-            ME = await ERP.require(); if (!ME) return; mods = await ERP.tree();
+            ME = await ERP.require(); if (!ME) return; mods = await ERP.tree(); setTimeout(() => ERP.prefetch(ME, mods), 1500);
             const nm = ME.name || ME.login_id; $("#un").textContent = nm; $("#av").textContent = nm.slice(0, 2).toUpperCase();
             const hr = new Date().getHours(); $("#gr").textContent = `Good ${hr < 12 ? "morning" : hr < 17 ? "afternoon" : "evening"}, ${nm.split(" ")[0]}. Here is your operation at a glance.`;
             if (ME.role === "admin") $("#adm").style.display = "block";
