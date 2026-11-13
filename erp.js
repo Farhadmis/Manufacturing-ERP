@@ -3,6 +3,15 @@ const SUPABASE_URL = "https://oezwkjvxueyhhkwxaezu.supabase.co";   // <-- Supaba
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lendranZ4dWV5aGhrd3hhZXp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM2MDE1NzYsImV4cCI6MjEwOTE3NzU3Nn0._kChJG8jN8SziSJQU4bFUMKg2DcX9jRl1LHy5w-XBHo";              // <-- Settings → API → anon public key
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+const ORD_P = Array.from({ length: 11 }, (_, i) => (i == 0 ? "1st" : i == 1 ? "2nd" : i == 2 ? "3rd" : (i + 1) + "th") + "priority");
+/* Order Ageing: নতুন Excel header = "1 Week", "2 Weeks" … "11 Weeks" (normalize হলে 1week, 2weeks … 11weeks) */
+const ORD_O = Array.from({ length: 11 }, (_, i) => (i + 1) + "week" + (i ? "s" : ""));
+/* পুরনো header ("Order-1 Week Older" … "Order-More than 10 Weeks") এখনও চলবে */
+const ORD_O_OLD = Array.from({ length: 10 }, (_, i) => "order" + (i + 1) + "week" + (i ? "s" : "") + "older").concat(["ordermorethan10weeks"]);
+const ORD_ALIAS = {}; ORD_O.forEach((k, i) => ORD_ALIAS[k] = ORD_O_OLD[i]);
+const ORD_S = ["030days", "3160days", "6190days", "91180days", "181365days", "366730days", "730days"];
+/* Stock Ageing: Excel header = "Stock 0–30 days" … "Stock 730 days+++" (normalize হলে stock030days … stock730days) */
+ORD_S.forEach(k => ORD_ALIAS[k] = "stock" + k);
 const ERP = {
   sb,
   email: id => { id = String(id).trim().toLowerCase(); return id.includes("@") ? id : id + "@mainetti.app"; },
@@ -78,18 +87,33 @@ const ERP = {
     if (!r.ok) throw new Error("Storage: " + path + " (" + r.status + ")");
     return r;
   },
-  /* id = module id, name = "fg" → {v, dict, c, q} | null */
+  /* id = module id, name = "fg" → {v, dict, c, q} | null
+     দ্রুত লোড: cache থাকলে meta চেক সর্বোচ্চ 2.5 সেকেন্ড অপেক্ষা, তারপর cache থেকেই দেখাবে */
   async packed(id, name) {
-    const base = id + "/" + name;
+    const base = id + "/" + name, ck = "packed:" + base;
+    const metaP = this._fetchStorage(base + "_meta.json").then(r => r.json()).catch(() => null);
+    const hit = await this._get(ck);
     let meta;
-    try { meta = await (await this._fetchStorage(base + "_meta.json")).json(); }
-    catch (e) { return null; }
-    const ck = "packed:" + base, hit = await this._get(ck);
-    if (hit && hit.v === meta.v) return hit;
+    if (hit) {
+      meta = await Promise.race([metaP, new Promise(r => setTimeout(() => r(undefined), 2500))]);
+      if (meta === undefined || (meta && hit.v === meta.v)) return hit;
+    } else meta = await metaP;
+    if (!meta) return null;
     const r = await this._fetchStorage(base + ".json.gz");
     const obj = await new Response(r.body.pipeThrough(new DecompressionStream("gzip"))).json();
     await this._put(ck, obj);
     return obj;
+  },
+  /* Portal খোলার পর ব্যাকগ্রাউন্ডে অনুমতি-পাওয়া module-গুলোর ডেটা cache-এ আনে, ক্লিক করলে সাথে সাথে দেখায় */
+  prefetch(p, tree) {
+    const run = async () => {
+      for (const m of tree || []) {
+        const k = Object.keys(ERP.PACK).find(k => ERP.PACK[k].match.test(String(m.name).trim())); if (!k) continue;
+        if (!ERP.can(p, m.id) && !m.subs.some(s => ERP.can(p, s.id, "v", m.id))) continue;
+        try { await ERP.packed(m.id, k) } catch (e) { }
+      }
+    };
+    (window.requestIdleCallback || (f => setTimeout(f, 800)))(run);
   },
 
   /* ===== কোন module-এর ডেটা কীভাবে প্যাক হবে (নতুন module এখানে যোগ হবে) ===== */
@@ -102,10 +126,10 @@ const ERP = {
     },
     /* Order module · Outstanding snapshot (তারিখ নেই; প্রতি upload-এ আগেরটা বদলে যায়) */
     order: {
-      match: /^order\b/i, snap: true,
-      dims: ["date", "buyer", "model", "color", "art"],
-      upper: ["buyer", "model", "color"],
-      meas: ["availablestock", "totaldemand", "totallcrequirement", "productionrequirement"],
+      match: /^order\b/i, snap: true, alias: ORD_ALIAS,
+      dims: ["date", "buyer", "model", "color", "art", "category", "stockstatus"],
+      upper: ["buyer", "model", "color", "category"],
+      meas: ["availablestock", "totaldemand", "totallcrequirement", "productionrequirement", ...ORD_P, ...ORD_O, ...ORD_S],
       need: ["buyer", "availablestock", "totaldemand", "totallcrequirement", "productionrequirement"]
     },
     delivery: {
