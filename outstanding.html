@@ -1167,7 +1167,7 @@
       color: #0f2a5a;
       font-weight: 800
     }
-  
+
     /* ===== Delivery Raw Data pivot (same look as FG) ===== */
     .rwt {
       overflow: auto;
@@ -1441,12 +1441,26 @@
     }
 
     /* Delivery: cell = Hanger Qty | Sizer Qty (wider columns) */
-    .pv2 th.c2,.pv2 td.c2{left:96px;min-width:170px;max-width:170px}
-    .pv2 td.bc{min-width:172px}
-    .pv2 td.bc.gc{min-width:190px}
-    .pv2 th.sh{min-width:150px}
+    .pv2 th.c2,
+    .pv2 td.c2 {
+      left: 96px;
+      min-width: 170px;
+      max-width: 170px
+    }
 
-  
+    .pv2 td.bc {
+      min-width: 172px
+    }
+
+    .pv2 td.bc.gc {
+      min-width: 190px
+    }
+
+    .pv2 th.sh {
+      min-width: 150px
+    }
+
+
     /* Top 20 Model chart tooltip */
     #mt-tip {
       position: fixed;
@@ -1461,6 +1475,7 @@
       border: 1px solid #e3e8f2;
       font-family: Inter, sans-serif
     }
+
     #mt-tip .h {
       font-size: 13px;
       font-weight: 800;
@@ -1468,6 +1483,7 @@
       line-height: 1.3;
       word-break: break-word
     }
+
     #mt-tip .h span {
       display: block;
       font-size: 11.5px;
@@ -1475,6 +1491,7 @@
       color: #6d7c99;
       margin-top: 2px
     }
+
     #mt-tip .by {
       font-size: 10.5px;
       font-weight: 700;
@@ -1483,6 +1500,7 @@
       margin: 10px 0 6px;
       text-transform: uppercase
     }
+
     #mt-tip .r {
       display: grid;
       grid-template-columns: 165px 1fr 54px;
@@ -1491,6 +1509,7 @@
       margin: 5px 0;
       font-size: 12.5px
     }
+
     #mt-tip .r em {
       font-style: normal;
       color: #0b5fa5;
@@ -1498,6 +1517,7 @@
       overflow: hidden;
       text-overflow: ellipsis
     }
+
     #mt-tip .r u {
       display: block;
       height: 8px;
@@ -1506,18 +1526,20 @@
       text-decoration: none;
       overflow: hidden
     }
+
     #mt-tip .r u i {
       display: block;
       height: 100%;
       border-radius: 9px;
       background: linear-gradient(90deg, #0a84c6, #00bcd4)
     }
+
     #mt-tip .r b {
       text-align: right;
       color: #0f2a5a;
       font-weight: 800
     }
-  
+
     /* ===== Portal-style header (same as Mainetti ERP Portal) ===== */
     header {
       height: clamp(66px, 9vh, 88px);
@@ -1530,29 +1552,373 @@
       position: relative;
       z-index: 20
     }
-    header .hl { display: flex; align-items: center; gap: clamp(12px, 1.5vw, 24px); padding: 0 clamp(14px, 1.8vw, 30px); position: relative; z-index: 2; flex: none }
-    header .hl img { height: clamp(40px, 6.2vh, 58px); display: block }
-    header .bk { width: 36px; height: 36px; flex: none; border-radius: 10px; border: 1px solid #b9c8e3; background: #fff; color: #12408f; font-size: 18px; cursor: pointer; box-shadow: 0 2px 8px rgba(16, 44, 92, .10) }
-    header .bk:hover { border-color: #2f6fe4 }
-    header .logo { font-weight: 800; letter-spacing: .06em; font-size: 20px; line-height: 1; color: var(--navy) }
-    header .logo small { display: block; font-size: 9px; letter-spacing: .2em; margin-top: 3px; color: #12408f; opacity: 1; font-weight: 700 }
-    header .sep { width: 1px; height: 46px; background: #9fb3d3; flex: none }
-    header .tag { background: none; padding: 0; border-radius: 0; font-style: italic; font-weight: 600; color: #12408f; font-size: clamp(12px, 1.15vw, 18px); white-space: nowrap }
-    header .tag i { font-style: normal; margin: 0 .7em; opacity: .55 }
-    header .gr { font-size: 11.5px; color: var(--mute); margin-top: 3px; white-space: nowrap }
-    header .hp { flex: 1; min-width: 0; position: relative; overflow: hidden }
-    header .hp:before { content: ""; position: absolute; inset: 0; background: url(assets/header-photo.jpg) right center/cover no-repeat; -webkit-mask-image: linear-gradient(90deg, transparent, #000 40%); mask-image: linear-gradient(90deg, transparent, #000 40%) }
-    header .hr { position: relative; display: flex; align-items: center; gap: clamp(10px, 1.2vw, 18px); padding: 0 clamp(14px, 1.6vw, 26px) 0 clamp(54px, 5vw, 84px); color: #fff; flex: none }
-    header .hr:before { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, #0a2a70, #0b3d94); clip-path: polygon(44px 0, 100% 0, 100% 100%, 0 100%); z-index: 0 }
-    header .hr > * { position: relative; z-index: 1 }
-    header .hr svg.fy { width: clamp(30px, 2.6vw, 42px); height: clamp(30px, 2.6vw, 42px); flex: none }
-    header .ht b { display: block; font-size: clamp(15px, 1.5vw, 23px); font-weight: 800; white-space: nowrap }
-    header .ht span { display: block; font-size: clamp(9.5px, .8vw, 12px); opacity: .92; margin-top: 2px; white-space: nowrap }
-    header .ub { padding: 4px 14px 4px 4px; font-family: inherit }
-    header .av { width: 30px; height: 30px; font-size: 12px; color: #0b3d94 }
-    header .menu { top: 46px }
-    @media(max-width:1000px) { header .hp, header .gr { display: none } header .hp { flex: 1 } }
-    @media(max-width:700px) { header .tag, header .sep { display: none } }
+
+    header .hl {
+      display: flex;
+      align-items: center;
+      gap: clamp(12px, 1.5vw, 24px);
+      padding: 0 clamp(14px, 1.8vw, 30px);
+      position: relative;
+      z-index: 2;
+      flex: none
+    }
+
+    header .hl img {
+      height: clamp(40px, 6.2vh, 58px);
+      display: block
+    }
+
+    header .bk {
+      width: 36px;
+      height: 36px;
+      flex: none;
+      border-radius: 10px;
+      border: 1px solid #b9c8e3;
+      background: #fff;
+      color: #12408f;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(16, 44, 92, .10)
+    }
+
+    header .bk:hover {
+      border-color: #2f6fe4
+    }
+
+    header .logo {
+      font-weight: 800;
+      letter-spacing: .06em;
+      font-size: 20px;
+      line-height: 1;
+      color: var(--navy)
+    }
+
+    header .logo small {
+      display: block;
+      font-size: 9px;
+      letter-spacing: .2em;
+      margin-top: 3px;
+      color: #12408f;
+      opacity: 1;
+      font-weight: 700
+    }
+
+    header .sep {
+      width: 1px;
+      height: 46px;
+      background: #9fb3d3;
+      flex: none
+    }
+
+    header .tag {
+      background: none;
+      padding: 0;
+      border-radius: 0;
+      font-style: italic;
+      font-weight: 600;
+      color: #12408f;
+      font-size: clamp(12px, 1.15vw, 18px);
+      white-space: nowrap
+    }
+
+    header .tag i {
+      font-style: normal;
+      margin: 0 .7em;
+      opacity: .55
+    }
+
+    header .gr {
+      font-size: 11.5px;
+      color: var(--mute);
+      margin-top: 3px;
+      white-space: nowrap
+    }
+
+    header .hp {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+      overflow: hidden
+    }
+
+    header .hp:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url(assets/header-photo.jpg) right center/cover no-repeat;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 40%);
+      mask-image: linear-gradient(90deg, transparent, #000 40%)
+    }
+
+    header .hr {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: clamp(10px, 1.2vw, 18px);
+      padding: 0 clamp(14px, 1.6vw, 26px) 0 clamp(54px, 5vw, 84px);
+      color: #fff;
+      flex: none
+    }
+
+    header .hr:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg, #0a2a70, #0b3d94);
+      clip-path: polygon(44px 0, 100% 0, 100% 100%, 0 100%);
+      z-index: 0
+    }
+
+    header .hr>* {
+      position: relative;
+      z-index: 1
+    }
+
+    header .hr svg.fy {
+      width: clamp(30px, 2.6vw, 42px);
+      height: clamp(30px, 2.6vw, 42px);
+      flex: none
+    }
+
+    header .ht b {
+      display: block;
+      font-size: clamp(15px, 1.5vw, 23px);
+      font-weight: 800;
+      white-space: nowrap
+    }
+
+    header .ht span {
+      display: block;
+      font-size: clamp(9.5px, .8vw, 12px);
+      opacity: .92;
+      margin-top: 2px;
+      white-space: nowrap
+    }
+
+    header .ub {
+      padding: 4px 14px 4px 4px;
+      font-family: inherit
+    }
+
+    header .av {
+      width: 30px;
+      height: 30px;
+      font-size: 12px;
+      color: #0b3d94
+    }
+
+    header .menu {
+      top: 46px
+    }
+
+    @media(max-width:1000px) {
+
+      header .hp,
+      header .gr {
+        display: none
+      }
+
+      header .hp {
+        flex: 1
+      }
+    }
+
+    @media(max-width:700px) {
+
+      header .tag,
+      header .sep {
+        display: none
+      }
+    }
+
+    .pv2 th.c1,
+    .pv2 td.c1 {
+      left: 0;
+      min-width: 110px;
+      max-width: 110px
+    }
+
+    .pv2 th.c2,
+    .pv2 td.c2 {
+      left: 110px;
+      min-width: 130px;
+      max-width: 130px;
+      border-right: 0
+    }
+
+    .pv2 th.c3,
+    .pv2 td.c3 {
+      left: 240px;
+      min-width: 110px;
+      max-width: 110px
+    }
+
+    .pv2 td.c3 {
+      position: sticky;
+      background: #fff;
+      z-index: 2;
+      font-weight: 800;
+      padding: 0 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      border-right: 1px solid #e3ebf7
+    }
+
+    .pv2 td.bc {
+      min-width: 130px
+    }
+
+    .pv2 td.bc.gc {
+      min-width: 130px
+    }
+
+    .pv2 th.sh {
+      min-width: 110px
+    }
+
+    .pv2 th.mh:not(.c1):not(.c2):not(.c3) {
+      min-width: 130px
+    }
+
+    /* ===== Stock Status : card + conditional format ===== */
+    .rk-ex .rk-oo b {
+      font-size: clamp(14px, 1.35vw, 20px) !important;
+      font-weight: 800 !important;
+      margin: 2px 0 0 !important
+    }
+
+    .rk-ex .rk-oo i {
+      font-size: clamp(10.5px, .85vw, 12.5px) !important
+    }
+
+    .rk-ex .rk-tx small {
+      white-space: nowrap
+    }
+
+    .sbg {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      line-height: 1.4;
+      background: #eef1f6;
+      color: #6d7c99
+    }
+
+    .sbg.s-extrastock {
+      background: #ffe8b3;
+      color: #8a5300
+    }
+
+    .sbg.s-stockonly {
+      background: #d6e4ff;
+      color: #174aa8
+    }
+
+    .sbg.s-stockmatched {
+      background: #c9f1d6;
+      color: #0f6a33
+    }
+
+    .sbg.s-stockshortage {
+      background: #ffd0d0;
+      color: #a8201a
+    }
+
+    .sbg.s-uncoveredorders {
+      background: #a61935;
+      color: #fff
+    }
+
+    .sbg.s-norequirement {
+      background: #eef1f6;
+      color: #6d7c99
+    }
+
+    .pv2 td.ss {
+      position: sticky;
+      right: 0;
+      z-index: 2;
+      background: #fff;
+      text-align: center;
+      min-width: 150px;
+      padding: 0 10px;
+      box-shadow: -6px 0 8px -6px rgba(16, 44, 92, .22)
+    }
+
+    .pv2 td.ss.s-extrastock {
+      background: #fff8e6
+    }
+
+    .pv2 td.ss.s-stockonly {
+      background: #eef4ff
+    }
+
+    .pv2 td.ss.s-stockmatched {
+      background: #effaf2
+    }
+
+    .pv2 td.ss.s-stockshortage {
+      background: #fff1f1
+    }
+
+    .pv2 td.ss.s-uncoveredorders {
+      background: #fde6ea
+    }
+
+    .pv2 th.ssh {
+      right: 0;
+      z-index: 7;
+      min-width: 150px
+    }
+
+    .pv2 tfoot td.ss {
+      background: linear-gradient(180deg, #0c3a8f, #052a72);
+      z-index: 4;
+      box-shadow: none
+    }
+
+    .pv2 th.sx {
+      cursor: pointer;
+      user-select: none
+    }
+
+    .pv2 th.sx:hover {
+      filter: brightness(1.18)
+    }
+
+    .so {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-left: 7px;
+      vertical-align: middle;
+      text-decoration: none
+    }
+
+    .so i {
+      display: block;
+      width: 0;
+      height: 0;
+      border-left: 4.5px solid transparent;
+      border-right: 4.5px solid transparent;
+      opacity: .45
+    }
+
+    .so i.u {
+      border-bottom: 6px solid #fff
+    }
+
+    .so i.d {
+      border-top: 6px solid #fff
+    }
+
+    .so i.on {
+      opacity: 1;
+      border-bottom-color: #ffd23f;
+      border-top-color: #ffd23f
+    }
   </style>
 </head>
 
@@ -1560,7 +1926,8 @@
   <header>
     <div class="hl">
       <button class="bk" onclick="location.href='order.html'" title="Back to Order Management">←</button>
-      <img src="assets/logo.png" alt="Mainetti Bangladesh" onerror="this.outerHTML='&lt;div class=&quot;logo&quot;&gt;MAINETTI&lt;small&gt;BANGLADESH PVT. LTD.&lt;/small&gt;&lt;/div&gt;'">
+      <img src="assets/logo.png" alt="Mainetti Bangladesh"
+        onerror="this.outerHTML='&lt;div class=&quot;logo&quot;&gt;MAINETTI&lt;small&gt;BANGLADESH PVT. LTD.&lt;/small&gt;&lt;/div&gt;'">
       <div class="sep"></div>
       <div>
         <div class="tag">Drive Efficiency<i>/</i>Ensure Quality<i>/</i>Grow Together</div>
@@ -1568,7 +1935,11 @@
       </div>
     </div>
     <div class="hp"></div>
-    <div class="hr"><svg class="fy" viewBox="0 0 24 24"><path fill="#fff" d="M2 21V10l6 3.6V10l6 3.6V4h3.4v9.6H22V21z" /><path fill="rgba(11,61,148,.55)" d="M5 17h2.2v2.2H5zM10 17h2.2v2.2H10zM15 17h2.2v2.2H15z" /><path fill="#fff" opacity=".7" d="M16.2 1.5h2.6v2h-2.6z" /></svg>
+    <div class="hr"><svg class="fy" viewBox="0 0 24 24">
+        <path fill="#fff" d="M2 21V10l6 3.6V10l6 3.6V4h3.4v9.6H22V21z" />
+        <path fill="rgba(11,61,148,.55)" d="M5 17h2.2v2.2H5zM10 17h2.2v2.2H10zM15 17h2.2v2.2H15z" />
+        <path fill="#fff" opacity=".7" d="M16.2 1.5h2.6v2h-2.6z" />
+      </svg>
       <div class="ht"><b>Outstanding</b><span>Order &amp; Requirement Status</span></div>
       <div class="user"><button class="ub" id="ub"><span class="av" id="av"></span><span id="un"></span> ▾</button>
         <div class="menu" id="mn">
@@ -1607,26 +1978,31 @@
     const clean = s => String(s ?? "").replace(/\s+/g, " ").trim(), num = v => { const x = parseFloat(String(v ?? "").replace(/,/g, "")); return isNaN(x) ? 0 : x };
     const KS = ["availablestock", "totaldemand", "totallcrequirement", "productionrequirement"], RK = ["av", "dm", "lc", "pr"];
     const MT = { av: "Available Stock", dm: "Total Demand", lc: "Total LC Requirement", pr: "Production Requirement" };
-
+    const PL = Array.from({ length: 11 }, (_, i) => (i == 0 ? "1st" : i == 1 ? "2nd" : i == 2 ? "3rd" : (i + 1) + "th") + " Priority");
+    const OL = Array.from({ length: 11 }, (_, i) => i < 10 ? (i + 1) + (i ? " Weeks" : " Week") : "10 Weeks++");
+    const SL = ["0–30 days", "31–60 days", "61–90 days", "91–180 days", "181–365 days", "366–730 days", "730 days+"];
     async function load() {
-      ME = await ERP.require(); if (!ME) return false;
+      const [me0, tree0] = await Promise.all([ERP.require(), ERP.tree().catch(() => null)]); ME = me0; if (!ME) return false;
       const nm = ME.name || ME.login_id; $("#un").textContent = nm; { const h = new Date().getHours(); $("#gr").textContent = `Good ${h < 12 ? "morning" : h < 17 ? "afternoon" : "evening"}, ${String(nm).split(" ")[0]}. Here is your operation at a glance.` } $("#av").textContent = nm.slice(0, 2).toUpperCase();
-      const tree = await ERP.tree(); mod = tree.find(m => /^order\b/i.test(String(m.name).trim()));
+      const tree = tree0 || await ERP.tree(); mod = tree.find(m => /^order\b/i.test(String(m.name).trim()));
       if (!mod) { msg = "The Order Management module does not exist in the Admin Console."; return true }
       if (!ERP.can(ME, mod.id) && !mod.subs.some(s => ERP.can(ME, s.id, "v", mod.id))) { msg = "You do not have access to the Order Management module."; return true }
       ERP.sideBanner([mod.id, ...mod.subs.map(s => s.id)], [[mod.id, "order"]]);
       let P = null; try { P = await ERP.packed(mod.id, "order") } catch (e) { console.error(e) }
       if (!P || !P.c || !P.c.buyer) { msg = "No Outstanding data yet. Upload the Outstanding Excel from Admin Console → Data Manager → Order Management."; return true }
       const mv = j => (P.m && (P.m[KS[j]] || P.m[j])) || [], dv = (k, j) => P.c[k] ? clean((P.dict[k] || [])[P.c[k][j]]) : "", n = P.c.buyer.length, M = [0, 1, 2, 3].map(mv);
-      for (let j = 0; j < n; j++) R.push({ buyer: dv("buyer", j).toUpperCase() || "N/A", model: dv("model", j).toUpperCase() || "N/A", color: dv("color", j).toUpperCase(), art: dv("art", j), av: num(M[0][j]), dm: num(M[1][j]), lc: num(M[2][j]), pr: num(M[3][j]) });
+      const G = k => { const x = P.m && (Array.isArray(P.m) ? P.m[ERP.PACK.order.meas.indexOf(k)] : P.m[k]); return x || [] };
+      const GP = ORD_P.map(G), GO = ORD_O.map(G), GS = ORD_S.map(G);
+      for (let j = 0; j < n; j++) R.push({ buyer: dv("buyer", j).toUpperCase() || "N/A", model: dv("model", j).toUpperCase() || "N/A", color: dv("color", j).toUpperCase(), art: dv("art", j), cat: dv("category", j).toUpperCase() || "N/A", st: dv("stockstatus", j), av: num(M[0][j]), dm: num(M[1][j]), lc: num(M[2][j]), pr: num(M[3][j]), pri: GP.map(a => num(a[j])), oa: GO.map(a => num(a[j])), sa: GS.map(a => num(a[j])) });
       if (!R.length) msg = "The uploaded sheet has no valid rows."
       return true
     }
 
     /* ---------- filters ---------- */
-    const FD = [["buyer", "Buyer", r => r.buyer], ["model", "Model", r => r.model], ["color", "Color", r => r.color], ["art", "Art#", r => r.art]];
+    const FD = [["art", "ART", r => r.art], ["buyer", "Buyer", r => r.buyer], ["model", "Model", r => r.model], ["cat", "Category", r => r.cat], ["st", "Stock Status", r => r.st], ["pri", "Priority", null, 1], ["sa", "Stock Ageing", null, 1]];
     const F = {}; FD.forEach(f => F[f[0]] = new Set());
-    const opts = k => { const f = FD.find(x => x[0] === k), src = k === "model" && F.buyer.size ? R.filter(r => F.buyer.has(r.buyer)) : R; return [...new Set(src.map(f[2]).filter(v => v !== "" && v != null))].sort((a, b) => String(a).localeCompare(String(b), undefined, { numeric: true })) };
+    const lab = (k, v) => k === "pri" ? PL[v] : k === "sa" ? SL[v] : v;
+    const opts = k => { const f = FD.find(x => x[0] === k); if (f[3]) return (k === "pri" ? PL : SL).map((_, i) => i); const src = k === "model" && F.buyer.size ? R.filter(r => F.buyer.has(r.buyer)) : R; return [...new Set(src.map(f[2]).filter(v => v !== "" && v != null))].sort((a, b) => String(a).localeCompare(String(b), undefined, { numeric: true })) };
     function syncModel() { if (!F.buyer.size || !F.model.size) return; const ok = new Set(R.filter(r => F.buyer.has(r.buyer)).map(r => r.model)); F.model = new Set([...F.model].filter(m => ok.has(m))) }
     function fbuild() {
       if (msg) { $("#fb").innerHTML = ""; return }
@@ -1635,7 +2011,7 @@
     }
     function pnl(b) {
       const k = b.dataset.k, p = $("#pn"), r = b.getBoundingClientRect(), L = opts(k), nm = FD.find(x => x[0] === k)[1];
-      p.innerHTML = `<input type="text" placeholder="Search…"><div class="ls">${L.map(v => `<label><input type="checkbox" value="${esc(v)}" ${F[k].has(v) ? "checked" : ""}> ${esc(v)}</label>`).join("")}</div><div class="ac"><button data-a="all">Select all</button><button data-a="clr">Clear</button></div>`;
+      p.innerHTML = `<input type="text" placeholder="Search…"><div class="ls">${L.map(v => `<label><input type="checkbox" value="${esc(v)}" ${F[k].has(v) ? "checked" : ""}> ${esc(lab(k, v))}</label>`).join("")}</div><div class="ac"><button data-a="all">Select all</button><button data-a="clr">Clear</button></div>`;
       p.style.left = Math.min(r.left, innerWidth - 240) + "px"; p.style.top = r.bottom + 4 + "px"; p.style.display = "block";
       p.querySelector("input[type=text]").oninput = e => p.querySelectorAll("label").forEach(l => l.style.display = l.textContent.toLowerCase().includes(e.target.value.toLowerCase()) ? "" : "none");
       const mark = () => { b.textContent = nm + (F[k].size ? " (" + F[k].size + ")" : ""); b.classList.toggle("on", !!F[k].size); if (k === "buyer") { syncModel(); fbuild() } draw() };
@@ -1643,7 +2019,7 @@
       p.querySelectorAll(".ac button").forEach(x => x.onclick = () => { F[k] = new Set(x.dataset.a === "all" ? L : []); pnl(document.querySelector(`button[data-k=${k}]`) || b); mark() })
     }
     function reset() { FD.forEach(f => F[f[0]] = new Set()); fbuild(); draw() }
-    const flt = () => R.filter(r => FD.every(f => !F[f[0]].size || F[f[0]].has(f[2](r))));
+    const flt = () => R.filter(r => FD.every(f => !F[f[0]].size || (f[3] ? [...F[f[0]]].some(i => r[f[0]][i] > 0) : F[f[0]].has(f[2](r)))));
     const sum = (a, k) => a.reduce((s, r) => s + r[k], 0);
     function grp(a, kf) { const m = new Map(); a.forEach(r => { const k = kf(r); let o = m.get(k); if (!o) m.set(k, o = { k, av: 0, dm: 0, lc: 0, pr: 0 }); RK.forEach(x => o[x] += r[x]) }); return [...m.values()] }
 
@@ -1659,12 +2035,19 @@
       av: '<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 2.3 2 9.6V21.5h20V9.6zM9 21.5v-7h6v7z"/></svg>',
       dm: '<svg viewBox="0 0 24 24"><path fill="#fff" d="M2 3.5h3.1l.7 2.5H21.5l-2.3 8.3a2 2 0 0 1-1.9 1.5H8.7a2 2 0 0 1-1.9-1.5L4.5 5.6 4 5H2z"/><circle cx="9" cy="19.3" r="1.8" fill="#fff"/><circle cx="17" cy="19.3" r="1.8" fill="#fff"/></svg>',
       lc: '<svg viewBox="0 0 24 24"><path fill="#fff" d="M6 2h8l5 5v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/><path stroke="rgba(0,40,120,.55)" stroke-width="1.6" stroke-linecap="round" d="M8 12h8M8 15.6h5M8 8.6h4"/></svg>',
+      ex: '<svg viewBox="0 0 24 24"><path fill="#fff" d="M12 2 2 7l10 5 10-5zM2 12l10 5 10-5-2.2-1.1L12 14.8 4.2 10.9zM2 16.5l10 5 10-5-2.2-1.1L12 19.3l-7.8-3.9z"/></svg>',
       pr: '<svg viewBox="0 0 24 24"><path fill="#fff" d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.48.48 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.48.48 0 0 0-.59.22L2.74 8.87a.48.48 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/></svg>'
     };
     function kcard(a, cls, k) {
       const v = sum(a, k), t = grp(a, r => r.buyer).sort((x, y) => y[k] - x[k])[0], sub = t && t[k] > 0 && v ? `Top: ${esc(t.k)} · ${(t[k] / v * 100).toFixed(1)}%` : "–";
       return `<div class="rk ${cls}"><div class="rk-ic">${IC[k]}</div><div class="rk-tx"><small>${MT[k]}</small><b>${n0(v)}</b><span class="rk-g na">${sub}</span></div></div>`
     }
+    const stn = s => String(s || "").toLowerCase().replace(/[^a-z]/g, "");
+    const stq = (a, s, k) => a.reduce((t, r) => t + (stn(r.st) === s ? r[k] : 0), 0);
+    function scard(a) {
+      return `<div class="rk rk-5 rk-o rk-ex"><div class="rk-ic">${IC.ex}</div><div class="rk-tx"><small>Excess Stock &amp; Order Status</small><div class="rk-oo"><div><i>Only Stock</i><b>${n0(stq(a, "stockonly", "av"))}</b></div><div><i>Uncovered Orders</i><b>${n0(stq(a, "uncoveredorders", "dm"))}</b></div></div></div></div>`
+    }
+    const SBADGE = s => s ? `<span class="sbg s-${stn(s)}">${esc(s)}</span>` : "–";
     function topModel(a, k) {
       const tb = grp(a, r => r.model || "N/A").filter(x => x[k] > 0).sort((x, y) => y[k] - x[k]).slice(0, 20), T = sum(a, k);
       const sb = $("#c9s"); if (sb) sb.textContent = "TOP " + tb.length + " MODELS  |  " + MT[k].toUpperCase();
@@ -1687,7 +2070,7 @@
       })
     }
     function ov(a) {
-      $("#pgc").innerHTML = `<div class="rkp">${kcard(a, "rk-t", "av")}${kcard(a, "rk-1", "dm")}${kcard(a, "rk-2", "lc")}${kcard(a, "rk-3", "pr")}</div>
+      $("#pgc").innerHTML = `<div class="rkp">${kcard(a, "rk-t", "av")}${kcard(a, "rk-1", "dm")}${kcard(a, "rk-2", "lc")}${kcard(a, "rk-3", "pr")}${scard(a)}</div>
 <div class="cg">
  <div class="c"><h4>Top 10 Buyer – Production Requirement</h4><div class="cv"><canvas id="c1"></canvas></div></div>
  <div class="c"><h4>Top 10 Buyer – Total Demand</h4><div class="cv"><canvas id="c2"></canvas></div></div>
@@ -1700,23 +2083,51 @@
       topModel(a, "pr")
     }
 
-    /* ---------- raw data ---------- */
-    let RQ = "", pgn = 0, RW = []; const PS = 100;
+    /* ---------- raw data : pivot (ART · Model · Color) ---------- */
+    const GK = ["pri", "oa", "sa"], GD = { pri: [PL, "Priority Ageing (Wks)"], oa: [OL, "Order Ageing (Wks)"], sa: [SL, "Stock Ageing"] };
+    let SK = { k: null, d: 1 };
+    const TXT = ["art", "model", "color", "st"];
+    const sico = k => `<u class="so"><i class="u${SK.k === k && SK.d > 0 ? " on" : ""}"></i><i class="d${SK.k === k && SK.d < 0 ? " on" : ""}"></i></u>`;
+    const sval = (o, k) => { if (k === "st") return [...o.st].join(" "); if (TXT.includes(k)) return String(o[k]); const [g, i] = k.split(":"); return g.length === 2 && ["dm", "av", "pr"].includes(g) ? o[g] : (i === "t" ? o[g + "t"] : o[g][+i]) };
+    function srt(k) { const first = TXT.includes(k) ? 1 : -1; if (SK.k !== k) SK = { k, d: first }; else if (SK.d === first) SK.d = -first; else SK = { k: null, d: 1 }; pgn = 0; rt() }
+    let RQ = "", pgn = 0, PV = [], RW = [], POPEN = new Set(), PT = {}; const PS = 100;
+    const pc = (v, t) => t ? (v / t * 100).toFixed(1) + "%" : "0%";
     function raw(a) {
-      $("#pgc").innerHTML = `<div class="pg"><span id="pi"></span><div style="display:flex;gap:8px;align-items:center"><input id="rq" type="text" placeholder="Search buyer / model / color / art…" value="${esc(RQ)}" style="border:1px solid var(--line);border-radius:10px;padding:9px 12px;font:inherit;min-width:230px"><button class="bx" onclick="pp(-1)">‹ Prev</button><button class="bx" onclick="pp(1)">Next ›</button><button class="bx dk" onclick="dx()"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>Download Excel</button></div></div><div class="tb" id="tb"></div>`;
-      pgn = 0; window.RA = a; $("#rq").oninput = e => { RQ = e.target.value; pgn = 0; rt() }; rt()
+      const m = new Map();
+      a.forEach(r => {
+        const k = r.art + "|" + r.model + "|" + r.color; let o = m.get(k);
+        if (!o) m.set(k, o = { art: r.art, model: r.model, color: r.color, st: new Set(), av: 0, dm: 0, pr: 0, pri: PL.map(() => 0), oa: OL.map(() => 0), sa: SL.map(() => 0) });
+        if (r.st) o.st.add(r.st); o.av += r.av; o.dm += r.dm; o.pr += r.pr; GK.forEach(g => r[g].forEach((v, i) => o[g][i] += v));
+      });
+      PV = [...m.values()].sort((x, y) => y.pr - x.pr || y.dm - x.dm || x.model.localeCompare(y.model));
+      PV.forEach(o => GK.forEach(g => o[g + "t"] = o[g].reduce((x, y) => x + y, 0)));
+      PT = { av: sum(PV, "av"), dm: sum(PV, "dm"), pr: sum(PV, "pr"), mav: 0, mdm: 0, mpr: 0, gm: {}, gt: {}, gs: {} };
+      PV.forEach(o => { PT.mav = Math.max(PT.mav, o.av); PT.mdm = Math.max(PT.mdm, o.dm); PT.mpr = Math.max(PT.mpr, o.pr) });
+      GK.forEach(g => { PT.gm[g] = Math.max(0, ...PV.map(o => Math.max(0, ...o[g]))); PT.gt[g] = Math.max(0, ...PV.map(o => o[g + "t"])); PT.gs[g] = GD[g][0].map((_, i) => PV.reduce((s, o) => s + o[g][i], 0)) });
+      pgn = 0;
+      $("#pgc").innerHTML = `<div class="rkp">${kcard(a, "rk-t", "av")}${kcard(a, "rk-1", "dm")}${kcard(a, "rk-2", "lc")}${kcard(a, "rk-3", "pr")}${scard(a)}</div>
+<div class="pg"><span id="pi"></span><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><input id="rq" type="text" placeholder="Search ART / model / color…" value="${esc(RQ)}" style="border:1px solid var(--line);border-radius:10px;padding:9px 12px;font:inherit;min-width:210px"><button class="bx" onclick="pvAll(1)"><i><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></i>Expand All</button><button class="bx" onclick="pvAll(0)"><i><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></i>Collapse All</button><button class="bx" onclick="pp(-1)">‹ Prev</button><button class="bx" onclick="pp(1)">Next ›</button><button class="bx dk" onclick="dx()"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>Download Excel</button></div></div><div class="rwt" id="tb"></div>`;
+      $("#rq").oninput = e => { RQ = e.target.value; pgn = 0; rt() }; rt()
     }
+    const pvAll = f => { POPEN = new Set(f ? GK : []); rt() }, gTog = g => { POPEN.has(g) ? POPEN.delete(g) : POPEN.add(g); rt() };
     function rt() {
-      const q = RQ.trim().toLowerCase(); RW = window.RA.filter(r => !q || (r.buyer + " " + r.model + " " + r.color + " " + r.art).toLowerCase().includes(q)).sort((x, y) => y.pr - x.pr || x.buyer.localeCompare(y.buyer));
-      const s = pgn * PS, p = RW.slice(s, s + PS), T = RK.map(k => sum(RW, k));
+      const q = RQ.trim().toLowerCase();
+      RW = PV.filter(o => !q || (o.art + " " + o.model + " " + o.color + " " + [...o.st].join(" ")).toLowerCase().includes(q));
+      if (SK.k) RW = RW.map((o, i) => [o, i]).sort((a, b) => { const x = sval(a[0], SK.k), y = sval(b[0], SK.k); const c = TXT.includes(SK.k) ? String(x).localeCompare(String(y), undefined, { numeric: true }) : x - y; return (c * SK.d) || (a[1] - b[1]) }).map(a => a[0]);
+      const s = pgn * PS, p = RW.slice(s, s + PS);
       $("#pi").textContent = RW.length ? `${s + 1}–${Math.min(s + PS, RW.length)} of ${RW.length} rows` : "0 rows";
-      const R_ = 'style="text-align:right;font-variant-numeric:tabular-nums"';
-      $("#tb").innerHTML = `<table><thead><tr><th>Buyer</th><th>Model</th><th>Color</th><th>Art#</th>${RK.map(k => `<th ${R_}>${MT[k]}</th>`).join("")}</tr></thead><tbody>${p.map(r => `<tr><td>${esc(r.buyer)}</td><td>${esc(r.model)}</td><td>${esc(r.color)}</td><td>${esc(r.art)}</td>${RK.map(k => `<td ${R_}>${n0(r[k])}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="8" style="text-align:center;padding:40px;color:#6d7c99">No data for the selected filters</td></tr>`}</tbody><tfoot><tr style="font-weight:800;background:#f3f7fd;position:sticky;bottom:0"><td colspan="4">Total</td>${T.map(v => `<td ${R_}>${n0(v)}</td>`).join("")}</tr></tfoot></table>`
+      const cell = (v, mx, f, txt) => v ? `<td class="bc${f ? " ys" : ""}"><i style="width:${mx ? Math.max(4, Math.round(v / mx * 100)) : 0}%"></i><span>${txt || n0(v)}</span></td>` : `<td class="bc z${f ? " ys" : ""}"><span>-</span></td>`;
+      const gh = GK.map(g => `<th class="yh" colspan="${POPEN.has(g) ? GD[g][0].length : 1}" onclick="gTog('${g}')">${GD[g][1]}<i>${POPEN.has(g) ? "▾" : "▸"}</i></th>`).join("");
+      const sh = GK.map(g => POPEN.has(g) ? GD[g][0].map((l, i) => `<th class="sh sx${i ? "" : " ys"}" onclick="srt('${g}:${i}')">${l}${sico(g + ":" + i)}</th>`).join("") : `<th class="sh sx ys" onclick="srt('${g}:t')">Total${sico(g + ":t")}</th>`).join("");
+      const body = p.map(o => `<tr><td class="c1" title="${esc(o.art)}">${esc(o.art)}</td><td class="c2" title="${esc(o.model)}">${esc(o.model)}</td><td class="c3" title="${esc(o.color)}">${esc(o.color)}</td>${cell(o.dm, PT.mdm, false)}${cell(o.av, PT.mav, true, o.av ? n0(o.av) + " | " + pc(o.av, PT.av) : "")}${cell(o.pr, PT.mpr, true)}${GK.map(g => POPEN.has(g) ? GD[g][0].map((_, i) => cell(o[g][i], PT.gm[g], i === 0)).join("") : cell(o[g + "t"], PT.gt[g], true)).join("")}<td class="ss ${o.st.size === 1 ? "s-" + stn([...o.st][0]) : ""}">${[...o.st].map(SBADGE).join(" ") || "–"}</td></tr>`).join("");
+      const ft = GK.map(g => POPEN.has(g) ? PT.gs[g].map((v, i) => `<td${i ? "" : ' class="ys"'}>${v ? n0(v) : "-"}</td>`).join("") : `<td>${n0(PT[g + "x"] ?? PT.gs[g].reduce((x, y) => x + y, 0))}</td>`).join("");
+      const foot = RW.length ? `<tfoot><tr><td class="f1" colspan="3"><svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>Total</td><td>${n0(PT.dm)}</td><td>${n0(PT.av)} | 100%</td><td>${n0(PT.pr)}</td>${ft}<td class="ss"></td></tr></tfoot>` : "";
+      $("#tb").innerHTML = `<table class="pv2"><thead><tr><th class="mh c1 sx" rowspan="2" onclick="srt('art')">ART${sico("art")}</th><th class="mh c2 sx" rowspan="2" onclick="srt('model')">Model${sico("model")}</th><th class="mh c3 sx" rowspan="2" onclick="srt('color')">Color${sico("color")}</th><th class="mh sx" rowspan="2" onclick="srt('dm')">Total Demand${sico("dm")}</th><th class="mh sx" rowspan="2" onclick="srt('av')">Available Stock | % Contribution${sico("av")}</th><th class="mh sx" rowspan="2" onclick="srt('pr')">Production Requirement${sico("pr")}</th>${gh}<th class="mh ssh sx" rowspan="2" onclick="srt('st')">Stock Status${sico("st")}</th></tr><tr>${sh}</tr></thead><tbody>${body || `<tr><td colspan="9" style="text-align:center;padding:40px;color:#6d7c99">No data for the selected filters</td></tr>`}</tbody>${foot}</table>`
     }
     function pp(d) { const mx = Math.max(0, Math.ceil(RW.length / PS) - 1); pgn = Math.min(mx, Math.max(0, pgn + d)); rt(); $("#tb").scrollTop = 0 }
     function dx() {
       if (!RW.length || !window.XLSX) return alert("Nothing to download.");
-      const rows = RW.map(r => ({ Buyer: r.buyer, Model: r.model, Color: r.color, "Art#": r.art, "Available Stock": r.av, "Total Demand": r.dm, "Total LC Requirement": r.lc, "Production Requirement": r.pr }));
+      const rows = RW.map(o => { const r = { "ART": o.art, Model: o.model, Color: o.color, "Total Demand": o.dm, "Available Stock": o.av, "Stock Contribution %": PT.av ? +(o.av / PT.av * 100).toFixed(2) : 0, "Production Requirement": o.pr, "Stock Status": [...o.st].join(" / ") }; GK.forEach(g => GD[g][0].forEach((l, i) => r[GD[g][1] + " - " + l] = o[g][i])); return r });
       const w = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(w, XLSX.utils.json_to_sheet(rows), "Outstanding"); XLSX.writeFile(w, "Outstanding_" + new Date().toISOString().slice(0, 10) + ".xlsx")
     }
     async function init() {
