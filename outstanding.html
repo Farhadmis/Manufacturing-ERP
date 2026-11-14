@@ -2400,7 +2400,7 @@
       const mv = j => (P.m && (P.m[KS[j]] || P.m[j])) || [], dv = (k, j) => P.c[k] ? clean((P.dict[k] || [])[P.c[k][j]]) : "", n = P.c.buyer.length, M = [0, 1, 2, 3].map(mv);
       const G = k => { const x = P.m && (Array.isArray(P.m) ? P.m[ERP.PACK.order.meas.indexOf(k)] : P.m[k]); return x || [] };
       const GP = ORD_P.map(G), GO = ORD_O.map(G), GS = ORD_S.map(G);
-      for (let j = 0; j < n; j++) R.push({ buyer: dv("buyer", j).toUpperCase() || "N/A", model: dv("model", j).toUpperCase() || "N/A", color: dv("color", j).toUpperCase(), art: dv("art", j), cat: dv("category", j).toUpperCase() || "N/A", st: dv("stockstatus", j), av: num(M[0][j]), dm: num(M[1][j]), lc: num(M[2][j]), pr: num(M[3][j]), pri: GP.map(a => num(a[j])), oa: GO.map(a => num(a[j])), sa: GS.map(a => num(a[j])) });
+      for (let j = 0; j < n; j++) R.push({ buyer: dv("buyer", j).toUpperCase() || "N/A", model: dv("model", j).toUpperCase() || "N/A", color: dv("color", j).toUpperCase(), art: dv("art", j), cat: dv("category", j).toUpperCase() || "N/A", st: dv("stockstatus", j), proc: dv("process", j).toUpperCase(), tp: dv("timesofprocess", j).toUpperCase(), av: num(M[0][j]), dm: num(M[1][j]), lc: num(M[2][j]), pr: num(M[3][j]), pri: GP.map(a => num(a[j])), oa: GO.map(a => num(a[j])), sa: GS.map(a => num(a[j])) });
       if (!R.length) msg = "The uploaded sheet has no valid rows."
       return true
     }
@@ -2544,17 +2544,122 @@
     /* header: double-click must never select text */
     ["selectstart", "dblclick"].forEach(ev => document.addEventListener(ev, e => { if (e.target && e.target.closest && e.target.closest(".bq .bh")) e.preventDefault() }));
     document.addEventListener("mousedown", e => { if (e.detail > 1 && e.target.closest && e.target.closest(".bq .bh")) e.preventDefault() });
+    /* ---------- Process wise + Times of Process (two linked cards, Stock & Aging style) ---------- */
+    const PW_P = ["ALL PLASTIC", "ALL PLASTIC + PRINT", "PLASTIC BAR + PRINT + HOOK", "PLASTIC BAR + PRINT + HOOK + CLIP", "PLASTIC BAR + HOOK + CLIP", "PLASTIC BAR + HOOK", "PLASTIC BAR + PC HOOK", "PLASTIC BAR + CLIP", "PLASTIC BAR + HOOK + NOTCH", "PLASTIC BAR + PRINT + CLIP", "PLASTIC BAR + HOOK + PLASTIC CLIP + PAD + CLIPPING", "PLASTIC BAR + BAR RUBBERING + NOTCH + HOOK"];
+    const PW_T = ["1 TIME PROCESS", "2 TIME PROCESS", "3 TIME PROCESS", "4 TIME PROCESS", "5 TIME PROCESS"];
+    const PW_M = { pr: "Production Requirement", dm: "Total Demand", lc: "Total LC Requirement", av: "Available Stock" };
+    let PWK = "pr"; const PWS = { p: null, t: null };
+    const pwN = t => String(t || "").toUpperCase().replace(/\s+/g, " ").replace(/\s*\+\s*/g, " + ").trim();
+    const pwMP = new Map(PW_P.map(x => [pwN(x), x])), pwMT = new Map(PW_T.map(x => [pwN(x), x]));
+    const pwKp = r => pwMP.get(pwN(r.proc)) || "OTHERS", pwKt = r => pwMT.get(pwN(r.tp)) || "OTHERS";
+    const TCOL = ["#2563eb", "#16a34a", "#f59e0b", "#dc2626", "#7c3aed", "#9ca3af"], TBG = ["#dbe7ff", "#d5f3de", "#ffe9c2", "#ffd9d9", "#e6dcff", "#e9ecf2"], TFG = ["#1d4ed8", "#15803d", "#a16207", "#b91c1c", "#6d28d9", "#4b5563"];
+    (function () {
+      if (document.getElementById("pw-css")) return;
+      const st = document.createElement("style"); st.id = "pw-css";
+      st.textContent = `.pwc{padding:0!important;overflow:hidden;border-radius:18px!important}
+.pwh{display:flex;align-items:center;gap:12px;padding:13px 20px;color:#fff;font-weight:800;font-size:clamp(14px,1.15vw,18px);background:linear-gradient(90deg,#0a3a8f,#1259c4 60%,#1b7fe0);flex-wrap:nowrap}
+.pwh svg{width:26px;height:26px;flex:none}.pwh .pwtt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}.pwh .agt{flex:none;flex-wrap:nowrap!important}.pwh .agt button{padding:6px 12px!important;font-size:clamp(10.5px,.8vw,12.5px)!important}
+.pwh .agt{margin-left:auto;display:inline-flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.pwm{margin-left:auto;display:inline-flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.pwm button{border:1px solid #b9cdf0;background:#fff;color:#17356f;border-radius:999px;padding:6px 14px;font:600 clamp(11px,.85vw,13px) Inter,sans-serif;cursor:pointer;white-space:nowrap;box-shadow:0 2px 6px rgba(10,40,100,.12)}
+.pwm button:hover{background:#eef4ff}.pwm button.on{background:linear-gradient(180deg,#123a8c,#08265f);border-color:#08265f;color:#fff;font-weight:700}
+.pwb{padding:14px 20px 18px}
+.pwfl{display:inline-flex;align-items:center;gap:8px;margin:0 0 8px;padding:5px 12px;border-radius:999px;background:#e6efff;color:#1d4ed8;font:700 12px Inter,sans-serif;cursor:pointer;max-width:100%}
+.pwfl b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pwp{--lw:clamp(150px,36%,250px)}
+.pwrows{position:relative}
+.pwgl{position:absolute;top:0;bottom:0;left:var(--lw);right:0;pointer-events:none}.pwgl i{position:absolute;top:0;bottom:0;width:1px;background:#e3eaf6}
+.pwr{position:relative;display:grid;grid-template-columns:var(--lw) minmax(0,1fr);align-items:center;height:26px;border-radius:8px;cursor:pointer;transition:background .15s,opacity .15s}
+.pwr:hover{background:rgba(18,89,196,.07)}.pwr.on{background:rgba(18,89,196,.12)}.pwp.sel .pwr:not(.on){opacity:.4}
+.pwr .lb{display:flex;align-items:center;gap:8px;min-width:0;padding-right:10px}
+.pwr .no{width:17px;height:17px;flex:none;border-radius:50%;background:#0c2d6e;color:#fff;font:700 9px Inter,sans-serif;display:flex;align-items:center;justify-content:center}
+.pwr .nm{font:700 11.5px Inter,sans-serif;color:#0f2a5a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pwr .tr{position:relative;height:18px}
+.pwr .bar{position:absolute;left:0;top:0;height:18px;border-radius:999px;min-width:5px;display:flex;align-items:center;justify-content:flex-end;overflow:hidden}
+.pwr .bar em{font:800 11.5px Inter,sans-serif;color:#fff;font-style:normal;padding:0 9px;white-space:nowrap}
+.pwr .vo{position:absolute;top:0;line-height:18px;font:800 11.5px Inter,sans-serif;color:#0f2a5a;white-space:nowrap}
+.pwax{position:relative;height:18px;margin-left:var(--lw);margin-top:2px}.pwax span{position:absolute;top:2px;transform:translateX(-50%);font:500 11px Inter,sans-serif;color:#4a5a78}
+.pwd{display:grid;grid-template-columns:minmax(150px,34%) minmax(0,1fr);gap:16px;align-items:center}
+.pwdc{position:relative;height:250px;min-width:0}
+.pwt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;text-align:center;line-height:1.2;color:#0f2a5a}
+.pwt small{font-size:12px;font-weight:700;color:#4a5a78}.pwt b{font-size:clamp(18px,2.2vw,28px);font-weight:800}
+.pwl{min-width:0;border:1px solid #e3e9f4;border-radius:12px;overflow:hidden;background:#fff}
+.pwl .h,.pwl .r{display:grid;grid-template-columns:minmax(0,1fr) 76px 56px;column-gap:8px;align-items:center;padding:9px 12px}
+.pwl .h{background:#12306b;color:#fff;font-size:12.5px;font-weight:700}.pwl .h span:nth-child(2),.pwl .r .p{text-align:center}.pwl .h span:nth-child(3),.pwl .r .q{text-align:right}
+.pwl .r{border-top:1px solid #e8edf6;cursor:pointer}.pwl .r:hover{background:#f5f8fe}.pwl .r.on{background:#e6efff;box-shadow:inset 0 0 0 1.5px #1259c4}
+.pwl .r .n{display:flex;align-items:center;gap:9px;font:700 13px Inter,sans-serif;color:#0f2a5a;min-width:0}.pwl .r .n i{flex:none;width:13px;height:13px;border-radius:50%}
+.pwl .r .p span{display:inline-block;min-width:62px;padding:5px 8px;border-radius:999px;font-size:12.5px;font-weight:800}
+.pwl .r .q{font:800 14.5px Inter,sans-serif;color:#0f2a5a}
+#pw-tip{position:fixed;z-index:9999;pointer-events:none;display:none;width:300px;background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 10px 30px rgba(15,42,90,.22);border:1px solid #e3e8f2;font-family:Inter,sans-serif}
+#pw-tip .h{font-size:13px;font-weight:800;color:#0f2a5a;line-height:1.3;word-break:break-word}#pw-tip .h span{display:block;font-size:11.5px;font-weight:600;color:#6d7c99;margin-top:2px}
+#pw-tip .by{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#6d7c99;margin:10px 0 6px;text-transform:uppercase}
+#pw-tip .r{display:grid;grid-template-columns:86px 1fr 52px;align-items:center;gap:8px;margin:5px 0;font-size:12.5px}
+#pw-tip .r em{font-style:normal;color:#0b5fa5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#pw-tip .r u{display:block;height:8px;border-radius:9px;background:#e8ecf3;text-decoration:none;overflow:hidden}
+#pw-tip .r u i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#6a3de8,#b9a0ff)}
+#pw-tip .r b{text-align:right;color:#0f2a5a;font-weight:800}
+@media(max-width:1100px){.pwd{grid-template-columns:1fr}}`;
+      document.head.appendChild(st); const d = document.createElement("div"); d.id = "pw-tip"; document.body.appendChild(d);
+    })();
+    function pwRender(a) {
+      const q = TB, val = r => (r[TB] || []).reduce((u, v) => u + v, 0), fq = x => Math.abs(x) >= 1e6 ? (x / 1e6).toFixed(1) + "M" : Math.abs(x) >= 1e3 ? Math.round(x / 1e3) + "K" : n0(x), fm = x => x >= 1e6 ? (x / 1e6).toFixed(2) + "M" : x >= 1e5 ? Math.round(x / 1e3) + "K" : x >= 1e3 ? (x / 1e3).toFixed(1) + "K" : n0(x);
+      const tp = document.getElementById("pw-tip"), hasP = a.some(r => r.proc || r.tp);
+      document.getElementById("pw-lt").innerHTML = `Process wise<em style="font-style:normal;font-weight:600;opacity:.9"> – ${esc(AG[TB].s)}</em>`;
+      document.getElementById("pw-rt").innerHTML = `Times of Process<em style="font-style:normal;font-weight:600;opacity:.9"> – ${esc(AG[TB].s)}</em>`;
+      const models = (arr, kf, key) => { const m = new Map(); arr.forEach(r => { if (kf(r) === key) m.set(r.model || "N/A", (m.get(r.model || "N/A") || 0) + val(r)) }); return [...m].map(([k, v]) => ({ k, q: v })).filter(x => x.q > 0).sort((x, y) => y.q - x.q).slice(0, 10) };
+      const tip = (el, name, qty, pct, rows) => {
+        const mx = rows.length ? rows[0].q : 1;
+        el.onmousemove = e => {
+          tp.innerHTML = `<div class="h">${esc(name)}<span>${fm(qty)} · ${pct}</span></div><div class="by">Top ${rows.length} Model · Qty</div>` + (rows.length ? rows.map(x => `<div class="r"><em title="${esc(x.k)}">${esc(x.k)}</em><u><i style="width:${(x.q / mx * 100).toFixed(1)}%"></i></u><b>${fm(x.q)}</b></div>`).join("") : `<div class="r" style="display:block;color:#6d7c99">No data</div>`);
+          tp.style.display = "block"; let x = e.clientX + 16, y = e.clientY - 20; if (x + tp.offsetWidth > innerWidth - 8) x = e.clientX - tp.offsetWidth - 16; if (y + tp.offsetHeight > innerHeight - 8) y = innerHeight - tp.offsetHeight - 8; tp.style.left = Math.max(8, x) + "px"; tp.style.top = Math.max(8, y) + "px"
+        };
+        el.onmouseleave = () => tp.style.display = "none"
+      };
+      const aP = PWS.t ? a.filter(r => pwKt(r) === PWS.t) : a, aT = PWS.p ? a.filter(r => pwKp(r) === PWS.p) : a;
+      /* LEFT · Process wise (all 12 always listed) */
+      const gp = new Map(PW_P.map(k => [k, 0])); aP.forEach(r => { const k = pwKp(r); gp.set(k, (gp.get(k) || 0) + val(r)) });
+      const LP = [...gp].map(([k, v]) => ({ k, q: Math.max(0, v) })).filter(x => x.q > 0).sort((x, y) => y.q - x.q || PW_P.indexOf(x.k) - PW_P.indexOf(y.k));
+      const TP = LP.reduce((t, x) => t + x.q, 0), mxp = Math.max(1, LP.length ? LP[0].q : 1), pp = x => TP ? (x / TP * 100).toFixed(1) + "%" : "0.0%";
+      const lb = document.getElementById("pw-lb"); lb.classList.toggle("sel", !!PWS.p);
+      /* nice axis (like the Product Priority chart) */
+      let stp = mxp / 5; { const pw = Math.pow(10, Math.floor(Math.log10(stp))), f = stp / pw; stp = (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * pw }
+      const amax = Math.max(stp, Math.ceil(mxp / stp - 1e-9) * stp), ticks = []; for (let t = 0; t <= amax + stp / 1e6; t += stp) ticks.push(t);
+      const gr = AG[TB].c, pcx = v => (v / amax * 100);
+      lb.className = "pwb pwp" + (PWS.p ? " sel" : "");
+      lb.innerHTML = (PWS.t ? `<div class="pwfl" id="pw-lc" title="Clear"><b>Times of Process: ${esc(PWS.t)}</b> ✕</div>` : "") + (LP.length ? `<div class="pwrows"><div class="pwgl">${ticks.map(t => `<i style="left:${pcx(t).toFixed(3)}%"></i>`).join("")}</div>` + LP.map((x, i) => { const w = pcx(x.q), inn = w > 24, tx = fq(x.q) + " – " + pp(x.q); return `<div class="pwr${PWS.p === x.k ? " on" : ""}"><div class="lb" title="${esc(x.k)}"><span class="no">${i + 1}</span><span class="nm">${esc(x.k)}</span></div><div class="tr"><span class="bar" style="width:${w.toFixed(3)}%;background:linear-gradient(90deg,${gr[0]},${gr[1]})">${inn ? `<em>${tx}</em>` : ""}</span>${inn ? "" : `<span class="vo" style="left:calc(${w.toFixed(3)}% + 8px)">${tx}</span>`}</div></div>` }).join("") + `</div><div class="pwax">${ticks.map(t => `<span style="left:${pcx(t).toFixed(3)}%">${ab(t)}</span>`).join("")}</div>` : `<div style="padding:30px 8px;color:#6d7c99;font:600 13px Inter,sans-serif">No data for this selection</div>`);
+      const lc = document.getElementById("pw-lc"); if (lc) lc.onclick = () => { PWS.t = null; pwRender(a) };
+      lb.querySelectorAll(".pwr").forEach((el, i) => { const x = LP[i]; el.onclick = () => { PWS.p = PWS.p === x.k ? null : x.k; pwRender(a) }; tip(el, x.k, x.q, pp(x.q), models(aP, pwKp, x.k)) });
+      /* RIGHT · Times of Process (1–5 TIME PROCESS) */
+      const gt = new Map(PW_T.map(k => [k, 0])); aT.forEach(r => { const k = pwKt(r); gt.set(k, (gt.get(k) || 0) + val(r)) });
+      const LT = [...gt].map(([k, v]) => ({ k, q: Math.max(0, v) })).filter(x => x.q > 0), TT = LT.reduce((t, x) => t + x.q, 0), pt = x => TT ? (x / TT * 100).toFixed(1) + "%" : "0.0%", ci = k => k === "OTHERS" ? 5 : PW_T.indexOf(k);
+      document.getElementById("pw-n").textContent = fq(TT);
+      document.getElementById("pw-rf").innerHTML = PWS.p ? `<div class="pwfl" id="pw-rc" title="Clear"><b>Process: ${esc(PWS.p)}</b> ✕</div>` : "";
+      const rc = document.getElementById("pw-rc"); if (rc) rc.onclick = () => { PWS.p = null; pwRender(a) };
+      const rl = document.getElementById("pw-rl");
+      rl.innerHTML = `<div class="h"><span>Times of Process</span><span>Percentage (%)</span><span>Qty</span></div>` + LT.map(x => `<div class="r${PWS.t === x.k ? " on" : ""}"><span class="n"><i style="background:${TCOL[ci(x.k)]}"></i>${esc(x.k)}</span><span class="p"><span style="background:${TBG[ci(x.k)]};color:${TFG[ci(x.k)]}">${pt(x.q)}</span></span><span class="q">${fq(x.q)}</span></div>`).join("");
+      rl.querySelectorAll(".r").forEach((el, i) => { const x = LT[i]; el.onclick = () => { PWS.t = PWS.t === x.k ? null : x.k; pwRender(a) }; tip(el, x.k, x.q, pt(x.q), models(aT, pwKt, x.k)) });
+      document.getElementById("pw-note").textContent = hasP || !a.length ? "" : "Process / Times of Process data not found. Re-upload the Outstanding Excel from Admin Console → Data Manager (columns: Process, Times of Process).";
+      mk("pw-c", {
+        type: "doughnut",
+        data: { labels: LT.map(x => x.k), datasets: [{ data: TT ? LT.map(x => x.q) : [1], backgroundColor: TT ? LT.map(x => TCOL[ci(x.k)]) : ["#e5e9f2"], borderColor: "#fff", borderWidth: 3, hoverOffset: 6 }] },
+        options: { responsive: true, maintainAspectRatio: false, cutout: "58%", onClick: (e, els) => { if (els.length) { const k = LT[els[0].index].k; PWS.t = PWS.t === k ? null : k; pwRender(a) } }, plugins: { legend: { display: false }, tooltip: { enabled: !!TT, callbacks: { label: c => ` ${c.label}: ${fq(c.parsed)} (${pt(c.parsed)})` } } } },
+        plugins: [{ id: "pwp", afterDatasetsDraw(ch) { if (!TT) return; const { ctx } = ch; ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#fff"; ctx.font = "800 12.5px Inter,sans-serif"; ch.getDatasetMeta(0).data.forEach((arc, i) => { if (LT[i].q / TT < .045) return; const p = arc.getCenterPoint(); ctx.fillText(pt(LT[i].q), p.x, p.y) }); ctx.restore() } }]
+      })
+    }
     function ov(a) {
       $("#pgc").innerHTML = `<div class="rkp">${kcard(a, "rk-t", "av")}${kcard(a, "rk-1", "dm")}${kcard(a, "rk-2", "lc")}${kcard(a, "rk-3", "pr")}${scard(a)}</div>
 <div class="cg">
  <div class="c bq bh-s agc"><div class="bh"><svg viewBox="0 0 24 24"><path fill="#fff" d="M3 20h18v2H3zM4 11h4v8H4zm6-7h4v15h-4zm6 4h4v11h-4z"/></svg><span id="ag-t"></span><span class="agt"><button data-t="pri">Product Priority</button><button data-t="oa">Order Analysis</button><button data-t="sa">Stock &amp; Aging</button></span></div><div class="bb"><div class="cv" style="height:300px"><canvas id="c1"></canvas></div></div></div>
  <div class="c bq bh-s agc sdc"><div class="bh"><svg viewBox="0 0 24 24"><path fill="#fff" d="M3 20h18v2H3zM4 11h4v8H4zm6-7h4v15h-4zm6 4h4v11h-4z"/></svg><span id="sd-t">Stock Status Distribution</span><span class="agt"><button data-t="pri">Product Priority</button><button data-t="oa">Order Analysis</button><button data-t="sa">Stock &amp; Aging</button></span></div><div class="bb"><div class="sdw"><div class="sdd"><canvas id="c2"></canvas><div class="sdt"><small>Total</small><b id="sd-n">0</b><small>Qty</small></div></div><div class="sdl" id="sd-l"></div></div></div></div>
+ <div class="c pwc" id="pw-l"><div class="pwh"><svg viewBox="0 0 24 24"><path fill="#fff" d="M3 20h18v2H3zM4 11h4v8H4zm6-7h4v15h-4zm6 4h4v11h-4z"/></svg><span class="pwtt" id="pw-lt">Process wise</span><span class="agt"><button data-t="pri">Product Priority</button><button data-t="oa">Order Analysis</button><button data-t="sa">Stock &amp; Aging</button></span></div><div class="pwb" id="pw-lb"></div></div>
+ <div class="c pwc" id="pw-r"><div class="pwh"><svg viewBox="0 0 24 24"><path fill="#fff" d="M3 20h18v2H3zM4 11h4v8H4zm6-7h4v15h-4zm6 4h4v11h-4z"/></svg><span class="pwtt" id="pw-rt">Times of Process</span><span class="agt"><button data-t="pri">Product Priority</button><button data-t="oa">Order Analysis</button><button data-t="sa">Stock &amp; Aging</button></span></div><div class="pwb"><div id="pw-rf"></div><div class="pwd"><div class="pwdc"><canvas id="pw-c"></canvas><div class="pwt"><small>Total</small><b id="pw-n">0</b><small>Qty</small></div></div><div class="pwl" id="pw-rl"></div></div><div id="pw-note" style="font-size:12.5px;color:var(--mute);padding:6px 2px"></div></div></div>
  <div class="c w"><h4>Buyer-wise Comparison (Top 10 by Total Demand)</h4><div class="cv" style="height:320px"><canvas id="c3"></canvas></div></div>
  <div class="c w"><div style="font-size:19px;font-weight:800;color:var(--navy);letter-spacing:.01em;line-height:1.2">TOP 20 MODEL – PRODUCTION REQUIREMENT</div><div id="c9s" style="font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--mute);margin:6px 0 10px"></div><div class="cv" style="height:400px"><canvas id="c9"></canvas></div><div style="text-align:right;font-size:12px;color:var(--mute);margin-top:6px">Production Requirement by model &nbsp;·&nbsp; Darker green = higher qty</div></div></div>`;
       const top = (id, k, col) => { const t = grp(a, r => r.buyer).filter(x => x[k] > 0).sort((x, y) => y[k] - x[k]).slice(0, 10); mk(id, { type: "bar", data: { labels: t.map(x => x.k), datasets: [{ label: MT[k], data: t.map(x => x[k]), backgroundColor: col, borderRadius: 5 }] }, options: opt(false, true) }) };
-      document.querySelectorAll(".agt button").forEach(b => b.onclick = () => { TB = b.dataset.t; agChart(a); ssCard(a) }); agChart(a); ssCard(a);
+      document.querySelectorAll(".agt button").forEach(b => b.onclick = () => { TB = b.dataset.t; agChart(a); ssCard(a); pwRender(a) }); agChart(a); ssCard(a);
       const t3 = grp(a, r => r.buyer).sort((x, y) => y.dm - x.dm).slice(0, 10), cols = ["#2b5bb8", "#1f9d55", "#7c4dff", "#e08a00"];
       mk("c3", { type: "bar", data: { labels: t3.map(x => x.k), datasets: RK.map((k, i) => ({ label: MT[k], data: t3.map(x => x[k]), backgroundColor: cols[i], borderRadius: 4 })) }, options: opt(true, false) });
+      pwRender(a);
       topModel(a, "pr")
     }
 
