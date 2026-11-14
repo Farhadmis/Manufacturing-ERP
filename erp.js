@@ -127,8 +127,8 @@ const ERP = {
     /* Order module · Outstanding snapshot (তারিখ নেই; প্রতি upload-এ আগেরটা বদলে যায়) */
     order: {
       match: /^order\b/i, snap: true, alias: ORD_ALIAS,
-      dims: ["date", "buyer", "model", "color", "art", "category", "stockstatus"],
-      upper: ["buyer", "model", "color", "category"],
+      dims: ["date", "buyer", "model", "color", "art", "category", "stockstatus", "process", "timesofprocess"],
+      upper: ["buyer", "model", "color", "category", "process", "timesofprocess"],
       meas: ["availablestock", "totaldemand", "totallcrequirement", "productionrequirement", ...ORD_P, ...ORD_O, ...ORD_S],
       need: ["buyer", "availablestock", "totaldemand", "totallcrequirement", "productionrequirement"]
     },
