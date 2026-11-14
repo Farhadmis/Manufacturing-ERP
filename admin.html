@@ -639,7 +639,7 @@
         const raw = A.length - 1; log("   মোট row: " + raw.toLocaleString());
         log("2/5 ডেটা ছোট করা হচ্ছে…"); await tick();
         const dims = c.dims, meas = c.meas, UP = new Set(c.upper), dict = {}, mp = {}; dims.forEach(k => { dict[k] = []; mp[k] = new Map() });
-        const col = dims.map(k => ix[k]), mcol = meas.map(k => ix[k]), acc = new Map(), tot = meas.map(() => 0); let bad = 0;
+        const col = dims.map(k => ix[k]), mcol = meas.map(k => ix[k] ?? (c.alias && ix[c.alias[k]])), acc = new Map(), tot = meas.map(() => 0); let bad = 0;
         for (let r = 1; r < A.length; r++) {
           const row = A[r], d = c.snap ? "-" : isoD(row[ix.date], df); if (!d) { bad++; continue }
           const codes = new Array(dims.length), dv = c.fix ? {} : null;
