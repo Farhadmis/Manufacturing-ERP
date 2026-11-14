@@ -2326,6 +2326,82 @@
     .agt button:focus-visible {
       box-shadow: 0 0 0 2px #fff
     }
+
+    /* ===== Demand Coverage and Gap Analysis header (Model / Buyer) ===== */
+    .agc .bh #dg-t {
+      flex: 1 1 0;
+      min-width: 0;
+      white-space: normal;
+      line-height: 1.2;
+      font-weight: 800;
+      font-size: clamp(12px, 1.7cqw, 19px)
+    }
+
+    .dgt {
+      margin-left: auto;
+      flex: none;
+      display: inline-flex;
+      flex-wrap: nowrap;
+      gap: clamp(4px, 1cqw, 8px)
+    }
+
+    .dgt button {
+      flex: none;
+      border: 1px solid #b9cdf0;
+      background: #fff;
+      color: #17356f;
+      border-radius: 999px;
+      padding: clamp(4px, .9cqw, 7px) clamp(10px, 2.2cqw, 20px);
+      font: 600 clamp(10px, 1.55cqw, 13.5px) Inter, sans-serif;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(10, 40, 100, .12);
+      outline: none;
+      -webkit-tap-highlight-color: transparent
+    }
+
+    .dgt button:hover {
+      background: #eef4ff
+    }
+
+    .dgt button.on {
+      background: linear-gradient(180deg, #123a8c, #08265f);
+      border-color: #08265f;
+      color: #fff;
+      font-weight: 700
+    }
+
+    .dgt button:focus-visible {
+      box-shadow: 0 0 0 2px #fff
+    }
+
+    /* Demand Coverage card: compact header like the Unit Contribution card */
+    .dgc .bh {
+      padding: 9px 18px;
+      gap: 12px
+    }
+
+    .dgc .bh svg {
+      width: 22px;
+      height: 22px
+    }
+
+    .agc .bh #dg-t {
+      font-size: clamp(13px, 1.1vw, 16px)
+    }
+
+    .dgt button {
+      padding: 5px 16px;
+      font-size: 12px
+    }
+
+    /* filter button: selected name (ellipsis when long) */
+    .f button .fl {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap
+    }
   </style>
 </head>
 
@@ -2411,9 +2487,11 @@
     const lab = (k, v) => k === "pri" ? PL[v] : k === "sa" ? SL[v] : v;
     const opts = k => { const f = FD.find(x => x[0] === k); if (f[3]) return (k === "pri" ? PL : SL).map((_, i) => i); const src = k === "model" && F.buyer.size ? R.filter(r => F.buyer.has(r.buyer)) : R; return [...new Set(src.map(f[2]).filter(v => v !== "" && v != null))].sort((a, b) => String(a).localeCompare(String(b), undefined, { numeric: true })) };
     function syncModel() { if (!F.buyer.size || !F.model.size) return; const ok = new Set(R.filter(r => F.buyer.has(r.buyer)).map(r => r.model)); F.model = new Set([...F.model].filter(m => ok.has(m))) }
+    /* one value selected -> show its name; several -> "Name (n)"; none -> "Name" */
+    const fl = k => { const z = F[k].size; return z === 1 ? String(lab(k, [...F[k]][0])) : FD.find(x => x[0] === k)[1] + (z ? " (" + z + ")" : "") }, fh = k => `<span class="fl">${esc(fl(k))}</span>`;
     function fbuild() {
       if (msg) { $("#fb").innerHTML = ""; return }
-      $("#fb").innerHTML = FD.map(f => `<div class="f"><button data-k="${f[0]}" class="${F[f[0]].size ? "on" : ""}">${f[1]}${F[f[0]].size ? " (" + F[f[0]].size + ")" : ""}</button></div>`).join("") + `<button class="rs" onclick="reset()">Reset</button>`;
+      $("#fb").innerHTML = FD.map(f => `<div class="f"><button data-k="${f[0]}" class="${F[f[0]].size ? "on" : ""}" title="${esc(fl(f[0]))}">${fh(f[0])}</button></div>`).join("") + `<button class="rs" onclick="reset()">Reset</button>`;
       $("#fb").querySelectorAll("button[data-k]").forEach(b => b.onclick = e => { e.stopPropagation(); pnl(b) })
     }
     function pnl(b) {
@@ -2421,7 +2499,7 @@
       p.innerHTML = `<input type="text" placeholder="Search…"><div class="ls">${L.map(v => `<label><input type="checkbox" value="${esc(v)}" ${F[k].has(v) ? "checked" : ""}> ${esc(lab(k, v))}</label>`).join("")}</div><div class="ac"><button data-a="all">Select all</button><button data-a="clr">Clear</button></div>`;
       p.style.left = Math.min(r.left, innerWidth - 240) + "px"; p.style.top = r.bottom + 4 + "px"; p.style.display = "block";
       p.querySelector("input[type=text]").oninput = e => p.querySelectorAll("label").forEach(l => l.style.display = l.textContent.toLowerCase().includes(e.target.value.toLowerCase()) ? "" : "none");
-      const mark = () => { b.textContent = nm + (F[k].size ? " (" + F[k].size + ")" : ""); b.classList.toggle("on", !!F[k].size); if (k === "buyer") { syncModel(); fbuild() } draw() };
+      const mark = () => { b.innerHTML = fh(k); b.title = fl(k); b.classList.toggle("on", !!F[k].size); if (k === "buyer") { syncModel(); fbuild() } draw() };
       p.querySelectorAll(".ls input").forEach(c => c.onchange = () => { c.checked ? F[k].add(c.value) : F[k].delete(c.value); mark() });
       p.querySelectorAll(".ac button").forEach(x => x.onclick = () => { F[k] = new Set(x.dataset.a === "all" ? L : []); pnl(document.querySelector(`button[data-k=${k}]`) || b); mark() })
     }
@@ -2646,6 +2724,26 @@
         plugins: [{ id: "pwp", afterDatasetsDraw(ch) { if (!TT) return; const { ctx } = ch; ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#fff"; ctx.font = "800 12.5px Inter,sans-serif"; ch.getDatasetMeta(0).data.forEach((arc, i) => { if (LT[i].q / TT < .045) return; const p = arc.getCenterPoint(); ctx.fillText(pt(LT[i].q), p.x, p.y) }); ctx.restore() } }]
       })
     }
+    /* ---------- Demand Coverage and Gap Analysis : Model / Buyer · Top 25 ---------- */
+    let DG = "model";
+    const dgq = v => Math.abs(v) >= 1e6 ? (v / 1e6).toFixed(1) + "M" : Math.abs(v) >= 1e3 ? (v / 1e3).toFixed(1) + "K" : n0(v);
+    function dgChart(a) {
+      const isM = DG === "model", t = grp(a, r => (isM ? r.model : r.buyer) || "N/A").filter(x => x.dm > 0).sort((x, y) => y.dm - x.dm).slice(0, 25);
+      document.querySelectorAll(".dgt button").forEach(b => b.classList.toggle("on", b.dataset.d === DG));
+      const sb = $("#dg-s"); if (sb) sb.textContent = "TOP " + t.length + (isM ? " MODELS" : " BUYERS") + "  |  SORTED BY TOTAL DEMAND  |  TOTAL DEMAND = 100%  |  VALUE ABOVE BAR = TOTAL DEMAND QTY";
+      /* Demand = 100%.  Covered by stock = Demand − Production Requirement (stock beyond demand is excess, not counted here) */
+      const cov = x => Math.min(x.dm, Math.max(0, x.dm - x.pr)), gap = x => Math.min(x.dm, Math.max(0, x.pr));
+      const S = [{ l: "Stock Coverage", f: cov, c: "#1259c4" }, { l: "Production Requirement (Gap)", f: gap, c: "#ffa000" }], o = opt(true, false);
+      o.animation = false; o.layout = { padding: { top: 26 } };
+      o.scales.x = { stacked: true, grid: { display: false }, border: { color: "#9aa3b8" }, ticks: { font: { size: 11.5 }, color: "#0f2a5a", autoSkip: false, minRotation: 35, maxRotation: 35 } };
+      o.scales.y = { stacked: true, min: 0, max: 100, border: { display: false }, grid: { color: "#e9ebf0" }, ticks: { stepSize: 25, callback: v => v + "%", color: "#0f2a5a", font: { size: 12, weight: "700" } } };
+      o.plugins.legend.labels = { boxWidth: 26, boxHeight: 10, padding: 18, font: { size: 13 }, color: "#0f2a5a" };
+      o.plugins.tooltip = { callbacks: { label: c => ` ${c.dataset.label}: ${n0(S[c.datasetIndex].f(t[c.dataIndex]))} (${c.parsed.y.toFixed(1)}%)`, afterBody: it => { const x = t[it[0].dataIndex]; return ["Total Demand: " + n0(x.dm), "Available Stock (total): " + n0(x.av)] } } };
+      mk("c3", {
+        type: "bar", data: { labels: t.map(x => x.k), datasets: S.map(d => ({ label: d.l, data: t.map(x => x.dm ? d.f(x) / x.dm * 100 : 0), backgroundColor: d.c, borderColor: "#fff", borderWidth: 1.5, borderSkipped: false, barPercentage: .8, categoryPercentage: .96 })) }, options: o,
+        plugins: [{ id: "dgl", afterDatasetsDraw(ch) { const { ctx } = ch; ctx.save(); ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ch.data.datasets.forEach((d, i) => ch.getDatasetMeta(i).data.forEach((bar, j) => { const v = d.data[j], h = Math.abs(bar.base - bar.y); if (v < 3 || h < 15) return; ctx.font = "700 " + (bar.width < 40 ? 10 : 11.5) + "px Inter,sans-serif"; ctx.fillText(v.toFixed(1) + "%", bar.x, (bar.y + bar.base) / 2) })); ctx.fillStyle = "#0f2a5a"; ctx.font = "800 12.5px Inter,sans-serif"; ctx.textBaseline = "bottom"; const y0 = ch.scales.y.getPixelForValue(100) - 6; ch.getDatasetMeta(0).data.forEach((bar, j) => ctx.fillText(dgq(t[j].dm), bar.x, y0)); ctx.restore() } }]
+      })
+    }
     function ov(a) {
       $("#pgc").innerHTML = `<div class="rkp">${kcard(a, "rk-t", "av")}${kcard(a, "rk-1", "dm")}${kcard(a, "rk-2", "lc")}${kcard(a, "rk-3", "pr")}${scard(a)}</div>
 <div class="cg">
@@ -2653,12 +2751,11 @@
  <div class="c bq bh-s agc sdc"><div class="bh"><svg viewBox="0 0 24 24"><path fill="#fff" d="M3 20h18v2H3zM4 11h4v8H4zm6-7h4v15h-4zm6 4h4v11h-4z"/></svg><span id="sd-t">Stock Status Distribution</span><span class="agt"><button data-t="pri">Product Priority</button><button data-t="oa">Order Analysis</button><button data-t="sa">Stock &amp; Aging</button></span></div><div class="bb"><div class="sdw"><div class="sdd"><canvas id="c2"></canvas><div class="sdt"><small>Total</small><b id="sd-n">0</b><small>Qty</small></div></div><div class="sdl" id="sd-l"></div></div></div></div>
  <div class="c pwc" id="pw-l"><div class="pwh"><svg viewBox="0 0 24 24"><path fill="#fff" d="M3 20h18v2H3zM4 11h4v8H4zm6-7h4v15h-4zm6 4h4v11h-4z"/></svg><span class="pwtt" id="pw-lt">Process wise</span><span class="agt"><button data-t="pri">Product Priority</button><button data-t="oa">Order Analysis</button><button data-t="sa">Stock &amp; Aging</button></span></div><div class="pwb" id="pw-lb"></div></div>
  <div class="c pwc" id="pw-r"><div class="pwh"><svg viewBox="0 0 24 24"><path fill="#fff" d="M3 20h18v2H3zM4 11h4v8H4zm6-7h4v15h-4zm6 4h4v11h-4z"/></svg><span class="pwtt" id="pw-rt">Times of Process</span><span class="agt"><button data-t="pri">Product Priority</button><button data-t="oa">Order Analysis</button><button data-t="sa">Stock &amp; Aging</button></span></div><div class="pwb"><div id="pw-rf"></div><div class="pwd"><div class="pwdc"><canvas id="pw-c"></canvas><div class="pwt"><small>Total</small><b id="pw-n">0</b><small>Qty</small></div></div><div class="pwl" id="pw-rl"></div></div><div id="pw-note" style="font-size:12.5px;color:var(--mute);padding:6px 2px"></div></div></div>
- <div class="c w"><h4>Buyer-wise Comparison (Top 10 by Total Demand)</h4><div class="cv" style="height:320px"><canvas id="c3"></canvas></div></div>
+ <div class="c w bq bh-s agc dgc"><div class="bh"><svg viewBox="0 0 24 24"><path fill="#fff" d="M3 20h18v2H3zM4 11h4v8H4zm6-7h4v15h-4zm6 4h4v11h-4z"/></svg><span id="dg-t">Demand Coverage and Gap Analysis</span><span class="dgt"><button data-d="model">Model</button><button data-d="buyer">Buyer</button></span></div><div class="bb"><div id="dg-s" style="font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--mute);margin:0 0 8px"></div><div class="cv" style="height:400px"><canvas id="c3"></canvas></div></div></div>
  <div class="c w"><div style="font-size:19px;font-weight:800;color:var(--navy);letter-spacing:.01em;line-height:1.2">TOP 20 MODEL – PRODUCTION REQUIREMENT</div><div id="c9s" style="font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--mute);margin:6px 0 10px"></div><div class="cv" style="height:400px"><canvas id="c9"></canvas></div><div style="text-align:right;font-size:12px;color:var(--mute);margin-top:6px">Production Requirement by model &nbsp;·&nbsp; Darker green = higher qty</div></div></div>`;
       const top = (id, k, col) => { const t = grp(a, r => r.buyer).filter(x => x[k] > 0).sort((x, y) => y[k] - x[k]).slice(0, 10); mk(id, { type: "bar", data: { labels: t.map(x => x.k), datasets: [{ label: MT[k], data: t.map(x => x[k]), backgroundColor: col, borderRadius: 5 }] }, options: opt(false, true) }) };
       document.querySelectorAll(".agt button").forEach(b => b.onclick = () => { TB = b.dataset.t; agChart(a); ssCard(a); pwRender(a) }); agChart(a); ssCard(a);
-      const t3 = grp(a, r => r.buyer).sort((x, y) => y.dm - x.dm).slice(0, 10), cols = ["#2b5bb8", "#1f9d55", "#7c4dff", "#e08a00"];
-      mk("c3", { type: "bar", data: { labels: t3.map(x => x.k), datasets: RK.map((k, i) => ({ label: MT[k], data: t3.map(x => x[k]), backgroundColor: cols[i], borderRadius: 4 })) }, options: opt(true, false) });
+      document.querySelectorAll(".dgt button").forEach(b => b.onclick = () => { DG = b.dataset.d; dgChart(a) }); dgChart(a);
       pwRender(a);
       topModel(a, "pr")
     }
