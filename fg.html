@@ -916,6 +916,14 @@
       border-left: 1px solid rgba(255, 255, 255, .22)
     }
 
+    /* ===== month → date-wise drill-down ===== */
+    .pv2 thead tr:nth-child(3) th { top: 70px; height: 26px }
+    .pv2 th.sh.mo { cursor: pointer; user-select: none }
+    .pv2 th.sh.mo:hover { background: #154aa8 }
+    .pv2 th.sh.mo i { font-style: normal; font-size: 9px; opacity: .75; margin-left: 5px }
+    .pv2 th.sh.dh { background: #0b3182; font-size: 10.5px; color: #cfe0ff; min-width: 88px }
+    .pv2 td.bc.dc { min-width: 88px }
+
     .pv2 th.c1,
     .pv2 td.c1 {
       left: 0;
@@ -2101,27 +2109,30 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
       return `<div class="rkp">${card("rk-t", IC_F, "Total Qty", sumq(a), ly(() => true), "*")}${UN.map((x, i) => card(CL[i] || "rk-1", IC_C, x + " Qty", u[x] || 0, ly(r => r.unit === x), x)).join("")}</div>`
     }
     /* ---------- raw data : Model · Color × Year(collapsible) · Month ---------- */
-    let PV = [], YR = [], OPEN = new Set(), CM = {}, CG = 0, GT = 0, MX = 0, pgn = 0; const PS = 100;
+    let PV = [], YR = [], OPEN = new Set(), MOPEN = new Set(), CM = {}, CG = 0, GT = 0, MX = 0, DX = 0, pgn = 0; const PS = 100;
     function raw(a) {
-      const m = new Map(); a.forEach(r => { const k = r.model + "|" + r.color; let o = m.get(k); if (!o) m.set(k, o = { model: r.model, color: r.color, v: new Map(), t: 0 }); const q = r.y * 100 + r.m; o.v.set(q, (o.v.get(q) || 0) + r.q); o.t += r.q });
+      const m = new Map(); a.forEach(r => { const k = r.model + "|" + r.color; let o = m.get(k); if (!o) m.set(k, o = { model: r.model, color: r.color, v: new Map(), dv: new Map(), t: 0 }); const q = r.y * 100 + r.m, dk = q * 100 + r.d; o.v.set(q, (o.v.get(q) || 0) + r.q); o.dv.set(dk, (o.dv.get(dk) || 0) + r.q); o.t += r.q });
       PV = [...m.values()].sort((x, y) => y.t - x.t || x.model.localeCompare(y.model));
       YR = [...new Set(a.map(r => r.y))].sort((x, y) => x - y); PV.forEach(o => { o.yt = {}; YR.forEach(y => { let t = 0; for (let i = 1; i <= 12; i++)t += o.v.get(y * 100 + i) || 0; o.yt[y] = t }) });
-      CM = {}; YR.forEach(y => CM[y] = PV.reduce((x, o) => Math.max(x, o.yt[y]), 0)); CG = PV.reduce((x, o) => Math.max(x, o.t), 0); GT = PV.reduce((x, o) => x + o.t, 0); MX = 0; PV.forEach(o => o.v.forEach(v => { if (v > MX) MX = v }));
+      CM = {}; YR.forEach(y => CM[y] = PV.reduce((x, o) => Math.max(x, o.yt[y]), 0)); CG = PV.reduce((x, o) => Math.max(x, o.t), 0); GT = PV.reduce((x, o) => x + o.t, 0); MX = 0; DX = 0; PV.forEach(o => { o.v.forEach(v => { if (v > MX) MX = v }); o.dv.forEach(v => { if (v > DX) DX = v }) });
       pgn = 0; $("#pgc").innerHTML = rawCards(a) + `<div class="pg"><span id="pi"></span><div style="display:flex;gap:8px"><button class="bx" onclick="ya(1)"><i><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></i>Expand All</button><button class="bx" onclick="ya(0)"><i><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></i>Collapse All</button><button class="bx" onclick="pp(-1)">‹ Prev</button><button class="bx" onclick="pp(1)">Next ›</button><button class="bx dk" onclick="dx()"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>Download Excel</button></div></div><div class="rwt" id="tb"></div>`; rt()
     }
-    const ya = f => { OPEN = new Set(f ? YR : []); rt() }, tg = y => { OPEN.has(y) ? OPEN.delete(y) : OPEN.add(y); rt() };
+    const ya = f => { OPEN = new Set(f ? YR : []); if (!f) MOPEN = new Set(); rt() }, dim = (y, m) => new Date(y, m, 0).getDate(), dl = (m, d) => String(d).padStart(2, "0") + "-" + MN[m - 1], mtg = k => { MOPEN.has(k) ? MOPEN.delete(k) : MOPEN.add(k); rt() }, tg = y => { OPEN.has(y) ? OPEN.delete(y) : OPEN.add(y); rt() };
     const pc = (v, t) => t ? (v / t * 100).toFixed(1) + "%" : "0%", bar = (txt, v, m) => v ? `<td class="r db"><i style="width:${m ? Math.max(4, Math.round(v / m * 100)) : 0}%"></i><span>${txt}</span></td>` : `<td class="db"></td>`;
     function rt() {
       const s = pgn * PS, p = PV.slice(s, s + PS);
       $("#pi").textContent = PV.length ? `${s + 1}–${Math.min(s + PS, PV.length)} of ${PV.length} models` : "0 rows";
-      const YT = {}, MT = new Map(); PV.forEach(o => { YR.forEach(y => YT[y] = (YT[y] || 0) + o.yt[y]); o.v.forEach((v, k) => MT.set(k, (MT.get(k) || 0) + v)) });
-      const yh = YR.map(y => OPEN.has(y) ? `<th colspan="12" class="yh" onclick="tg(${y})">${y}<i>▾</i></th>` : `<th class="yh" onclick="tg(${y})">${y}<i>▸</i></th>`).join(""),
-        sh = YR.map(y => OPEN.has(y) ? MN.map((x, i) => `<th class="sh${i ? "" : " ys"}">${x}</th>`).join("") : `<th class="sh ys">Qty | % Contribution</th>`).join("");
-      const cell = (txt, v, m, f) => v ? `<td class="bc${f ? " ys" : ""}"><i style="width:${m ? Math.max(4, Math.round(v / m * 100)) : 0}%"></i><span>${txt}</span></td>` : `<td class="bc z${f ? " ys" : ""}"><span>-</span></td>`;
-      const body = p.map(o => `<tr><td class="c1">${esc(o.model)}</td><td class="c2">${esc(o.color)}</td>${YR.map(y => OPEN.has(y) ? MN.map((_, i) => { const v = o.v.get(y * 100 + i + 1) || 0; return cell(n0(v), v, MX, i === 0) }).join("") : cell(`${n0(o.yt[y])} | ${pc(o.yt[y], o.t)}`, o.yt[y], CM[y], true)).join("")}<td class="bc gc"><i style="width:${CG ? Math.max(4, Math.round(o.t / CG * 100)) : 0}%"></i><span><b>${n0(o.t)}</b><em>${pc(o.t, GT)}</em></span></td></tr>`).join("");
-      const ft = YR.map(y => OPEN.has(y) ? MN.map((_, i) => `<td${i ? "" : ' class="ys"'}>${n0(MT.get(y * 100 + i + 1) || 0)}</td>`).join("") : `<td>${n0(YT[y] || 0)}</td>`).join("");
+      const YT = {}, MT = new Map(), DT = new Map(); PV.forEach(o => { YR.forEach(y => YT[y] = (YT[y] || 0) + o.yt[y]); o.v.forEach((v, k) => MT.set(k, (MT.get(k) || 0) + v)); o.dv.forEach((v, k) => DT.set(k, (DT.get(k) || 0) + v)) });
+      const mo = (y, i) => OPEN.has(y) && MOPEN.has(y * 100 + i + 1), any = YR.some(y => MN.some((_, i) => mo(y, i))), rs = any ? 3 : 2, rsp = any ? ' rowspan="2"' : "";
+      const span = y => MN.reduce((n, _, i) => n + (mo(y, i) ? dim(y, i + 1) : 1), 0), days = (y, i) => Array.from({ length: dim(y, i + 1) }, (_, d) => d);
+      const yh = YR.map(y => OPEN.has(y) ? `<th colspan="${span(y)}" class="yh" onclick="tg(${y})">${y}<i>▾</i></th>` : `<th class="yh" onclick="tg(${y})">${y}<i>▸</i></th>`).join(""),
+        sh = YR.map(y => OPEN.has(y) ? MN.map((x, i) => { const k = y * 100 + i + 1; return mo(y, i) ? `<th colspan="${dim(y, i + 1)}" class="sh mo ys" onclick="mtg(${k})">${x}<i>▾</i></th>` : `<th class="sh mo${i ? "" : " ys"}"${rsp} onclick="mtg(${k})">${x}<i>▸</i></th>` }).join("") : `<th class="sh ys"${rsp}>Qty | % Contribution</th>`).join(""),
+        dh = any ? "<tr>" + YR.map(y => OPEN.has(y) ? MN.map((_, i) => mo(y, i) ? days(y, i).map(d => `<th class="sh dh${d ? "" : " ys"}">${dl(i + 1, d + 1)}</th>`).join("") : "").join("") : "").join("") + "</tr>" : "";
+      const cell = (txt, v, m, f, x) => v ? `<td class="bc${f ? " ys" : ""}${x ? " " + x : ""}"><i style="width:${m ? Math.max(4, Math.round(v / m * 100)) : 0}%"></i><span>${txt}</span></td>` : `<td class="bc z${f ? " ys" : ""}${x ? " " + x : ""}"><span>-</span></td>`;
+      const body = p.map(o => `<tr><td class="c1">${esc(o.model)}</td><td class="c2">${esc(o.color)}</td>${YR.map(y => OPEN.has(y) ? MN.map((_, i) => { const k = y * 100 + i + 1; if (mo(y, i)) return days(y, i).map(d => { const v = o.dv.get(k * 100 + d + 1) || 0; return cell(n0(v), v, DX, d === 0, "dc") }).join(""); const v = o.v.get(k) || 0; return cell(n0(v), v, MX, i === 0) }).join("") : cell(`${n0(o.yt[y])} | ${pc(o.yt[y], o.t)}`, o.yt[y], CM[y], true)).join("")}<td class="bc gc"><i style="width:${CG ? Math.max(4, Math.round(o.t / CG * 100)) : 0}%"></i><span><b>${n0(o.t)}</b><em>${pc(o.t, GT)}</em></span></td></tr>`).join("");
+      const ft = YR.map(y => OPEN.has(y) ? MN.map((_, i) => { const k = y * 100 + i + 1; if (mo(y, i)) return days(y, i).map(d => `<td${d ? "" : ' class="ys"'}>${n0(DT.get(k * 100 + d + 1) || 0)}</td>`).join(""); return `<td${i ? "" : ' class="ys"'}>${n0(MT.get(k) || 0)}</td>` }).join("") : `<td>${n0(YT[y] || 0)}</td>`).join("");
       const foot = PV.length ? `<tfoot><tr><td class="f1" colspan="2"><svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>Total Production</td>${ft}<td class="gt">${n0(GT)}</td></tr></tfoot>` : "";
-      $("#tb").innerHTML = `<table class="pv2"><thead><tr><th class="mh c1" rowspan="2">Model</th><th class="mh c2" rowspan="2">Color</th>${yh}<th class="mh gh" rowspan="2">Grand Total</th></tr><tr>${sh}</tr></thead><tbody>${body || `<tr><td colspan="${YR.length + 3}" style="text-align:center;padding:40px;color:#6d7c99">No data for the selected filters</td></tr>`}</tbody>${foot}</table>`
+      $("#tb").innerHTML = `<table class="pv2"><thead><tr><th class="mh c1" rowspan="${rs}">Model</th><th class="mh c2" rowspan="${rs}">Color</th>${yh}<th class="mh gh" rowspan="${rs}">Grand Total</th></tr><tr>${sh}</tr>${dh}</thead><tbody>${body || `<tr><td colspan="${YR.length + 3}" style="text-align:center;padding:40px;color:#6d7c99">No data for the selected filters</td></tr>`}</tbody>${foot}</table>`
     }
     function pp(d) { const mx = Math.max(0, Math.ceil(PV.length / PS) - 1); pgn = Math.min(mx, Math.max(0, pgn + d)); rt(); $("#tb").scrollTop = 0 }
     function dx() {
