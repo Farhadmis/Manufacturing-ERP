@@ -729,6 +729,78 @@
         font-weight: 500
       }
     }
+
+    /* ===== Login-এর পর Welcome plaque (৫ সেকেন্ড) ===== */
+    #wl {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #2a1208
+    }
+
+    #wl.on {
+      display: flex;
+      animation: wlIn .6s ease both
+    }
+
+    #wl::before {
+      content: "";
+      position: absolute;
+      inset: -30px;
+      background: url(assets/welcome.jpg) center/cover;
+      filter: blur(26px) brightness(.62)
+    }
+
+    #wl img {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block
+    }
+
+    #wl .wlbar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 5px;
+      background: rgba(255, 255, 255, .18)
+    }
+
+    #wl .wlbar i {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #a61935, #f2c14e)
+    }
+
+    #wl.run .wlbar i {
+      width: 100%;
+      transition: width 5s linear
+    }
+
+    @keyframes wlIn {
+      from {
+        opacity: 0;
+        transform: scale(1.015)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #wl.on {
+        animation: none
+      }
+    }
   </style>
 </head>
 
@@ -814,8 +886,11 @@
           Pvt. Ltd. All rights reserved.</span></footer>
     </div>
   </div>
+  <div id="wl" role="dialog" aria-label="Welcome to Mainetti"><img id="wli" alt="Welcome to Mainetti" decoding="async">
+    <div class="wlbar"><i></i></div>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="erp.js"></script>
+  <script src="erp.js"></script>
   <script>
     const T = {
       en: { h1a: "Hanger Manufacturing Excellence", h1b: "with", h1c: "Smart ERP", h1d: "Solution", m1: "Production<br>Monitoring", m2: "Quality<br>Control", m3: "Inventory<br>Management", m4: "Business<br>Analytics", m5: "Sustainability &<br>Compliance", t1: "Drive Efficiency", t2: "Ensure Quality", t3: "Grow Together", sys: "Hanger Manufacturing ERP", wb: "Welcome Back!", sub: "Sign in to continue your journey", ph1: "Employee ID / Email", ph2: "Password", rem: "Remember Me", fp: "Forgot Password?", login: "Login", busy: "Signing in…", f1: "Committed to a Sustainable Future", sec: "Secure • Reliable • Scalable", e1: "Enter your ID or email.", e2: "Enter your password.", e3: "Password must be at least 6 characters.", e4: "Enter a valid email or an ID (letters and numbers only).", bad: "ID or password is incorrect.", net: "Cannot reach the server. Check your connection and try again.", show: "Show password", hide: "Hide password" },
@@ -837,11 +912,20 @@
       const b = $("go"); b.disabled = true; $("gt").textContent = t.busy;
       try {
         const { error } = await sb.auth.signInWithPassword({ email: ERP.email(u), password: p });
-        if (!error) { location.href = "portal.html"; return }
+        if (!error) { welcome(); return }
         $("al").textContent = /fetch|network/i.test(error.message) ? t.net : t.bad;
       } catch (e) { $("al").textContent = t.net }
       $("al").classList.add("on"); b.disabled = false; $("gt").textContent = t.login; $("p").value = ""; $("p").focus()
     });
+    /* Login সফল → Welcome plaque ৫ সেকেন্ড দেখিয়ে Portal-এ যায় (ছবি লোড না হলে সরাসরি Portal) */
+    const WELCOME_MS = 5000;
+    function welcome() {
+      const w = $("wl"), im = $("wli"), go = () => { w.classList.add("on"); void w.offsetWidth; w.classList.add("run"); setTimeout(() => { location.href = "portal.html" }, WELCOME_MS) };
+      try { const l = document.createElement("link"); l.rel = "prefetch"; l.href = "portal.html"; document.head.appendChild(l) } catch (e) { }
+      im.onload = go; im.onerror = () => { location.href = "portal.html" }; im.src = "assets/welcome.jpg";
+      if (im.complete && im.naturalWidth) go()
+    }
+    new Image().src = "assets/welcome.jpg";   // Login পেজেই আগে থেকে ছবি নামিয়ে রাখে, যাতে সাথে সাথে দেখা যায়
     sb.auth.getSession().then(({ data }) => { if (data.session) location.replace("portal.html") });
     addEventListener("resize", () => { scale(); fit() }); scale(); syncEye();
     (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { fit(); try { if (localStorage.getItem("lang") === "bn") setLang("bn") } catch (e) { } });
