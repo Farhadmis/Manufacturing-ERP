@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Mainetti · Production-Shop floor</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0f2a5a;
+            --red: #a61935;
+            --mute: #6d7c99;
+            --line: #dbe4f2
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, sans-serif;
+            color: var(--navy);
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: radial-gradient(900px 500px at 15% 0%, #f6faff, transparent), linear-gradient(180deg, #e9f1fc, #dce8f9)
+        }
+
+        /* ===== header ===== */
+        header {
+            flex: none;
+            position: relative;
+            z-index: 20;
+            display: flex;
+            align-items: stretch;
+            height: clamp(66px, 9vh, 88px);
+            background: linear-gradient(90deg, #f8fbff, #e8f0fc);
+            box-shadow: 0 4px 18px rgba(16, 44, 92, .12)
+        }
+
+        .hl {
+            display: flex;
+            align-items: center;
+            gap: clamp(12px, 1.5vw, 24px);
+            padding: 0 clamp(14px, 1.8vw, 30px);
+            position: relative;
+            z-index: 2;
+            flex: none
+        }
+
+        .hl img {
+            height: clamp(40px, 6.2vh, 58px);
+            display: block;
+        }
+
+        .logo {
+            font-weight: 800;
+            letter-spacing: .06em;
+            font-size: 20px;
+            line-height: 1;
+            color: var(--navy)
+        }
+
+        .logo small {
+            display: block;
+            font-size: 9px;
+            letter-spacing: .2em;
+            margin-top: 3px;
+            color: #12408f
+        }
+
+        .sep {
+            width: 1px;
+            height: 46px;
+            background: #9fb3d3;
+            flex: none
+        }
+
+        .tag {
+            font-style: italic;
+            font-weight: 600;
+            color: #12408f;
+            font-size: clamp(12px, 1.15vw, 18px);
+            white-space: nowrap
+        }
+
+        .tag i {
+            font-style: normal;
+            margin: 0 .7em;
+            opacity: .55
+        }
+
+        .gr {
+            font-size: 11.5px;
+            color: var(--mute);
+            margin-top: 3px;
+            white-space: nowrap
+        }
+
+        .hp {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+            overflow: hidden
+        }
+
+        .hp:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url(assets/header-photo.jpg) right center/cover no-repeat;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 40%);
+            mask-image: linear-gradient(90deg, transparent, #000 40%)
+        }
+
+        .hr {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: clamp(10px, 1.2vw, 18px);
+            padding: 0 clamp(14px, 1.6vw, 26px) 0 clamp(54px, 5vw, 84px);
+            color: #fff;
+            flex: none
+        }
+
+        .hr:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(100deg, #0a2a70, #0b3d94);
+            clip-path: polygon(44px 0, 100% 0, 100% 100%, 0 100%);
+            z-index: 0
+        }
+
+        .hr>* {
+            position: relative;
+            z-index: 1
+        }
+
+        .hr svg.fy {
+            width: clamp(30px, 2.6vw, 42px);
+            height: clamp(30px, 2.6vw, 42px);
+            flex: none
+        }
+
+        .ht b {
+            display: block;
+            font-size: clamp(15px, 1.5vw, 23px);
+            font-weight: 800;
+            white-space: nowrap
+        }
+
+        .ht span {
+            display: block;
+            font-size: clamp(9.5px, .8vw, 12px);
+            opacity: .92;
+            margin-top: 2px;
+            white-space: nowrap
+        }
+
+        .user {
+            position: relative
+        }
+
+        .ub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, .14);
+            border: 1px solid rgba(255, 255, 255, .4);
+            color: #fff;
+            border-radius: 999px;
+            padding: 4px 14px 4px 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit
+        }
+
+        .av {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #fff;
+            color: #0b3d94;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: 12px
+        }
+
+        .menu {
+            position: absolute;
+            right: 0;
+            top: 46px;
+            background: #fff;
+            color: var(--navy);
+            border-radius: 12px;
+            box-shadow: 0 14px 34px rgba(16, 44, 92, .25);
+            min-width: 170px;
+            display: none;
+            overflow: hidden;
+            z-index: 30
+        }
+
+        .menu div {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-weight: 600
+        }
+
+        .menu div:hover {
+            background: #f1f5fc
+        }
+
+        
+        body{background:#f1f5fb;font-size:13px}
+        .bk{width:36px;height:36px;border-radius:10px;border:1px solid #9fb3d3;background:#fff;color:var(--navy);font-size:18px;cursor:pointer;flex:none}
+        .lay{flex:1;min-height:0;display:flex}
+        aside{flex:none;width:250px;background:#fff;border-right:1px solid var(--line);padding:10px 0;transition:.2s;overflow:hidden}
+        aside.col{width:62px}
+        .nv{display:flex;align-items:center;gap:14px;padding:12px 20px;cursor:pointer;font-weight:600;color:#3a4d73;border-left:3px solid transparent}
+        .nv span{line-height:1.25}
+        aside.col .nv span{white-space:nowrap}
+        .nv svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+        .nv:hover{background:#f5f8fd}
+        .nv.on{color:var(--red);background:#fdeff2;border-left-color:var(--red)}
+        .nv.t{color:var(--mute);margin-bottom:6px}
+        main{flex:1;min-width:0;overflow:auto;padding:18px 22px 30px}
+        .ttl{font-size:20px;font-weight:800;margin:0 0 2px}
+        .sub{color:var(--mute);margin:0 0 14px}
+        .empty{background:#fff;border-radius:16px;padding:60px 20px;text-align:center;color:var(--mute)}
+        .empty b{display:block;color:var(--navy);font-size:17px;margin-bottom:6px}
+        @media(max-width:900px){body{height:100dvh;overflow:hidden}aside{width:62px}.nv span{display:none}.hl{padding:8px 12px}}
+</style>
+</head>
+
+<body>
+    <header>
+        <div class="hl"><button class="bk" onclick="location.href='production.html'" title="Back">←</button>
+            <img src="assets/logo.png" style="cursor:pointer" onclick="location.href='portal.html'" alt="Mainetti Bangladesh"
+                onerror="this.outerHTML='<div class=&quot;logo&quot;>MAINETTI<small>BANGLADESH PVT. LTD.</small></div>'">
+            <div class="sep"></div>
+            <div>
+                <div class="tag">Drive Efficiency<i>/</i>Ensure Quality<i>/</i>Grow Together</div>
+                <div class="gr" id="gr"></div>
+            </div>
+        </div>
+        <div class="hp"></div>
+        <div class="hr"><svg class="fy" viewBox="0 0 24 24">
+                <path fill="#fff" d="M2 21V10l6 3.6V10l6 3.6V4h3.4v9.6H22V21z" />
+                <path fill="rgba(11,61,148,.55)" d="M5 17h2.2v2.2H5zM10 17h2.2v2.2H10zM15 17h2.2v2.2H15z" />
+                <path fill="#fff" opacity=".7" d="M16.2 1.5h2.6v2h-2.6z" />
+            </svg>
+            <div class="ht"><b>Production-Shop floor</b><span>Shop floor performance &amp; analytics</span></div>
+            <div class="user"><button class="ub" id="ub"><span class="av" id="av"></span><span id="un"></span>
+                    ▾</button>
+                <div class="menu" id="mn">
+                    <div onclick="location.href='portal.html'">Portal</div>
+<div onclick="location.href='production.html'">Production &amp; Planning</div>
+                    <div id="adm" style="display:none" onclick="location.href='admin.html'">Admin Console</div>
+                    <div onclick="out()">Sign out</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="lay">
+        <aside id="sd">
+<div class="nv t" onclick="$('#sd').classList.toggle('col')"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Menu</span></div>
+<div class="nv on" data-p="oee" onclick="show('oee')"><svg viewBox="0 0 24 24"><path d="M4 17a8 8 0 1 1 16 0M12 17l4-5M6.5 17h1M16.5 17h1"/></svg><span>OEE Performance Overview</span></div>
+<div class="nv" data-p="prod" onclick="show('prod')"><svg viewBox="0 0 24 24"><path d="M5 20V11M11 20V5M17 20v-6M3 20h18"/></svg><span>Production Performance</span></div>
+<div class="nv" data-p="down" onclick="show('down')"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2"/></svg><span>Downtime Analysis</span></div>
+<div class="nv" data-p="man" onclick="show('man')"><svg viewBox="0 0 24 24"><path d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M17 11a2.5 2.5 0 1 0 0-5M17 14c2.5 0 4 2 4 5"/></svg><span>Manpower Performance</span></div>
+<div class="nv" data-p="mat" onclick="show('mat')"><svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5"/></svg><span>Machine-wise Material Allocation</span></div>
+<div class="nv" data-p="mco" onclick="show('mco')"><svg viewBox="0 0 24 24"><path d="M3 5h18v11H3zM8 20h8M12 16v4"/></svg><span>Machine Overview</span></div>
+        </aside>
+        <main><h1 class="ttl" id="pt"></h1><p class="sub" id="ps"></p><div id="pgc"></div></main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+    <script src="erp.js"></script>
+    <script>
+        const $ = s => document.querySelector(s), out = () => ERP.signOut();
+        const PG = {
+            oee: ["OEE Performance Overview", "Availability, performance and quality across machines"],
+            prod: ["Production Performance", "Output against target"],
+            down: ["Downtime Analysis", "Where and why machines stop"],
+            man: ["Manpower Performance", "Headcount and output per shift"],
+            mat: ["Machine-wise Material Allocation", "Material loaded on each machine"],
+            mco: ["Machine Overview", "Status of every machine on the floor"]
+        };
+        function show(p) {
+            document.querySelectorAll(".nv[data-p]").forEach(n => n.classList.toggle("on", n.dataset.p === p));
+            $("#pt").textContent = PG[p][0]; $("#ps").textContent = PG[p][1];
+            $("#pgc").innerHTML = `<div class="empty"><b>${PG[p][0]}</b>No data connected yet. This page will fill in once its Excel source is added in Admin Console → Data Manager.</div>`;
+            location.hash = p
+        }
+        (async () => {
+            const ME = await ERP.require(); if (!ME) return;
+            const nm = ME.name || ME.login_id; $("#un").textContent = nm; $("#av").textContent = nm.slice(0, 2).toUpperCase();
+            const hr = new Date().getHours(); $("#gr").textContent = `Good ${hr < 12 ? "morning" : hr < 17 ? "afternoon" : "evening"}, ${nm.split(" ")[0]}. Here is your operation at a glance.`;
+            if (ME.role === "admin") $("#adm").style.display = "block";
+            $("#ub").onclick = e => { e.stopPropagation(); const m = $("#mn"); m.style.display = m.style.display === "block" ? "none" : "block" }; document.onclick = () => $("#mn").style.display = "none";
+            const mods = await ERP.tree(), M = mods.find(x => /production/i.test(String(x.name)));
+            if (!M || !(ERP.can(ME, M.id) || M.subs.some(s => ERP.can(ME, s.id, "v", M.id)))) { location.replace("portal.html"); return }
+            ERP.sideBanner([M.id, ...M.subs.map(s => s.id)], []);
+            const h = location.hash.slice(1); show(PG[h] ? h : "oee")
+        })().catch(e => console.error(e));
+    </script>
+</body>
+
+</html>

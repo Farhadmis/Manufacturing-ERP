@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Mainetti · Production &amp; Planning</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0f2a5a;
+            --red: #a61935;
+            --mute: #6d7c99;
+            --line: #dbe4f2
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, sans-serif;
+            color: var(--navy);
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: radial-gradient(900px 500px at 15% 0%, #f6faff, transparent), linear-gradient(180deg, #e9f1fc, #dce8f9)
+        }
+
+        /* ===== header ===== */
+        header {
+            flex: none;
+            position: relative;
+            z-index: 20;
+            display: flex;
+            align-items: stretch;
+            height: clamp(66px, 9vh, 88px);
+            background: linear-gradient(90deg, #f8fbff, #e8f0fc);
+            box-shadow: 0 4px 18px rgba(16, 44, 92, .12)
+        }
+
+        .hl {
+            display: flex;
+            align-items: center;
+            gap: clamp(12px, 1.5vw, 24px);
+            padding: 0 clamp(14px, 1.8vw, 30px);
+            position: relative;
+            z-index: 2;
+            flex: none
+        }
+
+        .hl img {
+            height: clamp(40px, 6.2vh, 58px);
+            display: block;
+        }
+
+        .logo {
+            font-weight: 800;
+            letter-spacing: .06em;
+            font-size: 20px;
+            line-height: 1;
+            color: var(--navy)
+        }
+
+        .logo small {
+            display: block;
+            font-size: 9px;
+            letter-spacing: .2em;
+            margin-top: 3px;
+            color: #12408f
+        }
+
+        .sep {
+            width: 1px;
+            height: 46px;
+            background: #9fb3d3;
+            flex: none
+        }
+
+        .tag {
+            font-style: italic;
+            font-weight: 600;
+            color: #12408f;
+            font-size: clamp(12px, 1.15vw, 18px);
+            white-space: nowrap
+        }
+
+        .tag i {
+            font-style: normal;
+            margin: 0 .7em;
+            opacity: .55
+        }
+
+        .gr {
+            font-size: 11.5px;
+            color: var(--mute);
+            margin-top: 3px;
+            white-space: nowrap
+        }
+
+        .hp {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+            overflow: hidden
+        }
+
+        .hp:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url(assets/header-photo.jpg) right center/cover no-repeat;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 40%);
+            mask-image: linear-gradient(90deg, transparent, #000 40%)
+        }
+
+        .hr {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: clamp(10px, 1.2vw, 18px);
+            padding: 0 clamp(14px, 1.6vw, 26px) 0 clamp(54px, 5vw, 84px);
+            color: #fff;
+            flex: none
+        }
+
+        .hr:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(100deg, #0a2a70, #0b3d94);
+            clip-path: polygon(44px 0, 100% 0, 100% 100%, 0 100%);
+            z-index: 0
+        }
+
+        .hr>* {
+            position: relative;
+            z-index: 1
+        }
+
+        .hr svg.fy {
+            width: clamp(30px, 2.6vw, 42px);
+            height: clamp(30px, 2.6vw, 42px);
+            flex: none
+        }
+
+        .ht b {
+            display: block;
+            font-size: clamp(15px, 1.5vw, 23px);
+            font-weight: 800;
+            white-space: nowrap
+        }
+
+        .ht span {
+            display: block;
+            font-size: clamp(9.5px, .8vw, 12px);
+            opacity: .92;
+            margin-top: 2px;
+            white-space: nowrap
+        }
+
+        .user {
+            position: relative
+        }
+
+        .ub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, .14);
+            border: 1px solid rgba(255, 255, 255, .4);
+            color: #fff;
+            border-radius: 999px;
+            padding: 4px 14px 4px 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit
+        }
+
+        .av {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #fff;
+            color: #0b3d94;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: 12px
+        }
+
+        .menu {
+            position: absolute;
+            right: 0;
+            top: 46px;
+            background: #fff;
+            color: var(--navy);
+            border-radius: 12px;
+            box-shadow: 0 14px 34px rgba(16, 44, 92, .25);
+            min-width: 170px;
+            display: none;
+            overflow: hidden;
+            z-index: 30
+        }
+
+        .menu div {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-weight: 600
+        }
+
+        .menu div:hover {
+            background: #f1f5fc
+        }
+
+        /* ===== grid ===== */
+        main {
+            flex: 1;
+            min-height: 0;
+            width: 100%;
+            max-width: 1900px;
+            margin: 0 auto;
+            padding: clamp(10px, 1.8vh, 18px) clamp(12px, 1.6vw, 24px) clamp(6px, 1vh, 10px);
+            display: flex
+        }
+
+        .grid {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            column-gap: 0;
+            row-gap: 14px;
+            margin: 0 -7px;
+            grid-template-columns: repeat(120, minmax(0, 1fr))
+        }
+
+        .card {
+            container-type: inline-size;
+            position: relative;
+            overflow: hidden;
+            margin: 0 7px;
+            border-radius: 20px;
+            padding: clamp(10px, 1.5vh, 18px) clamp(12px, 1.2vw, 20px);
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: linear-gradient(135deg, var(--t1), var(--t2));
+            border: 2px solid rgba(255, 255, 255, .9);
+            outline: 1.5px solid var(--bd);
+            outline-offset: -1.5px;
+            box-shadow: 0 10px 24px color-mix(in srgb, var(--a1) 20%, transparent), inset 0 1px 0 rgba(255, 255, 255, .95), inset 0 0 22px rgba(255, 255, 255, .35);
+            transition: .2s
+        }
+
+        .card:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 26%;
+            height: clamp(14px, 2.4vh, 24px);
+            background: linear-gradient(225deg, var(--a1), transparent 75%);
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 100% 100%;
+            opacity: .85;
+            pointer-events: none
+        }
+
+        .card.ok {
+            cursor: pointer
+        }
+
+        .card.ok:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 34px color-mix(in srgb, var(--a1) 32%, transparent), inset 0 1px 0 rgba(255, 255, 255, .95)
+        }
+
+        .card.lock {
+            filter: grayscale(.6);
+            opacity: .7
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            gap: clamp(8px, .9vw, 14px);
+            flex-wrap: nowrap;
+            position: relative;
+            z-index: 1
+        }
+
+        .ic {
+            position: relative;
+            width: clamp(42px, 4vw, 68px);
+            aspect-ratio: 1;
+            border-radius: 50%;
+            flex: none;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: radial-gradient(circle at 30% 22%, var(--a2), var(--a1));
+            box-shadow: 0 8px 16px color-mix(in srgb, var(--a1) 50%, transparent), inset 0 0 0 3px rgba(255, 255, 255, .55), inset 0 -6px 10px rgba(0, 0, 0, .18)
+        }
+
+        .ic:before {
+            content: "";
+            position: absolute;
+            left: 14%;
+            right: 14%;
+            top: 5%;
+            height: 42%;
+            border-radius: 50%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, .6), rgba(255, 255, 255, 0))
+        }
+
+        .ic svg {
+            position: relative;
+            width: 62%;
+            height: 62%;
+            fill: currentColor;
+            fill-rule: evenodd;
+            stroke: none;
+            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .3))
+        }
+
+        .row h3 {
+            margin: 0;
+            font-weight: 800;
+            flex: 1 1 0;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--navy);
+            font-size: clamp(16px, 1.5vw, 24px)
+        }
+
+        .card p {
+            margin: 6px 0;
+            font-size: clamp(11px, .88vw, 14px);
+            line-height: 1.5;
+            color: #33466e;
+            max-width: 88%;
+            position: relative;
+            z-index: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden
+        }
+
+        .btn,
+        .no {
+            align-self: flex-start;
+            position: relative;
+            z-index: 1
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 99px;
+            padding: clamp(7px, 1.1vh, 11px) clamp(14px, 1.4vw, 22px);
+            font-weight: 700;
+            font-size: clamp(11px, .9vw, 15px);
+            color: #fff;
+            cursor: pointer;
+            font-family: inherit;
+            white-space: nowrap;
+            background: linear-gradient(180deg, var(--a2), var(--a1));
+            box-shadow: 0 6px 12px color-mix(in srgb, var(--a1) 40%, transparent), inset 0 1px 0 rgba(255, 255, 255, .35)
+        }
+
+        .no {
+            display: inline-block;
+            border: 1px dashed #aab6cc;
+            border-radius: 99px;
+            padding: 8px 16px;
+            font-size: 13px;
+            color: var(--mute);
+            font-weight: 600
+        }
+
+        .num {
+            position: absolute;
+            right: 12px;
+            bottom: 10px;
+            z-index: 1;
+            min-width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--a1);
+            background: rgba(255, 255, 255, .75);
+            border: 1px solid rgba(255, 255, 255, .9);
+            box-shadow: 0 2px 6px rgba(16, 44, 92, .12)
+        }
+
+        .wm {
+            position: absolute;
+            right: -4px;
+            bottom: -6px;
+            width: 44cqw;
+            max-width: 200px;
+            aspect-ratio: 1;
+            opacity: .2;
+            pointer-events: none;
+            color: var(--a1)
+        }
+
+        .wm svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+            fill-rule: evenodd;
+            stroke: none
+        }
+
+        .grid.tight p {
+            display: none
+        }
+
+        .grid.mini .btn,
+        .grid.mini .no {
+            display: none
+        }
+
+        .grid.mini .card {
+            justify-content: center
+        }
+
+        /* system status card */
+        .st {
+            justify-content: center;
+            gap: clamp(6px, 1.2vh, 12px)
+        }
+
+        .sh {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: clamp(13px, 1.1vw, 17px);
+            color: var(--navy)
+        }
+
+        .sh svg,
+        .sl svg {
+            width: 22px;
+            height: 22px;
+            flex: none;
+            fill: none;
+            stroke: #12408f;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .so {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #15803d;
+            font-weight: 800;
+            font-size: clamp(14px, 1.25vw, 20px)
+        }
+
+        .so.off {
+            color: #b3261e
+        }
+
+        .ck {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: grid;
+            place-items: center;
+            flex: none;
+            box-shadow: 0 4px 10px rgba(34, 197, 94, .4)
+        }
+
+        .ck svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .sl {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: 1px solid #cfdcf0;
+            padding-top: clamp(6px, 1vh, 10px)
+        }
+
+        .sl small {
+            display: block;
+            font-size: 10.5px;
+            color: var(--mute);
+            font-weight: 600
+        }
+
+        .sl b {
+            display: block;
+            font-size: clamp(11px, .9vw, 13px);
+            color: var(--navy);
+            font-weight: 700
+        }
+
+        .grid.mini .sl {
+            display: none
+        }
+
+        /* footer */
+        footer {
+            flex: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 0 clamp(14px, 2vw, 34px);
+            height: clamp(30px, 4.4vh, 42px);
+            color: #fff;
+            background: linear-gradient(90deg, #0a2a70, #0f4bb5 70%, #1a66d6);
+            border-top-left-radius: 60px 100%;
+            font-size: 12px
+        }
+
+        footer span {
+            opacity: .85
+        }
+
+        footer em {
+            font-weight: 600;
+            font-size: clamp(12px, 1.05vw, 16px)
+        }
+
+        #ov {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 25, 60, .55);
+            display: none;
+            place-items: center;
+            z-index: 9;
+            padding: 16px
+        }
+
+        .mod {
+            background: #fff;
+            border-radius: 20px;
+            width: 900px;
+            max-width: 100%;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden
+        }
+
+        .mh {
+            padding: 20px 24px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .mh h3 {
+            margin: 0;
+            flex: 1;
+            font-size: 20px
+        }
+
+        .x {
+            background: rgba(255, 255, 255, .2);
+            border: 0;
+            color: #fff;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            font-size: 18px;
+            cursor: pointer
+        }
+
+        .tabs {
+            display: flex;
+            gap: 6px;
+            padding: 12px 24px 0;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .tab {
+            padding: 8px 14px;
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--mute);
+            font-size: 13px
+        }
+
+        .tab.on {
+            background: #f1f5fc;
+            color: var(--navy)
+        }
+
+        .body {
+            padding: 18px 24px 24px;
+            overflow: auto
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px
+        }
+
+        th {
+            background: #f4f8ff;
+            color: var(--mute);
+            text-align: left;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            position: sticky;
+            top: 0
+        }
+
+        th,
+        td {
+            padding: 9px 12px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .empty {
+            text-align: center;
+            color: var(--mute);
+            padding: 36px
+        }
+
+        .perm {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px
+        }
+
+        .perm span {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 99px;
+            background: #e3ecfb
+        }
+
+        .perm .off {
+            opacity: .35
+        }
+
+
+        @media(max-width:900px) {
+            body {
+                height: auto;
+                min-height: 100dvh;
+                overflow: auto
+            }
+
+            header {
+                height: auto;
+                min-height: 60px
+            }
+
+            .tag,
+            .gr,
+            .sep,
+            .hp,
+            .ht span {
+                display: none
+            }
+
+            .hl {
+                padding: 8px 12px
+            }
+
+            .hl img {
+                height: 36px
+            }
+
+            .hr {
+                padding: 0 12px 0 40px;
+                margin-left: auto
+            }
+
+            main {
+                padding: 12px;
+                display: block
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                grid-template-rows: none !important;
+                grid-auto-rows: minmax(150px, auto);
+                gap: 10px;
+                margin: 0
+            }
+
+            .card {
+                grid-column: auto !important;
+                margin: 0
+            }
+
+            .grid.tight p {
+                display: -webkit-box
+            }
+
+            .grid.mini .btn,
+            .grid.mini .no {
+                display: inline-block
+            }
+
+            .wm {
+                display: none
+            }
+
+            footer {
+                border-radius: 0
+            }
+        }
+
+        @media(max-width:560px) {
+            .grid {
+                grid-template-columns: 1fr !important
+            }
+
+            .hr .ht {
+                display: none
+            }
+        }
+
+        /* ===== Order page (2 cards) ===== */
+        main {
+            overflow: auto
+        }
+
+        .oxg {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: clamp(12px, 1.6vw, 26px);
+            align-items: stretch;
+            width: 100%
+        }
+
+        .oxc {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            border-radius: 26px;
+            overflow: hidden;
+            background: linear-gradient(180deg, #f4f9ff, #e1ecfb);
+            border: 1px solid #cfe0f7;
+            box-shadow: 0 10px 30px rgba(16, 44, 92, .16)
+        }
+
+        .oxb {
+            position: relative;
+            flex: none;
+            display: flex;
+            align-items: center;
+            gap: clamp(14px, 1.6vw, 26px);
+            padding: clamp(14px, 2.6vh, 28px) clamp(18px, 2vw, 32px);
+            color: #fff;
+            overflow: hidden;
+            background: linear-gradient(100deg, #0a2a70, #0b3d94 68%, #1558d6)
+        }
+
+        .oxb>* {
+            position: relative;
+            z-index: 1
+        }
+
+        .oxb .bi {
+            width: clamp(44px, 4.2vw, 68px);
+            height: clamp(44px, 4.2vw, 68px);
+            flex: none;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .oxb .vl {
+            width: 2px;
+            align-self: stretch;
+            margin: 4px 0;
+            background: rgba(255, 255, 255, .85);
+            flex: none
+        }
+
+        .oxb h2 {
+            margin: 0;
+            font-size: clamp(28px, 3.3vw, 52px);
+            font-weight: 800;
+            line-height: 1
+        }
+
+        .oxb p {
+            margin: 6px 0 0;
+            font-size: clamp(12px, 1.2vw, 19px);
+            font-weight: 500;
+            color: #cfe0ff
+        }
+
+        .oxb .ph {
+            position: absolute;
+            z-index: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 40%;
+            background: url(assets/header-photo.jpg) right center/cover no-repeat;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 45%);
+            mask-image: linear-gradient(90deg, transparent, #000 45%);
+            opacity: .9
+        }
+
+        .oxb .hg {
+            position: absolute;
+            z-index: 0;
+            right: clamp(16px, 3vw, 50px);
+            top: 50%;
+            transform: translateY(-50%);
+            width: clamp(90px, 11vw, 170px);
+            fill: none;
+            stroke: #4d8ff0;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            opacity: .9
+        }
+
+        .oxb .sw,
+        .oxf .sw {
+            position: absolute;
+            z-index: 0;
+            right: 0;
+            bottom: 0;
+            width: 46%;
+            height: 34%;
+            min-height: 28px;
+            pointer-events: none
+        }
+
+        .oxt {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: 1.55fr 1fr 1fr 1fr;
+            grid-auto-rows: auto;
+            gap: 6px;
+            padding: clamp(10px, 1.6vh, 18px) clamp(10px, 1.2vw, 18px) 8px
+        }
+
+        .oxt .h {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 6px;
+            border-radius: 14px;
+            color: #fff;
+            font-weight: 700;
+            font-size: clamp(12px, 1.25vw, 20px);
+            background: linear-gradient(180deg, #1558d6, #0a2a70);
+            text-align: center
+        }
+
+        .oxt .h:first-child {
+            justify-content: flex-start;
+            padding-left: 16px
+        }
+
+        .oxt .h i {
+            width: clamp(24px, 2.4vw, 36px);
+            height: clamp(24px, 2.4vw, 36px);
+            flex: none;
+            border-radius: 50%;
+            display: grid;
+            place-items: center
+        }
+
+        .oxt .h i svg,
+        .oxt .l i svg {
+            width: 62%;
+            height: 62%;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .oxt .l {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 12px;
+            border-radius: 12px;
+            background: #fff;
+            font-weight: 600;
+            font-size: clamp(12px, 1.2vw, 19px);
+            box-shadow: 0 2px 8px rgba(16, 44, 92, .08)
+        }
+
+        .oxt .l i {
+            width: clamp(26px, 2.6vw, 40px);
+            height: clamp(26px, 2.6vw, 40px);
+            flex: none;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: #0b3d94
+        }
+
+        .oxt .v {
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: clamp(18px, 2.1vw, 34px);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .7)
+        }
+
+        .oxf {
+            position: relative;
+            flex: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            overflow: hidden;
+            padding: clamp(10px, 1.8vh, 18px) 16px;
+            background: linear-gradient(100deg, #0a2a70, #0b3d94 70%, #1558d6)
+        }
+
+        .oxf>* {
+            position: relative;
+            z-index: 1
+        }
+
+        .oxf .sw {
+            left: 0;
+            right: auto;
+            transform: scaleX(-1);
+            width: 36%
+        }
+
+        .oxf .up {
+            position: absolute;
+            left: clamp(14px, 2vw, 30px);
+            z-index: 1;
+            font-size: 11.5px;
+            color: #cfe0ff;
+            line-height: 1.3
+        }
+
+        .oxf .up b {
+            display: block;
+            color: #fff;
+            font-size: 12px
+        }
+
+        .oxbtn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: clamp(9px, 1.4vh, 14px) clamp(22px, 2.6vw, 44px);
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, .35);
+            cursor: pointer;
+            font: 700 clamp(13px, 1.3vw, 20px) Inter, sans-serif;
+            color: #fff;
+            background: linear-gradient(180deg, #0f4bb5, #0a2a70);
+            box-shadow: 0 6px 16px rgba(5, 20, 60, .45), inset 0 1px 0 rgba(255, 255, 255, .25)
+        }
+
+        .oxbtn:hover {
+            filter: brightness(1.12)
+        }
+
+        .oxbtn svg {
+            width: 1.3em;
+            height: 1.3em;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex: none
+        }
+
+        .oxp {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin: 0 clamp(8px, 1vw, 14px) clamp(8px, 1vh, 12px);
+            padding: clamp(6px, 1vh, 12px);
+            border-radius: 20px;
+            background: linear-gradient(180deg, #fff, #f3f8ff)
+        }
+
+        .oxr {
+            flex: 1;
+            display: grid;
+            grid-template-columns: clamp(50px, 5vw, 76px) minmax(0, 1fr) minmax(150px, 44%);
+            align-items: stretch;
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(16, 44, 92, .07);
+            overflow: hidden
+        }
+
+        .oxr .oxi {
+            display: grid;
+            place-items: center;
+            border-right: 1px solid #dbe4f2;
+            margin: 12px 0
+        }
+
+        .oxr .oxi svg {
+            width: clamp(28px, 3vw, 46px);
+            height: clamp(28px, 3vw, 46px);
+            fill: #0b3d94
+        }
+
+        .oxr .lb {
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            font-weight: 600;
+            font-size: clamp(14px, 1.7vw, 28px);
+            line-height: 1.15;
+            color: #0b2a6b
+        }
+
+        .oxr .vv {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 14px;
+            padding: 0 clamp(16px, 1.8vw, 28px) 0 12px;
+            margin: 4px 4px 4px 0;
+            border-radius: 14px;
+            font-weight: 800;
+            font-size: clamp(22px, 2.7vw, 44px);
+            white-space: nowrap
+        }
+
+        .oxr .vv:after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 10%;
+            bottom: 10%;
+            width: 6px;
+            border-radius: 6px;
+            background: currentColor;
+            opacity: .85
+        }
+
+        .oxr .vv svg {
+            width: clamp(22px, 2.2vw, 36px);
+            flex: none;
+            margin-right: 6px
+        }
+
+        .oxn {
+            margin: 0 clamp(8px, 1vw, 14px) 8px;
+            font-size: 12px;
+            color: var(--mute);
+            text-align: center
+        }
+
+        #oxm {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(8, 22, 56, .55)
+        }
+
+        #oxm .bx {
+            width: min(900px, 100%);
+            max-height: 86vh;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, .35)
+        }
+
+        #oxm .bh {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            color: #fff;
+            font-weight: 800;
+            font-size: 18px;
+            background: linear-gradient(100deg, #0a2a70, #1558d6)
+        }
+
+        #oxm .bh button {
+            border: 0;
+            background: rgba(255, 255, 255, .18);
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px
+        }
+
+        #oxm .bd {
+            overflow: auto;
+            padding: 6px 14px 14px
+        }
+
+        #oxm table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px
+        }
+
+        #oxm th {
+            position: sticky;
+            top: 0;
+            background: #eef3fb;
+            text-align: right;
+            padding: 10px 12px;
+            font-size: 12px;
+            color: #4a5a78
+        }
+
+        #oxm th:first-child,
+        #oxm td:first-child {
+            text-align: left
+        }
+
+        #oxm td {
+            text-align: right;
+            padding: 9px 12px;
+            border-bottom: 1px solid #e6ecf6;
+            font-variant-numeric: tabular-nums
+        }
+
+        #oxm tfoot td {
+            font-weight: 800;
+            background: #f3f7fd;
+            position: sticky;
+            bottom: 0
+        }
+
+        @media(max-width:900px) {
+            main {
+                display: block
+            }
+
+            .oxg {
+                grid-template-columns: 1fr
+            }
+
+            .oxb .ph,
+            .oxb .hg {
+                opacity: .5
+            }
+
+            .oxr {
+                grid-template-columns: 50px minmax(0, 1fr) minmax(130px, 46%)
+            }
+
+            .oxf .up {
+                display: none
+            }
+        }
+
+        /* compact cards */
+        main {
+            align-items: flex-start
+        }
+
+        .oxg {
+            flex: none;
+            align-self: flex-start;
+            max-width: 1180px;
+            margin: 0 auto;
+            align-items: start
+        }
+
+        .oxb {
+            padding: 12px 20px;
+            gap: 16px
+        }
+
+        .oxb .bi {
+            width: clamp(32px, 2.8vw, 44px);
+            height: clamp(32px, 2.8vw, 44px)
+        }
+
+        .oxb h2 {
+            font-size: clamp(22px, 2.2vw, 32px)
+        }
+
+        .oxb p {
+            font-size: clamp(11px, 1vw, 14px);
+            margin-top: 3px
+        }
+
+        .oxb .hg {
+            width: clamp(60px, 7vw, 100px)
+        }
+
+        .oxt {
+            gap: 5px;
+            padding: 10px 10px 6px;
+            grid-auto-rows: minmax(44px, auto)
+        }
+
+        .oxt .h {
+            font-size: clamp(11px, 1vw, 14px);
+            padding: 6px;
+            border-radius: 12px
+        }
+
+        .oxt .h i {
+            width: 24px;
+            height: 24px
+        }
+
+        .oxt .l {
+            font-size: clamp(11px, 1vw, 14px);
+            padding: 4px 10px;
+            gap: 8px
+        }
+
+        .oxt .l i {
+            width: 26px;
+            height: 26px
+        }
+
+        .oxt .v {
+            font-size: clamp(16px, 1.5vw, 22px)
+        }
+
+        .oxp {
+            flex: none;
+            padding: 6px;
+            gap: 5px
+        }
+
+        .oxr {
+            flex: none;
+            min-height: 54px;
+            grid-template-columns: 46px minmax(0, 1fr) minmax(110px, 40%)
+        }
+
+        .oxr .oxi svg {
+            width: 24px;
+            height: 24px
+        }
+
+        .oxr .lb {
+            font-size: clamp(13px, 1.15vw, 17px)
+        }
+
+        .oxr .vv {
+            font-size: clamp(18px, 1.8vw, 26px);
+            padding-right: 16px
+        }
+
+        .oxr .vv svg {
+            width: 20px
+        }
+
+        .oxf {
+            padding: 9px 14px
+        }
+
+        .oxbtn {
+            font-size: clamp(12px, 1vw, 15px);
+            padding: 8px 24px
+        }
+
+        /* equal, balanced cards */
+        .oxg {
+            align-items: stretch;
+            max-width: 1240px;
+            gap: clamp(14px, 1.8vw, 28px)
+        }
+
+        .oxb {
+            padding: 16px 24px
+        }
+
+        .oxb h2 {
+            font-size: clamp(24px, 2.5vw, 36px)
+        }
+
+        .oxb p {
+            font-size: clamp(11.5px, 1.05vw, 15px)
+        }
+
+        .oxt {
+            flex: 1;
+            grid-template-columns: 1.65fr 1fr 1fr 1fr;
+            grid-template-rows: auto repeat(4, minmax(56px, 1fr));
+            gap: 6px;
+            padding: 12px 12px 8px
+        }
+
+        .oxt .h {
+            white-space: nowrap;
+            font-size: clamp(11px, 1vw, 14.5px);
+            padding: 8px 6px;
+            gap: 6px
+        }
+
+        .oxt .h:first-child {
+            padding-left: 14px
+        }
+
+        .oxt .l {
+            font-size: clamp(12px, 1.05vw, 15px)
+        }
+
+        .oxt .v {
+            font-size: clamp(18px, 1.7vw, 26px)
+        }
+
+        .oxp {
+            flex: 1;
+            padding: 8px;
+            gap: 6px
+        }
+
+        .oxr {
+            flex: 1;
+            min-height: 60px;
+            grid-template-columns: 52px minmax(0, 1fr) minmax(120px, 40%)
+        }
+
+        .oxr .oxi {
+            display: grid;
+            place-items: center;
+            border-right: 1px solid #dbe4f2;
+            margin: 12px 0
+        }
+
+        .oxr .lb {
+            font-size: clamp(14px, 1.25vw, 19px)
+        }
+
+        .oxr .vv {
+            font-size: clamp(20px, 2vw, 30px)
+        }
+
+        .oxf {
+            padding: 11px 14px
+        }
+
+        /* centered layout + soft background */
+        body {
+            background: radial-gradient(720px 440px at 10% 16%, rgba(59, 130, 246, .22), transparent 70%), radial-gradient(820px 480px at 90% 86%, rgba(21, 88, 214, .18), transparent 70%), radial-gradient(rgba(15, 42, 90, .075) 1.2px, transparent 1.5px) 0 0/22px 22px, linear-gradient(180deg, #eaf2fd, #d6e5f8)
+        }
+
+        main {
+            align-items: center;
+            justify-content: center;
+            padding-top: clamp(14px, 3vh, 34px);
+            padding-bottom: clamp(14px, 3vh, 34px)
+        }
+
+        .oxg {
+            flex: none;
+            width: 100%;
+            max-width: 1360px;
+            margin: 0 auto;
+            align-self: center
+        }
+
+        @media(max-width:900px) {
+            main {
+                display: block
+            }
+        }
+
+        #toast {
+            position: fixed;
+            left: 50%;
+            bottom: 56px;
+            transform: translateX(-50%);
+            background: #0a2a70;
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 99px;
+            font-weight: 600;
+            font-size: 13px;
+            display: none;
+            z-index: 70;
+            box-shadow: 0 8px 20px rgba(5, 20, 60, .35)
+        }
+
+        .oxt .v {
+            font-variant-numeric: tabular-nums
+        }
+
+        /* ===== Production-Shop floor / Planning card · স্মার্ট ও ছোট মান ===== */
+        .oxt .l {
+            font-size: clamp(11px, 1.02vw, 16px)
+        }
+
+        .oxt .v {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+            overflow: hidden;
+            padding: 6px 3px;
+            container-type: inline-size;
+            font-size: clamp(15px, 1.5vw, 24px);
+            font-weight: 800;
+            letter-spacing: -.01em;
+            line-height: 1.1;
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .75), 0 1px 3px rgba(16, 44, 92, .06);
+            transition: transform .15s, box-shadow .15s
+        }
+
+        .oxt .v:hover {
+            transform: translateY(-1px);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .9), 0 4px 10px rgba(16, 44, 92, .14)
+        }
+
+        .oxt .v.nd {
+            font-weight: 600;
+            opacity: .4
+        }
+
+        .oxt .v .pr {
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            gap: clamp(4px, 3.5cqw, 12px);
+            max-width: 100%
+        }
+
+        .oxt .v .pr>span {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center
+        }
+
+        .oxt .v .sg {
+            font-size: clamp(14px, 17cqw, 24px);
+            font-weight: 800
+        }
+
+        .oxt .v .pr b {
+            font-size: clamp(10px, 11.5cqw, 20px);
+            font-weight: 800
+        }
+
+        .oxt .v .pr b.na {
+            opacity: .4;
+            font-weight: 600
+        }
+
+        .oxt .v .pr small {
+            margin-top: 2px;
+            font-size: clamp(8px, .62vw, 10px);
+            font-weight: 700;
+            letter-spacing: .09em;
+            text-transform: uppercase;
+            opacity: .6
+        }
+
+        .oxt .v .pr i {
+            width: 1px;
+            background: rgba(15, 42, 90, .22);
+            margin: 2px 0
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="hl" onclick="location.href='portal.html'" style="cursor:pointer">
+            <img src="assets/logo.png" alt="Mainetti Bangladesh"
+                onerror="this.outerHTML='<div class=&quot;logo&quot;>MAINETTI<small>BANGLADESH PVT. LTD.</small></div>'">
+            <div class="sep"></div>
+            <div>
+                <div class="tag">Drive Efficiency<i>/</i>Ensure Quality<i>/</i>Grow Together</div>
+                <div class="gr" id="gr"></div>
+            </div>
+        </div>
+        <div class="hp"></div>
+        <div class="hr"><svg class="fy" viewBox="0 0 24 24">
+                <path fill="#fff" d="M2 21V10l6 3.6V10l6 3.6V4h3.4v9.6H22V21z" />
+                <path fill="rgba(11,61,148,.55)" d="M5 17h2.2v2.2H5zM10 17h2.2v2.2H10zM15 17h2.2v2.2H15z" />
+                <path fill="#fff" opacity=".7" d="M16.2 1.5h2.6v2h-2.6z" />
+            </svg>
+            <div class="ht"><b>Production &amp; Planning</b><span>Smart Manufacturing. Better Tomorrow.</span></div>
+            <div class="user"><button class="ub" id="ub"><span class="av" id="av"></span><span id="un"></span>
+                    ▾</button>
+                <div class="menu" id="mn">
+                    <div onclick="location.href='portal.html'">Portal</div>
+                    <div id="adm" style="display:none" onclick="location.href='admin.html'">Admin Console</div>
+                    <div onclick="out()">Sign out</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="oxg">
+            <section class="oxc">
+                <div class="oxb">
+                    <div class="ph"></div>
+                    <svg class="bi" viewBox="0 0 24 24">
+                        <path d="M3.5 6.5h17v14h-17zM3.5 10.5h17M8 4v4M16 4v4M8 14.5l2 2 4-4" />
+                    </svg>
+                    <div class="vl"></div>
+                    <div>
+                        <h2>Production &amp; Planning</h2>
+                        <p>Planning &amp; Bay Overview</p>
+                    </div>
+                </div>
+                <div class="oxt">
+                    <div class="h"><i style="background:transparent"><svg viewBox="0 0 24 24">
+                                <path d="M6 2h8l5 5v14H6zM9 12h7M9 16h5" />
+                            </svg></i>Criteria</div>
+                    <div class="h"><i style="background:#16a34a"><svg viewBox="0 0 24 24">
+                                <path d="M4 19V11M10 19V7M16 19v-6M3 9l5-4 4 3 7-6" />
+                            </svg></i>Running Year</div>
+                    <div class="h"><i style="background:#2563eb"><svg viewBox="0 0 24 24">
+                                <path d="M12 3v18M6 21h12M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z" />
+                            </svg></i>Last Week</div>
+                    <div class="h"><i style="background:#6d4aff"><svg viewBox="0 0 24 24">
+                                <rect x="3.5" y="5" width="17" height="15.5" rx="2.2" />
+                                <path d="M3.5 10h17M8 3v4M16 3v4M8 14h1.5M12 14h1.5M16 14h1.5M8 17.5h1.5M12 17.5h1.5" />
+                            </svg></i>Yesterday</div>
+                    <div class="l"><i><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M9 4h6v3H9zM7 5.5H5v16h14v-16h-2M9 12l1.2 1.2L12.5 11M14 12.5h2.5M9 16.5l1.2 1.2 2.3-2.2M14 17h2.5" />
+                            </svg></i>Planning</div>
+                    <div class="v" id="pl00" style="background:#c6e1fb;color:#0f2a5a">—</div>
+                    <div class="v" id="pl01" style="background:#c6e1fb;color:#0f2a5a">—</div>
+                    <div class="v" id="pl02" style="background:#c6e1fb;color:#0f2a5a">—</div>
+                    <div class="l"><i><svg viewBox="0 0 24 24">
+                                <path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" />
+                            </svg></i>Bay 01 || Bay 02</div>
+                    <div class="v" id="pl10" style="background:#c9ecd9;color:#0f2a5a">—</div>
+                    <div class="v" id="pl11" style="background:#c9ecd9;color:#0f2a5a">—</div>
+                    <div class="v" id="pl12" style="background:#c9ecd9;color:#0f2a5a">—</div>
+                    <div class="l"><i><svg viewBox="0 0 24 24">
+                                <path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" />
+                            </svg></i>Bay 03</div>
+                    <div class="v" id="pl20" style="background:#e1d9fb;color:#0f2a5a">—</div>
+                    <div class="v" id="pl21" style="background:#e1d9fb;color:#0f2a5a">—</div>
+                    <div class="v" id="pl22" style="background:#e1d9fb;color:#0f2a5a">—</div>
+                    <div class="l"><i><svg viewBox="0 0 24 24">
+                                <path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" />
+                            </svg></i>Bay 05</div>
+                    <div class="v" id="pl30" style="background:#fbe0c4;color:#0f2a5a">—</div>
+                    <div class="v" id="pl31" style="background:#fbe0c4;color:#0f2a5a">—</div>
+                    <div class="v" id="pl32" style="background:#fbe0c4;color:#0f2a5a">—</div>
+                </div>
+                <div class="oxf"><svg class="sw" viewBox="0 0 400 60" preserveAspectRatio="none">
+                        <path d="M0 60 C120 52 260 24 400 0 L400 60Z" fill="#e4262f" />
+                        <path d="M0 60 C140 58 280 38 400 16 L400 60Z" fill="#fff" opacity=".92" />
+                        <path d="M0 60 C150 60 290 46 400 30 L400 60Z" fill="#0a2a70" />
+                    </svg><button class="oxbtn" onclick="soon()"><svg viewBox="0 0 24 24">
+                            <rect x="3.5" y="5" width="17" height="15.5" rx="2.2" />
+                            <path d="M3.5 10h17M8 3v4M16 3v4M8 14h1.5M12 14h1.5M16 14h1.5M8 17.5h1.5M12 17.5h1.5" />
+                        </svg>View Planning Details <svg viewBox="0 0 24 24">
+                            <path d="M4 12h16M14 6l6 6-6 6" />
+                        </svg></button></div>
+            </section>
+            <section class="oxc">
+                <div class="oxb">
+                    <div class="ph"></div>
+                    <svg class="bi" viewBox="0 0 24 24">
+                        <path d="M2 21V10l6 3.6V10l6 3.6V4h3.4v9.6H22V21z" />
+                    </svg>
+                    <div class="vl"></div>
+                    <div>
+                        <h2>Production-Shop floor</h2>
+                        <p>Shop floor Performance Overview</p>
+                    </div>
+                </div>
+                <div class="oxt">
+                    <div class="h"><i style="background:transparent"><svg viewBox="0 0 24 24">
+                                <path d="M6 2h8l5 5v14H6zM9 12h7M9 16h5" />
+                            </svg></i>Criteria</div>
+                    <div class="h"><i style="background:#16a34a"><svg viewBox="0 0 24 24">
+                                <path d="M4 19V11M10 19V7M16 19v-6M3 9l5-4 4 3 7-6" />
+                            </svg></i>Running Year</div>
+                    <div class="h"><i style="background:#2563eb"><svg viewBox="0 0 24 24">
+                                <path d="M12 3v18M6 21h12M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z" />
+                            </svg></i>Last Week</div>
+                    <div class="h"><i style="background:#6d4aff"><svg viewBox="0 0 24 24">
+                                <rect x="3.5" y="5" width="17" height="15.5" rx="2.2" />
+                                <path d="M3.5 10h17M8 3v4M16 3v4M8 14h1.5M12 14h1.5M16 14h1.5M8 17.5h1.5M12 17.5h1.5" />
+                            </svg></i>Yesterday</div>
+                    <div class="l"><i><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zM12 11.2a.8.8 0 1 0 0 1.6.8.8 0 0 0 0-1.6" />
+                            </svg></i>Target</div>
+                    <div class="v" id="sf00" style="background:#c6e1fb;color:#0f2a5a">—</div>
+                    <div class="v" id="sf01" style="background:#c6e1fb;color:#0f2a5a">—</div>
+                    <div class="v" id="sf02" style="background:#c6e1fb;color:#0f2a5a">—</div>
+                    <div class="l"><i><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zM12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1" />
+                            </svg></i>MC Running (IMM | Auto)</div>
+                    <div class="v" id="sf10" style="background:#c9ecd9;color:#0f2a5a">—</div>
+                    <div class="v" id="sf11" style="background:#c9ecd9;color:#0f2a5a">—</div>
+                    <div class="v" id="sf12" style="background:#c9ecd9;color:#0f2a5a">—</div>
+                    <div class="l"><i><svg viewBox="0 0 24 24">
+                                <path d="M12 2.5 3.5 7v10L12 21.5 20.5 17V7zM3.5 7 12 11.5 20.5 7M12 11.5v10" />
+                            </svg></i>FG || WIP</div>
+                    <div class="v" id="sf20" style="background:#e1d9fb;color:#0f2a5a">—</div>
+                    <div class="v" id="sf21" style="background:#e1d9fb;color:#0f2a5a">—</div>
+                    <div class="v" id="sf22" style="background:#e1d9fb;color:#0f2a5a">—</div>
+                    <div class="l"><i><svg viewBox="0 0 24 24">
+                                <path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8 12.5l2.7 2.7L16 9.5" />
+                            </svg></i>Good Production</div>
+                    <div class="v" id="sf30" style="background:#fbe0c4;color:#0f2a5a">—</div>
+                    <div class="v" id="sf31" style="background:#fbe0c4;color:#0f2a5a">—</div>
+                    <div class="v" id="sf32" style="background:#fbe0c4;color:#0f2a5a">—</div>
+                </div>
+                <div class="oxf"><svg class="sw" viewBox="0 0 400 60" preserveAspectRatio="none">
+                        <path d="M0 60 C120 52 260 24 400 0 L400 60Z" fill="#e4262f" />
+                        <path d="M0 60 C140 58 280 38 400 16 L400 60Z" fill="#fff" opacity=".92" />
+                        <path d="M0 60 C150 60 290 46 400 30 L400 60Z" fill="#0a2a70" />
+                    </svg><button class="oxbtn" onclick="location.href='shopfloor.html'"><svg viewBox="0 0 24 24">
+                            <rect x="3.5" y="5" width="17" height="15.5" rx="2.2" />
+                            <path d="M3.5 10h17M8 3v4M16 3v4M8 14h1.5M12 14h1.5M16 14h1.5M8 17.5h1.5M12 17.5h1.5" />
+                        </svg>View Production-Shop floor Details <svg viewBox="0 0 24 24">
+                            <path d="M4 12h16M14 6l6 6-6 6" />
+                        </svg></button></div>
+            </section>
+        </div>
+    </main>
+    <footer><span>Mainetti Bangladesh — Hanger Manufacturing ERP · v1.0.0</span><em>Together for a Smarter Future</em>
+    </footer>
+    <div id="toast"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+    <script src="erp.js"></script>
+    <script>
+        const $ = s => document.querySelector(s), out = () => ERP.signOut();
+        /* গোল করা ছোট রূপ: 1.33B · 480M · 37.6M · 5.20M · 564K · 980  (বড় সংখ্যা ঘরে কেটে যাবে না) */
+        const fm = v => {
+            if (typeof v !== "number") return String(v); const a = Math.abs(v);
+            return a >= 1e9 ? (v / 1e9).toFixed(2) + "B" : a >= 1e8 ? Math.round(v / 1e6) + "M" : a >= 1e7 ? (v / 1e6).toFixed(1) + "M" : a >= 1e6 ? (v / 1e6).toFixed(2) + "M" : a >= 1e3 ? Math.round(v / 1e3) + "K" : String(Math.round(v))
+        };
+        /* ডেটা যুক্ত হলে এখানে বসবে: key = pl|sf + row নম্বর, মান = [Running Year, Last Week, Yesterday] (সংখ্যা বা "1.2M || 340K" লেখা) */
+        const VALUES = {};
+        function fill() { Object.entries(VALUES).forEach(([k, a]) => a.forEach((v, c) => { const e = $("#" + k + c); if (e && v != null) e.textContent = Array.isArray(v) ? v.map(fm).join(" || ") : fm(v) })) }
+        function soon() { const t = $("#toast"); t.textContent = "Planning data এখনো যুক্ত করা হয়নি।"; t.style.display = "block"; setTimeout(() => t.style.display = "none", 3000) }
+        /* ===== Production-Shop floor card · Admin → Data Manager → ↳ Production-Shopfloor-এ আপলোড করা Excel থেকে ===== */
+        const SF_WEEK_START = 6;      // Last Week শুরুর বার: 6 = শনি (০ = রবি, ১ = সোম …)
+        const SF_ANCHOR = "data";     // "today" = আজকের তারিখ ধরে | "data" = Excel-এর শেষ তারিখের পরের দিনকে "আজ" ধরে (Yesterday = Excel-এর শেষ দিন)
+        const SF_AUTO_RX = null;      // Auto machine চেনার নিয়ম, যেমন /^A/i (M/C NO. দেখে)। না দিলে MC Running-এ Auto = "—"
+        const ymd = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+        const setT = (id, s) => { const e = $("#" + id); if (e) e.textContent = s };
+        const setH = (id, h) => { const e = $("#" + id); if (e) e.innerHTML = h };
+        const pair = (a, la, b, lb, dim) => `<div class="pr"><span><b>${a}</b><small>${la}</small></span><i></i><span><b${dim ? ' class="na"' : ""}>${b}</b><small>${lb}</small></span></div>`;
+        const markND = () => document.querySelectorAll(".oxt .v").forEach(e => e.classList.toggle("nd", e.textContent.trim() === "—"));
+        async function loadSF(M) {
+            const sub = M.subs.find(s => ERP.packKey(s.name) === "shopfloor"); if (!sub) return;
+            const pk = await ERP.packed(sub.id, "shopfloor"); if (!pk || !pk.m) return;
+            const D = pk.dict, C = pk.c, m = pk.m, n = C.date.length, day = new Map();
+            for (let i = 0; i < n; i++) {
+                const k = D.date[C.date[i]]; let a = day.get(k);
+                if (!a) day.set(k, a = { t: 0, fg: 0, wip: 0, g: 0, imm: new Set(), auto: new Set() });
+                a.t += m.plannedproduction[i]; a.fg += m.finishproduct[i]; a.wip += m.wip[i]; a.g += m.goodproduction[i];
+                if (m.totalproduction[i] > 0) { const mc = D.mcno[C.mcno[i]]; (SF_AUTO_RX && SF_AUTO_RX.test(mc) ? a.auto : a.imm).add(mc) }
+            }
+            const now = new Date(); let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            if (SF_ANCHOR === "data" && day.size) { const [y, mo, d] = [...day.keys()].sort().pop().split("-").map(Number); today = new Date(y, mo - 1, d + 1) }
+            const yest = new Date(today); yest.setDate(today.getDate() - 1);
+            const thisWk = new Date(today); thisWk.setDate(today.getDate() - (today.getDay() - SF_WEEK_START + 7) % 7);
+            const lwS = new Date(thisWk); lwS.setDate(thisWk.getDate() - 7);
+            const lwE = new Date(thisWk); lwE.setDate(thisWk.getDate() - 1);
+            const R = [k => k.slice(0, 4) === String((SF_ANCHOR === "data" ? yest : today).getFullYear()), k => k >= ymd(lwS) && k <= ymd(lwE), k => k === ymd(yest)];
+            R.forEach((f, c) => {
+                let t = 0, fg = 0, wip = 0, g = 0, imm = 0, auto = 0, d = 0;
+                day.forEach((a, k) => { if (!f(k)) return; d++; t += a.t; fg += a.fg; wip += a.wip; g += a.g; imm += a.imm.size; auto += a.auto.size });
+                if (!d) return;                                                     // ওই সময়ে ডেটা নেই → "—" থাকবে
+                setH("sf0" + c, `<b class="sg">${fm(t)}</b>`);                                             // Target = Planned Production
+                setH("sf1" + c, pair(Math.round(imm / d), "IMM", SF_AUTO_RX ? Math.round(auto / d) : "—", "Auto", !SF_AUTO_RX)); // প্রতিদিন Total Production > 0 এমন unique M/C NO.-র গড়
+                setH("sf2" + c, pair(fm(fg), "FG", fm(wip), "WIP"));                          // Finish Product || WIP
+                setH("sf3" + c, `<b class="sg">${fm(g)}</b>`)                                              // Good Production
+            })
+        }
+        /* ===== end sf ===== */
+        (async () => {
+            const ME = await ERP.require(); if (!ME) return;
+            const nm = ME.name || ME.login_id; $("#un").textContent = nm; $("#av").textContent = nm.slice(0, 2).toUpperCase();
+            const hr = new Date().getHours(); $("#gr").textContent = `Good ${hr < 12 ? "morning" : hr < 17 ? "afternoon" : "evening"}, ${nm.split(" ")[0]}. Here is your operation at a glance.`;
+            if (ME.role === "admin") $("#adm").style.display = "block";
+            $("#ub").onclick = e => { e.stopPropagation(); const m = $("#mn"); m.style.display = m.style.display === "block" ? "none" : "block" }; document.onclick = () => $("#mn").style.display = "none";
+            const mods = await ERP.tree(), M = mods.find(x => /production/i.test(String(x.name)));
+            if (!M || !(ERP.can(ME, M.id) || M.subs.some(s => ERP.can(ME, s.id, "v", M.id)))) { location.replace("portal.html"); return }
+            fill(); loadSF(M).catch(e => console.error(e)).finally(markND);
+        })().catch(e => console.error(e));
+    </script>
+</body>
+
+</html>
