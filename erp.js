@@ -12,6 +12,46 @@ const ORD_ALIAS = {}; ORD_O.forEach((k, i) => ORD_ALIAS[k] = ORD_O_OLD[i]);
 const ORD_S = ["030days", "3160days", "6190days", "91180days", "181365days", "366730days", "730days"];
 /* Stock Ageing: Excel header = "Stock 0–30 days" … "Stock 730 days+++" (normalize হলে stock030days … stock730days) */
 ORD_S.forEach(k => ORD_ALIAS[k] = "stock" + k);
+
+/* ===== Production & Planning · sub-module packs (source: Production.xlsx, এক সারি = এক machine × shift × দিন) =====
+   Ratio (Availability, Performance, OEE, PPPH) জমা করা হয় না — যোগ করা যায় না বলে। বদলে যোগযোগ্য অংশ জমা হয়, পেজ হিসাব করবে:
+     Availability = 1 − Σ totalunplanneddt ÷ Σ shiftlengthmin        Quality     = Σ goodproduction ÷ Σ totalproduction
+     Performance  = Σ effprod ÷ Σ capacity                            OEE         = Availability × Performance × Quality
+     PPPH         = Σ goodproduction ÷ Σ manhours
+   (এই সূত্রে আপনার Production.xlsx-এর ৯টা row-র A, Q, P, OEE, PPPH মিলিয়ে দেখা হয়েছে) */
+const PP_PLAN = ["nodemandplandt", "trialproductplandt", "machineplandt", "moldchangeplandt", "cavitychangeplandt", "colorchangeplandt", "moldplandt"];
+const PP_UNPL = ["machineunplandt", "moldunplandt", "materialunplandt", "systemproblemunplandt", "utilityunplandt", "manpowershortageunplandt"];
+const PP_DOWN_M = ["shiftlengthmin", "productiondurationmin", ...PP_PLAN, "totalplandt", ...PP_UNPL, "totalunplanneddt"];
+const PP_MACH_M = ["plannedproduction", "finishproduct", "wip", "scrappcs", "totalscrapqty", "goodproduction", "totalproduction", "materialconsumptioninkg",
+  "shiftlengthmin", "productiondurationmin", "totalplandt", "totalunplanneddt", "capacity", "effprod"];
+const PP_MAN_M = ["manpower", "manhours", "goodproduction", "totalproduction", "finishproduct", "shiftlengthmin", "productiondurationmin"];
+function ppFixDown(vals, raw) {                          // Total ঘর ফাঁকা থাকলে অংশগুলো যোগ করে বসায়
+  const I = k => PP_DOWN_M.indexOf(k), sum = a => a.reduce((s, k) => s + vals[I(k)], 0);
+  if (raw[I("totalplandt")] === "") vals[I("totalplandt")] = sum(PP_PLAN);
+  if (raw[I("totalunplanneddt")] === "") vals[I("totalunplanneddt")] = sum(PP_UNPL);
+}
+function ppFixMach(vals) {                               // capacity = Planned × Availability ; effprod = min(Total, capacity)
+  const I = k => PP_MACH_M.indexOf(k), sh = vals[I("shiftlengthmin")];
+  const cap = sh > 0 ? Math.max(0, vals[I("plannedproduction")] * (1 - vals[I("totalunplanneddt")] / sh)) : 0;
+  vals[I("capacity")] = cap; vals[I("effprod")] = Math.min(vals[I("totalproduction")], cap);
+}
+function ppFixMan(vals) {                                // manhours = Manpower × Shift Length ÷ 60
+  const I = k => PP_MAN_M.indexOf(k);
+  vals[I("manhours")] = vals[I("manpower")] * vals[I("shiftlengthmin")] / 60;
+}
+const PP_SCRAP = ["scrapshortmold", "scrapcolorchange", "scrapflowmark", "scrapotherscrap", "scrapoilgrease", "scrapexcessflash", "scrapmoldclean", "scrapstartup", "scrapburnpinmark", "scrapwatermark"];
+const PP_SHOP_M = ["plannedproduction", "finishproduct", "wip", "scrappcs", "goodproduction", "totalproduction", "totalscrapqty", "lostcavity",
+  "materialconsumptioninkg", "materialrecycled", "totalmaterialusedgm", "shiftlengthmin", "productiondurationmin", "manpower", "manhours",
+  ...PP_PLAN, "totalplandt", ...PP_UNPL, "totalunplanneddt", ...PP_SCRAP, "capacity", "effprod"];
+function ppFixShop(vals, raw) {                          // Production-Shopfloor: পুরো Production.xlsx ফরম্যাট
+  const I = k => PP_SHOP_M.indexOf(k), sum = a => a.reduce((s, k) => s + vals[I(k)], 0);
+  if (raw[I("totalplandt")] === "") vals[I("totalplandt")] = sum(PP_PLAN);
+  if (raw[I("totalunplanneddt")] === "") vals[I("totalunplanneddt")] = sum(PP_UNPL);
+  const sh = vals[I("shiftlengthmin")];
+  const cap = sh > 0 ? Math.max(0, vals[I("plannedproduction")] * (1 - vals[I("totalunplanneddt")] / sh)) : 0;
+  vals[I("capacity")] = cap; vals[I("effprod")] = Math.min(vals[I("totalproduction")], cap);
+  vals[I("manhours")] = vals[I("manpower")] * sh / 60;
+}
 const ERP = {
   sb,
   email: id => { id = String(id).trim().toLowerCase(); return id.includes("@") ? id : id + "@mainetti.app"; },
@@ -108,9 +148,12 @@ const ERP = {
   prefetch(p, tree) {
     const run = async () => {
       for (const m of tree || []) {
-        const k = Object.keys(ERP.PACK).find(k => ERP.PACK[k].match.test(String(m.name).trim())); if (!k) continue;
-        if (!ERP.can(p, m.id) && !m.subs.some(s => ERP.can(p, s.id, "v", m.id))) continue;
-        try { await ERP.packed(m.id, k) } catch (e) { }
+        for (const n of [m, ...m.subs]) {                 // module + sub-module দুটোরই প্যাক cache-এ আনে
+          const k = ERP.packKey(n.name); if (!k) continue;
+          const ok = n === m ? (ERP.can(p, m.id) || m.subs.some(s => ERP.can(p, s.id, "v", m.id))) : ERP.can(p, n.id, "v", m.id);
+          if (!ok) continue;
+          try { await ERP.packed(n.id, k) } catch (e) { }
+        }
       }
     };
     (window.requestIdleCallback || (f => setTimeout(f, 800)))(run);
@@ -143,9 +186,39 @@ const ERP = {
         if (raw[2] === "") v[2] = v[0] * up / 100;
         if (raw[3] === "") v[3] = v[1] * up / 100;
       }
+    },
+
+    /* ===== Production & Planning · 3 sub-module (প্রতিটার আলাদা Upload — Admin → Data Manager) ===== */
+    downtime: {
+      match: /downtime/i,
+      dims: ["date", "bayname", "shifttime", "mcno", "group", "modelname"],
+      upper: ["bayname", "shifttime", "mcno", "group", "modelname"],
+      meas: PP_DOWN_M, need: ["date", "shiftlengthmin"], fix: ppFixDown
+    },
+    machine: {
+      match: /machine\s*overview/i,
+      dims: ["date", "bayname", "shifttime", "mcno", "modelname", "colorname", "toolno", "group", "productcategory", "materialtype", "standardcavity", "runningcavity", "standardcycle", "runningcycle"],
+      upper: ["bayname", "shifttime", "mcno", "modelname", "colorname", "toolno", "group"],
+      meas: PP_MACH_M, need: ["date", "mcno"], fix: ppFixMach
+    },
+    manpower: {
+      match: /manpower/i,
+      dims: ["date", "bayname", "shifttime", "mcno", "group", "productcategory"],
+      upper: ["bayname", "shifttime", "mcno", "group"],
+      meas: PP_MAN_M, need: ["date", "manpower"], fix: ppFixMan
+    },
+    /* Production-Shopfloor · পুরো Production.xlsx (সব column) */
+    shopfloor: {
+      match: /shop\s*-?\s*floor|shopfoor/i,
+      dims: ["date", "bayname", "shifttime", "mcno", "modelname", "colorname", "toolno", "group", "productcategory", "materialtype",
+        "standardcavity", "runningcavity", "standardcycle", "runningcycle", "productshotweight", "perpcsweight", "runnerweight",
+        "masterbatch", "rubber", "materials"],
+      upper: ["bayname", "shifttime", "mcno", "modelname", "colorname", "toolno", "group"],
+      meas: PP_SHOP_M, need: ["date", "mcno"], fix: ppFixShop
     }
   }
 };
+ERP.packKey = n => Object.keys(ERP.PACK).find(k => ERP.PACK[k].match.test(String(n).trim()));
 
 
 /* ===== Sidebar banner card (shared by all module pages) ===== */
