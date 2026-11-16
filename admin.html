@@ -591,6 +591,7 @@
     }
     /* ---------- DATA · Excel → Supabase Storage ---------- */
     const LIM_DB = 500 * 1048576, LIM_ST = 1024 * 1048576; let USE = null, LOG = "";
+    const nodeOf = id => { for (const m of MODS) { if (m.id === id) return m; const s = m.subs.find(x => x.id === id); if (s) return s } return null };
     const cfgOf = m => { for (const [k, c] of Object.entries(ERP.PACK)) if (c.match.test(m.name)) return { key: k, ...c }; return null };
     const mbf = b => (b / 1048576).toFixed(1) + " MB", p2 = n => String(n).padStart(2, "0"), nrm = s => String(s).toLowerCase().replace(/[^a-z0-9]/g, ""), cln = s => String(s ?? "").replace(/\s+/g, " ").trim();
     function isoD(v, df) {
@@ -612,15 +613,15 @@
     }
 
     async function data() {
-      await loadMods(); if (!sel || !MODS.some(m => m.id === sel)) sel = MODS[0] && MODS[0].id;
-      $("#main").innerHTML = `<div class="top"><h2>Data Manager</h2></div><div class="split"><div class="card tree" style="padding:10px;align-self:start">${MODS.map(x => `<div class="n ${x.id === sel ? "on" : ""}" onclick="sel='${x.id}';LOG='';data().catch(err)">${esc(x.name)}</div>`).join("")}</div><div class="card" id="dm"><div class="empty">Loading…</div></div></div>`;
-      const m = MODS.find(x => x.id === sel); if (!m) return;
+      await loadMods(); if (!sel || !nodeOf(sel)) sel = MODS[0] && MODS[0].id;
+      $("#main").innerHTML = `<div class="top"><h2>Data Manager</h2></div><div class="split"><div class="card tree" style="padding:10px;align-self:start">${MODS.map(x => `<div class="n ${x.id === sel ? "on" : ""}" onclick="sel='${x.id}';LOG='';data().catch(err)">${esc(x.name)}</div>` + x.subs.map(s => `<div class="n ${s.id === sel ? "on" : ""}" style="padding-left:26px;font-size:12.5px" onclick="sel='${s.id}';LOG='';data().catch(err)">↳ ${esc(s.name)}</div>`).join("")).join("")}</div><div class="card" id="dm"><div class="empty">Loading…</div></div></div>`;
+      const m = nodeOf(sel); if (!m) return;
       const c = cfgOf(m), [use, meta] = await Promise.all([usageHtml(), c ? ERP._fetchStorage(m.id + "/" + c.key + "_meta.json").then(r => r.json()).catch(() => null) : null]);
       CUR = { m, c, meta };
       const kp = meta ? [["Packed rows", meta.n], ["Source rows", meta.raw ?? "—"], ["File size", meta.mb ? meta.mb + " MB" : "—"], ["Updated", meta.at ? meta.at.slice(0, 16).replace("T", " ") : "—"]] : [];
       $("#dm").innerHTML = `<div class="top" style="margin-bottom:12px"><h3>${esc(m.name)} <span class="tag ${meta ? "on" : "off"}">${meta ? "Live" : "No data"}</span></h3><div style="display:flex;gap:8px;flex-wrap:wrap">
   ${c ? `<label class="btn red" style="margin:0;color:#fff;font-size:14px;cursor:pointer">⬆ Upload Excel / CSV<input type="file" accept=".csv,.xlsx,.xls" hidden onchange="pack(this)"></label>` : ""}${meta ? `<button class="btn del" onclick="dClr()">Delete data</button>` : ""}</div></div>
-  ${c ? `<div style="max-width:320px"><label>তারিখ লেখা থাকলে (যেমন 05/03/2025)</label><select id="df"><option value="0">Month first (MM/DD/YYYY)</option><option value="1">Day first (DD/MM/YYYY)</option></select></div>` : `<div class="empty">এই module-এর জন্য Storage প্যাক এখনো সেটআপ হয়নি। Module-এর পেজ তৈরি হলে এখানে চালু হবে।</div>`}
+  ${c ? `<div style="max-width:320px"><label>তারিখ লেখা থাকলে (যেমন 05/03/2025)</label><select id="df"><option value="0">Month first (MM/DD/YYYY)</option><option value="1">Day first (DD/MM/YYYY)</option></select></div>` : `<div class="empty">${m.subs && m.subs.length ? "এই module-এ সরাসরি Upload নেই — বাঁ দিকের ↳ sub-module বেছে সেখানে Upload করুন।" : "এই section-এর জন্য Storage প্যাক এখনো সেটআপ হয়নি।"}</div>`}
   ${meta ? `<div class="kpis" style="margin-top:14px">${kp.map(k => `<div class="kpi"><b style="font-size:22px">${typeof k[1] === "number" ? k[1].toLocaleString() : k[1]}</b><span>${k[0]}</span></div>`).join("")}</div>${meta.totals ? `<p style="color:var(--mute);font-size:12px">Totals: ${Object.entries(meta.totals).map(([k, v]) => k + " = " + v.toLocaleString()).join(" | ")}</p>` : ""}` : ""}
   <pre class="lg" id="lg" style="display:${LOG ? "block" : "none"}">${esc(LOG)}</pre><div style="margin-top:6px">${use}</div>`
     }
