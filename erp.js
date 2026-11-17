@@ -212,8 +212,8 @@ const ERP = {
       match: /shop\s*-?\s*floor|shopfoor/i,
       dims: ["date", "bayname", "shifttime", "mcno", "modelname", "colorname", "toolno", "group", "productcategory", "materialtype",
         "standardcavity", "runningcavity", "standardcycle", "runningcycle", "productshotweight", "perpcsweight", "runnerweight",
-        "masterbatch", "rubber", "materials"],
-      upper: ["bayname", "shifttime", "mcno", "modelname", "colorname", "toolno", "group"],
+        "masterbatch", "rubber", "materials", "mctype"],
+      upper: ["bayname", "shifttime", "mcno", "modelname", "colorname", "toolno", "group", "mctype"],
       meas: PP_SHOP_M, need: ["date", "mcno"], fix: ppFixShop
     }
   }
