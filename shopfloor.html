@@ -11,7 +11,8 @@
             --navy: #0f2a5a;
             --red: #a61935;
             --mute: #6d7c99;
-            --line: #dbe4f2
+            --line: #dbe4f2;
+            --gold: #e0b24a
         }
 
         * {
@@ -27,14 +28,15 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            background: radial-gradient(900px 500px at 15% 0%, #f6faff, transparent), linear-gradient(180deg, #e9f1fc, #dce8f9)
+            background: #f1f5fb;
+            font-size: 13px
         }
 
         /* ===== header ===== */
         header {
             flex: none;
             position: relative;
-            z-index: 20;
+            z-index: 60;
             display: flex;
             align-items: stretch;
             height: clamp(66px, 9vh, 88px);
@@ -54,7 +56,7 @@
 
         .hl img {
             height: clamp(40px, 6.2vh, 58px);
-            display: block;
+            display: block
         }
 
         .logo {
@@ -108,7 +110,7 @@
             overflow: hidden
         }
 
-        .hp:before {
+        .hp::before {
             content: "";
             position: absolute;
             inset: 0;
@@ -119,6 +121,7 @@
 
         .hr {
             position: relative;
+            z-index: 1;
             display: flex;
             align-items: center;
             gap: clamp(10px, 1.2vw, 18px);
@@ -127,18 +130,13 @@
             flex: none
         }
 
-        .hr:before {
+        .hr::before {
             content: "";
             position: absolute;
             inset: 0;
             background: linear-gradient(100deg, #0a2a70, #0b3d94);
             clip-path: polygon(44px 0, 100% 0, 100% 100%, 0 100%);
-            z-index: 0
-        }
-
-        .hr>* {
-            position: relative;
-            z-index: 1
+            z-index: -1
         }
 
         .hr svg.fy {
@@ -217,32 +215,2053 @@
             background: #f1f5fc
         }
 
-        
-        body{background:#f1f5fb;font-size:13px}
-        .bk{width:36px;height:36px;border-radius:10px;border:1px solid #9fb3d3;background:#fff;color:var(--navy);font-size:18px;cursor:pointer;flex:none}
-        .lay{flex:1;min-height:0;display:flex}
-        aside{flex:none;width:250px;background:#fff;border-right:1px solid var(--line);padding:10px 0;transition:.2s;overflow:hidden}
-        aside.col{width:62px}
-        .nv{display:flex;align-items:center;gap:14px;padding:12px 20px;cursor:pointer;font-weight:600;color:#3a4d73;border-left:3px solid transparent}
-        .nv span{line-height:1.25}
-        aside.col .nv span{white-space:nowrap}
-        .nv svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-        .nv:hover{background:#f5f8fd}
-        .nv.on{color:var(--red);background:#fdeff2;border-left-color:var(--red)}
-        .nv.t{color:var(--mute);margin-bottom:6px}
-        main{flex:1;min-width:0;overflow:auto;padding:18px 22px 30px}
-        .ttl{font-size:20px;font-weight:800;margin:0 0 2px}
-        .sub{color:var(--mute);margin:0 0 14px}
-        .empty{background:#fff;border-radius:16px;padding:60px 20px;text-align:center;color:var(--mute)}
-        .empty b{display:block;color:var(--navy);font-size:17px;margin-bottom:6px}
-        @media(max-width:900px){body{height:100dvh;overflow:hidden}aside{width:62px}.nv span{display:none}.hl{padding:8px 12px}}
-</style>
+        /* ===== layout ===== */
+        .bk {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid #9fb3d3;
+            background: #fff;
+            color: var(--navy);
+            font-size: 18px;
+            cursor: pointer;
+            flex: none
+        }
+
+        .lay {
+            flex: 1;
+            min-height: 0;
+            display: flex
+        }
+
+        aside {
+            flex: none;
+            width: 250px;
+            background: #fff;
+            border-right: 1px solid var(--line);
+            padding: 10px 0;
+            transition: .2s;
+            overflow: hidden
+        }
+
+        aside.col {
+            width: 62px
+        }
+
+        .nv {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #3a4d73;
+            border-left: 3px solid transparent
+        }
+
+        .nv span {
+            line-height: 1.25
+        }
+
+        aside.col .nv span {
+            white-space: nowrap
+        }
+
+        .nv svg {
+            width: 20px;
+            height: 20px;
+            flex: none;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.9;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .nv:hover {
+            background: #f5f8fd
+        }
+
+        .nv.on {
+            color: var(--red);
+            background: #fdeff2;
+            border-left-color: var(--red)
+        }
+
+        .nv.t {
+            color: var(--mute);
+            margin-bottom: 6px
+        }
+
+        main {
+            flex: 1;
+            min-width: 0;
+            overflow: auto;
+            padding: 0 22px 30px
+        }
+
+        .ttl {
+            font-size: 20px;
+            font-weight: 800;
+            margin: 18px 0 2px
+        }
+
+        .sub {
+            color: var(--mute);
+            margin: 0 0 14px
+        }
+
+        .empty {
+            background: #fff;
+            border-radius: 16px;
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--mute)
+        }
+
+        .empty b {
+            display: block;
+            color: var(--navy);
+            font-size: 17px;
+            margin-bottom: 6px
+        }
+
+        @media(max-width:900px) {
+            body {
+                height: 100dvh;
+                overflow: hidden
+            }
+
+            aside {
+                width: 62px
+            }
+
+            .nv span {
+                display: none
+            }
+
+            .hl {
+                padding: 8px 12px
+            }
+        }
+
+        /* ===== Production Performance page ===== */
+        .fbw {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: #f1f5fb;
+            margin: 0 -22px;
+            padding: 10px 22px 8px
+        }
+
+        .fb {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 10px;
+            border-radius: 18px;
+            border: 1px solid #dbe4f2;
+            white-space: nowrap;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            background: radial-gradient(150px 46px at 0% 100%, rgba(15, 42, 90, .14), transparent), radial-gradient(190px 54px at 100% 0%, rgba(224, 178, 74, .28), transparent), linear-gradient(180deg, #fff, #f5f9ff);
+            box-shadow: 0 6px 18px rgba(16, 44, 92, .10), inset 0 0 0 1px rgba(255, 255, 255, .9)
+        }
+
+        .fp {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: none;
+            border: 1px solid #e3eaf6;
+            background: #fff;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font: 600 12px Inter, sans-serif;
+            color: var(--navy);
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(16, 44, 92, .08);
+            transition: .15s
+        }
+
+        .fp:hover {
+            border-color: #b9c9e6
+        }
+
+        .fp svg {
+            width: 15px;
+            height: 15px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.9;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex: none
+        }
+
+        .fp .fl {
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .fp svg.cv {
+            width: 9px;
+            height: 9px;
+            opacity: .7
+        }
+
+        .fp.on {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy)
+        }
+
+        .fp.dis {
+            opacity: .45;
+            cursor: not-allowed
+        }
+
+        .fp .ct {
+            background: var(--red);
+            color: #fff;
+            border-radius: 99px;
+            font-size: 10px;
+            padding: 1px 6px;
+            line-height: 1.4
+        }
+
+        .fd {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex: none;
+            font: 700 11.5px Inter, sans-serif;
+            color: var(--mute)
+        }
+
+        .fd input {
+            border: 1px solid #e3eaf6;
+            border-radius: 999px;
+            padding: 5px 8px;
+            font: 600 12px Inter, sans-serif;
+            color: var(--navy);
+            width: 124px;
+            background: #fff
+        }
+
+        .fsep {
+            width: 1px;
+            height: 24px;
+            background: #cfd9ec;
+            flex: none;
+            margin: 0 2px
+        }
+
+        .rs {
+            margin-left: auto;
+            flex: none;
+            background: var(--navy);
+            color: #fff;
+            border: 2px solid var(--gold);
+            border-radius: 999px;
+            padding: 6px 16px;
+            font: 700 13px Inter, sans-serif;
+            cursor: pointer;
+            display: flex;
+            gap: 6px;
+            align-items: center
+        }
+
+        .rs svg {
+            width: 15px;
+            height: 15px;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .pop {
+            position: fixed;
+            z-index: 200;
+            width: 230px;
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid #dbe4f2;
+            box-shadow: 0 16px 38px rgba(16, 44, 92, .28);
+            display: none;
+            flex-direction: column;
+            overflow: hidden
+        }
+
+        .pop.on {
+            display: flex
+        }
+
+        .pop input {
+            margin: 10px 10px 6px;
+            border: 1px solid #dbe4f2;
+            border-radius: 9px;
+            padding: 7px 9px;
+            font: 500 12.5px Inter, sans-serif;
+            color: var(--navy);
+            outline: none
+        }
+
+        .pop .ls {
+            max-height: 250px;
+            overflow: auto;
+            padding: 2px 6px
+        }
+
+        .pop label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12.5px
+        }
+
+        .pop label:hover {
+            background: #f1f5fc
+        }
+
+        .pop label input {
+            margin: 0;
+            width: 15px;
+            height: 15px;
+            accent-color: var(--navy)
+        }
+
+        .pop .ft {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-top: 1px solid #eef2f9;
+            font-size: 12px;
+            font-weight: 700
+        }
+
+        .pop .ft a {
+            cursor: pointer;
+            color: #12408f
+        }
+
+        .pop .nt {
+            padding: 6px 12px;
+            color: var(--mute);
+            font-size: 11.5px
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 14px;
+            align-items: stretch
+        }
+
+        @media(max-width:1100px) {
+            .cards {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .cd {
+            background: #fff;
+            border-radius: 20px;
+            border: 1px solid #dbe4f2;
+            box-shadow: 0 8px 24px rgba(16, 44, 92, .10);
+            overflow: hidden;
+            min-width: 0;
+            display: flex;
+            flex-direction: column
+        }
+
+        .cd .ch {
+            min-height: 84px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+            padding: 12px 14px 12px 16px;
+            overflow: hidden
+        }
+
+        .cd.lt .ch {
+            background: linear-gradient(180deg, #fff, #f7faff)
+        }
+
+        .cd.dk .ch {
+            background: linear-gradient(100deg, #0a2a70, #0b3d94);
+            color: #fff
+        }
+
+        .cd .ch::after {
+            content: "";
+            position: absolute;
+            left: -46px;
+            top: -52px;
+            width: 150px;
+            height: 104px;
+            border-bottom: 3px solid var(--gold);
+            border-radius: 0 0 100% 0;
+            opacity: .85;
+            pointer-events: none
+        }
+
+        .cd .ic {
+            position: relative;
+            z-index: 1;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            flex: none;
+            background: linear-gradient(135deg, #0f2a5a, #17479a);
+            color: #fff
+        }
+
+        .cd.dk .lg {
+            color: #cfe0ff
+        }
+
+        .cd.dk .lg i {
+            border-top-color: #fff
+        }
+
+        .cd.dk .ic {
+            background: rgba(255, 255, 255, .12)
+        }
+
+        .cd .ic svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .cd .tt {
+            position: relative;
+            z-index: 1;
+            flex: 1 1 180px;
+            min-width: 0;
+            border-left: 1px solid rgba(110, 130, 170, .45);
+            padding-left: 12px
+        }
+
+        .cd .tt h3 {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 800;
+            line-height: 1.15
+        }
+
+        .cd .tt p {
+            margin: 3px 0 0;
+            font-size: 11.5px;
+            font-style: italic;
+            opacity: .8
+        }
+
+        .lg {
+            display: flex;
+            gap: 10px;
+            font-size: 10.5px;
+            font-weight: 600;
+            color: var(--mute);
+            align-items: center;
+            position: relative;
+            z-index: 1
+        }
+
+        .lg i {
+            display: inline-block;
+            width: 22px;
+            border-top: 2px solid var(--navy);
+            vertical-align: middle;
+            margin-right: 4px
+        }
+
+        .lg i.d {
+            border-top-style: dashed
+        }
+
+        .tg {
+            display: flex;
+            gap: 6px;
+            position: relative;
+            z-index: 1
+        }
+
+        .tg button {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid #d3def2;
+            background: #fff;
+            color: var(--navy);
+            border-radius: 999px;
+            padding: 6px 11px;
+            font: 700 12px Inter, sans-serif;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(16, 44, 92, .10)
+        }
+
+        .tg button svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .tg button.on {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
+            box-shadow: 0 0 0 2px rgba(224, 178, 74, .55)
+        }
+
+        .kps {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            padding: 12px 14px 4px
+        }
+
+        .kp {
+            container-type: inline-size;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(180deg, #fff, #f4f8ff);
+            border: 1px solid #dbe4f2;
+            border-radius: 16px;
+            padding: 10px 12px 10px 10px;
+            min-width: 0;
+            overflow: hidden
+        }
+
+        .kp::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 18px;
+            background: linear-gradient(135deg, #f6cf6a, #c08a1e);
+            border-radius: 0 100% 0 14px;
+            opacity: .9
+        }
+
+        .kp.best {
+            background: linear-gradient(180deg, #f2fcf4, #e2f6e8);
+            border-color: #bfe6c9
+        }
+
+        .kp .bd {
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: linear-gradient(135deg, #f6cf6a, #d9a02a);
+            color: #3b2a00;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 10px 2px 14px;
+            border-radius: 0 0 0 12px
+        }
+
+        @container (max-width: 175px) {
+            .kp .ki {
+                display: none
+            }
+
+            .kp .kb {
+                border-left: 0;
+                padding-left: 6px
+            }
+        }
+
+        .kp .ki {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0f2a5a, #17479a);
+            display: grid;
+            place-items: center;
+            flex: none;
+            color: #fff;
+            position: relative;
+            z-index: 1
+        }
+
+        .kp .ki svg {
+            width: 21px;
+            height: 21px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .kp .kb {
+            border-left: 1px solid #cfd9ec;
+            padding-left: 10px;
+            min-width: 0;
+            position: relative;
+            z-index: 1
+        }
+
+        .kp .kl {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .02em;
+            text-transform: uppercase;
+            line-height: 1.2
+        }
+
+        .kp .kv {
+            font-size: clamp(14px, 8.4cqw, 26px);
+            font-weight: 800;
+            line-height: 1.15;
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums
+        }
+
+        .kp.best .kv {
+            color: #1f8f3a
+        }
+
+        .kp .ks {
+            font-size: 10.5px;
+            font-weight: 600;
+            color: #42557d;
+            line-height: 1.25
+        }
+
+        .kp .ks small {
+            font-weight: 600;
+            color: #42557d
+        }
+
+        .chip {
+            display: inline-block;
+            margin-top: 2px;
+            padding: 2px 9px;
+            border-radius: 999px;
+            font-size: 10.5px;
+            font-weight: 800
+        }
+
+        .chip.up {
+            background: #d7f3de;
+            color: #17783a
+        }
+
+        .chip.dn {
+            background: #fde1e3;
+            color: #b3261e
+        }
+
+        .cvw {
+            padding: 4px 12px 8px;
+            flex: 1;
+            display: flex;
+            align-items: center
+        }
+
+        .cvw svg {
+            width: 100%;
+            height: auto;
+            display: block;
+            font-family: Inter, sans-serif
+        }
+
+        .cft {
+            display: flex;
+            justify-content: center;
+            padding: 0 12px 14px
+        }
+
+        .cft span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            border: 1px solid #dbe4f2;
+            border-radius: 999px;
+            padding: 6px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(16, 44, 92, .10)
+        }
+
+        .cft svg {
+            width: 17px;
+            height: 17px;
+            stroke: #c08a1e;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        /* filter bar: জায়গা কম হলে ধাপে ধাপে ছোট হয় (JS fitBar) */
+        .fb.t1 {
+            gap: 4px
+        }
+
+        .fb.t1 .fp {
+            padding: 6px 8px;
+            gap: 5px;
+            font-size: 11.5px
+        }
+
+        .fb.t1 .fd input {
+            width: 108px;
+            font-size: 11.5px;
+            padding: 5px 6px
+        }
+
+        .fb.t2 .fp svg:not(.cv) {
+            display: none
+        }
+
+        .fb.t2 .fd {
+            gap: 3px;
+            font-size: 11px
+        }
+
+        .bl {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 12px;
+            padding: 0 16px 4px;
+            font-size: 11px;
+            font-weight: 600
+        }
+
+        .bl i {
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            border-radius: 3px;
+            vertical-align: -1px;
+            margin-right: 4px
+        }
+
+
+        /* ===== Shift / Category Contribution cards ===== */
+        .cd.sc .tt h3 b {
+            color: #ffd23f
+        }
+
+        .cd.sc .tt h3 {
+            font-size: 17px
+        }
+
+        .cd.sc .ch {
+            min-height: 72px
+        }
+
+        .scb {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 12px 12px 8px
+        }
+
+        .scl {
+            flex: 1 1 190px;
+            background: linear-gradient(180deg, #fff, #eef4ff);
+            border: 1px solid #e3eaf6;
+            border-radius: 16px;
+            padding: 10px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center
+        }
+
+        .scl svg {
+            width: 100%;
+            max-width: 210px;
+            height: auto;
+            font-family: Inter, sans-serif
+        }
+
+        .scg {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 3px;
+            margin-top: 6px;
+            font-size: 11.5px;
+            font-weight: 800;
+            color: var(--navy)
+        }
+
+        .scg i {
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            border-radius: 3px;
+            margin-right: 6px;
+            vertical-align: -1px
+        }
+
+        .scg span span {
+            color: var(--mute);
+            font-weight: 600
+        }
+
+        .scr {
+            flex: 2.4 1 330px;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            background: linear-gradient(180deg, #f7faff, #eef4ff);
+            border: 1px solid #e3eaf6;
+            border-radius: 16px;
+            padding: 10px
+        }
+
+        .scc {
+            display: flex;
+            flex-direction: column;
+            min-width: 0
+        }
+
+        .sct {
+            display: flex;
+            flex-direction: column;
+            height: 250px;
+            gap: 2px;
+            border-radius: 12px 12px 3px 3px;
+            overflow: hidden
+        }
+
+        .tl {
+            flex: 1 1 0;
+            min-height: 27px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: #fff;
+            font-weight: 800;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+            background-image: repeating-linear-gradient(135deg, rgba(255, 255, 255, .09) 0 6px, transparent 6px 12px);
+            padding: 0 4px;
+            white-space: nowrap;
+            overflow: hidden
+        }
+
+        .tl b {
+            font-size: 16px;
+            font-weight: 800
+        }
+
+        .tl small {
+            font-size: 10.5px;
+            font-weight: 700;
+            opacity: .92
+        }
+
+        .tl em {
+            font-style: normal;
+            font-size: 10px;
+            font-weight: 700;
+            opacity: .85;
+            max-width: 70px;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .scf {
+            margin-top: 4px;
+            background: #fff;
+            border-radius: 3px 3px 12px 12px;
+            box-shadow: 0 2px 8px rgba(16, 44, 92, .10);
+            padding: 7px 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 11.5px;
+            font-weight: 800;
+            color: var(--navy);
+            flex-wrap: wrap
+        }
+
+        .scf svg {
+            width: 20px;
+            height: 20px;
+            flex: none
+        }
+
+        .scf small {
+            font-size: 11px;
+            color: var(--mute);
+            font-weight: 700;
+            margin-left: 2px
+        }
+
+
+
+        .scbl {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 4px 14px;
+            margin: 4px 12px 12px;
+            padding: 7px 12px;
+            background: #fff;
+            border: 1px solid #e3eaf6;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--navy)
+        }
+
+        .scbl i {
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            border-radius: 3px;
+            margin-right: 5px;
+            vertical-align: -1px
+        }
+
+
+        /* ===== KPI cards ===== */
+        .kcs {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 14px
+        }
+
+        @media(max-width:1300px) {
+            .kcs {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+        }
+
+        .kc {
+            position: relative;
+            container-type: inline-size;
+            border-radius: 22px;
+            padding: 14px 16px 16px;
+            color: #fff;
+            overflow: hidden;
+            box-shadow: 0 12px 28px rgba(16, 44, 92, .22), inset 0 1px 0 rgba(255, 255, 255, .35);
+            border: 1px solid rgba(255, 255, 255, .3);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+            transition: transform .2s, box-shadow .2s
+        }
+
+        .kc:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 34px rgba(16, 44, 92, .30), inset 0 1px 0 rgba(255, 255, 255, .4)
+        }
+
+        .kc::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(160deg, rgba(255, 255, 255, .24), transparent 42%);
+            pointer-events: none
+        }
+
+        .kc::after {
+            content: "";
+            position: absolute;
+            right: -40px;
+            top: -50px;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, .20), rgba(255, 255, 255, .03) 70%);
+            pointer-events: none
+        }
+
+        .k1 {
+            background: linear-gradient(160deg, #1f6bff 0%, #0a3fd0 55%, #072a9a 100%)
+        }
+
+        .k2 {
+            background: linear-gradient(160deg, #3fe3f7 0%, #08b6e6 55%, #0585b8 100%)
+        }
+
+        .k3 {
+            background: linear-gradient(160deg, #3ddc77 0%, #0fb04a 55%, #078a3a 100%)
+        }
+
+        .k4 {
+            background: linear-gradient(160deg, #8b5cf6 0%, #5b21b6 55%, #3b0f84 100%)
+        }
+
+        .kt {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            z-index: 1
+        }
+
+        .kt .kic {
+            justify-self: start
+        }
+
+        .kt .ly {
+            justify-self: end
+        }
+
+        .kic {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .20);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, .14);
+            display: grid;
+            place-items: center;
+            flex: none
+        }
+
+        .kic svg {
+            width: 23px;
+            height: 23px;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .kn {
+            text-align: center;
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: .2px;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, .25)
+        }
+
+        .ly {
+            flex: none;
+            font-size: 11.5px;
+            font-weight: 800;
+            padding: 3px 9px;
+            border-radius: 99px;
+            background: rgba(0, 0, 0, .22);
+            backdrop-filter: blur(4px)
+        }
+
+        .ly.g {
+            color: #a6ffc6
+        }
+
+        .ly.b {
+            color: #ffc1c1
+        }
+
+        .ly.na {
+            opacity: .75;
+            font-weight: 700
+        }
+
+        .kv2 {
+            display: block;
+            width: fit-content;
+            max-width: 100%;
+            margin: auto auto 0;
+            text-align: center;
+            font-size: clamp(24px, 9cqw, 40px);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -.3px;
+            white-space: nowrap;
+            cursor: help;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 3px 12px rgba(0, 0, 0, .28)
+        }
+
+        .ksub {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            text-align: center;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: .82;
+            margin-bottom: auto;
+            position: relative;
+            z-index: 1
+        }
+
+        .kdiv {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 9.5px;
+            font-weight: 800;
+            letter-spacing: 1.6px;
+            opacity: .85;
+            padding-top: 4px;
+            position: relative;
+            z-index: 1
+        }
+
+        .kdiv::before,
+        .kdiv::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, .38)
+        }
+
+        .kcol {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 0
+        }
+
+        .ksh2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            position: relative;
+            z-index: 1
+        }
+
+        .ksh {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255, 255, 255, .2);
+            border: 1px solid rgba(255, 255, 255, .22);
+            border-radius: 12px;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 700
+        }
+
+        .ksh svg {
+            width: 20px;
+            height: 20px;
+            flex: none
+        }
+
+        .ksh span {
+            flex: 1
+        }
+
+        .ksh b {
+            font-size: 20px;
+            font-weight: 800
+        }
+
+        .kbay {
+            display: grid;
+            gap: 5px 8px;
+            position: relative;
+            z-index: 1
+        }
+
+        .kbay>span {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, .16);
+            border: 1px solid rgba(255, 255, 255, .18);
+            border-radius: 10px;
+            padding: 4px 9px;
+            font-size: 11.5px;
+            font-weight: 600;
+            min-width: 0;
+            cursor: default
+        }
+
+        .kbay>span>span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        .kbay i {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex: none;
+            box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .85)
+        }
+
+        .kbay em {
+            font-style: normal;
+            font-size: 10px;
+            font-weight: 700;
+            opacity: .85;
+            margin-left: auto;
+            white-space: nowrap
+        }
+
+        .kbay b {
+            font-weight: 800;
+            font-size: 12px
+        }
+
+        .kbay2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 4px 6px
+        }
+
+        /* ===== KPI cards · glossy glass design ===== */
+        .kc {
+            border-radius: 26px;
+            padding: 16px 16px 18px;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, .45);
+            box-shadow: 0 16px 34px rgba(16, 44, 92, .28), 0 0 0 1px rgba(255, 255, 255, .10), inset 0 1.5px 0 rgba(255, 255, 255, .55), inset 0 -18px 30px rgba(255, 255, 255, .06)
+        }
+
+        .kc::before {
+            background: radial-gradient(120% 55% at 50% -8%, rgba(255, 255, 255, .38), transparent 62%), linear-gradient(180deg, rgba(255, 255, 255, .10), transparent 30%)
+        }
+
+        .kc::after {
+            right: auto;
+            top: auto;
+            left: 50%;
+            bottom: -46px;
+            width: 78%;
+            height: 80px;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            background: radial-gradient(ellipse at center, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 70%);
+            filter: blur(10px);
+            opacity: .75
+        }
+
+        .k1 {
+            box-shadow: 0 16px 34px rgba(10, 63, 208, .38), inset 0 1.5px 0 rgba(255, 255, 255, .55)
+        }
+
+        .k2 {
+            box-shadow: 0 16px 34px rgba(8, 182, 230, .38), inset 0 1.5px 0 rgba(255, 255, 255, .55)
+        }
+
+        .k3 {
+            box-shadow: 0 16px 34px rgba(15, 176, 74, .36), inset 0 1.5px 0 rgba(255, 255, 255, .55)
+        }
+
+        .k4 {
+            box-shadow: 0 16px 34px rgba(91, 33, 182, .40), inset 0 1.5px 0 rgba(255, 255, 255, .55)
+        }
+
+        .kc .kt {
+            grid-template-columns: auto 1fr;
+            gap: 12px
+        }
+
+        .kc .kic {
+            width: 48px;
+            height: 48px;
+            background: radial-gradient(circle at 35% 28%, rgba(255, 255, 255, .45), rgba(255, 255, 255, .14));
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, .20), 0 6px 14px rgba(0, 0, 0, .18), inset 0 1px 0 rgba(255, 255, 255, .6)
+        }
+
+        .kc .kn {
+            text-align: left;
+            font-size: 22px
+        }
+
+        .kc .kv2 {
+            font-size: clamp(28px, 11cqw, 46px)
+        }
+
+        .kc .ly {
+            background: rgba(6, 20, 60, .34);
+            border: 1px solid rgba(255, 255, 255, .14)
+        }
+
+        .kdt {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px
+        }
+
+        .kcal {
+            width: 13px;
+            height: 13px
+        }
+
+        .kdiv {
+            opacity: .95
+        }
+
+        .kbay>span,
+        .ksh {
+            background: linear-gradient(180deg, rgba(255, 255, 255, .26), rgba(255, 255, 255, .10));
+            border: 1px solid rgba(255, 255, 255, .26);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), 0 2px 6px rgba(0, 0, 0, .08);
+            backdrop-filter: blur(6px)
+        }
+
+        .kbay i {
+            width: 11px;
+            height: 11px;
+            box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .9), inset 0 -2px 3px rgba(0, 0, 0, .25), inset 0 2px 3px rgba(255, 255, 255, .55)
+        }
+
+        .kbay:not(.kbay2)>span {
+            padding: 5px 11px;
+            font-size: 12.5px
+        }
+
+        .kbay:not(.kbay2)>span>span {
+            flex: 1
+        }
+
+        .kbay:not(.kbay2)>span>b {
+            min-width: 62px;
+            text-align: right;
+            padding-left: 12px;
+            border-left: 1px solid rgba(255, 255, 255, .5);
+            font-size: 13px
+        }
+
+        .ksh u,
+        .kbay2 u {
+            text-decoration: none;
+            opacity: .6;
+            font-weight: 700
+        }
+
+        .ksh u {
+            margin: 0 -2px
+        }
+
+        .ksh span {
+            flex: 1
+        }
+
+        .kbay2>span {
+            padding: 4px 8px;
+            gap: 5px;
+            font-size: 11.5px
+        }
+
+        .kbay2>span>span {
+            flex: none
+        }
+
+        .kbay2 .kno {
+            grid-column: 1 / -1;
+            justify-content: center;
+            opacity: .85
+        }
+
+        .klg {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            font-size: 10.5px;
+            font-weight: 600;
+            opacity: .85;
+            letter-spacing: .3px;
+            position: relative;
+            z-index: 1
+        }
+
+        .klg b {
+            font-weight: 800
+        }
+
+        .klg i {
+            width: 1px;
+            height: 10px;
+            background: rgba(255, 255, 255, .5)
+        }
+
+        #ktip {
+            position: fixed;
+            z-index: 400;
+            pointer-events: none;
+            display: none;
+            background: var(--navy);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font: 700 12px Inter, sans-serif;
+            box-shadow: 0 6px 18px rgba(15, 42, 90, .3);
+            white-space: pre;
+            line-height: 1.5
+        }
+
+        /* ===== Heatmap card ===== */
+        .cd.hm {
+            grid-column: 1 / -1
+        }
+
+        /* ===== Production Calendar card ===== */
+        .cd.pc {
+            grid-column: 1/-1
+        }
+
+        .pcb {
+            display: flex;
+            gap: 14px;
+            padding: 12px 14px;
+            align-items: flex-start
+        }
+
+        .pcg {
+            flex: 1;
+            min-width: 0;
+            overflow-x: auto
+        }
+
+        .pcgi {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(0, 1fr)) 84px;
+            gap: 4px;
+            min-width: 720px
+        }
+
+        .pcm {
+            background: #f4f8ff;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            overflow: hidden
+        }
+
+        .pch {
+            background: linear-gradient(100deg, #0a2a70, #0b3d94);
+            color: #fff;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 7px 2px
+        }
+
+        .pcd {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            align-items: baseline;
+            height: 15px;
+            line-height: 15px;
+            font-size: 10px;
+            border-bottom: 1px solid #e6edf8;
+            color: var(--navy)
+        }
+
+        .pcd b {
+            min-width: 16px;
+            text-align: right;
+            font-weight: 800
+        }
+
+        .pcd span {
+            min-width: 26px;
+            font-weight: 600
+        }
+
+        .pcd.pd {
+            background: #0f7d3e;
+            color: #fff;
+            border-bottom-color: #0b5d2e;
+            cursor: pointer
+        }
+
+        .pcd.hd {
+            background: #d92d3f;
+            color: #fff;
+            border-bottom-color: #b3202f;
+            cursor: pointer
+        }
+
+        #ctip {
+            position: fixed;
+            z-index: 400;
+            pointer-events: none;
+            display: none;
+            width: max-content;
+            max-width: 440px;
+            background: #fff;
+            border: 1px solid #dbe4f2;
+            border-radius: 12px;
+            padding: 9px 11px;
+            box-shadow: 0 10px 28px rgba(15, 42, 90, .28);
+            font: 600 11.5px Inter, sans-serif;
+            color: var(--navy)
+        }
+
+        #ctip .th {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 6px
+        }
+
+        #ctip .th b {
+            font-size: 15px;
+            font-weight: 800
+        }
+
+        #ctip .th span {
+            color: var(--mute);
+            font-size: 11px
+        }
+
+        #ctip .hol {
+            font-weight: 700;
+            color: #d92d3f
+        }
+
+        #ctip table {
+            border-collapse: collapse;
+            width: 100%
+        }
+
+        #ctip th {
+            background: #0a2a70;
+            color: #fff;
+            font-size: 10.5px;
+            font-weight: 700;
+            padding: 4px 6px;
+            text-align: right;
+            white-space: nowrap
+        }
+
+        #ctip th:first-child,
+        #ctip td:first-child {
+            text-align: left
+        }
+
+        #ctip td {
+            padding: 3px 6px;
+            text-align: right;
+            border-bottom: 1px solid #e6edf8;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap
+        }
+
+        #ctip td.z {
+            color: #aab6cc
+        }
+
+        #ctip tr.tt td {
+            background: #f1f5fc;
+            font-weight: 800
+        }
+
+        .pcd.na {
+            color: #aab6cc;
+            background: repeating-linear-gradient(135deg, #f3f6fb 0 5px, #e9eff8 5px 10px)
+        }
+
+        .pcf {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(0, 1fr)) 84px;
+            gap: 4px;
+            min-width: 720px;
+            margin-top: 8px
+        }
+
+        .pcf>div {
+            text-align: center;
+            padding: 5px 2px;
+            border-radius: 8px;
+            background: linear-gradient(100deg, #0a2a70, #0b3d94);
+            color: #fff
+        }
+
+        .pcf small {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            opacity: .9
+        }
+
+        .pcf b {
+            display: block;
+            font-size: 15px;
+            font-weight: 800;
+            color: #f4b400;
+            line-height: 1.2
+        }
+
+        .pcf .t {
+            background: #f4b400;
+            color: #0f2a5a
+        }
+
+        .pcf .t b {
+            color: #0f2a5a
+        }
+
+        .pcs {
+            width: 190px;
+            flex: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .pck {
+            flex: none;
+            border-radius: 12px;
+            padding: 9px 14px;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a2a70, #17479a)
+        }
+
+        .pck.h {
+            background: linear-gradient(135deg, #8f1329, #d92d3f)
+        }
+
+        .pck.g {
+            background: linear-gradient(135deg, #0b5d2e, #0f7d3e)
+        }
+
+        .pck .l {
+            font-size: 12px;
+            font-weight: 700;
+            opacity: .9
+        }
+
+        .pck .v {
+            font-size: 26px;
+            font-weight: 800;
+            line-height: 1.1
+        }
+
+        .pck .s {
+            font-size: 11px;
+            opacity: .8
+        }
+
+        @media(max-width:900px) {
+            .pcb {
+                flex-direction: column
+            }
+
+            .pcs {
+                width: auto;
+                flex-direction: row
+            }
+        }
+
+        .hlg {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 12px;
+            align-items: center;
+            margin-left: auto;
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, .94);
+            color: var(--navy);
+            border-radius: 999px;
+            padding: 7px 16px;
+            font-size: 12px;
+            font-weight: 800
+        }
+
+        .hlg i {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border-radius: 4px;
+            vertical-align: -3px;
+            margin-right: 5px
+        }
+
+        .hcap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 8px 16px 0;
+            font-size: 11.5px;
+            color: var(--mute);
+            font-weight: 600
+        }
+
+        .hgw {
+            overflow-x: auto;
+            padding: 8px 14px 6px
+        }
+
+        .hg {
+            display: grid;
+            grid-template-columns: 56px repeat(12, minmax(54px, 1fr)) 136px;
+            gap: 6px;
+            min-width: 900px;
+            align-items: stretch
+        }
+
+        .hg .hh {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: #42557d;
+            align-self: end;
+            padding-bottom: 2px
+        }
+
+        .hg .hy {
+            font-weight: 800;
+            font-size: 13px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center
+        }
+
+        .hg .hy small {
+            font-size: 9px;
+            color: var(--mute);
+            font-weight: 800
+        }
+
+        .hc {
+            border-radius: 9px;
+            height: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 12.5px;
+            line-height: 1.1;
+            font-variant-numeric: tabular-nums;
+            border: 1px solid transparent
+        }
+
+        .hc small {
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: .05em
+        }
+
+        .hc.pk,
+        .hc.lw {
+            outline: 2px solid var(--navy);
+            outline-offset: -1px
+        }
+
+        .hc.mtd {
+            background: repeating-linear-gradient(135deg, #eef3fb 0 6px, #dbe6f6 6px 12px);
+            border: 1px dashed #9fb3d3;
+            color: var(--navy)
+        }
+
+        .hc.nd {
+            border: 1px dashed #cfd9ec;
+            color: #9aa9c6;
+            background: transparent;
+            font-weight: 600
+        }
+
+        .ts {
+            border-radius: 9px;
+            background: #fff;
+            border: 1px solid #dbe4f2;
+            padding: 4px 9px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 3px
+        }
+
+        .ts div {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-weight: 800;
+            font-size: 12px
+        }
+
+        .ts div span {
+            font-size: 10.5px;
+            color: var(--mute);
+            font-weight: 700
+        }
+
+        .ts .br {
+            height: 5px;
+            border-radius: 3px;
+            background: #e6ecf7;
+            overflow: hidden
+        }
+
+        .ts .br i {
+            display: block;
+            height: 100%;
+            background: var(--navy);
+            border-radius: 3px
+        }
+
+        .ts .br i.run {
+            background: repeating-linear-gradient(135deg, #2fb34c 0 5px, #a6e2b3 5px 10px)
+        }
+
+        .hc.av {
+            background: #fff;
+            border: 1px solid #dbe4f2;
+            color: var(--navy)
+        }
+
+        .hc.av.lo {
+            border: 2px solid var(--navy);
+            border-radius: 999px
+        }
+
+        .hc.av.hi {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy)
+        }
+
+        .hc.gt {
+            background: linear-gradient(135deg, #0a2a70, #0b3d94);
+            color: #fff;
+            font-size: 15px
+        }
+
+        .hc.gt small {
+            font-size: 8.5px;
+            opacity: .85
+        }
+
+        .hz {
+            font-size: 10px;
+            font-weight: 800;
+            text-align: center;
+            color: var(--mute);
+            margin-top: 2px
+        }
+
+        .hfoot {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 18px;
+            padding: 4px 16px 14px;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: #42557d;
+            align-items: center
+        }
+
+        .hfoot i {
+            display: inline-block;
+            width: 22px;
+            height: 14px;
+            border-radius: 4px;
+            vertical-align: -3px;
+            margin-right: 6px
+        }
+
+        .kp.sm .kv {
+            font-size: clamp(13px, 5.6cqw, 22px)
+        }
+
+        .ld {
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--mute);
+            font-weight: 600
+        }
+
+        /* ===== Production Achievement Analysis ===== */
+        .ach .achs {
+            margin-left: 8px;
+            font: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--navy);
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 6px 10px;
+            cursor: pointer
+        }
+
+        .cd.ach {
+            grid-column: 1 / -1
+        }
+
+        .ach-w {
+            overflow-x: auto;
+            padding: 6px 2px 2px
+        }
+
+        .ach-g {
+            display: flex;
+            gap: 5px;
+            min-width: 100%
+        }
+
+        .ach-c {
+            flex: 1 0 26px;
+            min-width: 26px;
+            display: flex;
+            flex-direction: column;
+            align-items: center
+        }
+
+        .ach-t {
+            height: 18px;
+            line-height: 18px;
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+            color: var(--navy)
+        }
+
+        .ach-b {
+            width: 100%;
+            height: 260px;
+            display: flex;
+            flex-direction: column-reverse;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #f3f7fd
+        }
+
+        .ach-s {
+            flex: none;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 8.5px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden
+        }
+
+        .ach-no {
+            background: repeating-linear-gradient(135deg, #eef3fb 0 5px, #dbe6f6 5px 10px)
+        }
+
+        .ach-d {
+            height: 16px;
+            margin-top: 4px;
+            font-size: 10px;
+            color: var(--mute)
+        }
+
+        .achv {
+            margin-left: auto;
+            display: flex;
+            gap: 6px
+        }
+
+        .achv button {
+            font: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, .35);
+            background: rgba(255, 255, 255, .08);
+            color: #fff;
+            cursor: pointer
+        }
+
+        .achv button.on {
+            background: #fff;
+            color: var(--navy);
+            border-color: #fff
+        }
+
+        .ach-g2 {
+            width: 100%;
+            height: 260px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 3px;
+            background: #f3f7fd;
+            border-radius: 4px;
+            overflow: hidden
+        }
+
+        .ach-g2.ach-no {
+            background: repeating-linear-gradient(135deg, #eef3fb 0 5px, #dbe6f6 5px 10px)
+        }
+
+        .ach-tb,
+        .ach-ab {
+            width: 42%;
+            border-radius: 3px 3px 0 0
+        }
+
+        .ach-tb {
+            background: #f5c000
+        }
+
+        .ach-ab {
+            background: #1565d8
+        }
+
+        .ach-p {
+            height: 16px;
+            margin-top: 2px;
+            font-size: 10px;
+            font-weight: 700
+        }
+    </style>
 </head>
 
 <body>
     <header>
         <div class="hl"><button class="bk" onclick="location.href='production.html'" title="Back">←</button>
-            <img src="assets/logo.png" style="cursor:pointer" onclick="location.href='portal.html'" alt="Mainetti Bangladesh"
+            <img src="assets/logo.png" style="cursor:pointer" onclick="location.href='portal.html'"
+                alt="Mainetti Bangladesh"
                 onerror="this.outerHTML='<div class=&quot;logo&quot;>MAINETTI<small>BANGLADESH PVT. LTD.</small></div>'">
             <div class="sep"></div>
             <div>
@@ -261,7 +2280,7 @@
                     ▾</button>
                 <div class="menu" id="mn">
                     <div onclick="location.href='portal.html'">Portal</div>
-<div onclick="location.href='production.html'">Production &amp; Planning</div>
+                    <div onclick="location.href='production.html'">Production &amp; Planning</div>
                     <div id="adm" style="display:none" onclick="location.href='admin.html'">Admin Console</div>
                     <div onclick="out()">Sign out</div>
                 </div>
@@ -270,20 +2289,41 @@
     </header>
     <div class="lay">
         <aside id="sd">
-<div class="nv t" onclick="$('#sd').classList.toggle('col')"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Menu</span></div>
-<div class="nv on" data-p="oee" onclick="show('oee')"><svg viewBox="0 0 24 24"><path d="M4 17a8 8 0 1 1 16 0M12 17l4-5M6.5 17h1M16.5 17h1"/></svg><span>OEE Performance Overview</span></div>
-<div class="nv" data-p="prod" onclick="show('prod')"><svg viewBox="0 0 24 24"><path d="M5 20V11M11 20V5M17 20v-6M3 20h18"/></svg><span>Production Performance</span></div>
-<div class="nv" data-p="down" onclick="show('down')"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2"/></svg><span>Downtime Analysis</span></div>
-<div class="nv" data-p="man" onclick="show('man')"><svg viewBox="0 0 24 24"><path d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M17 11a2.5 2.5 0 1 0 0-5M17 14c2.5 0 4 2 4 5"/></svg><span>Manpower Performance</span></div>
-<div class="nv" data-p="mat" onclick="show('mat')"><svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5"/></svg><span>Machine-wise Material Allocation</span></div>
-<div class="nv" data-p="mco" onclick="show('mco')"><svg viewBox="0 0 24 24"><path d="M3 5h18v11H3zM8 20h8M12 16v4"/></svg><span>Machine Overview</span></div>
+            <div class="nv t" onclick="$('#sd').classList.toggle('col')"><svg viewBox="0 0 24 24">
+                    <path d="M4 6h16M4 12h16M4 18h16" />
+                </svg><span>Menu</span></div>
+            <div class="nv on" data-p="oee" onclick="show('oee')"><svg viewBox="0 0 24 24">
+                    <path d="M4 17a8 8 0 1 1 16 0M12 17l4-5M6.5 17h1M16.5 17h1" />
+                </svg><span>OEE Performance Overview</span></div>
+            <div class="nv" data-p="prod" onclick="show('prod')"><svg viewBox="0 0 24 24">
+                    <path d="M5 20V11M11 20V5M17 20v-6M3 20h18" />
+                </svg><span>Production Performance</span></div>
+            <div class="nv" data-p="down" onclick="show('down')"><svg viewBox="0 0 24 24">
+                    <path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2" />
+                </svg><span>Downtime Analysis</span></div>
+            <div class="nv" data-p="man" onclick="show('man')"><svg viewBox="0 0 24 24">
+                    <path
+                        d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M17 11a2.5 2.5 0 1 0 0-5M17 14c2.5 0 4 2 4 5" />
+                </svg><span>Manpower Performance</span></div>
+            <div class="nv" data-p="mat" onclick="show('mat')"><svg viewBox="0 0 24 24">
+                    <path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5" />
+                </svg><span>Machine-wise Material Allocation</span></div>
+            <div class="nv" data-p="mco" onclick="show('mco')"><svg viewBox="0 0 24 24">
+                    <path d="M3 5h18v11H3zM8 20h8M12 16v4" />
+                </svg><span>Machine Overview</span></div>
         </aside>
-        <main><h1 class="ttl" id="pt"></h1><p class="sub" id="ps"></p><div id="pgc"></div></main>
+        <main>
+            <h1 class="ttl" id="pt"></h1>
+            <p class="sub" id="ps"></p>
+            <div id="pgc"></div>
+        </main>
     </div>
+    <div class="pop" id="pop"></div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
     <script src="erp.js"></script>
     <script>
         const $ = s => document.querySelector(s), out = () => ERP.signOut();
+        const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         const PG = {
             oee: ["OEE Performance Overview", "Availability, performance and quality across machines"],
             prod: ["Production Performance", "Output against target"],
@@ -292,10 +2332,609 @@
             mat: ["Machine-wise Material Allocation", "Material loaded on each machine"],
             mco: ["Machine Overview", "Status of every machine on the floor"]
         };
+        /* ---------- helpers ---------- */
+        const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+        const fm = v => { const a = Math.abs(v); return a >= 1e9 ? (v / 1e9).toFixed(2) + "B" : a >= 1e8 ? Math.round(v / 1e6) + "M" : a >= 1e7 ? (v / 1e6).toFixed(1) + "M" : a >= 1e6 ? (v / 1e6).toFixed(1) + "M" : a >= 1e3 ? Math.round(v / 1e3) + "K" : String(Math.round(v)) };
+        const fc = v => Math.round(v).toLocaleString("en-US");
+        const nat = (a, b) => String(a).localeCompare(String(b), undefined, { numeric: true, sensitivity: "base" });
+        const MET = { fg: ["FG", "finishproduct"], wip: ["WIP", "wip"], good: ["Good Prod", "goodproduction"] };
+        const MK = ["fg", "wip", "good"];
+        const ICO = {
+            cal: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/>',
+            bay: '<path d="M3 21V9l9-5 9 5v12M9 21v-6h6v6"/>',
+            shift: '<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5M16 5a3 3 0 0 1 0 6M18 15c2 .5 3 2.2 3 5"/>',
+            mc: '<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>',
+            model: '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5"/>',
+            tool: '<path d="M14.7 6.3a4 4 0 0 0-5 5L3 18l3 3 6.7-6.7a4 4 0 0 0 5-5l-2.4 2.4-2.6-.6-.6-2.6z"/>',
+            cat: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+            grp: '<path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5"/>',
+            mct: '<path d="M12 2l8.5 5v10L12 22l-8.5-5V7z"/><circle cx="12" cy="12" r="3"/>',
+            rs: '<path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/>',
+            cv: '<path d="M6 9l6 6 6-6"/>',
+            chart: '<path d="M4 20V10M10 20V4M16 20v-7M3 20h18"/>',
+            trend: '<path d="M3 17l6-6 4 4 8-9M15 6h6v6"/>',
+            peak: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M12 14h2M16 14h2M8 17h2M12 17h2"/>',
+            fg: '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9"/>',
+            wip: '<path d="M8 3l4 2.3v4.4L8 12 4 9.7V5.3zM16 12l4 2.3v4.4L16 21l-4-2.3v-4.4zM4 14l4 2.3v4.4"/>',
+            good: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+            ck: '<path d="M5 12l4 4 10-10"/>'
+        };
+        const ic = (k, cls) => `<svg viewBox="0 0 24 24"${cls ? ` class="${cls}"` : ""}>${ICO[k]}</svg>`;
+
+        /* ---------- data (Admin → Data Manager → Production & Planning → ↳ Production-Shopfloor) ---------- */
+        let SUB = null, PK = null, PKERR = "", P = null, LOADING = false;
+        const FDEF = [   // key, label, dict-name, icon
+            ["year", "Year", null, "cal"], ["month", "Month", null, "cal"], "date",
+            ["bay", "Bay Name", "bayname", "bay"], ["shift", "Shift", "shifttime", "shift"], ["mc", "M/C No", "mcno", "mc"],
+            ["model", "Model", "modelname", "model"], ["tool", "Tool No", "toolno", "tool"], ["cat", "Category", "productcategory", "cat"],
+            ["group", "Group", "group", "grp"], ["mct", "MC Type", "mctype", "mct"]
+        ];
+        let F = { year: new Set(), month: new Set(), from: "", to: "", bay: new Set(), shift: new Set(), mc: new Set(), model: new Set(), tool: new Set(), cat: new Set(), group: new Set(), mct: new Set() };
+        const ST = { mm: "fg", ym: "fg", hm: "fg" };
+
+        async function loadPK() {
+            if (PK || LOADING) return; LOADING = true;
+            try {
+                PK = await ERP.packed(SUB.id, "shopfloor");
+                if (!PK || !PK.m) { PK = null; PKERR = "empty" } else prep(PK)
+            } catch (e) { console.error(e); PK = null; PKERR = "err" }
+            LOADING = false
+        }
+        function prep(pk) {
+            const D = pk.dict, dd = D.date.map(s => { const y = +s.slice(0, 4), mo = +s.slice(5, 7); return { s, y, mo, mi: y * 12 + mo - 1 } });
+            let mi0 = 1e9, mi1 = -1, last = ""; dd.forEach(x => { if (x.mi < mi0) mi0 = x.mi; if (x.mi > mi1) mi1 = x.mi; if (x.s > last) last = x.s });
+            const lm = +last.slice(5, 7), ly = +last.slice(0, 4), ldays = new Date(ly, lm, 0).getDate();
+            let pid = null, npair = 0; const pbay = [], pmc = [];
+            if (pk.c.mcno) {
+                const mm = new Map(), cm = pk.c.mcno, cb = pk.c.bayname; pid = new Uint32Array(pk.c.date.length);
+                for (let i = 0; i < pid.length; i++) { const bb = cb ? cb[i] : 0, key = cm[i] * 65536 + bb; let id = mm.get(key); if (id === undefined) { id = npair++; mm.set(key, id); pbay.push(bb); pmc.push(cm[i]) } pid[i] = id }
+            }
+            P = {
+                pid, npair, pbay, pmc,
+                D, C: pk.c, M: pk.m, n: pk.c.date.length, dd, mi0, mi1, last,
+                lastMi: ly * 12 + lm - 1, running: +last.slice(8, 10) < ldays,
+                dix: new Map(D.date.map((t, i) => [t, i])),
+                shg: (D.shifttime || []).map(v => { v = String(v).trim(); return v === "" ? -1 : /night|evening|^n$|^b$|^2|second|pm/i.test(v) ? 1 : 0 }),
+                years: [...new Set(dd.map(x => x.y))].sort((a, b) => a - b), opts: {}
+            };
+            P.tg = Object.keys(P.M || {}).find(k => /plan|target|tgt/i.test(k)) || null;
+            FDEF.forEach(f => {
+                if (f === "date" || !f[2]) return;
+                const arr = D[f[2]] || [], o = []; arr.forEach((v, i) => { if (String(v) !== "") o.push({ c: i, l: String(v) }) });
+                o.sort((a, b) => nat(a.l, b.l)); P.opts[f[0]] = o
+            })
+        }
+        /* ---------- compute (সব filter প্রয়োগ করে মাস/বছর-ভিত্তিক যোগফল) ---------- */
+        function compute() {
+            const { D, C, M, n, dd, mi0, mi1 } = P, nm = mi1 - mi0 + 1, y0 = P.years[0], ny = P.years.length;
+            const bayD = D.bayname && D.bayname.length ? D.bayname : [""], nb = bayD.length;
+            const dOK = new Uint8Array(dd.length), nd = dd.length;
+            dd.forEach((x, i) => {
+                dOK[i] = (!F.year.size || F.year.has(String(x.y))) && (!F.month.size || F.month.has(String(x.mo))) && (!F.from || x.s >= F.from) && (!F.to || x.s <= F.to) ? 1 : 0
+            });
+            /* vs LY : প্রতিটা নির্বাচিত দিনের এক বছর আগের একই তারিখ */
+            let curDays = 0, partners = 0; const lyF = [];
+            dd.forEach((x, i) => { if (dOK[i] & 1) { curDays++; const j = P.dix.get((x.y - 1) + x.s.slice(4)); if (j !== undefined) { lyF.push(j); partners++ } } });
+            const lyOk = curDays > 0 && partners / curDays >= .98; if (lyOk) lyF.forEach(j => dOK[j] |= 2);
+            const mcc = P.pid, nmc = P.npair, mcOK = P.pmc.map(c => String((D.mcno || [])[c]).trim() !== ""), idleOn = !!mcc && nmc > 0 && nd * 2 * nmc <= 4e7;
+            const idg = idleOn ? new Float64Array(nd * 2 * nmc) : null, idp = idleOn ? new Uint8Array(nd * 2 * nmc) : null, idgL = idleOn && lyOk ? new Float64Array(nd * 2 * nmc) : null, idpL = idleOn && lyOk ? new Uint8Array(nd * 2 * nmc) : null, lyT = [0, 0, 0];
+            const act = [];
+            FDEF.forEach(f => {
+                if (f === "date" || !f[2] || !F[f[0]].size || !D[f[2]] || !C[f[2]]) return;
+                const ok = new Uint8Array(D[f[2]].length); F[f[0]].forEach(c => ok[c] = 1); act.push({ ok, col: C[f[2]] })
+            });
+            const mv = { fg: new Float64Array(nm), wip: new Float64Array(nm), good: new Float64Array(nm) }, mcnt = new Int32Array(nm), dg = new Float64Array(nd);
+            const yb = new Float64Array(ny * nb * 3), ycnt = new Int32Array(ny), sb = new Float64Array(2 * nb * 3), shc = C.shifttime, catD = D.productcategory && D.productcategory.length ? D.productcategory : [""], ncat = catD.length, sct = new Float64Array(2 * ncat * 3), cc = C.productcategory;
+            const A = M.finishproduct, B = M.wip, G = M.goodproduction, bc = C.bayname, dc = C.date; let rows = 0;
+            const dbc = new Float64Array(nd * nb * ncat), dbm = new Float64Array(nd * nb * 3), dtg = new Float64Array(nd), tgA = P.tg ? M[P.tg] : null;
+            for (let i = 0; i < n; i++) {
+                const d = dc[i], fl = dOK[d]; if (!fl) continue;
+                let ok = true; for (let k = 0; k < act.length; k++) if (!act[k].ok[act[k].col[i]]) { ok = false; break }
+                if (!ok) continue;
+                const x = dd[d], k = x.mi - mi0, a = A[i] || 0, b = B[i] || 0, g = G[i] || 0;
+                const sgI = shc ? P.shg[shc[i]] : 0;
+                if (idleOn && sgI >= 0 && mcOK[mcc[i]]) { const ix = (d * 2 + sgI) * nmc + mcc[i]; if (fl & 1) { idg[ix] += g; idp[ix] = 1 } if ((fl & 2) && idgL) { idgL[ix] += g; idpL[ix] = 1 } }
+                if (fl & 2) { lyT[0] += a; lyT[1] += b; lyT[2] += g }
+                if (!(fl & 1)) continue; rows++;
+                mv.fg[k] += a; mv.wip[k] += b; mv.good[k] += g; mcnt[k]++; dg[d] += g;
+                dbc[(d * nb + (bc ? bc[i] : 0)) * ncat + (cc ? cc[i] : 0)] += g;
+                { const q = (d * nb + (bc ? bc[i] : 0)) * 3; dbm[q] += a; dbm[q + 1] += b; dbm[q + 2] += g }
+                if (tgA) dtg[d] += tgA[i] || 0;
+                const yi = x.y - y0, j = (yi * nb + (bc ? bc[i] : 0)) * 3; yb[j] += a; yb[j + 1] += b; yb[j + 2] += g; ycnt[yi]++;
+                if (shc) { const sg = P.shg[shc[i]]; if (sg >= 0) { const q = (sg * nb + (bc ? bc[i] : 0)) * 3; sb[q] += a; sb[q + 1] += b; sb[q + 2] += g; const z = (sg * ncat + (cc ? cc[i] : 0)) * 3; sct[z] += a; sct[z + 1] += b; sct[z + 2] += g } }
+            }
+            const idleStat = (pp, gg) => {
+                if (!pp) return null; let days = 0, sm = 0, sn = 0; const bm = new Float64Array(nb), bn = new Float64Array(nb), mmB = Array.from({ length: nb }, () => new Map()), mnB = Array.from({ length: nb }, () => new Map());
+                for (let d = 0; d < nd; d++) { let has = false, cm = 0, cn = 0; for (let sg = 0; sg < 2; sg++) { const base = (d * 2 + sg) * nmc; for (let m = 0; m < nmc; m++) if (pp[base + m]) { has = true; if (gg[base + m] <= 0) { const bb = P.pbay[m], mp = (sg ? mnB : mmB)[bb]; mp.set(P.pmc[m], (mp.get(P.pmc[m]) || 0) + 1); if (sg) { cn++; bn[bb]++ } else { cm++; bm[bb]++ } } } } if (has) { days++; sm += cm; sn += cn } }
+                if (!days) return null; for (let b = 0; b < nb; b++) { bm[b] /= days; bn[b] /= days }
+                return { days, m: sm / days, n: sn / days, t: (sm + sn) / days, bm, bn, mmB, mnB }
+            };
+            const tot3 = [0, 1, 2].map(q => mv[["fg", "wip", "good"][q]].reduce((p, c) => p + c, 0));
+            return { nm, mv, mcnt, dg, dbc, dbm, dtg, yb, ycnt, sb, sct, ncat, catD, nb, bayD, ny, y0, rows, tot3, lyT, lyOk, idle: idleStat(idp, idg), idleL: idleStat(idpL, idgL) }
+        }
+        /* ---------- Filter bar ---------- */
+        function filterBarHTML() {
+            const pill = (f) => {
+                const [k, l, dn, ik] = f;
+                return `<button class="fp" data-f="${k}" type="button">${ic(ik)}<span class="fl">${l}</span><span class="ct" style="display:none"></span>${ic("cv", "cv")}</button>`
+            };
+            const parts = [];
+            FDEF.forEach(f => {
+                if (f === "date") {
+                    parts.push(`<div class="fsep"></div><label class="fd">From<input type="date" id="dfrom"></label><label class="fd">To<input type="date" id="dto"></label><div class="fsep"></div>`)
+                } else parts.push(pill(f))
+            });
+            return `<div class="fbw"><div class="fb" id="fb">${parts.join("")}<button class="rs" id="rs" type="button">${ic("rs")}Reset</button></div></div>`
+        }
+        function optsFor(k) {
+            if (k === "year") return P.years.map(y => ({ c: String(y), l: String(y) }));
+            if (k === "month") return MON.map((m, i) => ({ c: String(i + 1), l: m }));
+            return P.opts[k] || []
+        }
+        function fitBar() {
+            const f = $("#fb"); if (!f) return; f.classList.remove("t1", "t2"); f.style.zoom = "";
+            if (f.scrollWidth <= f.clientWidth + 1) return; f.classList.add("t1");
+            if (f.scrollWidth <= f.clientWidth + 1) return; f.classList.add("t2");
+            if (f.scrollWidth <= f.clientWidth + 1) return;
+            const z = Math.max(.8, f.clientWidth / f.scrollWidth); f.style.zoom = z.toFixed(3)
+        }
+        addEventListener("resize", () => fitBar());
+        function syncPills() {
+            document.querySelectorAll("#fb .fp").forEach(b => {
+                const k = b.dataset.f, n = F[k].size, ct = b.querySelector(".ct"), lb = b.querySelector(".fl");
+                if (!b.dataset.l) b.dataset.l = lb.textContent;
+                let nm = b.dataset.l; if (n === 1) { const v = [...F[k]][0], o = optsFor(k).find(x => x.c === v); if (o) nm = o.l }
+                lb.textContent = nm; b.title = n === 1 ? b.dataset.l + ": " + nm : "";
+                b.classList.toggle("on", n > 0); ct.style.display = n > 1 ? "" : "none"; ct.textContent = n;
+                const f = FDEF.find(x => x[0] === k); b.classList.toggle("dis", !!f[2] && !optsFor(k).length)
+            })
+        }
+        let POPK = null;
+        function openPop(btn) {
+            const k = btn.dataset.f, pop = $("#pop"), o = optsFor(k);
+            if (POPK === k && pop.classList.contains("on")) { closePop(); return }
+            if (!o.length) return; POPK = k;
+            const fl = btn.dataset.l || btn.querySelector(".fl").textContent;
+            pop.innerHTML = `<input type="text" placeholder="Search ${esc(fl)}…" id="psr"><div class="ls" id="pls"></div><div class="ft"><a id="pall">All</a><a id="pclr">Clear</a></div>`;
+            const draw = q => {
+                q = (q || "").toLowerCase(); const items = o.filter(x => !q || x.l.toLowerCase().includes(q)), lim = 300, show = items.slice(0, lim);
+                $("#pls").innerHTML = show.map(x => `<label><input type="checkbox" value="${esc(x.c)}"${F[k].has(x.c) ? " checked" : ""}>${esc(x.l)}</label>`).join("") + (items.length > lim ? `<div class="nt">${items.length - lim} more — type to search</div>` : "") + (!items.length ? `<div class="nt">No match</div>` : "")
+            };
+            draw("");
+            $("#psr").oninput = e => draw(e.target.value);
+            $("#pls").onchange = e => { const v = e.target.value; e.target.checked ? F[k].add(v) : F[k].delete(v); changed() };
+            $("#pall").onclick = () => { optsFor(k).forEach(x => F[k].add(x.c)); draw($("#psr").value); changed() };
+            $("#pclr").onclick = () => { F[k].clear(); draw($("#psr").value); changed() };
+            const r = btn.getBoundingClientRect(); pop.classList.add("on");
+            pop.style.left = Math.max(8, Math.min(r.left, innerWidth - 238)) + "px"; pop.style.top = (r.bottom + 6) + "px";
+            setTimeout(() => $("#psr") && $("#psr").focus(), 0)
+        }
+        function closePop() { $("#pop").classList.remove("on"); POPK = null }
+        let RT = 0; function changed() { syncPills(); fitBar(); clearTimeout(RT); RT = setTimeout(renderCards, 40) }
+        function bindFilters() {
+            document.querySelectorAll("#fb .fp").forEach(b => b.onclick = e => { e.stopPropagation(); openPop(b) });
+            $("#dfrom").value = F.from; $("#dto").value = F.to;
+            $("#dfrom").onchange = e => { F.from = e.target.value; changed() };
+            $("#dto").onchange = e => { F.to = e.target.value; changed() };
+            $("#rs").onclick = () => { Object.keys(F).forEach(k => { if (F[k] instanceof Set) F[k].clear(); else F[k] = "" }); $("#dfrom").value = ""; $("#dto").value = ""; closePop(); changed() };
+            syncPills(); fitBar(); setTimeout(fitBar, 300)
+        }
+        document.addEventListener("click", e => { if (!e.target.closest("#pop") && !e.target.closest("#fb")) closePop() });
+        addEventListener("resize", closePop);
+        /* ---------- charts ---------- */
+        ICO.cup = '<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/>';
+        const MONF = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const mlab = mi => MON[mi % 12] + " " + Math.floor(mi / 12);
+        function niceScale(max) {
+            if (!(max > 0)) return { top: 4, ticks: [0, 1, 2, 3, 4] };
+            const r = max / 4, p = Math.pow(10, Math.floor(Math.log10(r))), s = [1, 2, 2.5, 5, 10].find(n => n * p >= r - 1e-9) * p, top = Math.ceil(max / s - 1e-9) * s, t = [];
+            for (let v = 0; v <= top + s / 1e6; v += s) t.push(v); return { top, ticks: t }
+        }
+        const tick = v => { if (v === 0) return "0"; if (v >= 1e9) return +(v / 1e9).toFixed(2) + "B"; if (v >= 1e6) return +(v / 1e6).toFixed(1) + "M"; if (v >= 1e3) return +(v / 1e3).toFixed(1) + "K"; return String(+v.toFixed(1)) };
+        function pill(x, y, t, o) {
+            o = o || {}; const w = Math.round(t.length * 6.3 + 18), h = 22; let px = o.anchor === "end" ? x - w : o.anchor === "mid" ? x - w / 2 : x;
+            px = Math.max(o.minX || 0, Math.min(px, (o.maxX || 600) - w)); const py = Math.max(o.minY || 0, Math.min(y, (o.maxY || 330) - h));
+            return `<g><rect x="${px}" y="${py}" width="${w}" height="${h}" rx="11" fill="#0f2a5a"/><text x="${px + w / 2}" y="${py + 15}" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">${esc(t)}</text></g>`
+        }
+        function monthSeries(R, met) {
+            const v = R.mv[met]; let a = 0, b = R.nm - 1; while (a <= b && !R.mcnt[a]) a++; while (b >= a && !R.mcnt[b]) b--;
+            if (b < a) return null; const partial = P.running && P.mi0 + b === P.lastMi; return { v, a, b, partial, bc: partial ? b - 1 : b }
+        }
+        function delta12(S) {
+            const { v, a, bc } = S; if (bc - a + 1 < 12) return null; let s = 0; for (let i = bc - 11; i <= bc; i++) s += v[i];
+            const avg = s / 12; if (bc - a + 1 < 24) return { avg, pct: null };
+            let p = 0; for (let i = bc - 23; i <= bc - 12; i++) p += v[i]; p /= 12; return { avg, pct: p > 0 ? (avg / p - 1) * 100 : null }
+        }
+        function drawMonth(R, met) {
+            const S = monthSeries(R, met); if (!S) return `<div class="ld">No data for the selected filters</div>`;
+            const W = 600, H = 400, L = 48, RR = 14, T = 34, B = 30, pw = W - L - RR, ph = H - T - B, { v, a, b, partial, bc } = S, cnt = b - a + 1;
+            let max = 0; for (let i = a; i <= b; i++) if (v[i] > max) max = v[i];
+            const sc = niceScale(max * 1.04), X = i => L + (cnt > 1 ? (i - a) / (cnt - 1) * pw : pw / 2), Y = x => T + ph - x / sc.top * ph, y0 = T + ph;
+            let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Month-wise trend"><defs><linearGradient id="mg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4d8de6" stop-opacity=".42"/><stop offset="1" stop-color="#4d8de6" stop-opacity=".03"/></linearGradient></defs>`;
+            sc.ticks.forEach(t => { const y = Y(t); s += `<line x1="${L}" x2="${W - RR}" y1="${y}" y2="${y}" stroke="#dbe4f2" stroke-width="1"/><text x="${L - 8}" y="${y + 4}" text-anchor="end" font-size="12" font-weight="700" fill="#0f2a5a">${tick(t)}</text>` });
+            const k12 = bc >= a ? Math.min(12, bc - a + 1) : 0;
+            if (k12 >= 3) { const i0 = bc - k12 + 1; s += `<rect x="${X(i0)}" y="${T}" width="${Math.max(2, X(bc) - X(i0))}" height="${ph}" fill="#4d8de6" opacity=".16"/>` }
+            for (let i = a; i <= b; i++) {
+                const m = (P.mi0 + i) % 12, yy = Math.floor((P.mi0 + i) / 12);
+                if (cnt > 30) { if (m === 0) { s += `<line x1="${X(i)}" x2="${X(i)}" y1="${T}" y2="${y0}" stroke="#dbe4f2"/><text x="${X(i)}" y="${y0 + 20}" text-anchor="middle" font-size="12" font-weight="800" fill="#0f2a5a">${yy}</text>` } }
+                else { const st = cnt > 14 ? 2 : 1; if ((i - a) % st === 0) s += `<text x="${X(i)}" y="${y0 + 18}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0f2a5a">${MON[m]}${m === 0 || i === a ? " '" + String(yy).slice(2) : ""}</text>` }
+            }
+            s += `<line x1="${L}" x2="${W - RR}" y1="${y0}" y2="${y0}" stroke="#c3d0e8"/>`;
+            if (bc >= a) {
+                let d = ""; for (let i = a; i <= bc; i++) d += (i === a ? "M" : "L") + X(i).toFixed(1) + " " + Y(v[i]).toFixed(1) + " ";
+                s += `<path d="${d}L${X(bc).toFixed(1)} ${y0} L${X(a).toFixed(1)} ${y0} Z" fill="url(#mg)"/><path d="${d}" fill="none" stroke="#0f2a5a" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>`
+            }
+            if (k12 >= 3) {
+                const i0 = bc - k12 + 1; let sm = 0; for (let i = i0; i <= bc; i++) sm += v[i]; const avg = sm / k12;
+                s += `<line x1="${X(i0)}" x2="${X(bc)}" y1="${Y(avg)}" y2="${Y(avg)}" stroke="#0f2a5a" stroke-width="1.5" stroke-dasharray="5 4"/>`;
+                s += pill(W - RR, 4, `Last ${k12}M avg ≈${fm(avg)}`, { anchor: "end", minX: L, maxX: W - RR, minY: 2, maxY: H })
+            }
+            if (partial) {
+                if (bc >= a) s += `<line x1="${X(bc)}" y1="${Y(v[bc])}" x2="${X(b)}" y2="${Y(v[b])}" stroke="#0f2a5a" stroke-width="2.2" stroke-dasharray="5 4"/>`;
+                s += `<circle cx="${X(b)}" cy="${Y(v[b])}" r="6" fill="#f4b400" stroke="#fff" stroke-width="2"/>`;
+                s += pill(X(b) + 4, Y(v[b]) + 10, `${MON[(P.mi0 + b) % 12]} MTD · ${fm(v[b])} · partial`, { anchor: "end", minX: L, maxX: W - RR, minY: T, maxY: y0 })
+            }
+            if (bc >= a) {
+                let pk = a, lo = a; for (let i = a; i <= bc; i++) { if (v[i] > v[pk]) pk = i; if (R.mcnt[i] && v[i] < v[lo]) lo = i }
+                if (bc > a) {
+                    s += `<line x1="${X(pk)}" x2="${X(pk)}" y1="${Y(v[pk])}" y2="${y0}" stroke="#0f2a5a" stroke-width="1.2" stroke-dasharray="3 3" opacity=".6"/><circle cx="${X(pk)}" cy="${Y(v[pk])}" r="6" fill="#f4b400" stroke="#fff" stroke-width="2"/>`;
+                    s += pill(X(pk) + 10, Y(v[pk]) - 30, `Peak ${fm(v[pk])} · ${mlab(P.mi0 + pk)}`, { minX: L, maxX: W - RR, minY: T - 6, maxY: y0 });
+                    if (lo !== pk) { s += `<circle cx="${X(lo)}" cy="${Y(v[lo])}" r="6" fill="#fff" stroke="#0f2a5a" stroke-width="2"/>` + pill(X(lo) + 10, Y(v[lo]) + 6, `${mlab(P.mi0 + lo)} · ${fm(v[lo])}`, { minX: L, maxX: W - RR, minY: T, maxY: y0 }) }
+                }
+            }
+            for (let i = a; i <= b; i++) s += `<circle cx="${X(i)}" cy="${Y(v[i])}" r="7" fill="transparent"><title>${mlab(P.mi0 + i)} · ${fc(v[i])}${partial && i === b ? " (partial)" : ""}</title></circle>`;
+            return s + "</svg>"
+        }
+        function kp(icon, label, val, sub, cls, badge) {
+            return `<div class="kp ${cls || ""}">${badge ? `<span class="bd">★ ${badge}</span>` : ""}<div class="ki">${ic(icon)}</div><div class="kb"><div class="kl">${label}</div><div class="kv">${val}</div><div class="ks">${sub}</div></div></div>`
+        }
+        const chip = p => p == null ? "" : `<span class="chip ${p >= 0 ? "up" : "dn"}">${p >= 0 ? "▲" : "▼"} ${Math.abs(p).toFixed(1)}% vs prior 12M</span>`;
+        const tgl = (card, cur) => `<div class="tg">${MK.map(k => `<button type="button" data-c="${card}" data-m="${k}" class="${cur === k ? "on" : ""}">${cur === k ? ic("ck") : ""}${ic(k)}${MET[k][0]}</button>`).join("")}</div>`;
+        function monthCard(R) {
+            const met = ST.mm, S = monthSeries(R, met);
+            let sub = "Monthly volume", kps = "";
+            if (S) {
+                const { v, a, b, partial, bc } = S; let tot = 0; for (let i = a; i <= b; i++) tot += v[i];
+                sub = `Monthly volume · ${mlab(P.mi0 + a)} – ${mlab(P.mi0 + b)}${partial ? ` (${MONF[(P.mi0 + b) % 12]} is still running)` : ""}`;
+                let pk = -1; for (let i = a; i <= bc; i++) if (pk < 0 || v[i] > v[pk]) pk = i;
+                const d = delta12(S);
+                kps = kp("trend", "Grand Total", fc(tot), `${mlab(P.mi0 + a)} – ${mlab(P.mi0 + b)}${partial ? " MTD" : ""}`) +
+                    kp("peak", "Peak Month", pk >= 0 ? fm(v[pk]) : "—", pk >= 0 ? mlab(P.mi0 + pk) : "") +
+                    kp("trend", "Avg / Month · Last 12M", d ? "≈" + fm(d.avg) : "—", d ? chip(d.pct) || "&nbsp;" : "<small>needs 12 full months</small>")
+            }
+            return `<section class="cd dk"><div class="ch"><div class="ic">${ic("chart")}</div><div class="tt"><h3>Month-wise Trend</h3><p>${esc(sub)}</p></div><div class="lg"><span><i></i>Actual</span><span><i class="d"></i>Month to date</span></div>${tgl("mm", met)}</div><div class="kps">${kps}</div><div class="cvw">${drawMonth(R, met)}</div></section>`
+        }
+        /* ---------- Year & Month wise Heatmap ---------- */
+        const HLV = [{ bg: "#d92d3f", fg: "#fff" }, { bg: "#f6b9c0", fg: "#7a1d2a" }, { bg: "#e4ecf8", fg: "#0f2a5a" }, { bg: "#c3e9cb", fg: "#14532d" }, { bg: "#62b97b", fg: "#08341a" }, { bg: "#0f7d3e", fg: "#fff" }];
+        function heatData(R, met) {
+            const v = R.mv[met], cnt = R.mcnt; let a = 0, b = R.nm - 1; while (a <= b && !cnt[a]) a++; while (b >= a && !cnt[b]) b--;
+            if (b < a) return null; const y0 = Math.floor((P.mi0 + a) / 12), y1 = Math.floor((P.mi0 + b) / 12), rows = [];
+            for (let y = y0; y <= y1; y++) {
+                const cells = []; let tot = 0, n = 0;
+                for (let m = 0; m < 12; m++) {
+                    const i = y * 12 + m - P.mi0, has = i >= a && i <= b && cnt[i] > 0, run = has && P.running && y * 12 + m === P.lastMi, val = has ? v[i] : 0;
+                    cells.push({ m, has, run, v: val }); if (has) { tot += val; n++ }
+                }
+                rows.push({ y, cells, tot, n, run: cells.some(c => c.run), full: n === 12 && !cells.some(c => c.run) })
+            }
+            return { rows, a, b }
+        }
+        function heatCard(R) {
+            const met = ST.hm, H = heatData(R, met), tg = tgl("hm", met);
+            const head = (lg) => `<div class="ch"><div class="ic">${ic("chart")}</div><div class="tt"><h3>Year &amp; Month wise Heatmap</h3><p>Performance Overview at a Glance</p></div>${lg || ""}</div>`;
+            if (!H) return `<section class="cd dk hm">${head()}<div class="ld">No data for the selected filters</div></section>`;
+            const comp = []; H.rows.forEach(r => r.cells.forEach(c => { if (c.has && !c.run) comp.push(c.v) }));
+            const all = []; H.rows.forEach(r => r.cells.forEach(c => { if (c.has) all.push(c.v) }));
+            const mx = Math.max(...all, 0), U = mx >= 1e6 ? { d: 1e6, s: "M", w: "millions (M)" } : mx >= 1e3 ? { d: 1e3, s: "K", w: "thousands (K)" } : { d: 1, s: "", w: "units" };
+            const f1 = v => U.d === 1 ? String(Math.round(v)) : (v / U.d).toFixed(1), fU = v => f1(v) + U.s;
+            /* ছয়টা রঙের ধাপ ডেটা থেকেই বের হয় (percentile) */
+            const base = (comp.length >= 2 ? comp : all).slice().sort((x, y) => x - y), cuts = [];
+            if (base.length >= 2) [.04, .22, .45, .70, .90].forEach(q => { let c = base[Math.floor(q * (base.length - 1))] / U.d; c = c >= 20 ? Math.round(c) : Math.round(c * 10) / 10; if (!cuts.length || c > cuts[cuts.length - 1]) cuts.push(c) });
+            const lvl = v => { const x = v / U.d; let k = 0; cuts.forEach(c => { if (x >= c) k++ }); return cuts.length ? Math.round(k * 5 / cuts.length) : 3 };
+            const cl = c => c >= 20 ? String(Math.round(c)) : c.toFixed(1);
+            const lg = cuts.length ? cuts.map((c, k) => ({ l: cuts.length ? Math.round(k * 5 / cuts.length) : 0, t: k === 0 ? "&lt;" + cl(c) : cl(cuts[k - 1]) + "–" + cl(c) })).concat([{ l: 5, t: cl(cuts[cuts.length - 1]) + "+" }]) : [];
+            const legend = lg.length ? `<div class="hlg">${lg.map(x => `<span><i style="background:${HLV[x.l].bg}"></i>${x.t}</span>`).join("")}</div>` : "";
+            let pk = null, lw = null; H.rows.forEach(r => r.cells.forEach(c => { if (c.has && !c.run) { if (!pk || c.v > pk.c.v) pk = { c, y: r.y }; if (c.v > 0 && (!lw || c.v < lw.c.v)) lw = { c, y: r.y } } }));
+            const grand = H.rows.reduce((s, r) => s + r.tot, 0), maxTot = Math.max(...H.rows.map(r => r.tot), 1);
+            /* গড় সারি: শেষ ৩টা পুরো বছর (না থাকলে সব পুরো মাস) */
+            const fullY = H.rows.filter(r => r.full).slice(-3), src = fullY.length ? fullY : H.rows;
+            const avg = Array.from({ length: 12 }, (_, m) => { let s = 0, n = 0; src.forEach(r => { const c = r.cells[m]; if (c.has && !c.run) { s += c.v; n++ } }); return n ? s / n : null });
+            const av = avg.map((v, m) => ({ v, m })).filter(x => x.v != null); let hi = null, lo = null; av.forEach(x => { if (!hi || x.v > hi.v) hi = x; if (!lo || x.v < lo.v) lo = x });
+            const avLabel = fullY.length ? (fullY.length > 1 ? `${fullY[0].y}–${String(fullY[fullY.length - 1].y).slice(2)}` : String(fullY[0].y)) : "available";
+            const first = mlab(P.mi0 + H.a), last = mlab(P.mi0 + H.b), run = P.running && P.mi0 + H.b === P.lastMi;
+            const kps = kp("trend", "Grand Total", fc(grand), `${first} – ${last}${run ? " (month to date)" : ""}`) +
+                kp("peak", "Best Single Month", pk ? fU(pk.c.v) : "—", pk ? `${MON[pk.c.m]} ${pk.y} · tagged PEAK in the grid` : "") +
+                kp("trend", "Strongest · Softest Month", hi && lo && hi.m !== lo.m ? `${MON[hi.m]} ${fU(hi.v)} · ${MON[lo.m]} ${fU(lo.v)}` : "—", fullY.length ? `average of the full years ${avLabel}` : "average of the available full months", "sm");
+            let g = `<div class="hg"><div class="hh" style="text-align:left">Year</div>${MON.map(m => `<div class="hh">${m}</div>`).join("")}<div class="hh">Total · share</div>`;
+            H.rows.forEach(r => {
+                g += `<div class="hy">${r.y}${r.run ? "<small>YTD</small>" : ""}</div>`;
+                r.cells.forEach(c => {
+                    if (!c.has) { g += `<div class="hc nd" title="${MON[c.m]} ${r.y}: no data yet">–</div>`; return }
+                    if (c.run) { g += `<div class="hc mtd" title="${MON[c.m]} ${r.y}: ${fc(c.v)} (month still running)">${f1(c.v)}<small>MTD</small></div>`; return }
+                    const L = HLV[lvl(c.v)], isP = pk && pk.c === c, isL = lw && lw.c === c && lw.c !== (pk && pk.c);
+                    g += `<div class="hc${isP ? " pk" : ""}${isL ? " lw" : ""}" style="background:${L.bg};color:${L.fg}" title="${MON[c.m]} ${r.y}: ${fc(c.v)}">${f1(c.v)}${isP ? "<small>PEAK</small>" : isL ? "<small>LOW</small>" : ""}</div>`
+                });
+                g += `<div class="ts" title="${fc(r.tot)}"><div>${fU(r.tot)}<span>${(r.tot / grand * 100).toFixed(1)}%</span></div><div class="br"><i${r.run ? ' class="run"' : ""} style="width:${(r.tot / maxTot * 100).toFixed(1)}%"></i></div></div>`
+            });
+            if (H.rows.length > 1) {
+                g += `<div class="hy" style="font-size:12px">Avg<small>${avLabel}</small></div>`;
+                avg.forEach((v, m) => {
+                    if (v == null) { g += `<div class="hc nd">–</div>`; return }
+                    const isL = lo && lo.m === m && hi.m !== lo.m, isH = hi && hi.m === m && hi.m !== lo.m;
+                    g += `<div><div class="hc av${isL ? " lo" : ""}${isH ? " hi" : ""}">${f1(v)}</div>${isL ? '<div class="hz">▼ LOW</div>' : isH ? '<div class="hz">▲ HIGH</div>' : ""}</div>`
+                });
+                g += `<div class="hc gt">${fU(grand)}<small>GRAND TOTAL · 100%</small></div>`
+            }
+            g += "</div>";
+            const foot = `<div class="hfoot"><span><i style="background:repeating-linear-gradient(135deg,#eef3fb 0 5px,#dbe6f6 5px 10px);border:1px dashed #9fb3d3"></i>Month still running${run ? ` (${MON[(P.mi0 + H.b) % 12]} ${Math.floor((P.mi0 + H.b) / 12)}, ${+P.last.slice(8, 10)} days in)` : ""}</span><span><i style="background:#0f7d3e;outline:2px solid #0f2a5a;outline-offset:-1px"></i>Peak month</span><span><i style="background:#d92d3f;outline:2px solid #0f2a5a;outline-offset:-1px"></i>Lowest full month</span><span><i style="border:1px dashed #cfd9ec"></i>No data yet</span></div>`;
+            return `<section class="cd dk hm">${head(legend)}<div class="hcap"><span>Monthly volume in ${U.w} · the darker the cell, the higher the month</span>${tg}</div><div class="kps">${kps}</div><div class="hgw">${g}</div>${foot}</section>`
+        }
+        /* ---------- Production Achievement Analysis : Bay wise | TGT vs ACT (day-wise, month) ---------- */
+        ST.ac = "fg"; ST.am = null; ST.acv = "bay";
+        function achCard(R) {
+            const met = ST.ac, q = MK.indexOf(met), nb = R.nb, view = ST.acv === "tva" ? "tva" : "bay";
+            const yms = [...new Set(P.dd.map(x => x.s.slice(0, 7)))].sort();
+            const ym = yms.includes(ST.am) ? ST.am : yms[yms.length - 1];
+            const sel = `<select class="achs" aria-label="Month">${yms.map(v => `<option value="${v}"${v === ym ? " selected" : ""}>${MON[+v.slice(5, 7) - 1]} ${v.slice(0, 4)}</option>`).join("")}</select>`;
+            const vt = `<div class="achv"><button type="button" data-m="bay" class="${view === "bay" ? "on" : ""}">Bay wise</button><button type="button" data-m="tva" class="${view === "tva" ? "on" : ""}">TGT vs ACT</button></div>`;
+            const head = `<div class="ch"><div class="ic">${ic("chart")}</div><div class="tt"><h3>Production <b>Achievement</b> Analysis</h3><p>${view === "bay" ? "Day-wise bay share of" : "Daily target vs actual of"} ${MET[met][0]} · ${MON[+ym.slice(5, 7) - 1]} ${ym.slice(0, 4)}</p></div>${vt}${sel}</div>`;
+            const [yy, mm] = ym.split("-").map(Number), dim = new Date(Date.UTC(yy, mm, 0)).getUTCDate();
+            const dIdx = new Map(P.dd.map((x, j) => [x.s, j]));
+            const days = Array.from({ length: dim }, (_, k) => { const s = ym + "-" + String(k + 1).padStart(2, "0"); return { j: dIdx.has(s) ? dIdx.get(s) : -1, s } });
+            const val = (j, b) => j < 0 ? 0 : R.dbm[(j * nb + b) * 3 + q];
+            const bays = []; for (let b = 0; b < nb; b++) if (days.some(d => val(d.j, b) > 0)) bays.push(b);
+            bays.sort((x, y) => nat(R.bayD[x], R.bayD[y]));
+            const rowsD = days.map(({ j, s }) => { const v = bays.map(b => val(j, b)); return { j, d: +s.slice(8, 10), tot: v.reduce((p, c) => p + c, 0), v } });
+            if (!rowsD.some(x => x.tot > 0)) return `<section class="cd dk ach">${head}<div class="ld">No data for the selected filters</div></section>`;
+            const metTag = `<div class="tg">${MK.map(k => `<button type="button" data-c="ac" data-m="${k}" class="${met === k ? "on" : ""}">${met === k ? ic("ck") : ""}${ic(k)}${MET[k][0]}</button>`).join("")}</div>`;
+
+            if (view === "tva") {
+                const hasT = !!P.tg, tgOf = x => hasT && x.j >= 0 ? (R.dtg[x.j] || 0) : 0;
+                const cols = rowsD.map(c => {
+                    const tg = tgOf(c);
+                    if (!c.tot && !tg) return `<div class="ach-c"><div class="ach-t">–</div><div class="ach-b ach-no"></div><div class="ach-d">${c.d}</div></div>`;
+                    if (!hasT || !tg) return `<div class="ach-c"><div class="ach-t" title="${fc(c.tot)}">${fv(c.tot)}</div><div class="ach-b"><div class="ach-s" style="height:100%;background:#1565d8" title="ACT · ${fc(c.tot)}"></div></div><div class="ach-d">${c.d}</div></div>`;
+                    const ach = c.tot / tg * 100, pct = Math.min(ach, 100), gap = 100 - pct;
+                    const segs = [
+                        [pct, "#1565d8", `ACT · ${fc(c.tot)} (${ach.toFixed(1)}% of TGT ${fc(tg)})`, `${ach.toFixed(1)}%`],
+                        [gap, "#ff9f1a", `Remaining to TGT · ${fc(Math.max(tg - c.tot, 0))}`, `${gap.toFixed(1)}%`]
+                    ].filter(x => x[0] > 0);
+                    const html = segs.map(([h, bg, t, lb]) => `<div class="ach-s" style="height:${h.toFixed(2)}%;background:${bg}" title="${esc(t)}">${h >= 6 ? lb : ""}</div>`).join("");
+                    return `<div class="ach-c"><div class="ach-t" title="${fc(c.tot)}">${fv(c.tot)}</div><div class="ach-b">${html}</div><div class="ach-d">${c.d}</div></div>`;
+                }).join("");
+                const lg = `<div class="scbl"><span><i style="background:#1565d8"></i>ACT</span><span><i style="background:#ff9f1a"></i>Remaining to TGT</span></div>`;
+                const cap = hasT ? "Target = 100% · Blue = ACT achieved, Orange = remaining to target" : "Target column data-তে পাওয়া যায়নি — শুধু ACT দেখাচ্ছে";
+                return `<section class="cd dk ach">${head}<div class="hcap"><span>${cap}</span>${metTag}</div><div class="ach-w"><div class="ach-g">${cols}</div></div>${lg}</section>`;
+            }
+
+            const cols = rowsD.map(c => {
+                if (!c.tot) return `<div class="ach-c"><div class="ach-t">–</div><div class="ach-b ach-no"></div><div class="ach-d">${c.d}</div></div>`;
+                const segs = c.v.map((x, k) => x <= 0 ? "" : `<div class="ach-s" style="height:${(x / c.tot * 100).toFixed(2)}%;background:${PAL[k % PAL.length]}" title="${esc(R.bayD[bays[k]] || "All")} · ${fc(x)} (${(x / c.tot * 100).toFixed(1)}%)">${x / c.tot >= .06 ? (x / c.tot * 100).toFixed(1) + "%" : ""}</div>`).join("");
+                return `<div class="ach-c"><div class="ach-t" title="${fc(c.tot)}">${fv(c.tot)}</div><div class="ach-b">${segs}</div><div class="ach-d">${c.d}</div></div>`;
+            }).join("");
+            const bl = `<div class="scbl">${bays.map((b, k) => `<span><i style="background:${PAL[k % PAL.length]}"></i>${esc(R.bayD[b] || "All")}</span>`).join("")}</div>`;
+            return `<section class="cd dk ach">${head}<div class="hcap"><span>Bay-wise share of each day's total · figure on top = day total</span>${metTag}</div><div class="ach-w"><div class="ach-g">${cols}</div></div>${bl}</section>`;
+        }
+        /* ---------- Production Calendar : Planning · Holiday · Production days ---------- */
+        ST.cy = null;
+        const WD = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], p2 = n => String(n).padStart(2, "0");
+        function calCard(R) {
+            const inF = (y, mo, s) => (!F.year.size || F.year.has(String(y))) && (!F.month.size || F.month.has(String(mo))) && (!F.from || s >= F.from) && (!F.to || s <= F.to);
+            const yrs = P.years.filter(y => !F.year.size || F.year.has(String(y))), first = P.dd.reduce((m, x) => x.s < m ? x.s : m, P.last);
+            const Y = yrs.includes(+ST.cy) ? +ST.cy : yrs[yrs.length - 1];
+            const pills = `<div class="tg">${yrs.map(y => `<button type="button" data-c="cy" data-m="${y}" class="${y === Y ? "on" : ""}">${y === Y ? ic("ck") : ""}${ic("cal")}${y}</button>`).join("")}</div>`;
+            const lg = `<div class="hlg"><span><i style="background:#0f7d3e"></i>Production Day</span><span><i style="background:#d92d3f"></i>Holiday</span></div>`;
+            const head = `<div class="ch"><div class="ic">${ic("cal")}</div><div class="tt"><h3>Shop Floor Production Calendar</h3><p>Good Production আছে = Production Day · না থাকলে = Holiday</p></div>${yrs.length ? lg + pills : ""}</div>`;
+            if (!yrs.length) return `<section class="cd dk pc">${head}<div class="ld">No data for the selected filters</div></section>`;
+            let pl = 0, ho = 0, pr = 0; const mp = Array(12).fill(0), cols = [];
+            for (let m = 0; m < 12; m++) {
+                const dim = new Date(Date.UTC(Y, m + 1, 0)).getUTCDate(); let h = "";
+                for (let d = 1; d <= dim; d++) {
+                    const s = Y + "-" + p2(m + 1) + "-" + p2(d), wd = WD[new Date(Date.UTC(Y, m, d)).getUTCDay()], ttl = d + " " + MON[m] + " " + Y;
+                    let cls = "na", at = "";
+                    if (s >= first && s <= P.last && inF(Y, m + 1, s)) {
+                        const j = P.dix.get(s), g = j === undefined ? 0 : R.dg[j]; pl++;
+                        if (g > 0) { pr++; mp[m]++; cls = "pd" } else { ho++; cls = "hd" }
+                        at = ` data-d="${j === undefined ? -1 : j}" data-t="${ttl}"`
+                    }
+                    h += `<div class="pcd ${cls}"${at}><b>${d}</b><span>${wd}</span></div>`
+                }
+                cols.push(`<div class="pcm"><div class="pch">${MONF[m]}</div>${h}</div>`)
+            }
+            const pc = v => pl ? (v / pl * 100).toFixed(1) + "% of planning days" : "";
+            const side = `<div class="pcs"><div class="pck"><div class="l">Total Day</div><div class="v">${pl}</div><div class="s">${Y} · Production + Holiday</div></div><div class="pck h"><div class="l">Holiday</div><div class="v">${ho}</div><div class="s">${pc(ho)}</div></div><div class="pck g"><div class="l">Production Day</div><div class="v">${pr}</div><div class="s">${pc(pr)}</div></div></div>`;
+            const sum = `<div class="pcf">${MON.map((n, m) => `<div><small>${n}</small><b>${mp[m]}</b></div>`).join("")}<div class="t"><small>Total</small><b>${pr}</b></div></div>`;
+            return `<section class="cd dk pc">${head}<div class="pcb"><div class="pcg"><div class="pcgi">${cols.join("")}</div>${sum}</div>${side}</div></section>`
+        }
+        const PAL = ["#1565d8", "#2fb34c", "#ff7a1a", "#6f3fa0", "#12b0c9", "#f5c000", "#e84a6f", "#8d6e63", "#607d8b", "#9ccc65"];
+        function yearData(R, met) {
+            const mi = MK.indexOf(met), nb = R.nb, years = [], cell = (yi, bi) => R.yb[(yi * nb + bi) * 3 + mi];
+            for (let yi = 0; yi < R.ny; yi++) if (R.ycnt[yi]) years.push(yi);
+            const bays = []; for (let bi = 0; bi < nb; bi++) { let s = 0; years.forEach(yi => s += cell(yi, bi)); if (s > 0) bays.push(bi) }
+            bays.sort((x, y) => nat(R.bayD[x], R.bayD[y]));
+            const ys = years.map(yi => { let t = 0; bays.forEach(bi => t += cell(yi, bi)); return { y: R.y0 + yi, yi, t, run: P.running && R.y0 + yi === +P.last.slice(0, 4) } });
+            return { ys, bays, cell, grand: ys.reduce((s, x) => s + x.t, 0) }
+        }
+        function drawYear(R, met, YD) {
+            const { ys, bays, cell, grand } = YD; if (!ys.length || !(grand > 0)) return `<div class="ld">No data for the selected filters</div>`;
+            const W = 600, H = 340, L = 40, RR = 8, Y0 = 46, Y1 = 292, n = ys.length, slot = (W - L - RR) / n, bw = Math.min(104, slot * .66), col = i => PAL[i % PAL.length];
+            const best = bestYear(YD);
+            let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Year-to-year trend"><defs>${bays.map((bi, i) => `<pattern id="ht${i}" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="9" height="9" fill="${col(i)}"/><rect width="4.5" height="9" fill="#fff" opacity=".3"/></pattern>`).join("")}<linearGradient id="yp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#17479a"/><stop offset="1" stop-color="#0a2a70"/></linearGradient></defs>`;
+            for (let p = 0; p <= 100; p += 20) { const y = Y1 - p / 100 * (Y1 - Y0); s += `<line x1="${L}" x2="${W - RR}" y1="${y}" y2="${y}" stroke="#dbe4f2"/><text x="${L - 6}" y="${y + 4}" text-anchor="end" font-size="12" font-weight="700" fill="#0f2a5a">${p}%</text>` }
+            ys.forEach((o, k) => {
+                const cx = L + slot * (k + .5), x = cx - bw / 2; let acc = 0;
+                bays.forEach((bi, i) => {
+                    const v = cell(o.yi, bi), share = o.t > 0 ? v / o.t : 0, h = share * (Y1 - Y0), y = Y1 - (acc + share) * (Y1 - Y0); acc += share;
+                    if (h <= 0) return;
+                    s += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" fill="${o.run ? `url(#ht${i})` : col(i)}"><title>${esc(R.bayD[bi] || "All")} · ${o.y} · ${fc(v)} (${(share * 100).toFixed(1)}%)</title></rect>`;
+                    if (h >= 15 && bw > 40) s += `<text x="${cx}" y="${(y + h / 2 + 4).toFixed(1)}" text-anchor="middle" font-size="${bw > 70 ? 12 : 10.5}" font-weight="800" fill="${i % PAL.length === 5 ? "#3b2a00" : "#fff"}" style="paint-order:stroke;stroke:rgba(0,0,0,.18);stroke-width:2px">${(share * 100).toFixed(1)}%</text>`
+                });
+                const pc = (o.t / grand * 100).toFixed(1) + "%", tx = n > 6 ? fm(o.t) : `${fm(o.t)} | ${pc}`, pw = Math.round(tx.length * 6.1 + 16);
+                s += `<g><rect x="${(cx - pw / 2).toFixed(1)}" y="10" width="${pw}" height="22" rx="11" fill="#e8f0fd" stroke="#d3def2"/><text x="${cx}" y="25" text-anchor="middle" font-size="11" font-weight="800" fill="#0f2a5a">${tx}</text></g>`;
+                const lb = o.run ? `${o.y} (YTD)` : String(o.y), lw = Math.max(58, Math.round(lb.length * 8 + 22)), isB = best && best.y === o.y;
+                s += `<g><rect x="${(cx - lw / 2).toFixed(1)}" y="302" width="${lw}" height="28" rx="14" fill="url(#yp)"${isB ? ' stroke="#f2c14e" stroke-width="2.5"' : ""}/><text x="${cx}" y="321" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">${isB ? "★ " : ""}${lb}</text></g>`
+            });
+            return s + "</svg>"
+        }
+        function bestYear(YD) { const c = YD.ys.filter(o => !o.run), L = c.length ? c : YD.ys; let b = null; L.forEach(o => { if (!b || o.t > b.t) b = o }); return b }
+        function yearCard(R) {
+            const met = ST.ym, YD = yearData(R, met), { ys, bays, cell, grand } = YD; let kps = "", legend = "", foot = "", sub = "% on each bar = that year’s contribution to the grand total";
+            if (ys.length && grand > 0) {
+                const best = bestYear(YD), last = ys[ys.length - 1], S = monthSeries(R, met), d = S ? delta12(S) : null;
+                const first = ys[0].y; let bb = null;
+                ys.forEach(o => bays.forEach(bi => { const sh = o.t > 0 ? cell(o.yi, bi) / o.t : 0; if (!bb || sh > bb.sh) bb = { sh, bi, y: o.y, run: o.run } }));
+                kps = kp("trend", "Grand Total", fc(grand), `${S ? mlab(P.mi0 + S.a) + " – " + mlab(P.mi0 + S.b) + (S.partial ? " MTD" : "") : first + " – " + last.y}`) +
+                    kp("peak", "Best Year", String(best.y), `${(best.t / grand * 100).toFixed(1)}% • ${fm(best.t)}`, "best", "Best Year") +
+                    kp("trend", `${last.y} - ${last.run ? "Year still running" : "Latest year"}`, `${(last.t / grand * 100).toFixed(1)}%`, `${fm(last.t)} so far` + (d && d.pct != null ? "<br>" + chip(d.pct) : ""));
+                legend = `<div class="bl">${bays.map((bi, i) => `<span><i style="background:${PAL[i % PAL.length]}"></i>${esc(R.bayD[bi] || "All")}</span>`).join("")}</div>`;
+                foot = bb ? `<div class="cft"><span>${ic("cup")}Best Bay : ${esc(R.bayD[bb.bi] || "All")} &nbsp;|&nbsp; ${(bb.sh * 100).toFixed(1)}% (${bb.y})</span></div>` : ""
+            }
+            return `<section class="cd dk"><div class="ch"><div class="ic">${ic("chart")}</div><div class="tt"><h3>Year-to-Year Trend</h3><p>${sub}</p></div>${tgl("ym", met)}</div><div class="kps">${kps}</div><div class="cvw" style="padding-bottom:0">${legend ? "" : ""}${drawYear(R, met, YD)}</div>${legend}${foot || '<div style="height:12px"></div>'}</section>`
+        }
+
+        /* ---------- Shift / Category Contribution Analysis ---------- */
+        const fv = v => { const a = Math.abs(v); return a >= 1e9 ? (v / 1e9).toFixed(2) + "B" : a >= 1e6 ? (v / 1e6).toFixed(1) + "M" : a >= 1e3 ? Math.round(v / 1e3) + "K" : String(Math.round(v)) };
+        ST.sc = "fg"; ST.cc = "fg";
+        const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="#f5a000" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2" fill="#ffc933"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M18.7 5.3l-1.8 1.8M7.1 16.9l-1.8 1.8"/></svg>';
+        const MOON = '<svg viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="#0b3d94"/></svg>';
+        const SIG = '<svg viewBox="0 0 24 24" fill="none" stroke="#0b3d94" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 5H6.5l6 7-6 7H18"/></svg>';
+        function contribCard(R, o) {
+            const met = ST[o.key], mi = MK.indexOf(met), n = o.n, names = o.names, head = `<div class="ch"><div class="ic">${ic("chart")}</div><div class="tt"><h3>${o.title}</h3><p>${o.sub}</p></div>${tgl(o.key, met)}</div>`;
+            const cell = (g, i) => o.arr[(g * n + i) * 3 + mi], tot = [0, 0], items = [], dt = [];
+            for (let i = 0; i < n; i++) { const t = cell(0, i) + cell(1, i); dt[i] = t; if (t > 0) items.push(i); tot[0] += cell(0, i); tot[1] += cell(1, i) }
+            const grand = tot[0] + tot[1];
+            if (!(grand > 0)) return `<section class="cd dk sc">${head}<div class="ld">No data for the selected filters</div></section>`;
+            items.sort((x, y) => nat(names[x], names[y]));
+            const col = i => PAL[i % PAL.length], r = 84, C0 = 2 * Math.PI * r;
+            const seg = (p, off, c) => p > 0 ? `<circle cx="130" cy="130" r="${r}" fill="none" stroke="${c}" stroke-width="50" stroke-dasharray="${(p * C0).toFixed(2)} ${C0.toFixed(2)}" stroke-dashoffset="${(-off * C0).toFixed(2)}" transform="rotate(-90 130 130)"/>` : "";
+            const lab = (p, off) => { if (p < .05) return ""; const a = (off + p / 2) * 2 * Math.PI - Math.PI / 2; return `<text x="${(130 + r * Math.cos(a)).toFixed(1)}" y="${(130 + r * Math.sin(a) + 5).toFixed(1)}" text-anchor="middle" font-size="14" font-weight="800" fill="#fff" style="paint-order:stroke;stroke:rgba(0,0,0,.25);stroke-width:2px">${(p * 100).toFixed(1)}%</text>` };
+            let segs = "", labs = "", legend = "";
+            if (o.donut === "shift") {
+                const pN = tot[1] / grand, pM = tot[0] / grand;
+                segs = seg(pN, 0, "url(#d" + o.key + "n)") + seg(pM, pN, "url(#d" + o.key + "m)"); labs = lab(pN, 0) + lab(pM, pN);
+                legend = `<div class="scg"><span><i style="background:#d9142c"></i>NIGHT <span>${(pN * 100).toFixed(1)}% · ${fv(tot[1])}</span></span><span><i style="background:#1565d8"></i>MORNING <span>${(pM * 100).toFixed(1)}% · ${fv(tot[0])}</span></span></div>`
+            } else {
+                let off = 0; items.forEach((i, k) => { const p = dt[i] / grand; segs += seg(p, off, col(k)); labs += lab(p, off); off += p });
+                const top = items.reduce((b, i) => dt[i] > dt[b] ? i : b, items[0]);
+                legend = `<div class="scg"><span><i style="background:${col(items.indexOf(top))}"></i>TOP <span>${esc(names[top] || "All")} · ${(dt[top] / grand * 100).toFixed(1)}%</span></span></div>`
+            }
+            const donut = `<svg viewBox="0 0 260 260" role="img" aria-label="${esc(o.title.replace(/<[^>]+>/g, ""))}"><defs><linearGradient id="d${o.key}n" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e8142f"/><stop offset="1" stop-color="#a50f26"/></linearGradient><linearGradient id="d${o.key}m" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1565d8"/><stop offset="1" stop-color="#0a3fa0"/></linearGradient></defs><circle cx="130" cy="130" r="109" fill="#fff" opacity=".6"/>${segs}<circle cx="130" cy="130" r="56" fill="#fff"/>${labs}<text x="130" y="131" text-anchor="middle" font-size="${fv(grand).length > 6 ? 23 : 27}" font-weight="800" fill="#0f2a5a">${fv(grand)}</text><text x="130" y="152" text-anchor="middle" font-size="13" font-weight="700" fill="#4a5a78">TOTAL</text><rect x="110" y="159" width="40" height="2.5" rx="1" fill="#1565d8"/></svg>`;
+            const colm = (g, name, icon) => {
+                const t = g === 2 ? grand : tot[g], tiles = items.map((i, k) => ({ i, k, v: g === 2 ? cell(0, i) + cell(1, i) : cell(g, i) })).filter(x => x.v > 0).reverse().map(x => {
+                    const sh = t > 0 ? x.v / t : 0;
+                    return `<div class="tl" style="flex-grow:${Math.max(sh, .01).toFixed(4)};background-color:${col(x.k)};${x.k % PAL.length === 5 ? "color:#3b2a00;text-shadow:none" : ""}" title="${esc(names[x.i] || "All")} · ${name} · ${fc(x.v)}"><b>${(sh * 100).toFixed(1)}%</b><small>${fv(x.v)}</small></div>`
+                }).join("");
+                return `<div class="scc"><div class="sct">${tiles || '<div class="ld">–</div>'}</div><div class="scf">${icon}${name}<small>${fv(t)}</small></div></div>`
+            };
+            const bl = `<div class="scbl">${items.map((i, k) => `<span><i style="background:${col(k)}"></i>${esc(names[i] || "All")}</span>`).join("")}</div>`;
+            return `<section class="cd dk sc">${head}<div class="scb"><div class="scl">${donut}${legend}</div><div class="scr">${colm(0, "MORNING", SUN)}${colm(1, "NIGHT", MOON)}${colm(2, "TOTAL", SIG)}</div></div>${bl}</section>`
+        }
+        const shiftCard = R => contribCard(R, { key: "sc", title: "Shift <b>Contribution</b> Analysis", sub: "Morning vs Night · bay-wise share inside each shift", arr: R.sb, n: R.nb, names: R.bayD, donut: "shift" });
+        const catCard = R => contribCard(R, { key: "cc", title: "Category <b>Contribution</b> Analysis", sub: "Category share of total · split by Morning &amp; Night", arr: R.sct, n: R.ncat, names: R.catD, donut: "dim" });
+        /* ---------- KPI cards (Finish Product · WIP · Good Production · Idle Machine) ---------- */
+        ICO.idle = '<circle cx="12" cy="12" r="9"/><path d="M10 9v6M14 9v6"/>';
+        const SUNW = '<svg viewBox="0 0 24 24" fill="none" stroke="#ffe08a" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4" fill="#ffd54a"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M18.7 5.3l-1.8 1.8M7.1 16.9l-1.8 1.8"/></svg>';
+        const MOONW = '<svg viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="#fff"/></svg>';
+        function lyChip(cur, ly, ok, inv) {
+            if (!ok || !(ly > 0)) return `<span class="ly na">vs LY n/a</span>`;
+            const p = (cur / ly - 1) * 100, up = p >= 0, good = inv ? !up : up;
+            return `<span class="ly ${good ? "g" : "b"}">${up ? "▲" : "▼"} ${up ? "+" : ""}${p.toFixed(1)}% vs LY</span>`
+        }
+        function kpiHTML(R) {
+            const nb = R.nb, defs = [["fg", "Finish Product", "fg", "k1"], ["wip", "WIP Product", "wip", "k2"], ["good", "Good Production", "good", "k3"]];
+            const bays = []; for (let bi = 0; bi < nb; bi++) { let t = 0; for (let yi = 0; yi < R.ny; yi++) for (let q = 0; q < 3; q++) t += R.yb[(yi * nb + bi) * 3 + q]; if (t > 0) bays.push(bi) }
+            bays.sort((x, y) => nat(R.bayD[x], R.bayD[y]));
+            const cols = bays.length > 6 ? 3 : 2, dv = `<div class="kdiv">BAY-WISE</div>`;
+            const chips = f => `<div class="kbay" style="grid-template-columns:repeat(${cols},minmax(0,1fr))">${bays.map((bi, i) => f(bi, i)).join("") || '<span><span>No data</span></span>'}</div>`;
+            const dot = i => `<i style="background:${PAL[i % PAL.length]}"></i>`;
+            let h = defs.map(([k, label, icon, cls], mi) => {
+                const tot = R.tot3[mi];
+                return `<div class="kc ${cls}"><div class="kt"><div class="kic">${ic(icon)}</div><div class="kn">${label}</div></div><div class="kv2" data-tip="${fv(tot)}">${fc(tot)}</div><div class="ksub">${lyChip(tot, R.lyT[mi], R.lyOk)}</div>${dv}${chips((bi, i) => { let t = 0; for (let yi = 0; yi < R.ny; yi++) t += R.yb[(yi * nb + bi) * 3 + mi]; return `<span data-tip="${fc(t)}"><span>${dot(i)}${esc(R.bayD[bi] || "All")}</span><b>${fv(t)}</b></span>` })}</div>`
+            }).join("");
+            const I = R.idle, L = R.idleL, rd = Math.round;
+            const lrr = (a, target) => { const f = a.map(Math.floor); let r = target - f.reduce((p, c) => p + c, 0); const ix = a.map((v, i) => [v - f[i], i]).sort((x, y) => y[0] - x[0]); for (let k = 0; r > 0 && k < ix.length; k++, r--) f[ix[k][1]]++; return f };
+            let idleHTML;
+            if (!I) idleHTML = `<div class="kc k4"><div class="kt"><div class="kic">${ic("idle")}</div><div class="kn">Idle Machine</div></div><div class="kv2">—</div><div class="ksub">No machine / shift data</div></div>`;
+            else {
+                const ib = []; for (let bi = 0; bi < nb; bi++) if (bays.includes(bi) || I.bm[bi] + I.bn[bi] > 0) ib.push(bi);
+                ib.sort((x, y) => nat(R.bayD[x], R.bayD[y]));
+                const tm = rd(I.m), tn = rd(I.n), vm = lrr(ib.map(b => I.bm[b]), tm), vn = lrr(ib.map(b => I.bn[b]), tn), dec = I.days > 1 ? 1 : 0;
+                const tot2 = (name, icon, tot) => `<div class="ksh">${icon}<span>${name}</span><u>|</u><b>${tot}</b></div>`;
+                const mcN = c => String((P.D.mcno || [])[c] ?? "").trim();
+                const mcList = mp => { const a = [...mp].map(([c, n]) => [mcN(c), n]).filter(x => x[0]).sort((x, y) => nat(x[0], y[0])).map(([nm, n]) => I.days > 1 ? nm + " (" + n + "d)" : nm); return a.length ? (a.length > 12 ? a.slice(0, 12).join(", ") + " +" + (a.length - 12) + " more" : a.join(", ")) : "—" };
+                const tipOf = bi => esc((R.bayD[bi] || "All") + (I.days > 1 ? " · idle machines (days)" : " · idle machines") + "\n☀ Morning: " + mcList(I.mmB[bi]) + "\n☾ Night: " + mcList(I.mnB[bi]));
+                const rows = ib.map((bi, k) => (I.bm[bi] + I.bn[bi] > 0) ? `<span data-tip="${tipOf(bi)}"><span>${dot(bays.includes(bi) ? bays.indexOf(bi) : k)}${esc(R.bayD[bi] || "All")}</span><u>|</u><em class="kmn">M <b>${vm[k]}</b> · N <b>${vn[k]}</b></em></span>` : "").join("") || '<span class="kno"><span>No idle machine</span></span>';
+                const CAL = '<svg class="kcal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>';
+                idleHTML = `<div class="kc k4"><div class="kt"><div class="kic">${ic("idle")}</div><div class="kn">Idle Machine</div></div><div class="kv2" data-tip="${I.t.toFixed(1)}${I.days > 1 ? " machines / day (avg)" : " machines (day total)"}">${tm + tn}</div><div class="ksub"><span class="kdt">${CAL}${I.days > 1 ? "Daily avg · " + I.days + " days" : "Day total"}</span>${lyChip(I.t, L ? L.t : 0, R.lyOk, true)}</div>${dv}<div class="ksh2">${tot2("Morning", SUNW, tm)}${tot2("Night", MOONW, tn)}</div><div class="kbay kbay2">${rows}</div><div class="klg"><b>M</b> = Morning <i></i> <b>N</b> = Night</div></div>`
+            }
+            h += idleHTML;
+            return h
+        }
+        {
+            const ct = document.createElement("div"); ct.id = "ctip"; document.body.appendChild(ct);
+            const CC = [["Bar", /bar/i], ["Hanger", /hanger/i], ["Sizer", /sizer/i], ["Clip", /clip/i], ["Accessories", /access/i]];
+            const fx = v => { const a = Math.abs(v); return a >= 1e9 ? (v / 1e9).toFixed(2) + "B" : a >= 1e6 ? (v / 1e6).toFixed(2) + "M" : a >= 1e3 ? Math.round(v / 1e3) + "K" : String(Math.round(v)) };
+            const bayN = s => { const m = String(s).match(/^bay\s*-?\s*0*(\d+)$/i); return m ? "Bay-" + String(m[1]).padStart(2, "0") : (String(s) || "All") };
+            function ctHTML(el) {
+                const R = LASTR; if (!R) return "";
+                const d = +el.dataset.d, t = el.dataset.t, hol = el.classList.contains("hd");
+                if (hol || d < 0) return `<div class="th"><b>${esc(t)}</b><span class="hol">Holiday · No production</span></div>`;
+                const colOf = R.catD.map(n => CC.findIndex(c => c[1].test(String(n))));
+                const rows = []; let gt = 0; const gc = CC.map(() => 0);
+                for (let bi = 0; bi < R.nb; bi++) {
+                    const cs = CC.map(() => 0); let tot = 0;
+                    for (let ci = 0; ci < R.ncat; ci++) {
+                        const v = R.dbc[(d * R.nb + bi) * R.ncat + ci]; if (!v) continue;
+                        tot += v; if (colOf[ci] >= 0) cs[colOf[ci]] += v
+                    }
+                    if (tot > 0) { rows.push({ n: R.bayD[bi], cs, tot }); cs.forEach((v, k) => gc[k] += v); gt += tot }
+                }
+                rows.sort((a, b) => nat(a.n, b.n));
+                const cell = v => v > 0 ? `<td>${fx(v)}</td>` : `<td class="z">-</td>`;
+                const body = rows.map(r => `<tr><td>${esc(bayN(r.n))}</td>${r.cs.map(cell).join("")}<td><b>${fx(r.tot)}</b></td><td>${(r.tot / gt * 100).toFixed(1)}%</td></tr>`).join("");
+                return `<div class="th"><b>${fx(gt)}</b><span>${esc(t)} · Total Production</span></div>
+<table><thead><tr><th>Bay Name</th>${CC.map(c => `<th>${c[0]}</th>`).join("")}<th>Total</th><th>%</th></tr></thead><tbody>${body}
+<tr class="tt"><td>Total</td>${gc.map(cell).join("")}<td>${fx(gt)}</td><td>100%</td></tr></tbody></table>`
+            }
+            let last = null;
+            document.addEventListener("mousemove", e => {
+                const el = e.target.closest && e.target.closest(".pcd[data-d]");
+                if (!el) { ct.style.display = "none"; last = null; return }
+                if (el !== last) { ct.innerHTML = ctHTML(el); last = el }
+                ct.style.display = "block";
+                ct.style.left = Math.max(6, Math.min(e.clientX + 14, innerWidth - ct.offsetWidth - 8)) + "px";
+                ct.style.top = Math.max(6, Math.min(e.clientY + 16, innerHeight - ct.offsetHeight - 8)) + "px"
+            })
+        }
+        let LASTR = null;
+        function renderCards() {
+            if (!P || !$("#cards")) return; LASTR = compute(); if ($("#kcs")) $("#kcs").innerHTML = kpiHTML(LASTR); drawCards()
+        }
+        function drawCards() {
+            const R = LASTR; if (!R) return;
+            $("#cards").innerHTML = monthCard(R) + yearCard(R) + shiftCard(R) + catCard(R) + heatCard(R) + achCard(R) + calCard(R);
+            document.querySelectorAll("#cards .tg button").forEach(b => b.onclick = () => { ST[b.dataset.c] = b.dataset.m; drawCards() });
+            document.querySelectorAll("#cards .achs").forEach(s => s.onchange = () => { ST.am = s.value; drawCards() });
+            document.querySelectorAll("#cards .achv button").forEach(b => b.onclick = () => { ST.acv = b.dataset.m; drawCards() })
+        }
+
+        /* ---------- page switching ---------- */
+        let CUR = "";
+        const msg = (t, d) => `<div class="empty"><b>${t}</b>${d}</div>`;
+        async function showProd() {
+            const c = $("#pgc");
+            if (!SUB) { c.innerHTML = msg("Production-Shopfloor data source not found", "Create the “Production-Shopfloor” sub-module under Production &amp; Planning in Admin Console."); return }
+            if (!PK) c.innerHTML = `<div class="ld">Loading data…</div>`;
+            await loadPK(); if (CUR !== "prod") return;
+            if (!PK) { c.innerHTML = PKERR === "err" ? msg("Could not load data", "Check your connection or your access to Production-Shopfloor, then reload.") : msg("No data connected yet", "Upload the Production Excel in Admin Console → Data Manager → Production &amp; Planning → Production-Shopfloor."); return }
+            c.innerHTML = filterBarHTML() + `<div class="kcs" id="kcs"></div><div class="cards" id="cards"></div>`; bindFilters(); renderCards()
+        }
         function show(p) {
+            CUR = p; closePop();
             document.querySelectorAll(".nv[data-p]").forEach(n => n.classList.toggle("on", n.dataset.p === p));
             $("#pt").textContent = PG[p][0]; $("#ps").textContent = PG[p][1];
-            $("#pgc").innerHTML = `<div class="empty"><b>${PG[p][0]}</b>No data connected yet. This page will fill in once its Excel source is added in Admin Console → Data Manager.</div>`;
+            if (p === "prod") showProd();
+            else $("#pgc").innerHTML = `<div class="empty"><b>${PG[p][0]}</b>No data connected yet. This page will fill in once its Excel source is added in Admin Console → Data Manager.</div>`;
             location.hash = p
         }
         (async () => {
@@ -306,7 +2945,8 @@
             $("#ub").onclick = e => { e.stopPropagation(); const m = $("#mn"); m.style.display = m.style.display === "block" ? "none" : "block" }; document.onclick = () => $("#mn").style.display = "none";
             const mods = await ERP.tree(), M = mods.find(x => /production/i.test(String(x.name)));
             if (!M || !(ERP.can(ME, M.id) || M.subs.some(s => ERP.can(ME, s.id, "v", M.id)))) { location.replace("portal.html"); return }
-            ERP.sideBanner([M.id, ...M.subs.map(s => s.id)], []);
+            SUB = M.subs.find(s => ERP.packKey(s.name) === "shopfloor") || null;
+            ERP.sideBanner([M.id, ...M.subs.map(s => s.id)], SUB ? [[SUB.id, "shopfloor"]] : []);
             const h = location.hash.slice(1); show(PG[h] ? h : "oee")
         })().catch(e => console.error(e));
     </script>
