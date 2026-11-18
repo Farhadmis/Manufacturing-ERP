@@ -497,13 +497,14 @@
     const open = h => { $("#mod").innerHTML = h; $("#ov").style.display = "grid" }, shut = () => $("#ov").style.display = "none";
     $("#ov").onclick = e => { if (e.target.id === "ov") shut() };
     const logout = () => ERP.signOut();
-    const loadMods = async () => { MODS = await ERP.tree() };
+    const loadMods = async () => { MODS = await ERP.tree(true) };   /* admin always sees the full tree */
+    let DMM = "office", OPEN = new Set();                         /* DMM = mode being edited in Data Manager; OPEN = expanded modules */
     const loadUsers = async () => { const { data, error } = await sb.from("profiles").select("*").order("created_at"); if (error) throw error; USERS = data };
     const nodes = () => MODS.flatMap(m => [{ id: m.id, name: m.name, mod: m }, ...m.subs.map(s => ({ id: s.id, name: s.name, sub: true, mod: m }))]);
     (async () => { me = await ERP.require(true); if (!me) return; $("#app").style.display = "block"; await loadMods(); go("dash") })().catch(err);
     function go(v) {
-      view = v; $("#nav").innerHTML = [["dash", "Dashboard"], ["users", "Users & Access"], ["mods", "Modules"], ["data", "Data Manager"], ["bk", "Backup"]].map(([k, n]) => `<div class="nav ${k === v ? "on" : ""}" onclick="go('${k}')">${n}</div>`).join("") + `<div class="nav" onclick="location.href='portal.html'">← Portal</div>`;
-      ({ dash, users, mods, data, bk })[v]().catch(err)
+      view = v; ERP._force = null; $("#nav").innerHTML = [["dash", "Dashboard"], ["users", "Users & Access"], ["mods", "Modules"], ["mode", "Mode Management"], ["data", "Data Manager"], ["bk", "Backup"]].map(([k, n]) => `<div class="nav ${k === v ? "on" : ""}" onclick="go('${k}')">${n}</div>`).join("") + `<div class="nav" onclick="location.href='portal.html'">← Portal</div>`;
+      ({ dash, users, mods, mode, data, bk })[v]().catch(err)
     }
     /* ---------- DASHBOARD ---------- */
     async function dash() {
@@ -582,12 +583,34 @@
       const m = MODS.find(x => x.id === mid); if (!confirm(sid ? "Delete this sub-module and its data?" : "Delete module, ALL its sub-modules and data?")) return;
       try {
         await loadUsers(); const ids = sid ? [sid] : [mid, ...m.subs.map(s => s.id)];
-        let r = await sb.from("datasets").delete().in("node_id", ids); if (r.error) throw r.error;
-        try { await sb.storage.from("erp-data").remove(ids.flatMap(i => Object.keys(ERP.PACK).flatMap(k => [i + "/" + k + ".json.gz", i + "/" + k + "_meta.json"]))) } catch (e) { }
+        let r = await sb.from("datasets").delete().in("node_id", ids.concat(ids.map(i => "a_" + i))); if (r.error) throw r.error;
+        try { await sb.storage.from("erp-data").remove(ids.concat(ids.map(i => "a_" + i)).flatMap(i => Object.keys(ERP.PACK).flatMap(k => [i + "/" + k + ".json.gz", i + "/" + k + "_meta.json"]))) } catch (e) { }
         for (const u of USERS) { const p = { ...(u.perm || {}) }; let ch = false; ids.forEach(i => { if (p[i]) { delete p[i]; ch = true } }); if (ch) { r = await sb.from("profiles").update({ perm: p }).eq("id", u.id); if (r.error) throw r.error } }
         r = sid ? await sb.from("submodules").delete().eq("id", sid) : await sb.from("modules").delete().eq("id", mid); if (r.error) throw r.error;
         sel = null; await mods(); toast("Deleted")
       } catch (e) { err(e) }
+    }
+
+    /* ---------- MODE MANAGEMENT (Office / Audit) ---------- */
+    async function mode() {
+      await Promise.all([loadMods(), ERP.modeReady()]);
+      const A = ERP.mode === "audit", on = new Set(ERP.auditIds || []);
+      const card = (k, t, d) => `<div class="card" style="flex:1;min-width:260px;border:2px solid ${ERP.mode === k ? "#1f9d55" : "transparent"}"><h3>${t} ${ERP.mode === k ? '<span class="tag on">ACTIVE</span>' : ""}</h3><p style="color:var(--mute);font-size:13px">${d}</p>${ERP.mode === k ? "" : `<button class="btn red" onclick="mSet('${k}')">Switch to ${t}</button>`}</div>`;
+      $("#main").innerHTML = `<div class="top"><h2>Mode Management</h2><span class="tag ${A ? "" : "on"}">Active: ${A ? "Audit Mode" : "Office Mode"}</span></div>
+ <div style="display:flex;gap:16px;flex-wrap:wrap">${card("office", "Office Mode", "Existing application · all modules · data from Office Data Manager.")}${card("audit", "Audit Mode", "Only the ticked modules below are visible · data from Audit Data Manager.")}</div>
+ <div class="card" style="margin-top:18px"><h3 style="margin-bottom:4px">Audit Mode · visible modules</h3><p style="color:var(--mute);font-size:12.5px;margin:0 0 10px">Tick a module to show it (and all its sub-modules) in Audit Mode, or tick only some sub-modules. New modules/sub-modules appear here automatically. Office Mode is not affected.</p>
+ <div class="scroll" style="max-height:52vh">${MODS.map(m => { const any = on.has(m.id) || m.subs.some(s => on.has(s.id)), all = m.subs.length && m.subs.every(s => on.has(s.id)); return `<div style="padding:6px 4px;border-bottom:1px solid #eef2fa"><label style="display:flex;gap:8px;align-items:center;margin:0;font-weight:700"><input type="checkbox" class="am" data-m="${m.id}" ${any ? "checked" : ""} onchange="amTick(this)"> ${esc(m.name)} ${m.subs.length ? `<span class="tag">${m.subs.filter(s => on.has(s.id)).length}/${m.subs.length}</span>` : ""}</label>${m.subs.map(s => `<label style="display:flex;gap:8px;align-items:center;margin:4px 0 0 26px;font-size:13px"><input type="checkbox" class="as" data-m="${m.id}" data-s="${s.id}" ${on.has(s.id) ? "checked" : ""} onchange="asTick(this)"> ↳ ${esc(s.name)}</label>`).join("")}</div>` }).join("")}</div>
+ <div class="acts"><button class="btn red" onclick="amSave()">Save selection</button></div></div>`
+    }
+    function amTick(c) { document.querySelectorAll('.as[data-m="' + c.dataset.m + '"]').forEach(x => x.checked = c.checked) }
+    function asTick(c) { const m = document.querySelector('.am[data-m="' + c.dataset.m + '"]'); m.checked = [...document.querySelectorAll('.as[data-m="' + c.dataset.m + '"]')].some(x => x.checked) }
+    async function amSave() {
+      const ids = []; document.querySelectorAll(".am").forEach(m => { const subs = [...document.querySelectorAll('.as[data-m="' + m.dataset.m + '"]')]; if (!subs.length) { if (m.checked) ids.push(m.dataset.m) } else { const s = subs.filter(x => x.checked); if (s.length) { ids.push(m.dataset.m); s.forEach(x => ids.push(x.dataset.s)) } } });
+      try { await ERP.setAuditIds(ids); toast("Audit module selection saved") } catch (e) { err(e) }
+    }
+    async function mSet(k) {
+      if (!confirm("Switch the WHOLE application to " + (k === "audit" ? "Audit" : "Office") + " Mode now?")) return;
+      try { await ERP.setMode(k); await mode(); toast("Active mode: " + k) } catch (e) { err(e) }
     }
     /* ---------- DATA · Excel → Supabase Storage ---------- */
     const LIM_DB = 500 * 1048576, LIM_ST = 1024 * 1048576; let USE = null, LOG = "";
@@ -613,13 +636,15 @@
     }
 
     async function data() {
-      await loadMods(); if (!sel || !nodeOf(sel)) sel = MODS[0] && MODS[0].id;
-      $("#main").innerHTML = `<div class="top"><h2>Data Manager</h2></div><div class="split"><div class="card tree" style="padding:10px;align-self:start">${MODS.map(x => `<div class="n ${x.id === sel ? "on" : ""}" onclick="sel='${x.id}';LOG='';data().catch(err)">${esc(x.name)}</div>` + x.subs.map(s => `<div class="n ${s.id === sel ? "on" : ""}" style="padding-left:26px;font-size:12.5px" onclick="sel='${s.id}';LOG='';data().catch(err)">↳ ${esc(s.name)}</div>`).join("")).join("")}</div><div class="card" id="dm"><div class="empty">Loading…</div></div></div>`;
+      await loadMods(); ERP._force = DMM; if (!sel || !nodeOf(sel)) sel = MODS[0] && MODS[0].id;
+      const tb = k => `<button class="btn ${DMM === k ? "red" : "ghost"}" onclick="DMM='${k}';LOG='';data().catch(err)">${k === "office" ? "Office Mode" : "Audit Mode"} Data</button>`;
+      const par = nodeOf(sel) && MODS.find(x => x.id === sel || x.subs.some(s => s.id === sel)); if (par && par.id !== sel && par.subs.length) OPEN.add(par.id);
+      $("#main").innerHTML = `<div class="top"><h2>Data Manager</h2><div style="display:flex;gap:8px">${tb("office")}${tb("audit")}</div></div><div class="split"><div class="card tree" style="padding:10px;align-self:start">${MODS.map(x => { const op = OPEN.has(x.id); return `<div class="n ${x.id === sel ? "on" : ""}" style="display:flex;justify-content:space-between" onclick="sel='${x.id}';LOG='';${x.subs.length ? `OPEN.has('${x.id}')?OPEN.delete('${x.id}'):OPEN.add('${x.id}');` : ""}data().catch(err)"><span>${esc(x.name)}</span>${x.subs.length ? `<span>${op ? "▾" : "▸"}</span>` : ""}</div>` + (op ? x.subs.map(s => `<div class="n ${s.id === sel ? "on" : ""}" style="padding-left:26px;font-size:12.5px" onclick="sel='${s.id}';LOG='';data().catch(err)">↳ ${esc(s.name)}</div>`).join("") : "") }).join("")}</div><div class="card" id="dm"><div class="empty">Loading…</div></div></div>`;
       const m = nodeOf(sel); if (!m) return;
       const c = cfgOf(m), [use, meta] = await Promise.all([usageHtml(), c ? ERP._fetchStorage(m.id + "/" + c.key + "_meta.json").then(r => r.json()).catch(() => null) : null]);
       CUR = { m, c, meta };
       const kp = meta ? [["Packed rows", meta.n], ["Source rows", meta.raw ?? "—"], ["File size", meta.mb ? meta.mb + " MB" : "—"], ["Updated", meta.at ? meta.at.slice(0, 16).replace("T", " ") : "—"]] : [];
-      $("#dm").innerHTML = `<div class="top" style="margin-bottom:12px"><h3>${esc(m.name)} <span class="tag ${meta ? "on" : "off"}">${meta ? "Live" : "No data"}</span></h3><div style="display:flex;gap:8px;flex-wrap:wrap">
+      $("#dm").innerHTML = `<div class="top" style="margin-bottom:12px"><h3>${esc(m.name)} <span class="tag">${DMM === "audit" ? "AUDIT" : "OFFICE"}</span> <span class="tag ${meta ? "on" : "off"}">${meta ? "Live" : "No data"}</span></h3><div style="display:flex;gap:8px;flex-wrap:wrap">
   ${c ? `<label class="btn red" style="margin:0;color:#fff;font-size:14px;cursor:pointer">⬆ Upload Excel / CSV<input type="file" accept=".csv,.xlsx,.xls" hidden onchange="pack(this)"></label>` : ""}${meta ? `<button class="btn del" onclick="dClr()">Delete data</button>` : ""}</div></div>
   ${c ? `<div style="max-width:320px"><label>তারিখ লেখা থাকলে (যেমন 05/03/2025)</label><select id="df"><option value="0">Month first (MM/DD/YYYY)</option><option value="1">Day first (DD/MM/YYYY)</option></select></div>` : `<div class="empty">${m.subs && m.subs.length ? "এই module-এ সরাসরি Upload নেই — বাঁ দিকের ↳ sub-module বেছে সেখানে Upload করুন।" : "এই section-এর জন্য Storage প্যাক এখনো সেটআপ হয়নি।"}</div>`}
   ${meta ? `<div class="kpis" style="margin-top:14px">${kp.map(k => `<div class="kpi"><b style="font-size:22px">${typeof k[1] === "number" ? k[1].toLocaleString() : k[1]}</b><span>${k[0]}</span></div>`).join("")}</div>${meta.totals ? `<p style="color:var(--mute);font-size:12px">Totals: ${Object.entries(meta.totals).map(([k, v]) => k + " = " + v.toLocaleString()).join(" | ")}</p>` : ""}` : ""}
@@ -666,16 +691,16 @@
         if (gz.size > 50 * 1048576) throw new Error("ফাইল ৫০ MB ছাড়িয়েছে (ফ্রি সীমা)। আমাকে জানান।");
         if (USE && USE.storage + gz.size > LIM_ST * .95) throw new Error("Storage ৯৫% পার হয়ে যাবে, তাই আপলোড বন্ধ। জায়গা খালি করুন।");
         log("4/5 Storage-এ আপলোড হচ্ছে…"); await tick();
-        let r = await st.upload(m.id + "/" + c.key + ".json.gz", gz, { upsert: true, contentType: "application/gzip", cacheControl: "0" }); if (r.error) throw r.error;
-        r = await st.upload(m.id + "/" + c.key + "_meta.json", new Blob([JSON.stringify({ v: ver, n, raw, bad, mb, at: new Date().toISOString(), file: f.name, totals })], { type: "application/json" }), { upsert: true, contentType: "application/json", cacheControl: "0" }); if (r.error) throw r.error;
+        let r = await st.upload(ERP.spath(m.id + "/" + c.key + ".json.gz", DMM), gz, { upsert: true, contentType: "application/gzip", cacheControl: "0" }); if (r.error) throw r.error;
+        r = await st.upload(ERP.spath(m.id + "/" + c.key + "_meta.json", DMM), new Blob([JSON.stringify({ v: ver, n, raw, bad, mb, at: new Date().toISOString(), file: f.name, totals })], { type: "application/json" }), { upsert: true, contentType: "application/json", cacheControl: "0" }); if (r.error) throw r.error;
         log("5/5 ✔ সম্পন্ন! Totals উপরের মতো আপনার Excel-এর সাথে মিলিয়ে নিন।"); toast("Upload done")
       } catch (e) { log("✖ ত্রুটি: " + (e.message || JSON.stringify(e))) }
       await data().catch(err)
     }
 
     async function dClr() {
-      const { m, c } = CUR; if (!confirm("Delete ALL data of " + m.name + "? (আপনার মূল Excel আলাদা জায়গায় আছে তো?)")) return;
-      const { error } = await sb.storage.from("erp-data").remove([m.id + "/" + c.key + ".json.gz", m.id + "/" + c.key + "_meta.json"]); if (error) return err(error); LOG = ""; await data(); toast("Data deleted")
+      const { m, c } = CUR; if (!confirm("Delete ALL " + DMM.toUpperCase() + " data of " + m.name + "? (আপনার মূল Excel আলাদা জায়গায় আছে তো?)")) return;
+      const { error } = await sb.storage.from("erp-data").remove([ERP.spath(m.id + "/" + c.key + ".json.gz", DMM), ERP.spath(m.id + "/" + c.key + "_meta.json", DMM)]); if (error) return err(error); LOG = ""; await data(); toast("Data deleted")
     }
 
     /* backup restore-এর জন্য পুরনো ফাংশন (রেখে দেওয়া হলো) */
