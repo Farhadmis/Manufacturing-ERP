@@ -1638,6 +1638,757 @@
             grid-column: 1 / -1
         }
 
+        /* ===== Cavity Performance card ===== */
+        .cd.cvp {
+            grid-column: 1/-1
+        }
+
+        .cvb {
+            padding: 12px 14px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #f4f8ff
+        }
+
+        .cvks {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px
+        }
+
+        .cvk {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            border: 1px solid #cfe0fb;
+            background: linear-gradient(180deg, #eaf2ff, #dfeafd);
+            min-width: 0
+        }
+
+        .cvk.g {
+            background: linear-gradient(180deg, #eafbef, #d9f5e1);
+            border-color: #b9e8c6
+        }
+
+        .cvk.r {
+            background: linear-gradient(180deg, #fff0f0, #ffe1e1);
+            border-color: #f6c0c0
+        }
+
+        .cvk i {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            flex: none;
+            color: #fff;
+            background: #0b3d94
+        }
+
+        .cvk.g i {
+            background: #1fa84a
+        }
+
+        .cvk.r i {
+            background: #e0262f
+        }
+
+        .cvk i svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .cvk div {
+            min-width: 0;
+            text-align: center;
+            flex: 1
+        }
+
+        .cvk small {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #0b3d94
+        }
+
+        .cvk.g small {
+            color: #137a34
+        }
+
+        .cvk.r small {
+            color: #c4161f
+        }
+
+        .cvk b {
+            display: block;
+            font-size: 28px;
+            line-height: 1.1;
+            font-weight: 800;
+            color: #0f2a5a
+        }
+
+        .cvk.g b {
+            color: #137a34
+        }
+
+        .cvk.r b {
+            color: #d81e28
+        }
+
+        .cvk em {
+            display: block;
+            font-style: normal;
+            font-size: 11px;
+            color: #4a5a78
+        }
+
+        .cvg {
+            display: grid;
+            grid-template-columns: minmax(0, .8fr) minmax(0, 1.25fr) minmax(0, 1.5fr);
+            gap: 12px
+        }
+
+        .cvp2 {
+            background: #fff;
+            border: 1px solid #dbe4f2;
+            border-radius: 14px;
+            overflow: hidden;
+            min-width: 0;
+            display: flex;
+            flex-direction: column
+        }
+
+        .cvp2>h4 {
+            margin: 0;
+            padding: 11px 14px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(100deg, #0a2a70, #0b3d94)
+        }
+
+        .cvdn {
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px
+        }
+
+        .cvdn svg {
+            width: 100%;
+            max-width: 210px
+        }
+
+        .cvdn .lgd {
+            display: flex;
+            gap: 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #0f2a5a;
+            background: #eef3fb;
+            border-radius: 10px;
+            padding: 7px 12px
+        }
+
+        .cvdn .lgd i {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px
+        }
+
+        .cvsh {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            padding: 10px
+        }
+
+        .cvsc {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0
+        }
+
+        .cvsc .stk {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            height: 300px
+        }
+
+        .cvsc .sg {
+            flex-basis: 0;
+            min-height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 2px 4px;
+            border-radius: 7px;
+            color: #fff;
+            font-weight: 800;
+            white-space: nowrap;
+            overflow: hidden;
+            background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, .17) 0 7px, rgba(255, 255, 255, 0) 7px 14px);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, .25)
+        }
+
+        .cvsc .sg b {
+            font-size: 14.5px
+        }
+
+        .cvsc .sg small {
+            font-size: 11px;
+            font-weight: 700;
+            opacity: .95
+        }
+
+        .cvsc .ft {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 8px 4px;
+            border-radius: 10px;
+            background: #eef3fb;
+            font-size: 11.5px;
+            font-weight: 800;
+            color: #0f2a5a;
+            white-space: nowrap
+        }
+
+        .cvsc .ft svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex: none
+        }
+
+        .cvlg {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px 10px;
+            margin: 0 10px 10px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            background: #eef3fb;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #0f2a5a
+        }
+
+        .cvlg i {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-right: 5px;
+            vertical-align: -1px
+        }
+
+        .cvt {
+            overflow-x: auto
+        }
+
+        .cvt table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            text-align: center
+        }
+
+        .cvt th {
+            background: #0b3d94;
+            color: #fff;
+            padding: 9px 6px;
+            font-weight: 700;
+            font-size: 12px;
+            border-left: 1px solid rgba(255, 255, 255, .25)
+        }
+
+        .cvt td {
+            padding: 9px 6px;
+            border-bottom: 1px solid #e3eaf6;
+            font-weight: 700;
+            color: #0f2a5a
+        }
+
+        .cvt td.lo {
+            background: #fff7d1
+        }
+
+        .cvt td.hi {
+            background: #ffe1e1;
+            color: #c4161f
+        }
+
+        .cvt tr.tt td {
+            background: #0a2a70;
+            color: #fff
+        }
+
+        .cvn {
+            font-size: 11px;
+            color: #4a5a78;
+            text-align: right
+        }
+
+        .cvsc .sg[data-cv],
+        .cvt tr[data-cv] {
+            cursor: pointer
+        }
+
+        .cvt tr[data-cv]:hover td {
+            filter: brightness(.96)
+        }
+
+        #cvtip {
+            position: fixed;
+            z-index: 9999;
+            display: none;
+            pointer-events: none;
+            background: #fff;
+            border: 1px solid #cfdcf3;
+            border-radius: 12px;
+            box-shadow: 0 12px 32px rgba(10, 30, 80, .28);
+            min-width: 330px;
+            max-width: 560px;
+            overflow: hidden;
+            font-size: 12.5px;
+            color: #0f2a5a
+        }
+
+        #cvtip .hd {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 10px;
+            padding: 9px 12px;
+            background: linear-gradient(100deg, #0a2a70, #0b3d94);
+            color: #fff
+        }
+
+        #cvtip .hd small {
+            font-size: 11px;
+            opacity: .85;
+            font-weight: 700
+        }
+
+        #cvtip table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        #cvtip th {
+            padding: 6px 8px;
+            background: #eef3fb;
+            font-size: 11px;
+            text-align: center
+        }
+
+        #cvtip td {
+            padding: 5px 8px;
+            text-align: center;
+            border-bottom: 1px solid #e8eef8;
+            font-weight: 600
+        }
+
+        #cvtip tfoot td {
+            background: #0a2a70;
+            color: #fff;
+            font-weight: 800
+        }
+
+        #cvtip .nd {
+            padding: 12px;
+            text-align: center;
+            color: #4a5a78
+        }
+
+        @media(max-width:1100px) {
+            .cvks {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+
+            .cvg {
+                grid-template-columns: 1fr
+            }
+        }
+
+        /* ===== Production Raw Data table ===== */
+        .rwt {
+            overflow: auto;
+            background: #fff;
+            border-radius: 16px;
+            border: 1px solid #c9d9f2;
+            box-shadow: 0 8px 22px rgba(16, 44, 92, .10);
+            max-height: calc(100vh - 300px)
+        }
+
+        .rwv {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 12.5px;
+            font-variant-numeric: tabular-nums
+        }
+
+        .rwv th {
+            position: sticky;
+            z-index: 3;
+            color: #fff;
+            white-space: nowrap;
+            padding: 0 10px;
+            text-align: center
+        }
+
+        .rwv thead tr:first-child th {
+            top: 0;
+            height: 42px
+        }
+
+        .rwv thead tr:nth-child(2) th {
+            top: 42px;
+            height: 28px
+        }
+
+        .rwv th.mh {
+            background: linear-gradient(180deg, #0c3a8f, #052a72);
+            font-size: 14px;
+            font-weight: 800;
+            z-index: 6
+        }
+
+        .rwv th.yh {
+            background: linear-gradient(180deg, #154aa8, #0e3d96);
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            user-select: none;
+            border-left: 1px solid rgba(255, 255, 255, .22)
+        }
+
+        .rwv th.yh i {
+            font-style: normal;
+            font-size: 10px;
+            opacity: .7;
+            margin-left: 6px;
+            vertical-align: middle
+        }
+
+        .rwv th.sh {
+            background: #0e3d96;
+            font-size: 11px;
+            font-weight: 600;
+            color: #dbe8ff;
+            border-top: 1px solid rgba(255, 255, 255, .18)
+        }
+
+        .rwv th.ys {
+            border-left: 1px solid rgba(255, 255, 255, .22)
+        }
+
+        /* ===== month → date-wise drill-down ===== */
+        .rwv thead tr:nth-child(3) th {
+            top: 70px;
+            height: 26px
+        }
+
+        .rwv th.sh.mo {
+            cursor: pointer;
+            user-select: none
+        }
+
+        .rwv th.sh.mo:hover {
+            background: #154aa8
+        }
+
+        .rwv th.sh.mo i {
+            font-style: normal;
+            font-size: 9px;
+            opacity: .75;
+            margin-left: 5px
+        }
+
+        .rwv th.sh.dh {
+            background: #0b3182;
+            font-size: 10.5px;
+            color: #cfe0ff;
+            min-width: 88px
+        }
+
+        .rwv td.bc.dc {
+            min-width: 88px
+        }
+
+        .rwv th.c1,
+        .rwv td.c1 {
+            left: 0;
+            min-width: 96px;
+            max-width: 96px
+        }
+
+        .rwv th.c2,
+        .rwv td.c2 {
+            left: 96px;
+            min-width: 84px;
+            max-width: 84px
+        }
+
+        .rwv th.gh {
+            right: 0
+        }
+
+        .rwv td {
+            height: 34px;
+            padding: 0;
+            border-bottom: 1px solid #e3ebf7;
+            white-space: nowrap
+        }
+
+        .rwv td.c1,
+        .rwv td.c2 {
+            position: sticky;
+            background: #fff;
+            z-index: 2;
+            font-weight: 800;
+            padding: 0 10px;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .rwv td.c2 {
+            border-right: 1px solid #e3ebf7
+        }
+
+        .rwv td.bc {
+            position: relative;
+            min-width: 128px
+        }
+
+        .rwv td.bc i {
+            position: absolute;
+            left: 3px;
+            top: 5px;
+            bottom: 5px;
+            max-width: calc(100% - 6px);
+            border-radius: 3px;
+            background: linear-gradient(90deg, #3fcf6b 0%, #8fe3a9 55%, rgba(220, 247, 228, .55) 100%)
+        }
+
+        .rwv td.bc span {
+            position: relative;
+            display: block;
+            text-align: center;
+            padding: 0 10px;
+            font-weight: 600;
+            color: #10285a;
+            line-height: 34px
+        }
+
+        .rwv td.bc.z span {
+            color: #7b89a6
+        }
+
+        .rwv td.bc.gc {
+            position: sticky;
+            right: 0;
+            z-index: 2;
+            background: #fff;
+            min-width: 150px;
+            box-shadow: -6px 0 8px -6px rgba(16, 44, 92, .22)
+        }
+
+        .rwv td.bc.gc span {
+            font-weight: 700
+        }
+
+        .rwv td.bc.gc em {
+            font-style: normal;
+            margin-left: 8px;
+            font-weight: 700;
+            color: #3a4d73
+        }
+
+        .rwv td.ys {
+            border-left: 1px solid #d3e0f4
+        }
+
+        .rwv tbody tr:hover td {
+            background-color: #f6faff
+        }
+
+        .rwv tfoot td {
+            position: sticky;
+            bottom: 0;
+            z-index: 3;
+            height: 46px;
+            padding: 0 10px;
+            text-align: center;
+            font-weight: 800;
+            font-size: 14px;
+            color: #fff;
+            background: linear-gradient(180deg, #0c3a8f, #052a72);
+            border-left: 1px solid rgba(255, 255, 255, .18);
+            border-bottom: 0
+        }
+
+        .rwv tfoot td.f1 {
+            left: 0;
+            z-index: 5;
+            text-align: left;
+            font-size: 13px;
+            min-width: 180px;
+            max-width: none
+        }
+
+        .rwv tfoot td.f1 svg {
+            width: 18px;
+            height: 18px;
+            vertical-align: -4px;
+            margin-right: 8px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 1.9;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .rwv tfoot td.gt {
+            right: 0;
+            z-index: 5;
+            background: linear-gradient(180deg, #1a6dff, #0a4fd6);
+            font-size: 15px
+        }
+
+        .cd.rwc {
+            grid-column: 1/-1
+        }
+
+        .rwx {
+            padding: 12px 14px 14px;
+            background: #f4f8ff
+        }
+
+        .rwbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 0 2px 10px;
+            color: #6d7c99;
+            font-size: 13px;
+            font-weight: 600
+        }
+
+        .rwbt {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-left: auto;
+            position: relative;
+            z-index: 1
+        }
+
+        .rwb {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            height: 38px;
+            padding: 0 16px;
+            border-radius: 999px;
+            background: #fff;
+            color: var(--navy);
+            border: 1.5px solid #cfdcf3;
+            font: 700 13px Inter, sans-serif;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(16, 44, 92, .08);
+            white-space: nowrap
+        }
+
+        .rwb:hover {
+            border-color: #2f6fe4;
+            box-shadow: 0 4px 12px rgba(47, 111, 228, .2)
+        }
+
+        .rwb i {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #2f6fe4;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: none
+        }
+
+        .rwb i svg {
+            width: 12px;
+            height: 12px;
+            stroke: #fff;
+            stroke-width: 2.6;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .rwb.dk {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy)
+        }
+
+        .rwb.dk svg {
+            width: 15px;
+            height: 15px;
+            stroke: #fff;
+            stroke-width: 2.2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .cd.rwc .rwt {
+            max-height: calc(100vh - 220px);
+            min-height: 300px
+        }
+
+        .rwv td.dm {
+            padding: 0 10px;
+            text-align: center;
+            font-weight: 600;
+            color: #10285a;
+            min-width: 92px
+        }
+
+        .rwv th.mh:not(.c1):not(.c2) {
+            min-width: 92px
+        }
+
+        .rwv tfoot td.fe {
+            background: linear-gradient(180deg, #0c3a8f, #052a72)
+        }
+
         /* ===== Production Calendar card ===== */
         .cd.pc {
             grid-column: 1/-1
@@ -1658,9 +2409,9 @@
 
         .pcgi {
             display: grid;
-            grid-template-columns: repeat(12, minmax(0, 1fr)) 84px;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
             gap: 4px;
-            min-width: 720px
+            min-width: 636px
         }
 
         .pcm {
@@ -1799,9 +2550,9 @@
 
         .pcf {
             display: grid;
-            grid-template-columns: repeat(12, minmax(0, 1fr)) 84px;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
             gap: 4px;
-            min-width: 720px;
+            min-width: 636px;
             margin-top: 8px
         }
 
@@ -2424,9 +3175,11 @@
                 const ok = new Uint8Array(D[f[2]].length); F[f[0]].forEach(c => ok[c] = 1); act.push({ ok, col: C[f[2]] })
             });
             const mv = { fg: new Float64Array(nm), wip: new Float64Array(nm), good: new Float64Array(nm) }, mcnt = new Int32Array(nm), dg = new Float64Array(nd);
-            const yb = new Float64Array(ny * nb * 3), ycnt = new Int32Array(ny), sb = new Float64Array(2 * nb * 3), shc = C.shifttime, catD = D.productcategory && D.productcategory.length ? D.productcategory : [""], ncat = catD.length, sct = new Float64Array(2 * ncat * 3), cc = C.productcategory;
+            const yb = new Float64Array(ny * nb * 3), ymb = new Float64Array(ny * 12 * nb * 3), ymc = new Float64Array(ny * 12 * nb * ((D.productcategory && D.productcategory.length) || 1) * 3), ycnt = new Int32Array(ny), sb = new Float64Array(2 * nb * 3), shc = C.shifttime, catD = D.productcategory && D.productcategory.length ? D.productcategory : [""], ncat = catD.length, sct = new Float64Array(2 * ncat * 3), cc = C.productcategory;
             const A = M.finishproduct, B = M.wip, G = M.goodproduction, bc = C.bayname, dc = C.date; let rows = 0;
-            const dbc = new Float64Array(nd * nb * ncat), dbm = new Float64Array(nd * nb * 3), dtg = new Float64Array(nd), tgA = P.tg ? M[P.tg] : null;
+            const dmcA = (mcc && nmc > 0 && nd * nmc <= 4e6) ? new Float64Array(nd * nmc * 3) : null, dmcM = dmcA ? new Map() : null;
+            const dbc = new Float64Array(nd * nb * ncat), dbm = new Float64Array(nd * nb * 3), dtg = new Float64Array(nd), dtb = new Float64Array(nd * nb), tgA = P.tg ? M[P.tg] : null;
+            const dmcT = (mcc && tgA && nmc > 0 && nd * nmc <= 4e6) ? new Float64Array(nd * nmc) : null;
             for (let i = 0; i < n; i++) {
                 const d = dc[i], fl = dOK[d]; if (!fl) continue;
                 let ok = true; for (let k = 0; k < act.length; k++) if (!act[k].ok[act[k].col[i]]) { ok = false; break }
@@ -2439,8 +3192,12 @@
                 mv.fg[k] += a; mv.wip[k] += b; mv.good[k] += g; mcnt[k]++; dg[d] += g;
                 dbc[(d * nb + (bc ? bc[i] : 0)) * ncat + (cc ? cc[i] : 0)] += g;
                 { const q = (d * nb + (bc ? bc[i] : 0)) * 3; dbm[q] += a; dbm[q + 1] += b; dbm[q + 2] += g }
-                if (tgA) dtg[d] += tgA[i] || 0;
+                if (dmcA) { const z = (d * nmc + mcc[i]) * 3; dmcA[z] += a; dmcA[z + 1] += b; dmcA[z + 2] += g; const mk = d * nmc + mcc[i]; let mp = dmcM.get(mk); if (!mp) dmcM.set(mk, mp = new Map()); const md = C.modelname ? C.modelname[i] : 0; let m3 = mp.get(md); if (!m3) mp.set(md, m3 = [0, 0, 0, 0]); m3[0] += a; m3[1] += b; m3[2] += g; m3[3] += tgA ? tgA[i] || 0 : 0 }
+                if (tgA) { dtg[d] += tgA[i] || 0; dtb[d * nb + (bc ? bc[i] : 0)] += tgA[i] || 0 }
+                if (dmcT) dmcT[d * nmc + mcc[i]] += tgA[i] || 0;
                 const yi = x.y - y0, j = (yi * nb + (bc ? bc[i] : 0)) * 3; yb[j] += a; yb[j + 1] += b; yb[j + 2] += g; ycnt[yi]++;
+                { const q = ((yi * 12 + (x.mi % 12)) * nb + (bc ? bc[i] : 0)) * 3; ymb[q] += a; ymb[q + 1] += b; ymb[q + 2] += g }
+                { const nc = (D.productcategory && D.productcategory.length) || 1, z = (((yi * 12 + (x.mi % 12)) * nb + (bc ? bc[i] : 0)) * nc + (cc ? cc[i] : 0)) * 3; ymc[z] += a; ymc[z + 1] += b; ymc[z + 2] += g }
                 if (shc) { const sg = P.shg[shc[i]]; if (sg >= 0) { const q = (sg * nb + (bc ? bc[i] : 0)) * 3; sb[q] += a; sb[q + 1] += b; sb[q + 2] += g; const z = (sg * ncat + (cc ? cc[i] : 0)) * 3; sct[z] += a; sct[z + 1] += b; sct[z + 2] += g } }
             }
             const idleStat = (pp, gg) => {
@@ -2450,7 +3207,7 @@
                 return { days, m: sm / days, n: sn / days, t: (sm + sn) / days, bm, bn, mmB, mnB }
             };
             const tot3 = [0, 1, 2].map(q => mv[["fg", "wip", "good"][q]].reduce((p, c) => p + c, 0));
-            return { nm, mv, mcnt, dg, dbc, dbm, dtg, yb, ycnt, sb, sct, ncat, catD, nb, bayD, ny, y0, rows, tot3, lyT, lyOk, idle: idleStat(idp, idg), idleL: idleStat(idpL, idgL) }
+            return { nm, mv, mcnt, dg, dbc, dbm, dtg, dtb, yb, ymb, ymc, ncat, catD, dmc: dmcA, dmcT, dmcM, nmc, ycnt, sb, sct, ncat, catD, nb, bayD, ny, y0, rows, tot3, lyT, lyOk, idle: idleStat(idp, idg), idleL: idleStat(idpL, idgL) }
         }
         /* ---------- Filter bar ---------- */
         function filterBarHTML() {
@@ -2670,14 +3427,14 @@
             return `<section class="cd dk hm">${head(legend)}<div class="hcap"><span>Monthly volume in ${U.w} · the darker the cell, the higher the month</span>${tg}</div><div class="kps">${kps}</div><div class="hgw">${g}</div>${foot}</section>`
         }
         /* ---------- Production Achievement Analysis : Bay wise | TGT vs ACT (day-wise, month) ---------- */
-        ST.ac = "fg"; ST.am = null; ST.acv = "bay";
+        ST.ac = "fg"; ST.am = null; ST.acv = "bay"; ST.achOff = new Set();
         function achCard(R) {
-            const met = ST.ac, q = MK.indexOf(met), nb = R.nb, view = ST.acv === "tva" ? "tva" : "bay";
+            const met = ST.ac, q = MK.indexOf(met), nb = R.nb, view = ST.acv === "tva" ? "tva" : ST.acv === "mc" ? "mc" : "bay";
             const yms = [...new Set(P.dd.map(x => x.s.slice(0, 7)))].sort();
             const ym = yms.includes(ST.am) ? ST.am : yms[yms.length - 1];
             const sel = `<select class="achs" aria-label="Month">${yms.map(v => `<option value="${v}"${v === ym ? " selected" : ""}>${MON[+v.slice(5, 7) - 1]} ${v.slice(0, 4)}</option>`).join("")}</select>`;
-            const vt = `<div class="achv"><button type="button" data-m="bay" class="${view === "bay" ? "on" : ""}">Bay wise</button><button type="button" data-m="tva" class="${view === "tva" ? "on" : ""}">TGT vs ACT</button></div>`;
-            const head = `<div class="ch"><div class="ic">${ic("chart")}</div><div class="tt"><h3>Production <b>Achievement</b> Analysis</h3><p>${view === "bay" ? "Day-wise bay share of" : "Daily target vs actual of"} ${MET[met][0]} · ${MON[+ym.slice(5, 7) - 1]} ${ym.slice(0, 4)}</p></div>${vt}${sel}</div>`;
+            const vt = `<div class="achv"><button type="button" data-m="bay" class="${view === "bay" ? "on" : ""}">Bay wise</button><button type="button" data-m="mc" class="${view === "mc" ? "on" : ""}">MC wise</button><button type="button" data-m="tva" class="${view === "tva" ? "on" : ""}">TGT vs ACT</button></div>`;
+            const head = `<div class="ch"><div class="ic">${ic("chart")}</div><div class="tt"><h3>Production <b>Achievement</b> Analysis</h3><p>${view === "bay" ? "Day-wise bay share of" : view === "mc" ? "MC-wise target vs actual of" : "Daily target vs actual of"} ${MET[met][0]} · ${MON[+ym.slice(5, 7) - 1]} ${ym.slice(0, 4)}</p></div>${vt}${sel}</div>`;
             const [yy, mm] = ym.split("-").map(Number), dim = new Date(Date.UTC(yy, mm, 0)).getUTCDate();
             const dIdx = new Map(P.dd.map((x, j) => [x.s, j]));
             const days = Array.from({ length: dim }, (_, k) => { const s = ym + "-" + String(k + 1).padStart(2, "0"); return { j: dIdx.has(s) ? dIdx.get(s) : -1, s } });
@@ -2688,6 +3445,34 @@
             if (!rowsD.some(x => x.tot > 0)) return `<section class="cd dk ach">${head}<div class="ld">No data for the selected filters</div></section>`;
             const metTag = `<div class="tg">${MK.map(k => `<button type="button" data-c="ac" data-m="${k}" class="${met === k ? "on" : ""}">${met === k ? ic("ck") : ""}${ic(k)}${MET[k][0]}</button>`).join("")}</div>`;
 
+            if (view === "mc") {
+                const hasM = !!R.dmc, hasT = hasM && !!R.dmcT, nmc = R.nmc || 0, dj = days.filter(x => x.j >= 0).map(x => x.j);
+                MCH = { R, q, dj, nmc, label: MON[+ym.slice(5, 7) - 1] + " " + ym.slice(0, 4), dayOf: new Map(days.filter(x => x.j >= 0).map(x => [x.j, x.s])) };
+                const items = [];
+                if (hasM) for (let m = 0; m < nmc; m++) {
+                    const b = P.pbay[m]; if (ST.achOff.has(b)) continue;
+                    let act = 0, tgt = 0;
+                    for (const j of dj) { act += R.dmc[(j * nmc + m) * 3 + q]; if (hasT) tgt += R.dmcT[j * nmc + m] }
+                    if (act > 0 || tgt > 0) items.push({ b, act, tgt, m, n: String((P.D.mcno || [])[P.pmc[m]] ?? "").trim() || "—" });
+                }
+                items.sort((x, y) => nat(R.bayD[x.b], R.bayD[y.b]) || nat(x.n, y.n));
+                const cols = items.map(x => {
+                    const k = bays.indexOf(x.b), nm2 = esc(x.n), bn = esc(R.bayD[x.b] || "All");
+                    if (!hasT || !x.tgt) return `<div class="ach-c" data-mc="${x.m}"><div class="ach-t">${fv(x.act)}</div><div class="ach-b"><div class="ach-s" style="height:100%;background:${PAL[k % PAL.length]}"></div></div><div class="ach-d">${nm2}</div></div>`;
+                    const ach = x.act / x.tgt * 100, pct = Math.min(ach, 100), gap = 100 - pct;
+                    const segs = [
+                        [pct, "#1565d8", `${bn} · MC ${nm2} · ACT ${fc(x.act)} (${ach.toFixed(1)}% of TGT ${fc(x.tgt)})`, `${ach.toFixed(1)}%`],
+                        [gap, "#ff9f1a", `Remaining to TGT · ${fc(Math.max(x.tgt - x.act, 0))}`, `${gap.toFixed(1)}%`]
+                    ].filter(z => z[0] > 0);
+                    const html = segs.map(([h, bg, t, lb]) => `<div class="ach-s" style="height:${h.toFixed(2)}%;background:${bg}">${h >= 6 ? lb : ""}</div>`).join("");
+                    return `<div class="ach-c" data-mc="${x.m}"><div class="ach-t">${fv(x.act)}</div><div class="ach-b">${html}</div><div class="ach-d">${nm2}</div></div>`;
+                }).join("");
+                const cap = hasT ? "Target = 100% · Blue = ACT achieved, Orange = remaining to target" : "Target data পাওয়া যায়নি — শুধু ACT দেখাচ্ছে";
+                const lg = `<div class="scbl"><span><i style="background:#1565d8"></i>ACT</span><span><i style="background:#ff9f1a"></i>Remaining to TGT</span></div>`;
+                const chips = bays.map((bb, k) => `<span class="achbay" data-b="${bb}" style="cursor:pointer;${ST.achOff.has(bb) ? "text-decoration:line-through;opacity:.45" : ""}"><i style="background:${PAL[k % PAL.length]}"></i>${esc(R.bayD[bb] || "All")}</span>`).join("");
+                const body = items.length ? `<div class="ach-w"><div class="ach-g">${cols}</div></div>` : `<div class="ld">Niche theke bay select korun (chip click korle sei bay-er MC hide hobe)</div>`;
+                return `<section class="cd dk ach">${head}<div class="hcap"><span>${cap} · bay chip click korle sei bay-er MC hide hobe</span>${metTag}</div>${body}${lg}<div class="scbl">${chips}</div></section>`;
+            }
             if (view === "tva") {
                 const hasT = !!P.tg, tgOf = x => hasT && x.j >= 0 ? (R.dtg[x.j] || 0) : 0;
                 const cols = rowsD.map(c => {
@@ -2715,6 +3500,60 @@
             const bl = `<div class="scbl">${bays.map((b, k) => `<span><i style="background:${PAL[k % PAL.length]}"></i>${esc(R.bayD[b] || "All")}</span>`).join("")}</div>`;
             return `<section class="cd dk ach">${head}<div class="hcap"><span>Bay-wise share of each day's total · figure on top = day total</span>${metTag}</div><div class="ach-w"><div class="ach-g">${cols}</div></div>${bl}</section>`;
         }
+        /* ---------- MC wise hover: model name + qty (1 day = that day, more days = Top 10) ---------- */
+        let MCH = null;
+        const mf = v => { const a = Math.abs(v); return a >= 1e9 ? (v / 1e9).toFixed(1) + "B" : a >= 1e6 ? (v / 1e6).toFixed(1) + "M" : a >= 1e3 ? Math.round(v / 1e3) + "K" : String(Math.round(v)) };
+        (function () {
+            if (document.getElementById("mcp")) return;
+            const st = document.createElement("style"); st.id = "mcp-css";
+            st.textContent = `#mcp{position:fixed;z-index:9999;pointer-events:none;display:none;width:300px;max-width:calc(100vw - 16px);background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(15,42,90,.28);border:1px solid #d6dfef;font-family:Inter,sans-serif;color:#0f2a5a}
+#mcp .hd{background:linear-gradient(100deg,#0a2a70,#17479a);color:#fff;padding:11px 14px}
+#mcp .hd b{display:block;font-size:17px;font-weight:800;line-height:1.2}
+#mcp .hd small{display:block;font-size:12px;font-weight:600;opacity:.9;margin-top:3px}
+#mcp .ct{font-size:11px;font-weight:700;letter-spacing:.06em;color:#6d7c99;text-transform:uppercase;padding:8px 14px 0}
+#mcp .nd{font-size:12.5px;color:#6d7c99;padding:10px 14px 12px}
+#mcp table{width:100%;border-collapse:collapse;font-size:12.5px}
+#mcp th{background:#0a2a70;color:#fff;font-weight:700;padding:7px 10px;text-align:right}
+#mcp th:first-child,#mcp td:first-child{text-align:left}
+#mcp td{padding:5px 10px;text-align:right;border-bottom:1px solid #eef2f8;font-weight:600;white-space:nowrap}
+#mcp td:first-child{color:#0b5fa5;font-weight:700;white-space:normal}
+#mcp tr.tt td{background:#e9f0fb;font-weight:800;border-bottom:0}`;
+            document.head.appendChild(st);
+            const d = document.createElement("div"); d.id = "mcp"; document.body.appendChild(d);
+            const cel = e => (e.target && e.target.closest) ? e.target.closest(".ach-c[data-mc]") : null;
+            document.addEventListener("mouseover", e => { const el = cel(e); if (el && MCH) mcShow(+el.dataset.mc, e) });
+            document.addEventListener("mousemove", e => { if (cel(e)) mcPos(e) });
+            document.addEventListener("mouseout", e => { const el = cel(e); if (el && !(e.relatedTarget && el.contains(e.relatedTarget))) document.getElementById("mcp").style.display = "none" });
+        })();
+        function mcShow(m, e) {
+            const tp = document.getElementById("mcp"), { R, q, dj, nmc, label, dayOf } = MCH;
+            const mm = new Map(); let days = 0, lastJ = -1;
+            if (R.dmcM) for (const j of dj) {
+                const dayMap = R.dmcM.get(j * nmc + m); if (!dayMap) continue;
+                let dt = 0;
+                dayMap.forEach((v, code) => {
+                    const x = v[q]; if (!x) return; dt += x;
+                    const t = mm.get(code) || { act: 0, tgt: 0 }; t.act += x; t.tgt += v[3] || 0; mm.set(code, t);
+                });
+                if (dt > 0) { days++; lastJ = j }
+            }
+            const tot = [...mm.values()].reduce((a, x) => a + x.act, 0), totT = [...mm.values()].reduce((a, x) => a + x.tgt, 0);
+            const list = [...mm].map(([c, v]) => ({ n: String((P.D.modelname || [])[c] ?? "").trim() || "—", act: v.act, tgt: v.tgt })).sort((x, y) => y.act - x.act);
+            const shown = days > 1 ? list.slice(0, 10) : list;
+            const bay = R.bayD[P.pbay[m]] || "All", mcN = String((P.D.mcno || [])[P.pmc[m]] ?? "").trim() || "—";
+            const cap = days === 1 ? `Single day · ${esc(dayOf.get(lastJ) || "")}` : days > 1 ? `Top ${Math.min(10, list.length)} models · ${days} days` : "";
+            const rows = shown.map(x => `<tr><td>${esc(x.n)}</td><td>${x.tgt ? mf(x.tgt) : "–"}</td><td>${mf(x.act)}</td><td>${x.tgt ? (x.act / x.tgt * 100).toFixed(1) + "%" : "–"}</td></tr>`).join("");
+            tp.innerHTML = `<div class="hd"><b>MC ${esc(mcN)}</b><small>${esc(bay)} · ${label} · ${mf(tot)}</small></div>` +
+                (cap ? `<div class="ct">${cap}</div>` : "") +
+                (shown.length ? `<table><thead><tr><th>Model</th><th>TGT</th><th>ACT</th><th>%</th></tr></thead><tbody>${rows}</tbody><tfoot><tr class="tt"><td>Total</td><td>${totT ? mf(totT) : "–"}</td><td>${mf(tot)}</td><td>${totT ? (tot / totT * 100).toFixed(1) + "%" : "–"}</td></tr></tfoot></table>` : `<div class="nd">No production this month</div>`);
+            tp.style.display = "block"; mcPos(e);
+        }
+        function mcPos(e) {
+            const tp = document.getElementById("mcp"); let x = e.clientX + 18, y = e.clientY - 20;
+            if (x + tp.offsetWidth > innerWidth - 8) x = e.clientX - tp.offsetWidth - 18;
+            if (y + tp.offsetHeight > innerHeight - 8) y = innerHeight - tp.offsetHeight - 8;
+            tp.style.left = Math.max(8, x) + "px"; tp.style.top = Math.max(8, y) + "px";
+        }
         /* ---------- Production Calendar : Planning · Holiday · Production days ---------- */
         ST.cy = null;
         const WD = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], p2 = n => String(n).padStart(2, "0");
@@ -2724,7 +3563,7 @@
             const Y = yrs.includes(+ST.cy) ? +ST.cy : yrs[yrs.length - 1];
             const pills = `<div class="tg">${yrs.map(y => `<button type="button" data-c="cy" data-m="${y}" class="${y === Y ? "on" : ""}">${y === Y ? ic("ck") : ""}${ic("cal")}${y}</button>`).join("")}</div>`;
             const lg = `<div class="hlg"><span><i style="background:#0f7d3e"></i>Production Day</span><span><i style="background:#d92d3f"></i>Holiday</span></div>`;
-            const head = `<div class="ch"><div class="ic">${ic("cal")}</div><div class="tt"><h3>Shop Floor Production Calendar</h3><p>Good Production আছে = Production Day · না থাকলে = Holiday</p></div>${yrs.length ? lg + pills : ""}</div>`;
+            const head = `<div class="ch"><div class="ic">${ic("cal")}</div><div class="tt"><h3>Shop Floor Production Calendar</h3><p>Good Production available = Production Day · Not available = Holiday</p></div>${yrs.length ? lg + pills : ""}</div>`;
             if (!yrs.length) return `<section class="cd dk pc">${head}<div class="ld">No data for the selected filters</div></section>`;
             let pl = 0, ho = 0, pr = 0; const mp = Array(12).fill(0), cols = [];
             for (let m = 0; m < 12; m++) {
@@ -2743,8 +3582,160 @@
             }
             const pc = v => pl ? (v / pl * 100).toFixed(1) + "% of planning days" : "";
             const side = `<div class="pcs"><div class="pck"><div class="l">Total Day</div><div class="v">${pl}</div><div class="s">${Y} · Production + Holiday</div></div><div class="pck h"><div class="l">Holiday</div><div class="v">${ho}</div><div class="s">${pc(ho)}</div></div><div class="pck g"><div class="l">Production Day</div><div class="v">${pr}</div><div class="s">${pc(pr)}</div></div></div>`;
-            const sum = `<div class="pcf">${MON.map((n, m) => `<div><small>${n}</small><b>${mp[m]}</b></div>`).join("")}<div class="t"><small>Total</small><b>${pr}</b></div></div>`;
+            const sum = `<div class="pcf">${MON.map((n, m) => `<div><small>${n}</small><b>${mp[m]}</b></div>`).join("")}</div>`;
             return `<section class="cd dk pc">${head}<div class="pcb"><div class="pcg"><div class="pcgi">${cols.join("")}</div>${sum}</div>${side}</div></section>`
+        }
+        /* ---------- Cavity Performance : Standard vs Running Cavity · Shift-wise Production Loss ---------- */
+        let CAVT = null, CAVL = false;
+        function cavTipInit() {
+            if (CAVL) return; CAVL = true;
+            const tp = document.createElement("div"); tp.id = "cvtip"; document.body.appendChild(tp); let last = null;
+            document.addEventListener("mousemove", e => {
+                const el = e.target.closest && e.target.closest("[data-cv]");
+                if (!el || !CAVT) { tp.style.display = "none"; last = null; return }
+                if (el !== last) { tp.innerHTML = CAVT.html(el.dataset.cv); last = el }
+                tp.style.display = "block";
+                tp.style.left = Math.max(6, Math.min(e.clientX + 14, innerWidth - tp.offsetWidth - 8)) + "px";
+                tp.style.top = Math.max(6, Math.min(e.clientY + 16, innerHeight - tp.offsetHeight - 8)) + "px"
+            })
+        }
+        function cavCard() {
+            cavTipInit();
+            const { D, C, n, dd } = P, SM = 720, pf = v => parseFloat(String(v == null ? "" : v).replace(/,/g, "")) || 0;
+            const head = `<div class="ch"><div class="ic">${ic("mc")}</div><div class="tt"><h3>Cavity Performance</h3><p>Standard vs Running Cavity · Shift-wise Production Loss (${SM} min shift)</p></div></div>`;
+            if (!C.standardcavity || !C.runningcavity || !D.standardcavity || !D.runningcavity) return `<section class="cd dk cvp">${head}<div class="ld">Standard / Running Cavity data পাওয়া যায়নি</div></section>`;
+            const dOK = dd.map(x => (!F.year.size || F.year.has(String(x.y))) && (!F.month.size || F.month.has(String(x.mo))) && (!F.from || x.s >= F.from) && (!F.to || x.s <= F.to));
+            const act = [];
+            FDEF.forEach(f => { if (f === "date" || !f[2] || !F[f[0]].size || !D[f[2]] || !C[f[2]]) return; const ok = new Uint8Array(D[f[2]].length); F[f[0]].forEach(c => ok[c] = 1); act.push({ ok, col: C[f[2]] }) });
+            const sc = D.standardcavity.map(pf), rc = D.runningcavity.map(pf), cyR = (D.runningcycle || []).map(pf), cyS = (D.standardcycle || []).map(pf);
+            const cR = C.runningcycle, cS = C.standardcycle, bc = C.bayname, cc = C.productcategory, shc = C.shifttime, cdt = C.date;
+            const G = () => ({ s: 0, r: 0, l: 0, p: 0, k: new Set() }), add = (g, s, r, l, p, key) => { g.s += s; g.r += r; g.l += l; g.p += p; g.k.add(key) };
+            const T = G(), BY = new Map(), SH = [G(), G()], CT = [new Map(), new Map(), new Map()], TP = new Map();
+            for (let i = 0; i < n; i++) {
+                const d = cdt[i]; if (!dOK[d]) continue;
+                let ok = true; for (let k = 0; k < act.length; k++) if (!act[k].ok[act[k].col[i]]) { ok = false; break } if (!ok) continue;
+                const s = sc[C.standardcavity[i]], r = rc[C.runningcavity[i]]; if (!(s > 0) || !(r > 0)) continue;     // machine চলছে এমন row-ই ধরা হয়
+                const l = Math.max(0, s - r), cy = (cR ? cyR[cR[i]] : 0) || (cS ? cyS[cS[i]] : 0), p = cy > 0 ? l * SM * 60 / cy : 0;
+                const sg = shc ? P.shg[shc[i]] : -1, key = d * 3 + sg + 1, b = bc ? bc[i] : 0;
+                add(T, s, r, l, p, key);
+                let g = BY.get(b); if (!g) BY.set(b, g = G()); add(g, s, r, l, p, key);
+                const pushC = x => CT[x].set(b, (CT[x].get(b) || 0) + l); pushC(2);
+                const mcI = C.mcno ? C.mcno[i] : 0, mdI = C.modelname ? C.modelname[i] : 0, tlI = C.toolno ? C.toolno[i] : 0;
+                const tipAdd = x => { const tk = x + "|" + b; let m = TP.get(tk); if (!m) TP.set(tk, m = new Map()); const id = mcI + "|" + mdI + "|" + tlI; let g = m.get(id); if (!g) m.set(id, g = { mc: mcI, md: mdI, tl: tlI, s: 0, l: 0, p: 0, k: new Set() }); g.s += s; g.l += l; g.p += p; g.k.add(key) };
+                tipAdd(2); if (sg >= 0) { add(SH[sg], s, r, l, p, key); pushC(sg); tipAdd(sg) }
+            }
+            if (!(T.s > 0)) return `<section class="cd dk cvp">${head}<div class="ld">No cavity data for the selected filters</div></section>`;
+            const ab = v => { const a = Math.abs(v); return a >= 1e9 ? (v / 1e9).toFixed(2) + "B" : a >= 1e6 ? (v / 1e6).toFixed(2) + "M" : a >= 1e5 ? Math.round(v / 1e3) + "K" : null };
+            const nn = v => ab(v) || (() => { const a = Math.abs(v - Math.round(v)) < .05 ? String(Math.round(v)) : v.toFixed(1); return a.replace(/\B(?=(\d{3})+(?!\d))/g, ",") })();
+            const av = (g, f) => g[f], pct = g => g.s ? g.l / g.s * 100 : 0, pcs = v => ab(v) || Math.round(v).toLocaleString("en-US");
+            const bayN = s => { const m = String(s).match(/^bay\s*-?\s*0*(\d+)$/i); return m ? "Bay-" + String(m[1]).padStart(2, "0") : (String(s) || "All") };
+            const kp = (c, i, l, v, s) => `<div class="cvk ${c}"><i>${i}</i><div><small>${l}</small><b>${v}</b>${s ? `<em>${s}</em>` : ""}</div></div>`;
+            const warn = '<svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/></svg>';
+            const lp = pct(T), rp = 100 - lp, multi = T.k.size > 1;
+            const kpis = `<div class="cvks">${kp("", ic("mc"), "Standard Cavity", nn(av(T, "s")), "")}${kp("g", ic("rs"), "Running Cavity", nn(av(T, "r")), "")}${kp("r", warn, "Lost Cavity", nn(av(T, "l")), "")}${kp("", ic("trend"), "Loss %", lp.toFixed(1) + "%", "(" + nn(av(T, "l")) + " / " + nn(av(T, "s")) + ")")}${kp("", ic("fg"), "Production Loss (Pcs)", pcs(T.p), "total in selected period")}</div>`;
+            const CIR = 2 * Math.PI * 46, dl = CIR * lp / 100;
+            const donut = `<div class="cvp2"><h4>Cavity Utilization</h4><div class="cvdn"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="46" fill="none" stroke="#2fb34c" stroke-width="18"/><circle cx="60" cy="60" r="46" fill="none" stroke="#e0262f" stroke-width="18" stroke-dasharray="${dl.toFixed(2)} ${(CIR - dl).toFixed(2)}" transform="rotate(-90 60 60)"/><text x="60" y="58" text-anchor="middle" font-size="19" font-weight="800" fill="#0f2a5a">${rp.toFixed(1)}%</text><text x="60" y="73" text-anchor="middle" font-size="9.5" font-weight="600" fill="#4a5a78">Running Rate</text></svg><div class="lgd"><span><i style="background:#2fb34c"></i>Running (${nn(av(T, "r"))})</span><span><i style="background:#e0262f"></i>Loss (${nn(av(T, "l"))})</span></div></div></div>`;
+            const bn = b => D.bayname ? String(D.bayname[b]) : "", bayNo = s => { const m = String(s).match(/(\d+)\s*$/); return m ? +m[1] : 0 };
+            const BCOL = { 1: "#1f62d6", 2: "#2fa84f", 3: "#f2761c", 4: "#7a3fb0", 5: "#17a8c4", 6: "#f2b705" }, XCOL = ["#e84a6f", "#8d6e63", "#607d8b", "#9ccc65"], bcol = b => BCOL[bayNo(bn(b))] || XCOL[b % 4];
+            const SUN = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>', MOON = '<svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>';
+            const shCol = (x, ico, lbl, g) => {
+                const arr = [...CT[x]].filter(e => e[1] > 0).sort((a, b) => bayNo(bn(b[0])) - bayNo(bn(a[0])) || nat(bn(b[0]), bn(a[0])));
+                const sum = arr.reduce((s, e) => s + e[1], 0);
+                const segs = arr.map(e => `<div class="sg" data-cv="${x}|${e[0]}" style="flex-grow:${e[1]};background-color:${bcol(e[0])}"><b>${(e[1] / sum * 100).toFixed(1)}%</b><small>${nn(e[1])}</small></div>`).join("") || `<div class="sg" style="flex-grow:1;background-color:#9aa8c2"><b>–</b></div>`;
+                return `<div class="cvsc"><div class="stk">${segs}</div><div class="ft">${ico}${lbl} ${nn(g.l)}</div></div>`
+            };
+            const lgd = [...CT[2].keys()].sort((a, b) => nat(bn(a), bn(b))).map(b => `<span><i style="background:${bcol(b)}"></i>${esc(bayN(bn(b)).toUpperCase())}</span>`).join("");
+            const shift = `<div class="cvp2"><h4>Shift-wise Cavity Loss</h4><div class="cvsh">${shCol(0, SUN, "MORNING", SH[0])}${shCol(1, MOON, "NIGHT", SH[1])}${shCol(2, "Σ ", "TOTAL", T)}</div><div class="cvlg">${lgd}</div></div>`;
+            const bays = [...BY].sort((a, b) => nat(D.bayname ? D.bayname[a[0]] : "", D.bayname ? D.bayname[b[0]] : ""));
+            const cl = v => v >= 10 ? "hi" : v >= 5 ? "lo" : "";
+            const rows = bays.map(([b, g]) => `<tr data-cv="2|${b}"><td>${esc(bayN(D.bayname ? D.bayname[b] : ""))}</td><td>${nn(av(g, "s"))}</td><td>${nn(av(g, "r"))}</td><td>${nn(av(g, "l"))}</td><td class="${cl(pct(g))}">${pct(g).toFixed(1)}%</td><td>${pcs(g.p)}</td></tr>`).join("");
+            const tbl = `<div class="cvp2"><h4>Bay-wise Cavity Loss</h4><div class="cvt"><table><thead><tr><th>Bay</th><th>Standard Cavity</th><th>Running Cavity</th><th>Cavity Loss</th><th>Loss %</th><th>Production Loss (Pcs)</th></tr></thead><tbody>${rows}<tr class="tt"><td>Total</td><td>${nn(bays.reduce((s, e) => s + av(e[1], "s"), 0))}</td><td>${nn(bays.reduce((s, e) => s + av(e[1], "r"), 0))}</td><td>${nn(bays.reduce((s, e) => s + av(e[1], "l"), 0))}</td><td>${lp.toFixed(1)}%</td><td>${pcs(T.p)}</td></tr></tbody></table></div></div>`;
+            const LAB = ["MORNING", "NIGHT", "TOTAL"], mcN = c => String((D.mcno || [])[c] ?? "").trim() || "—", mdN = c => String((D.modelname || [])[c] ?? "").trim() || "—", tlN = c => String((D.toolno || [])[c] ?? "").trim() || "—";
+            CAVT = {
+                html: key => {
+                    const [x, b] = key.split("|"), m = TP.get(key); if (!m) return "";
+                    const all = [...m.values()].map(g => ({ mc: mcN(g.mc), md: mdN(g.md), tl: tlN(g.tl), s: g.s, l: g.l, p: g.p })).filter(g => g.l > 0).sort((u, v) => v.l - u.l);
+                    const tot = all.reduce((a, g) => ({ s: a.s + g.s, l: a.l + g.l, p: a.p + g.p }), { s: 0, l: 0, p: 0 }), shown = all.slice(0, 12);
+                    return `<div class="hd"><b>${esc(bayN(bn(+b)))}</b><small>${LAB[x]}</small></div>` + (shown.length ? `<table><thead><tr><th>M/C No</th><th>Model</th><th>Tool No</th><th>St. Cavity</th><th>Loss Cavity</th><th>Prod. Loss (PCS)</th></tr></thead><tbody>${shown.map(g => `<tr><td>${esc(g.mc)}</td><td>${esc(g.md)}</td><td>${esc(g.tl)}</td><td>${nn(g.s)}</td><td>${nn(g.l)}</td><td>${pcs(g.p)}</td></tr>`).join("")}</tbody><tfoot><tr><td colspan="3">Total${all.length > shown.length ? " (+" + (all.length - shown.length) + " more)" : ""}</td><td>${nn(tot.s)}</td><td>${nn(tot.l)}</td><td>${pcs(tot.p)}</td></tr></tfoot></table>` : `<div class="nd">No cavity loss</div>`)
+                }
+            };
+            const note = `<div class="cvn">Production Loss = Lost Cavity × (${SM} min × 60 ÷ Cycle sec)</div>`;
+            return `<section class="cd dk cvp">${head}<div class="cvb">${kpis}<div class="cvg">${donut}${shift}${tbl}</div>${note}</div></section>`
+        }
+
+        /* ---------- Production Raw Data : Model · Color · Tool × Year → Month → Date ---------- */
+        const RWS = { R: null, met: "", PV: [], YR: [], open: new Set(), mo: new Set(), pg: 0, CM: {}, CG: 0, GT: 0, MX: 0, DX: 0, ini: false }, RWPS = 100;
+        const RWH = ["Model", "Color", "Tool No", "Standard Cavity", "Running Cavity", "Lost Cavity", "Cavity Loss Ratio", "Standard Cycle", "Running Cycle", "Material Type"];
+        const rwDim = (y, m) => new Date(y, m, 0).getDate(), rwPc = (v, t) => t ? (v / t * 100).toFixed(1) + "%" : "0%", rwDl = (m, d) => String(d).padStart(2, "0") + "-" + MON[m - 1];
+        function rwBuild() {
+            const met = ST.rw || "fg"; if (RWS.R === LASTR && RWS.met === met) return;
+            const { D, C, M, n, dd } = P, Q = M[MET[met][1]] || [], KD = ["modelname", "colorname", "toolno", "standardcavity", "runningcavity", "standardcycle", "runningcycle", "materialtype"];
+            const dOK = dd.map(x => (!F.year.size || F.year.has(String(x.y))) && (!F.month.size || F.month.has(String(x.mo))) && (!F.from || x.s >= F.from) && (!F.to || x.s <= F.to));
+            const act = []; FDEF.forEach(f => { if (f === "date" || !f[2] || !F[f[0]].size || !D[f[2]] || !C[f[2]]) return; const ok = new Uint8Array(D[f[2]].length); F[f[0]].forEach(c => ok[c] = 1); act.push({ ok, col: C[f[2]] }) });
+            const cols = KD.map(k => C[k] || null), cdt = C.date, mp = new Map();
+            for (let i = 0; i < n; i++) {
+                const d = cdt[i]; if (!dOK[d]) continue;
+                let ok = true; for (let k = 0; k < act.length; k++) if (!act[k].ok[act[k].col[i]]) { ok = false; break } if (!ok) continue;
+                const q = Q[i] || 0; if (!q) continue;
+                const cd = cols.map(c => c ? c[i] : 0), key = cd.join("|"); let o = mp.get(key); if (!o) mp.set(key, o = { cd, v: new Map(), dv: new Map(), t: 0 });
+                const x = dd[d], ym = x.y * 100 + x.mo, ymd = ym * 100 + (+x.s.slice(8, 10));
+                o.v.set(ym, (o.v.get(ym) || 0) + q); o.dv.set(ymd, (o.dv.get(ymd) || 0) + q); o.t += q
+            }
+            const lb = (k, c) => String((D[k] || [])[c] ?? "").trim() || "—", nf = v => parseFloat(String(v).replace(/,/g, "")) || 0;
+            const PV = [...mp.values()].map(o => {
+                const t = o.cd.map((c, j) => lb(KD[j], c)), s = nf(t[3]), r = nf(t[4]), l = s > 0 ? Math.max(0, s - r) : null;
+                o.cells = [t[0], t[1], t[2], t[3], t[4], l == null ? "—" : fc(l), l == null ? "—" : (l / s * 100).toFixed(1) + "%", t[5], t[6], t[7]]; return o
+            }).sort((x, y) => y.t - x.t || nat(x.cells[0], y.cells[0]));
+            const YR = [...new Set(PV.flatMap(o => [...o.v.keys()].map(k => Math.floor(k / 100))))].sort((a, b) => a - b);
+            const CM = {}; PV.forEach(o => { o.yt = {}; YR.forEach(y => { let t = 0; for (let i = 1; i <= 12; i++) t += o.v.get(y * 100 + i) || 0; o.yt[y] = t }) });
+            YR.forEach(y => CM[y] = PV.reduce((a, o) => Math.max(a, o.yt[y]), 0));
+            let MX = 0, DX = 0; PV.forEach(o => { o.v.forEach(v => { if (v > MX) MX = v }); o.dv.forEach(v => { if (v > DX) DX = v }) });
+            Object.assign(RWS, { R: LASTR, met, PV, YR, CM, MX, DX, pg: 0, CG: PV.reduce((a, o) => Math.max(a, o.t), 0), GT: PV.reduce((a, o) => a + o.t, 0) })
+        }
+        function rwInfo() { const N = RWS.PV.length, s = RWS.pg * RWPS; return N ? `${s + 1}–${Math.min(s + RWPS, N)} of ${N} rows` : "0 rows" }
+        function rwTable() {
+            const { PV, YR, CM, CG, GT, MX, DX } = RWS, OPEN = RWS.open, MO = RWS.mo, s = RWS.pg * RWPS, p = PV.slice(s, s + RWPS);
+            const YT = {}, MT = new Map(), DT = new Map(); PV.forEach(o => { YR.forEach(y => YT[y] = (YT[y] || 0) + o.yt[y]); o.v.forEach((v, k) => MT.set(k, (MT.get(k) || 0) + v)); o.dv.forEach((v, k) => DT.set(k, (DT.get(k) || 0) + v)) });
+            const mo = (y, i) => OPEN.has(y) && MO.has(y * 100 + i + 1), any = YR.some(y => MON.some((_, i) => mo(y, i))), rs = any ? 3 : 2, rsp = any ? ' rowspan="2"' : "";
+            const span = y => MON.reduce((a, _, i) => a + (mo(y, i) ? rwDim(y, i + 1) : 1), 0), days = (y, i) => Array.from({ length: rwDim(y, i + 1) }, (_, d) => d);
+            const dh0 = RWH.map((h, j) => `<th class="mh${j === 0 ? " c1" : j === 1 ? " c2" : ""}" rowspan="${rs}">${h}</th>`).join("");
+            const yh = YR.map(y => OPEN.has(y) ? `<th colspan="${span(y)}" class="yh" data-rw="y:${y}">${y}<i>▾</i></th>` : `<th class="yh" data-rw="y:${y}">${y}<i>▸</i></th>`).join(""),
+                sh = YR.map(y => OPEN.has(y) ? MON.map((x, i) => { const k = y * 100 + i + 1; return mo(y, i) ? `<th colspan="${rwDim(y, i + 1)}" class="sh mo ys" data-rw="m:${k}">${x}<i>▾</i></th>` : `<th class="sh mo${i ? "" : " ys"}"${rsp} data-rw="m:${k}">${x}<i>▸</i></th>` }).join("") : `<th class="sh ys"${rsp}>Qty | % Contribution</th>`).join(""),
+                dh = any ? "<tr>" + YR.map(y => OPEN.has(y) ? MON.map((_, i) => mo(y, i) ? days(y, i).map(d => `<th class="sh dh${d ? "" : " ys"}">${rwDl(i + 1, d + 1)}</th>`).join("") : "").join("") : "").join("") + "</tr>" : "";
+            const cell = (txt, v, m, f, x) => v ? `<td class="bc${f ? " ys" : ""}${x ? " " + x : ""}"><i style="width:${m ? Math.max(4, Math.round(v / m * 100)) : 0}%"></i><span>${txt}</span></td>` : `<td class="bc z${f ? " ys" : ""}${x ? " " + x : ""}"><span>-</span></td>`;
+            const body = p.map(o => `<tr>${o.cells.map((t, j) => `<td class="${j === 0 ? "c1" : j === 1 ? "c2" : "dm"}">${esc(t)}</td>`).join("")}${YR.map(y => OPEN.has(y) ? MON.map((_, i) => { const k = y * 100 + i + 1; if (mo(y, i)) return days(y, i).map(d => { const v = o.dv.get(k * 100 + d + 1) || 0; return cell(fc(v), v, DX, d === 0, "dc") }).join(""); const v = o.v.get(k) || 0; return cell(fc(v), v, MX, i === 0) }).join("") : cell(`${fc(o.yt[y])} | ${rwPc(o.yt[y], o.t)}`, o.yt[y], CM[y], true)).join("")}<td class="bc gc"><i style="width:${CG ? Math.max(4, Math.round(o.t / CG * 100)) : 0}%"></i><span><b>${fc(o.t)}</b><em>${rwPc(o.t, GT)}</em></span></td></tr>`).join("");
+            const ft = YR.map(y => OPEN.has(y) ? MON.map((_, i) => { const k = y * 100 + i + 1; if (mo(y, i)) return days(y, i).map(d => `<td${d ? "" : ' class="ys"'}>${fc(DT.get(k * 100 + d + 1) || 0)}</td>`).join(""); return `<td${i ? "" : ' class="ys"'}>${fc(MT.get(k) || 0)}</td>` }).join("") : `<td>${fc(YT[y] || 0)}</td>`).join("");
+            const foot = PV.length ? `<tfoot><tr><td class="f1" colspan="2"><svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>Total Production</td><td class="fe" colspan="${RWH.length - 2}"></td>${ft}<td class="gt">${fc(GT)}</td></tr></tfoot>` : "";
+            return `<table class="rwv"><thead><tr>${dh0}${yh}<th class="mh gh" rowspan="${rs}">Grand Total</th></tr><tr>${sh}</tr>${dh}</thead><tbody>${body || `<tr><td colspan="${RWH.length + YR.length + 1}" style="text-align:center;padding:40px;color:#6d7c99">No data for the selected filters</td></tr>`}</tbody>${foot}</table>`
+        }
+        function rwRefresh(top) { const t = document.getElementById("rwt"); if (!t) return; t.innerHTML = rwTable(); const i = document.getElementById("rwpi"); if (i) i.textContent = rwInfo(); if (top) t.scrollTop = 0 }
+        async function rwDX() {
+            if (!RWS.PV.length) return alert("Nothing to download.");
+            if (!window.XLSX) await new Promise((ok, no) => { const s = document.createElement("script"); s.src = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"; s.onload = ok; s.onerror = () => no(new Error("Could not load the Excel library")); document.head.appendChild(s) }).catch(e => alert(e.message));
+            if (!window.XLSX) return;
+            const rows = RWS.PV.map(o => { const r = {}; RWH.forEach((h, j) => r[h] = o.cells[j]); RWS.YR.forEach(y => { r[y + " Total Qty"] = o.yt[y]; r[y + " Contribution %"] = o.t ? +(o.yt[y] / o.t * 100).toFixed(1) : 0; MON.forEach((nm, i) => { r[y + "-" + nm] = o.v.get(y * 100 + i + 1) || 0 }) }); r["Grand Total"] = o.t; return r });
+            const w = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(w, XLSX.utils.json_to_sheet(rows), "Production Raw Data"); XLSX.writeFile(w, "Production_Raw_Data_" + new Date().toISOString().slice(0, 10) + ".xlsx")
+        }
+        function rwInit() {
+            if (RWS.ini) return; RWS.ini = true;
+            document.addEventListener("click", e => {
+                const el = e.target.closest && e.target.closest("[data-rw]"); if (!el) return; const a = el.dataset.rw; let top = false;
+                if (a === "ya1") RWS.open = new Set(RWS.YR);
+                else if (a === "ya0") { RWS.open = new Set(); RWS.mo = new Set() }
+                else if (a === "pp-1" || a === "pp1") { const mx = Math.max(0, Math.ceil(RWS.PV.length / RWPS) - 1); RWS.pg = Math.min(mx, Math.max(0, RWS.pg + (+a.slice(2)))); top = true }
+                else if (a === "dx") { rwDX(); return }
+                else if (a.startsWith("y:")) { const y = +a.slice(2); RWS.open.has(y) ? RWS.open.delete(y) : RWS.open.add(y) }
+                else if (a.startsWith("m:")) { const k = +a.slice(2); RWS.mo.has(k) ? RWS.mo.delete(k) : RWS.mo.add(k) }
+                else return;
+                rwRefresh(top)
+            })
+        }
+        function rawCard() {
+            rwInit(); rwBuild(); const met = ST.rw || "fg";
+            const bt = (a, ico, t, cls) => `<button type="button" class="rwb${cls ? " " + cls : ""}" data-rw="${a}">${ico}${t}</button>`;
+            const pl = '<i><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></i>', mi = '<i><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></i>', dn = '<svg viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>';
+            const head = `<div class="ch"><div class="ic">${ic("cat")}</div><div class="tt"><h3>Production Raw Data</h3><p>${esc(MET[met][0])} · Model · Color · Tool wise · Year → Month → Date · <span id="rwpi">${esc(rwInfo())}</span></p></div><div class="rwbt">${tgl("rw", met)}${bt("ya1", pl, "Expand All")}${bt("ya0", mi, "Collapse All")}${bt("pp-1", "", "‹ Prev")}${bt("pp1", "", "Next ›")}${bt("dx", dn, "Download Excel", "dk")}</div></div>`;
+            return `<section class="cd dk rwc">${head}<div class="rwx"><div class="rwt" id="rwt">${rwTable()}</div></div></section>`
         }
         const PAL = ["#1565d8", "#2fb34c", "#ff7a1a", "#6f3fa0", "#12b0c9", "#f5c000", "#e84a6f", "#8d6e63", "#607d8b", "#9ccc65"];
         function yearData(R, met) {
@@ -2766,7 +3757,7 @@
                 bays.forEach((bi, i) => {
                     const v = cell(o.yi, bi), share = o.t > 0 ? v / o.t : 0, h = share * (Y1 - Y0), y = Y1 - (acc + share) * (Y1 - Y0); acc += share;
                     if (h <= 0) return;
-                    s += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" fill="${o.run ? `url(#ht${i})` : col(i)}"><title>${esc(R.bayD[bi] || "All")} · ${o.y} · ${fc(v)} (${(share * 100).toFixed(1)}%)</title></rect>`;
+                    s += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" fill="${o.run ? `url(#ht${i})` : col(i)}" class="ytseg" data-y="${o.y}" data-yi="${o.yi}" data-b="${bi}" data-n="${esc(R.bayD[bi] || "All")}" data-col="${col(i)}" data-share="${(share * 100).toFixed(1)}"></rect>`;
                     if (h >= 15 && bw > 40) s += `<text x="${cx}" y="${(y + h / 2 + 4).toFixed(1)}" text-anchor="middle" font-size="${bw > 70 ? 12 : 10.5}" font-weight="800" fill="${i % PAL.length === 5 ? "#3b2a00" : "#fff"}" style="paint-order:stroke;stroke:rgba(0,0,0,.18);stroke-width:2px">${(share * 100).toFixed(1)}%</text>`
                 });
                 const pc = (o.t / grand * 100).toFixed(1) + "%", tx = n > 6 ? fm(o.t) : `${fm(o.t)} | ${pc}`, pw = Math.round(tx.length * 6.1 + 16);
@@ -2776,9 +3767,65 @@
             });
             return s + "</svg>"
         }
+        /* ---------- Year-to-Year · bay hover: Jan–Dec × Hanger / Sizer / Clip / Accessories ---------- */
+        let YBR = null;
+        const YB_C = [["Hanger", /hanger/i], ["Sizer", /sizer/i], ["Clip", /clip/i], ["Accessories", /access/i]];
+        const ybF = v => { const a = Math.abs(v); return a >= 1e9 ? (v / 1e9).toFixed(2) + "B" : a >= 1e6 ? (v / 1e6).toFixed(2) + "M" : a >= 1e3 ? Math.round(v / 1e3) + "K" : String(Math.round(v)) };
+        (function () {
+            if (document.getElementById("ybt")) return;
+            const st = document.createElement("style"); st.id = "ybt-css";
+            st.textContent = `#ybt{position:fixed;z-index:9999;pointer-events:none;display:none;width:470px;max-width:calc(100vw - 16px);background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(15,42,90,.28);border:1px solid #d6dfef;font-family:Inter,sans-serif;color:#0f2a5a}
+#ybt .hd{background:linear-gradient(100deg,#0a2a70,#17479a);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px}
+#ybt .hd .ic{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;flex:none}
+#ybt .hd .ic i{width:12px;height:12px;border-radius:3px;display:block}
+#ybt .hd b{display:block;font-size:20px;font-weight:800;letter-spacing:.02em;line-height:1.1}
+#ybt .hd small{display:block;font-size:12.5px;font-weight:600;opacity:.9;margin-top:3px}
+#ybt table{width:100%;border-collapse:collapse;font-size:12.5px}
+#ybt th{background:#0a2a70;color:#fff;font-weight:700;padding:9px 8px;text-align:right;white-space:nowrap}
+#ybt th:first-child,#ybt td:first-child{text-align:left}
+#ybt td{padding:6px 8px;text-align:right;border-bottom:1px solid #eef2f8;white-space:nowrap;font-weight:600}
+#ybt td:first-child{color:#0b5fa5;font-weight:700}
+#ybt td.tc{color:#1259c4;font-weight:800}
+#ybt td.z{color:#9aa3b8;font-weight:500}
+#ybt tr.tt td{background:#e9f0fb;font-weight:800;border-bottom:0;border-top:1px solid #c9d7ee}`;
+            document.head.appendChild(st);
+            const d = document.createElement("div"); d.id = "ybt"; document.body.appendChild(d);
+            const seg = e => (e.target && e.target.closest) ? e.target.closest(".ytseg") : null;
+            document.addEventListener("mouseover", e => { const el = seg(e); if (el) ybShow(el, e) });
+            document.addEventListener("mousemove", e => { if (seg(e)) ybPos(e) });
+            document.addEventListener("mouseout", e => {
+                const el = seg(e); if (el && !(e.relatedTarget && el.contains(e.relatedTarget))) document.getElementById("ybt").style.display = "none";
+            });
+        })();
+        function ybShow(el, e) {
+            if (!YBR) return;
+            const tp = document.getElementById("ybt"), bi = +el.dataset.b, yi = +el.dataset.yi, mi = MK.indexOf(YBR.met), nb = YBR.nb, nc = YBR.ncat, c = el.dataset.col;
+            const colOf = YBR.catD.map(n => YB_C.findIndex(k => k[1].test(String(n))));
+            const rows = MON.map((n, m) => {
+                const cs = YB_C.map(() => 0); let tot = 0;
+                for (let ci = 0; ci < nc; ci++) {
+                    const v = YBR.ymc[((((yi * 12 + m) * nb + bi) * nc) + ci) * 3 + mi];
+                    if (!v) continue; tot += v; if (colOf[ci] >= 0) cs[colOf[ci]] += v;
+                }
+                return { n, cs, tot };
+            });
+            const T = rows.reduce((s, r) => s + r.tot, 0), colT = YB_C.map((_, k) => rows.reduce((s, r) => s + r.cs[k], 0));
+            const cell = v => v > 0 ? `<td>${ybF(v)}</td>` : `<td class="z">-</td>`;
+            tp.innerHTML = `<div class="hd"><div class="ic"><i style="background:${c}"></i></div><div><b>${esc(el.dataset.n)}</b><small>${el.dataset.y} · ${el.dataset.share}% of 1 year · ${ybF(T)}</small></div></div>` +
+                `<table><thead><tr><th>Month</th>${YB_C.map(k => `<th>${k[0]}</th>`).join("")}<th>Total</th><th>%</th></tr></thead><tbody>` +
+                rows.map(r => `<tr class="${r.tot ? "" : "z"}"><td>${r.n}</td>${r.cs.map(cell).join("")}${r.tot ? `<td class="tc">${ybF(r.tot)}</td><td class="tc">${(r.tot / T * 100).toFixed(1)}%</td>` : `<td class="z">-</td><td class="z">-</td>`}</tr>`).join("") +
+                `</tbody><tfoot><tr class="tt"><td>Total</td>${colT.map(v => `<td>${ybF(v)}</td>`).join("")}<td>${ybF(T)}</td><td>100%</td></tr></tfoot></table>`;
+            tp.style.display = "block"; ybPos(e);
+        }
+        function ybPos(e) {
+            const tp = document.getElementById("ybt"); let x = e.clientX + 18, y = e.clientY - 20;
+            if (x + tp.offsetWidth > innerWidth - 8) x = e.clientX - tp.offsetWidth - 18;
+            if (y + tp.offsetHeight > innerHeight - 8) y = innerHeight - tp.offsetHeight - 8;
+            tp.style.left = Math.max(8, x) + "px"; tp.style.top = Math.max(8, y) + "px";
+        }
         function bestYear(YD) { const c = YD.ys.filter(o => !o.run), L = c.length ? c : YD.ys; let b = null; L.forEach(o => { if (!b || o.t > b.t) b = o }); return b }
         function yearCard(R) {
-            const met = ST.ym, YD = yearData(R, met), { ys, bays, cell, grand } = YD; let kps = "", legend = "", foot = "", sub = "% on each bar = that year’s contribution to the grand total";
+            const met = ST.ym, YD = yearData(R, met), { ys, bays, cell, grand } = YD; YBR = { met, nb: R.nb, ymc: R.ymc, ncat: R.ncat, catD: R.catD }; let kps = "", legend = "", foot = "", sub = "% on each bar = that year’s contribution to the grand total";
             if (ys.length && grand > 0) {
                 const best = bestYear(YD), last = ys[ys.length - 1], S = monthSeries(R, met), d = S ? delta12(S) : null;
                 const first = ys[0].y; let bb = null;
@@ -2872,7 +3919,7 @@
         }
         {
             const ct = document.createElement("div"); ct.id = "ctip"; document.body.appendChild(ct);
-            const CC = [["Bar", /bar/i], ["Hanger", /hanger/i], ["Sizer", /sizer/i], ["Clip", /clip/i], ["Accessories", /access/i]];
+            const CC = [["Hanger", /hanger/i], ["Sizer", /sizer/i], ["Clip", /clip/i], ["Accessories", /access/i]];
             const fx = v => { const a = Math.abs(v); return a >= 1e9 ? (v / 1e9).toFixed(2) + "B" : a >= 1e6 ? (v / 1e6).toFixed(2) + "M" : a >= 1e3 ? Math.round(v / 1e3) + "K" : String(Math.round(v)) };
             const bayN = s => { const m = String(s).match(/^bay\s*-?\s*0*(\d+)$/i); return m ? "Bay-" + String(m[1]).padStart(2, "0") : (String(s) || "All") };
             function ctHTML(el) {
@@ -2880,23 +3927,24 @@
                 const d = +el.dataset.d, t = el.dataset.t, hol = el.classList.contains("hd");
                 if (hol || d < 0) return `<div class="th"><b>${esc(t)}</b><span class="hol">Holiday · No production</span></div>`;
                 const colOf = R.catD.map(n => CC.findIndex(c => c[1].test(String(n))));
-                const rows = []; let gt = 0; const gc = CC.map(() => 0);
+                const rows = []; let gt = 0, gtg = 0; const gc = CC.map(() => 0);
                 for (let bi = 0; bi < R.nb; bi++) {
                     const cs = CC.map(() => 0); let tot = 0;
                     for (let ci = 0; ci < R.ncat; ci++) {
                         const v = R.dbc[(d * R.nb + bi) * R.ncat + ci]; if (!v) continue;
                         tot += v; if (colOf[ci] >= 0) cs[colOf[ci]] += v
                     }
-                    if (tot > 0) { rows.push({ n: R.bayD[bi], cs, tot }); cs.forEach((v, k) => gc[k] += v); gt += tot }
+                    const tg = R.dtb ? (R.dtb[d * R.nb + bi] || 0) : 0;
+                    if (tot > 0 || tg > 0) { rows.push({ n: R.bayD[bi], cs, tot, tg }); cs.forEach((v, k) => gc[k] += v); gt += tot; gtg += tg }
                 }
                 rows.sort((a, b) => nat(a.n, b.n));
+                const pc = (a, t) => t > 0 ? `<td>${(a / t * 100).toFixed(1)}%</td>` : `<td class="z">-</td>`;
                 const cell = v => v > 0 ? `<td>${fx(v)}</td>` : `<td class="z">-</td>`;
-                const body = rows.map(r => `<tr><td>${esc(bayN(r.n))}</td>${r.cs.map(cell).join("")}<td><b>${fx(r.tot)}</b></td><td>${(r.tot / gt * 100).toFixed(1)}%</td></tr>`).join("");
+                const body = rows.map(r => `<tr><td>${esc(bayN(r.n))}</td>${cell(r.tg)}${r.cs.map(cell).join("")}<td><b>${fx(r.tot)}</b></td>${pc(r.tot, r.tg)}</tr>`).join("");
                 return `<div class="th"><b>${fx(gt)}</b><span>${esc(t)} · Total Production</span></div>
-<table><thead><tr><th>Bay Name</th>${CC.map(c => `<th>${c[0]}</th>`).join("")}<th>Total</th><th>%</th></tr></thead><tbody>${body}
-<tr class="tt"><td>Total</td>${gc.map(cell).join("")}<td>${fx(gt)}</td><td>100%</td></tr></tbody></table>`
+<table><thead><tr><th>Bay Name</th><th>TGT</th>${CC.map(c => `<th>${c[0]}</th>`).join("")}<th>Total</th><th>%</th></tr></thead><tbody>${body}
+<tr class="tt"><td>Total</td>${cell(gtg)}${gc.map(cell).join("")}<td>${fx(gt)}</td>${pc(gt, gtg)}</tr></tbody></table>`
             }
-            let last = null;
             document.addEventListener("mousemove", e => {
                 const el = e.target.closest && e.target.closest(".pcd[data-d]");
                 if (!el) { ct.style.display = "none"; last = null; return }
@@ -2912,9 +3960,10 @@
         }
         function drawCards() {
             const R = LASTR; if (!R) return;
-            $("#cards").innerHTML = monthCard(R) + yearCard(R) + shiftCard(R) + catCard(R) + heatCard(R) + achCard(R) + calCard(R);
+            $("#cards").innerHTML = monthCard(R) + yearCard(R) + shiftCard(R) + catCard(R) + heatCard(R) + achCard(R) + cavCard() + calCard(R) + rawCard();
             document.querySelectorAll("#cards .tg button").forEach(b => b.onclick = () => { ST[b.dataset.c] = b.dataset.m; drawCards() });
             document.querySelectorAll("#cards .achs").forEach(s => s.onchange = () => { ST.am = s.value; drawCards() });
+            document.querySelectorAll("#cards .achbay").forEach(s => s.onclick = () => { const b = +s.dataset.b; ST.achOff.has(b) ? ST.achOff.delete(b) : ST.achOff.add(b); drawCards() });
             document.querySelectorAll("#cards .achv button").forEach(b => b.onclick = () => { ST.acv = b.dataset.m; drawCards() })
         }
 
