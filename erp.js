@@ -53,6 +53,22 @@ function ppFixShop(vals, raw) {                          // Production-Shopfloor
   vals[I("manhours")] = vals[I("manpower")] * sh / 60;
 }
 const ERP = {
+  /* ===== DUAL MODE · centralized data resolver =====
+     mode: "office" (default, existing behaviour) | "audit" (data under "a_<id>", only enabled modules visible)
+     Every data read below goes through nid()/spath(), so pages need no mode logic. */
+  mode: "office", auditIds: null, _force: null,
+  nid(id, m) { m = m || this._force || this.mode; id = String(id); return m === "audit" && !id.startsWith("a_") ? "a_" + id : id; },
+  spath(path, m) { m = m || this._force || this.mode; return m === "audit" && !path.startsWith("a_") ? "a_" + path : path; },
+  modeReady() {
+    return this._mr || (this._mr = (async () => {
+      try {
+        const { data } = await sb.from("app_settings").select("key,value");
+        (data || []).forEach(r => { if (r.key === "mode") this.mode = r.value && r.value.active === "audit" ? "audit" : "office"; if (r.key === "audit_modules") this.auditIds = (r.value && r.value.ids) || []; });
+      } catch (e) { console.error("mode load failed → office", e); }
+    })());
+  },
+  async setMode(m) { const { error } = await sb.from("app_settings").upsert({ key: "mode", value: { active: m }, updated_at: new Date().toISOString() }); if (error) throw error; this.mode = m; },
+  async setAuditIds(ids) { const { error } = await sb.from("app_settings").upsert({ key: "audit_modules", value: { ids }, updated_at: new Date().toISOString() }); if (error) throw error; this.auditIds = ids; },
   sb,
   email: id => { id = String(id).trim().toLowerCase(); return id.includes("@") ? id : id + "@mainetti.app"; },
   /* session + profile guard. ERP.require() → profile | null (redirects when not allowed) */
@@ -72,15 +88,23 @@ const ERP = {
     return g(id) || (k === "v" && !!parentId && g(parentId));
   },
   /* modules with their sub-modules: [{id,name,sort,subs:[{id,name,sort}]}] */
-  async tree() {
+  async tree(raw) {
+    await this.modeReady();
     const [a, b] = await Promise.all([
       sb.from("modules").select("*").order("sort").order("id"),
       sb.from("submodules").select("*").order("sort").order("id")]);
     if (a.error) throw a.error; if (b.error) throw b.error;
-    return a.data.map(m => ({ ...m, subs: b.data.filter(s => s.module_id === m.id) }));
+    let T = a.data.map(m => ({ ...m, subs: b.data.filter(s => s.module_id === m.id) }));
+    if (!raw && this.mode === "audit") {   /* Audit: only ticked modules/sub-modules. Tick a module = all its subs; tick only some subs = just those */
+      const on = new Set(this.auditIds || []);
+      T = T.filter(m => on.has(m.id) || m.subs.some(s => on.has(s.id)))
+           .map(m => ({ ...m, subs: m.subs.filter(s => on.has(s.id) || (on.has(m.id) && !m.subs.some(x => on.has(x.id)))) }));
+    }
+    return T;
   },
   /* dataset of a module/sub-module → {cols, rows:[{id,data:[..]}], total} | null.  limit = max rows (omit = all) */
   async dataset(id, limit) {
+    await this.modeReady(); id = this.nid(id);
     const { data: ds, error } = await sb.from("datasets").select("cols").eq("node_id", id).maybeSingle();
     if (error) throw error; if (!ds) return null;
     const rows = [], step = 1000; let from = 0, total = null;
@@ -121,6 +145,7 @@ const ERP = {
     } catch (e) { }
   },
   async _fetchStorage(path) {
+    await this.modeReady(); path = this.spath(path);
     const { data, error } = await sb.storage.from("erp-data").createSignedUrl(path, 120);
     if (error) throw error;
     const r = await fetch(data.signedUrl, { cache: "no-store" });
@@ -130,7 +155,8 @@ const ERP = {
   /* id = module id, name = "fg" → {v, dict, c, q} | null
      দ্রুত লোড: cache থাকলে meta চেক সর্বোচ্চ 2.5 সেকেন্ড অপেক্ষা, তারপর cache থেকেই দেখাবে */
   async packed(id, name) {
-    const base = id + "/" + name, ck = "packed:" + base;
+    await this.modeReady();
+    const base = id + "/" + name, ck = "packed:" + this.spath(base);
     const metaP = this._fetchStorage(base + "_meta.json").then(r => r.json()).catch(() => null);
     const hit = await this._get(ck);
     let meta;
@@ -261,7 +287,7 @@ ERP.sideBanner = async function (ids, packs) {
     let best = 0;
     try {
       for (const id of ids || []) {
-        const { data } = await sb.from("datasets").select("updated_at").eq("node_id", id).maybeSingle();
+        const { data } = await sb.from("datasets").select("updated_at").eq("node_id", ERP.nid(id)).maybeSingle();
         if (data && data.updated_at) best = Math.max(best, new Date(data.updated_at).getTime() || 0);
       }
       for (const [id, nm] of packs || []) {
