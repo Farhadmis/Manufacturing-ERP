@@ -434,6 +434,88 @@
       grid-column: 1/-1
     }
 
+    .bd-hd {
+      margin: -16px -16px 16px;
+      padding: 16px 18px;
+      border-radius: 14px 14px 0 0;
+      background: linear-gradient(100deg, #0b3c8f 0%, #1553b8 55%, #1d7ae0 100%);
+      color: #fff
+    }
+
+    .bd-ht {
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      letter-spacing: -.01em
+    }
+
+    .bd-sub {
+      font-weight: 500;
+      color: #9fd0ff;
+      margin-left: 6px
+    }
+
+    .tpT {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px
+    }
+
+    .tpT thead th {
+      background: #12306b;
+      color: #fff;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 10px 12px;
+      text-align: right
+    }
+
+    .tpT thead th:first-child {
+      text-align: left
+    }
+
+    .tpT td {
+      padding: 9px 12px;
+      border-top: 1px solid #eef1f7;
+      text-align: right;
+      color: #0f2a5a;
+      font-weight: 700;
+      white-space: nowrap
+    }
+
+    .tpT td:first-child {
+      text-align: left
+    }
+
+    .tpT .tpd {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle
+    }
+
+    .tpT em {
+      font-style: normal;
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700
+    }
+
+    .bd-ht svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      margin-right: 10px
+    }
+
     .c h4 {
       margin: 0 0 10px;
       font-size: 14px;
@@ -917,12 +999,37 @@
     }
 
     /* ===== month → date-wise drill-down ===== */
-    .pv2 thead tr:nth-child(3) th { top: 70px; height: 26px }
-    .pv2 th.sh.mo { cursor: pointer; user-select: none }
-    .pv2 th.sh.mo:hover { background: #154aa8 }
-    .pv2 th.sh.mo i { font-style: normal; font-size: 9px; opacity: .75; margin-left: 5px }
-    .pv2 th.sh.dh { background: #0b3182; font-size: 10.5px; color: #cfe0ff; min-width: 88px }
-    .pv2 td.bc.dc { min-width: 88px }
+    .pv2 thead tr:nth-child(3) th {
+      top: 70px;
+      height: 26px
+    }
+
+    .pv2 th.sh.mo {
+      cursor: pointer;
+      user-select: none
+    }
+
+    .pv2 th.sh.mo:hover {
+      background: #154aa8
+    }
+
+    .pv2 th.sh.mo i {
+      font-style: normal;
+      font-size: 9px;
+      opacity: .75;
+      margin-left: 5px
+    }
+
+    .pv2 th.sh.dh {
+      background: #0b3182;
+      font-size: 10.5px;
+      color: #cfe0ff;
+      min-width: 88px
+    }
+
+    .pv2 td.bc.dc {
+      min-width: 88px
+    }
 
     .pv2 th.c1,
     .pv2 td.c1 {
@@ -1596,12 +1703,13 @@
     const FD = [["y", "Year", r => r.y], ["m", "Month", r => r.m], ["buyer", "Buyer", r => r.buyer], ["model", "Model", r => r.model], ["prod", "Prod. Type", r => r.prod], ["art", "Article", r => r.art], ["unit", "Unit", r => r.unit], ["shift", "Shift", r => r.shift], ["mc", "MC Type", r => r.mc], ["proc", "Process", r => r.proc], ["cat", "Category", r => r.cat]];
     const F = {}; FD.forEach(f => F[f[0]] = new Set()); let from = "", to = "", page = "ov";
     const opts = k => { const f = FD.find(x => x[0] === k), src = k === "model" && F.buyer.size ? R.filter(r => F.buyer.has(r.buyer)) : R, s = [...new Set(src.map(f[2]).filter(v => v !== "" && v != null))]; return s.sort((a, b) => typeof a === "number" ? a - b : String(a).localeCompare(String(b))) };
+    const btxt = k => { const f = FD.find(x => x[0] === k); if (F[k].size === 1) return String(lab(k, [...F[k]][0])); return f[1] + (F[k].size ? " (" + F[k].size + ")" : "") };
     function syncModel() { if (!F.buyer.size || !F.model.size) return; const ok = new Set(R.filter(r => F.buyer.has(r.buyer)).map(r => r.model)); F.model = new Set([...F.model].filter(m => ok.has(m))) }
     const lab = (k, v) => k === "m" ? MN[v - 1] : v;
     function fbuild() {
       if (msg) { $("#fb").innerHTML = ""; return }
       const o = FD.slice(0, 1).concat(FD.slice(1, 2));
-      const btn = f => `<div class="f"><button data-k="${f[0]}" class="${F[f[0]].size ? "on" : ""}">${f[1]}${F[f[0]].size ? " (" + F[f[0]].size + ")" : ""}</button></div>`;
+      const btn = f => `<div class="f"><button data-k="${f[0]}" class="${F[f[0]].size ? "on" : ""}" title="${esc(btxt(f[0]))}">${esc(btxt(f[0]))}</button></div>`;
       $("#fb").innerHTML = btn(FD[0]) + btn(FD[1]) + `<div class="f d"><span>From</span><input type="date" id="df" value="${from}"></div><div class="f d"><span>To</span><input type="date" id="dt" value="${to}"></div>` + FD.slice(2).map(btn).join("") + `<button class="rs" onclick="reset()">Reset</button>`;
       $("#fb").querySelectorAll("button[data-k]").forEach(b => b.onclick = e => { e.stopPropagation(); pnl(b) });
       $("#df").onchange = e => { from = e.target.value; draw() }; $("#dt").onchange = e => { to = e.target.value; draw() }
@@ -1612,8 +1720,8 @@
       p.style.left = Math.min(r.left, innerWidth - 240) + "px"; p.style.top = r.bottom + 4 + "px"; p.style.display = "block";
       const upd = () => { fbuild(); draw() };
       p.querySelector("input[type=text]").oninput = e => p.querySelectorAll("label").forEach(l => l.style.display = l.textContent.toLowerCase().includes(e.target.value.toLowerCase()) ? "" : "none");
-      p.querySelectorAll(".ls input").forEach(c => c.onchange = () => { const v = typeof L[0] === "number" ? +c.value : c.value; c.checked ? F[k].add(v) : F[k].delete(v); b.textContent = FD.find(x => x[0] === k)[1] + (F[k].size ? " (" + F[k].size + ")" : ""); b.classList.toggle("on", !!F[k].size); if (k === "buyer") { syncModel(); fbuild() } draw() });
-      p.querySelectorAll(".ac button").forEach(x => x.onclick = () => { F[k] = new Set(x.dataset.a === "all" ? L : []); pnl(document.querySelector(`button[data-k=${k}]`) || b); b.textContent = FD.find(z => z[0] === k)[1] + (F[k].size ? " (" + F[k].size + ")" : ""); b.classList.toggle("on", !!F[k].size); if (k === "buyer") { syncModel(); fbuild() } draw() })
+      p.querySelectorAll(".ls input").forEach(c => c.onchange = () => { const v = typeof L[0] === "number" ? +c.value : c.value; c.checked ? F[k].add(v) : F[k].delete(v); b.textContent = btxt(k); b.title = btxt(k); b.classList.toggle("on", !!F[k].size); if (k === "buyer") { syncModel(); fbuild() } draw() });
+      p.querySelectorAll(".ac button").forEach(x => x.onclick = () => { F[k] = new Set(x.dataset.a === "all" ? L : []); pnl(document.querySelector(`button[data-k=${k}]`) || b); b.textContent = btxt(k); b.title = btxt(k); b.classList.toggle("on", !!F[k].size); if (k === "buyer") { syncModel(); fbuild() } draw() })
     }
     function reset() { FD.forEach(f => F[f[0]] = new Set()); from = to = ""; fbuild(); draw() }
 
@@ -1787,6 +1895,36 @@
 <div class="yt-tl">${yy.map(x => `<div class="${best && x.k === best.k ? "b" : partial && x.k === cur.k ? "y" : ""}" style="flex-grow:${Math.max(.6, x.q / T * N)}">${x.k}</div>`).join("")}</div></div>
 <div class="yt-cv"><canvas id="c2"></canvas></div></div>`
     }
+    /* ---------- Year-to-Year hover · 12-month breakdown panel (like the Top-10 model panel) ---------- */
+    let YTA = [];
+    if (!document.getElementById("yt-tip-css")) {
+      const st = document.createElement("style"); st.id = "yt-tip-css";
+      st.textContent = `#yt-tip{position:fixed;z-index:9999;pointer-events:none;display:none;width:280px;background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 10px 30px rgba(15,42,90,.22);border:1px solid #e3e8f2;font-family:Inter,sans-serif}
+#yt-tip .h{font-size:14px;font-weight:800;color:#0f2a5a;line-height:1.3}#yt-tip .h span{display:block;font-size:12px;font-weight:600;color:#6d7c99;margin-top:2px}
+#yt-tip .by{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#6d7c99;margin:10px 0 4px;text-transform:uppercase}
+#yt-tip .r{display:grid;grid-template-columns:40px 1fr 56px;align-items:center;gap:8px;margin:5px 0;font-size:12.5px}
+#yt-tip .r em{font-style:normal;color:#0b5fa5;font-weight:600}
+#yt-tip .r u{display:block;height:8px;border-radius:9px;background:#e8ecf3;text-decoration:none;overflow:hidden}
+#yt-tip .r u i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#0a84c6,#00bcd4)}
+#yt-tip .r b{text-align:right;color:#0f2a5a;font-weight:800}
+#yt-tip .r.z b{color:#9aa3b8;font-weight:600}`;
+      document.head.appendChild(st);
+      const d = document.createElement("div"); d.id = "yt-tip"; document.body.appendChild(d);
+    }
+    function ytExt(c) {
+      const tp = document.getElementById("yt-tip"), t = c.tooltip;
+      if (!t || t.opacity === 0 || !t.dataPoints || !t.dataPoints.length || !YTM || !YTM.yy) { tp.style.display = "none"; return }
+      const i = t.dataPoints[0].dataIndex, row = YTM.yy[i], y = row.k;
+      const ms = MN.map((mn, m) => { let q = 0; YTA.forEach(r => { if (r.y === y && r.m === m + 1) q += r.q }); return { k: mn, q } });
+      const mx = Math.max(...ms.map(x => x.q), 1);
+      tp.innerHTML = `<div class="h">${y}<span>${fmtM(row.q)} · ${YTM.T ? (row.q / YTM.T * 100).toFixed(1) : "0.0"}% of total</span></div><div class="by">By month · 12 months</div>` +
+        ms.map(x => `<div class="r${x.q ? "" : " z"}"><em>${x.k}</em><u><i style="width:${(x.q / mx * 100).toFixed(1)}%"></i></u><b>${x.q ? fmtM(x.q) : "–"}</b></div>`).join("");
+      tp.style.display = "block";
+      const R = c.chart.canvas.getBoundingClientRect(); let x = R.left + t.caretX + 16, yy = R.top + t.caretY - 20;
+      if (x + tp.offsetWidth > innerWidth - 8) x = R.left + t.caretX - tp.offsetWidth - 16;
+      if (yy + tp.offsetHeight > innerHeight - 8) yy = innerHeight - tp.offsetHeight - 8;
+      tp.style.left = Math.max(8, x) + "px"; tp.style.top = Math.max(8, yy) + "px";
+    }
     function ytChart() {
       const { yy, N, T, partial, full, best, avg } = YTM; if (!N) return;
       const mx = Math.max(...yy.map(x => x.q)), P = v => T ? (v / T * 100).toFixed(1) + "%" : "0%";
@@ -1821,7 +1959,7 @@
         data: { labels: yy.map(x => x.k), datasets: [{ label: "Total Qty", data: yy.map(x => x.q), backgroundColor: bg, borderRadius: 8, borderSkipped: false, borderColor: YT_RED, borderDash: [5, 4], borderWidth: yy.map((x, i) => isY(i) ? 2 : 0), maxBarThickness: 120 }] },
         options: {
           responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: { top: 24, bottom: 36 } },
-          plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${n0(c.parsed.y)} (${P(c.parsed.y)})` } } },
+          plugins: { legend: { display: false }, tooltip: { enabled: false, external: ytExt } },
           scales: { x: { grid: { display: false }, border: { color: "#d9dfec" }, ticks: { color: "#0f2a5a", font: { size: 14, weight: "700" }, padding: 8 } }, y: { display: false, beginAtZero: true, suggestedMax: mx * 1.08 } }
         }, plugins: [plug]
       })
@@ -1830,8 +1968,42 @@
 
     /* ---------- Year & Month wise Heatmap · premium card ---------- */
     const HX_BIN = ["#c8303f", "#f4b6bd", "#eef1f7", "#bfe6cb", "#50b078", "#127d45"], HX_TX = ["#fff", "#0f2a5a", "#0f2a5a", "#0f2a5a", "#0f2a5a", "#fff"];
+    /* ---------- Heatmap month hover · Top 10 models of that month (like the "By model · Top 10" panel) ---------- */
+    let HXM = new Map();
+    const hxF = v => { const x = Math.abs(v); return x >= 1e9 ? (v / 1e9).toFixed(2) + "B" : x >= 1e6 ? (v / 1e6).toFixed(2) + "M" : x >= 1e3 ? Math.round(v / 1e3) + "K" : n0(v) };
+    if (!document.getElementById("hx-pan-css")) {
+      const st = document.createElement("style"); st.id = "hx-pan-css";
+      st.textContent = `#hx-pan{position:fixed;z-index:9999;pointer-events:none;display:none;width:300px;background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 10px 30px rgba(15,42,90,.22);border:1px solid #e3e8f2;font-family:Inter,sans-serif}
+#hx-pan .h{font-size:14px;font-weight:800;color:#0f2a5a;line-height:1.3}#hx-pan .h span{display:block;font-size:12px;font-weight:600;color:#6d7c99;margin-top:2px}
+#hx-pan .by{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#6d7c99;margin:10px 0 4px;text-transform:uppercase}
+#hx-pan .r{display:grid;grid-template-columns:92px 1fr 62px;align-items:center;gap:8px;margin:5px 0;font-size:12.5px}
+#hx-pan .r em{font-style:normal;color:#0b5fa5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+#hx-pan .r u{display:block;height:8px;border-radius:9px;background:#e8ecf3;text-decoration:none;overflow:hidden}
+#hx-pan .r u i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#0a84c6,#00bcd4)}
+#hx-pan .r b{text-align:right;color:#0f2a5a;font-weight:800}
+#hx-pan .none{font-size:12.5px;color:#6d7c99;padding:8px 0}`;
+      document.head.appendChild(st);
+      const d = document.createElement("div"); d.id = "hx-pan"; document.body.appendChild(d);
+    }
+    function hxPanel(k, e) {
+      const tp = document.getElementById("hx-pan"), y = Math.floor(k / 100), m = k % 100;
+      const M = HXM.get(k) || new Map();
+      const tot = [...M.values()].reduce((s, x) => s + x, 0);
+      const L = [...M].map(([n, q]) => ({ k: n || "N/A", q })).sort((x, z) => z.q - x.q).slice(0, 10);
+      const mx = L.length ? L[0].q : 1;
+      tp.innerHTML = `<div class="h">${MN[m - 1]} ${y}<span>${hxF(tot)} · ${M.size} models</span></div>` +
+        (L.length ? `<div class="by">By model · Top ${L.length}</div>` + L.map(x => `<div class="r"><em title="${esc(x.k)}">${esc(x.k)}</em><u><i style="width:${(x.q / mx * 100).toFixed(1)}%"></i></u><b>${hxF(x.q)}</b></div>`).join("")
+          : `<div class="none">No model data for this month</div>`);
+      tp.style.display = "block";
+      let x = e.clientX + 16, yy = e.clientY - 20;
+      if (x + tp.offsetWidth > innerWidth - 8) x = e.clientX - tp.offsetWidth - 16;
+      if (yy + tp.offsetHeight > innerHeight - 8) yy = innerHeight - tp.offsetHeight - 8;
+      tp.style.left = Math.max(8, x) + "px"; tp.style.top = Math.max(8, yy) + "px";
+    }
+    function hidePanels() { const a1 = document.getElementById("hx-pan"), a2 = document.getElementById("hx-tip"); if (a1) a1.style.display = "none"; if (a2) a2.style.display = "none" }
     function hmRender(a) {
       const box = document.getElementById("hmc"); if (!box) return;
+      HXM = new Map(); a.forEach(r => { const k = r.y * 100 + r.m; let mm = HXM.get(k); if (!mm) HXM.set(k, mm = new Map()); mm.set(r.model, (mm.get(r.model) || 0) + r.q) });
       if (!document.getElementById("hx-css")) {
         const st = document.createElement("style"); st.id = "hx-css";
         st.textContent = `
@@ -1908,9 +2080,9 @@
         const cells = MN.map((_, i) => {
           const m = i + 1, v = V(y, m), tip = `${MN[i]} ${y}|${n0(v)}`;
           if (v <= 0) return `<div class="hx-c no">–</div>`;
-          if (run(y, m)) return `<div class="hx-c run" data-t="${tip}">${f1(v)}<em>MTD</em></div>`;
+          if (run(y, m)) return `<div class="hx-c run" data-t="${tip}" data-k="${y * 100 + m}">${f1(v)}<em>MTD</em></div>`;
           const b = bin(v), isP = pk && pk.y === y && pk.m === m, isL = lw && lw.y === y && lw.m === m;
-          return `<div class="hx-c ${isP ? "pk" : ""} ${isL ? "lw" : ""}" style="background:${HX_BIN[b]};color:${HX_TX[b]}" data-t="${tip}">${f1(v)}${isP ? "<em>PEAK</em>" : isL ? "<em>LOW</em>" : ""}</div>`
+          return `<div class="hx-c ${isP ? "pk" : ""} ${isL ? "lw" : ""}" style="background:${HX_BIN[b]};color:${HX_TX[b]}" data-t="${tip}" data-k="${y * 100 + m}">${f1(v)}${isP ? "<em>PEAK</em>" : isL ? "<em>LOW</em>" : ""}</div>`
         }).join("");
         const isRun = y === cY && partial;
         return `<div class="hx-y">${y}${y === cY ? "<small>YTD</small>" : ""}</div>${cells}<div class="hx-tt" data-t="Total ${y}|${n0(yt[yi])}"><div><b>${fu(yt[yi])}</b><span>${(yt[yi] / T * 100).toFixed(1)}%</span></div><u><i class="${isRun ? "r" : ""}" style="width:${(yt[yi] / mxY * 100).toFixed(1)}%"></i></u></div>`
@@ -1927,39 +2099,207 @@
 ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></div></div></div>
 <div class="hx-ft">${partial ? `<span><i style="background:repeating-linear-gradient(135deg,#dfe5f1 0 3px,#f6f8fc 3px 6px);border:1.5px dashed #8d9ab5"></i>Month still running (${MN[lastM - 1]} ${lastY}, ${cD} days in)</span>` : ""}${pk ? `<span><i style="background:${HX_BIN[5]};box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--navy)"></i>Peak month</span><span><i style="background:${HX_BIN[0]};box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--navy)"></i>Lowest full month</span>` : ""}<span><i style="background:#fafbfd;border:1.5px dashed #d5dbe8"></i>No data yet</span></div>`;
       const tip = document.getElementById("hx-tip");
-      box.onmousemove = e => { const c = e.target.closest("[data-t]"); if (!c) { tip.style.display = "none"; return } const [l, v] = c.dataset.t.split("|"); tip.innerHTML = `${l}<b>${v}</b>`; tip.style.display = "block"; tip.style.left = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8) + "px"; tip.style.top = e.clientY + 16 + "px" };
-      box.onmouseleave = () => tip.style.display = "none";
+      box.onmousemove = e => {
+        const c = e.target.closest("[data-t]");
+        if (!c) { hidePanels(); return }
+        if (c.dataset.k) { tip.style.display = "none"; hxPanel(+c.dataset.k, e); return }
+        document.getElementById("hx-pan").style.display = "none";
+        const [l, v] = c.dataset.t.split("|"); tip.innerHTML = `${l}<b>${v}</b>`; tip.style.display = "block";
+        tip.style.left = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8) + "px"; tip.style.top = e.clientY + 16 + "px";
+      };
+      box.onmouseleave = () => hidePanels();
     }
 
+    /* ---------- FG Production Performance Trend · unit-wise stacked bars, own Year / Month drill-down ---------- */
+    let FT = { y: null, m: null }, FA = [];
+    const ftV = v => { const x = Math.abs(v); return x >= 1e9 ? (v / 1e9).toFixed(1) + "B" : x >= 1e6 ? (v / 1e6).toFixed(1) + "M" : x >= 1e3 ? Math.round(v / 1e3) + "K" : n0(v) };
+    const ftCol = u => UN.indexOf(u) >= 0 ? PAL[UN.indexOf(u) % 8] : "#51607a";
+    const ftCSS = `
+.ftc .ftc-h{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin:-16px -16px 16px;padding:14px 18px;border-radius:14px 14px 0 0;background:linear-gradient(100deg,#0b3c8f 0%,#1553b8 55%,#1d7ae0 100%);color:#fff}
+.ftc .ftc-ic{display:inline-flex;vertical-align:middle;margin-right:10px}
+.ftc .ftc-ic svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round}
+.ftc .ftc-t{font-size:16px;font-weight:800;color:#fff;letter-spacing:-.01em;line-height:1.2}
+.ftc .ftc-s{font-size:12px;color:rgba(255,255,255,.82);margin-top:4px}
+.ftc .ftc-ctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ftc .ftc-cal{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:10px;background:rgba(255,255,255,.16);color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap}
+.ftc .ftc-cal svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ftc select{height:34px;padding:0 12px;border:1px solid rgba(255,255,255,.35);border-radius:10px;background:#0b2a63;color:#fff;font:600 12.5px Inter,sans-serif;cursor:pointer}
+.ftc select:disabled{opacity:.45;cursor:not-allowed}
+.ftc .ftc-rs{height:34px;padding:0 14px;border-radius:10px;background:#fff;color:#0f2a5a;border:1.5px solid #fff;font:700 12.5px Inter,sans-serif;cursor:pointer}
+.ftc .ftc-rs:hover{background:#e8f0ff}
+.ftc .ftc-cv{position:relative;height:380px;margin-top:10px}`;
+
+    function ftRender(a) {
+      FA = a;
+      if (!document.getElementById("ftc-css")) { const s = document.createElement("style"); s.id = "ftc-css"; s.textContent = ftCSS; document.head.appendChild(s) }
+      const host = document.getElementById("ftc"); if (!host) return;
+
+      /* keep the local selection valid against the current global filters */
+      const yrs = [...new Set(a.map(r => r.y))].sort((x, y) => x - y);
+      if (FT.y != null && !yrs.includes(FT.y)) FT.y = null;
+      const mos = FT.y != null ? [...new Set(a.filter(r => r.y === FT.y).map(r => r.m))].sort((x, y) => x - y) : [];
+      if (FT.m != null && !mos.includes(FT.m)) FT.m = null;
+
+      /* year → 12 months · year + month → dates of that month · nothing → years */
+      const mode = FT.y == null ? "year" : FT.m == null ? "month" : "day";
+      const rows = mode === "year" ? a : mode === "month" ? a.filter(r => r.y === FT.y) : a.filter(r => r.y === FT.y && r.m === FT.m);
+      const keyOf = mode === "year" ? r => r.y : mode === "month" ? r => r.m : r => r.d;
+      const keys = mode === "year" ? yrs
+        : mode === "month" ? Array.from({ length: 12 }, (_, i) => i + 1)
+          : Array.from({ length: new Date(FT.y, FT.m, 0).getDate() }, (_, i) => i + 1);
+      const labelOf = k => mode === "year" ? String(k) : mode === "month" ? MN[k - 1] : String(k);
+      const titleOf = k => mode === "year" ? String(k) : mode === "month" ? MN[k - 1] + " " + FT.y : String(k).padStart(2, "0") + " " + MN[FT.m - 1] + " " + FT.y;
+
+      const agg = new Map(keys.map(k => [k, new Map()]));
+      rows.forEach(r => { const m = agg.get(keyOf(r)); if (m) m.set(r.unit, (m.get(r.unit) || 0) + r.q) });
+      const units = [...new Set(a.map(r => r.unit))].sort();
+      const totals = keys.map(k => [...agg.get(k).values()].reduce((s, v) => s + v, 0));
+      const grand = totals.reduce((s, v) => s + v, 0), mx = Math.max(...totals, 1);
+
+      const subs = { year: "Year-wise · all years", month: FT.y + " · month-wise (12 months)", day: MN[FT.m - 1] + " " + FT.y + " · date-wise" };
+      const period = mode === "year" ? "All years" : mode === "month" ? String(FT.y) : MN[FT.m - 1] + " " + FT.y;
+      const yOpts = '<option value="">All years</option>' + yrs.map(y => `<option value="${y}"${FT.y === y ? " selected" : ""}>${y}</option>`).join("");
+      const mOpts = '<option value="">All months</option>' + mos.map(m => `<option value="${m}"${FT.m === m ? " selected" : ""}>${MN[m - 1]}</option>`).join("");
+
+      host.innerHTML = `<div class="ftc-h"><div><div class="ftc-t"><span class="ftc-ic"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>FG Production Performance Trend</div><div class="ftc-s">${subs[mode]} · Total ${n0(grand)} · unit wise</div></div>` +
+        `<div class="ftc-ctl"><span class="ftc-cal"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>${period}</span>` +
+        `<select id="ftY" title="Year">${yOpts}</select><select id="ftM" title="Month"${FT.y == null ? " disabled" : ""}>${mOpts}</select>` +
+        `<button class="ftc-rs" id="ftR">Reset</button></div></div>` +
+        `<div class="ftc-cv"><canvas id="c3"></canvas></div>`;
+
+      const dsets = units.map(u => ({
+        label: u, data: keys.map(k => agg.get(k).get(u) || 0), backgroundColor: ftCol(u), borderColor: "#fff", borderWidth: 1,
+        barPercentage: mode === "day" ? .8 : .66, categoryPercentage: .9
+      }));
+      const totPlugin = {
+        id: "ftTot",
+        afterDatasetsDraw(ch) {
+          const { ctx } = ch;
+          /* % share of each unit inside its bar (shown when the segment is tall enough to read) */
+          ch.data.datasets.forEach((ds, di) => ch.getDatasetMeta(di).data.forEach((b, i) => {
+            const v = ds.data[i], h = Math.abs(b.base - b.y);
+            if (!v || !totals[i] || h < 16) return;
+            ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#fff";
+            ctx.font = "700 " + (mode === "day" ? "9.5px" : "11.5px") + " Inter,sans-serif";
+            ctx.fillText((v / totals[i] * 100).toFixed(1) + "%", b.x, (b.y + b.base) / 2);
+            ctx.restore();
+          }));
+          /* grand value of each bar on top */
+          const bars = ch.getDatasetMeta(ch.data.datasets.length - 1).data;
+          ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "bottom"; ctx.fillStyle = "#0f2a5a";
+          ctx.font = (mode === "day" ? "700 10px" : "800 12.5px") + " Inter,sans-serif";
+          bars.forEach((b, i) => { if (totals[i] > 0) ctx.fillText(ftV(totals[i]), b.x, b.y - 4) });
+          ctx.restore()
+        }
+      };
+      mk("c3", {
+        type: "bar",
+        data: { labels: keys.map(labelOf), datasets: dsets },
+        options: {
+          responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: { top: 24 } },
+          interaction: { mode: "index", intersect: false },
+          plugins: {
+            legend: { display: true, position: "bottom", labels: { boxWidth: 16, boxHeight: 10, padding: 16, font: { size: 12 }, color: "#0f2a5a" } },
+            tooltip: { callbacks: { title: it => titleOf(keys[it[0].dataIndex]), label: c => ` ${c.dataset.label}: ${n0(c.parsed.y)} (${totals[c.dataIndex] ? (c.parsed.y / totals[c.dataIndex] * 100).toFixed(1) : "0.0"}%)`, footer: it => "Total: " + n0(totals[it[0].dataIndex]) } }
+          },
+          scales: {
+            x: { stacked: true, grid: { display: false }, border: { color: "#9aa3b8" }, ticks: { color: "#0f2a5a", font: { size: mode === "day" ? 10.5 : 12.5 }, autoSkip: false, maxRotation: 0 } },
+            y: { stacked: true, beginAtZero: true, suggestedMax: mx * 1.15, border: { display: false }, grid: { color: "#e9ebf0" }, ticks: { callback: v => ftV(v), color: "#6d7c99", font: { size: 12 }, maxTicksLimit: 6 } }
+          }
+        },
+        plugins: [totPlugin]
+      });
+
+      document.getElementById("ftY").onchange = e => { FT.y = e.target.value ? +e.target.value : null; FT.m = null; ftRender(FA) };
+      document.getElementById("ftM").onchange = e => { FT.m = e.target.value ? +e.target.value : null; ftRender(FA) };
+      document.getElementById("ftR").onclick = () => { FT = { y: null, m: null }; ftRender(FA) };
+    }
+
+    /* ---------- Shift wise · doughnut + Unit × Shift table (Times-of-Process style) ---------- */
+    const shfCSS = `
+.shf .shf-w{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.shf .shf-hd{margin:-16px -16px 14px;padding:14px 18px;border-radius:14px 14px 0 0;background:linear-gradient(100deg,#0b3c8f 0%,#1553b8 55%,#1d7ae0 100%);color:#fff}
+.shf .shf-ht{font-size:16px;font-weight:800;display:flex;align-items:center}
+.shf .shf-ht svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;margin-right:10px}
+.shf .shf-hs{font-size:12px;color:rgba(255,255,255,.82);margin-top:4px}
+.shf .shf-lg{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font-size:11.5px;color:#6d7c99;margin-top:6px;width:100%}
+.shf .shf-lg span{display:inline-flex;align-items:center;gap:6px;font-weight:600}
+.shf .shf-lg i{display:inline-block;width:10px;height:10px;border-radius:2px}
+.shf .shf-d{position:relative;width:190px;height:190px;flex:0 0 190px}
+.shf .shf-t{flex:1 1 260px;min-width:0;border-radius:12px;overflow:hidden;border:1px solid #e3e8f2}
+.shf table{width:100%;border-collapse:collapse;font-size:13px}
+.shf thead th{background:#12306b;color:#fff;font-weight:700;font-size:11.5px;padding:9px 8px;text-align:right;white-space:nowrap}
+.shf thead th:first-child{text-align:left}
+.shf tbody td{padding:8px 8px;font-size:12.5px;border-top:1px solid #eef1f7;text-align:right;color:#0f2a5a;font-weight:700;white-space:nowrap}
+.shf tbody td:first-child{text-align:left}
+.shf tfoot td{padding:9px 8px;background:#f5f7fb;border-top:2px solid #dbe4f2;text-align:right;font-weight:800;color:#0f2a5a;white-space:nowrap}
+.shf tfoot td:first-child{text-align:left}
+.shf thead th:not(:first-child):not(:last-child),.shf tbody td:not(:first-child):not(:last-child),.shf tfoot td:not(:first-child):not(:last-child){text-align:center}
+.shf .pl{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;font-style:normal;font-size:11.5px;font-weight:700}
+.shf .sd{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
+@media (max-width:760px){.shf .shf-d{width:170px;height:170px;flex-basis:170px}}`;
+
+    function shiftCard(a) {
+      const host = document.getElementById("shf"); if (!host) return;
+      if (!document.getElementById("shf-css")) { const st = document.createElement("style"); st.id = "shf-css"; st.textContent = shfCSS; document.head.appendChild(st) }
+      const shifts = [...new Set(a.map(r => r.shift || "N/A"))].sort((x, y) => String(x).localeCompare(String(y)));
+      const units = [...new Set(a.map(r => r.unit || "N/A"))].sort();
+      /* fixed colours: MORNING = blue, NIGHT = red, any other shift gets the next palette colour */
+      const SC = ["#2b5bb8", "#a61935", "#e08a00", "#1f9d55", "#7c4dff"], SL = ["#e3ecfb", "#fde8ea", "#fdf0d5", "#dff5e8", "#ece6ff"], ST_ = ["#1d4fa6", "#b3261e", "#9a6200", "#14703e", "#5b34d9"];
+      const shI = s => { const k = ["MORNING", "NIGHT"].indexOf(String(s).toUpperCase()); return k >= 0 ? k : (2 + shifts.indexOf(s)) % 5 };
+      const shfF = v => { const x = Math.abs(v); return x >= 1e9 ? (v / 1e9).toFixed(1) + "B" : x >= 1e6 ? (v / 1e6).toFixed(1) + "M" : x >= 1e3 ? (v / 1e3).toFixed(1) + "K" : n0(v) };
+      const shPct = (v, t) => t ? (v / t * 100).toFixed(1) + "%" : "0.0%";
+      const shPill = (s, t, v) => `<em class="pl" style="background:${SL[shI(s)]};color:${ST_[shI(s)]}">${shPct(v, t)}</em>`;
+
+      const g = new Map(units.map(u => [u, new Map(shifts.map(s => [s, 0]))]));
+      a.forEach(r => { const m = g.get(r.unit || "N/A"); const s = r.shift || "N/A"; m.set(s, m.get(s) + r.q) });
+      const SH = shifts.map(s => units.reduce((t, u) => t + g.get(u).get(s), 0));
+      const GT = SH.reduce((x, y) => x + y, 0);
+
+      const head = `<tr><th>Unit</th>${shifts.map(s => `<th><span class="sd" style="background:${SC[shI(s)]}"></span>${esc(s)}</th>`).join("")}<th>Total</th></tr>`;
+      const body = units.map(u => {
+        const t = shifts.reduce((x, s) => x + g.get(u).get(s), 0);
+        return `<tr><td>${esc(u)}</td>${shifts.map(s => { const v = g.get(u).get(s); return `<td>${v ? shfF(v) + shPill(s, t, v) : '<span style="color:#9aa3b8">–</span>'}</td>` }).join("")}<td>${shfF(t)}</td></tr>`;
+      }).join("");
+      const foot = `<tr><td>Total</td>${shifts.map((s, i) => `<td>${shfF(SH[i])}${shPill(s, GT, SH[i])}</td>`).join("")}<td>${shfF(GT)}</td></tr>`;
+
+      host.innerHTML = `<div class="shf-hd"><div class="shf-ht"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Shift wise Performance</div><div class="shf-hs">Unit-wise qty by shift · Total ${shfF(GT)}</div></div><div class="shf-w"><div class="shf-d"><canvas id="p1"></canvas></div><div class="shf-t"><table><thead>${head}</thead><tbody>${body}</tbody><tfoot>${foot}</tfoot></table></div>` +
+        `<div class="shf-lg">${[...shifts].sort((x, y) => GT ? SH[shifts.indexOf(y)] - SH[shifts.indexOf(x)] : 0).map(s => `<span><i style="background:${SC[shI(s)]}"></i>${esc(s)} · ${shPct(SH[shifts.indexOf(s)], GT)}</span>`).join("")}</div></div>`;
+
+      mk("p1", {
+        type: "doughnut",
+        data: { labels: shifts, datasets: [{ data: SH, backgroundColor: shifts.map(s => SC[shI(s)]), borderColor: "#fff", borderWidth: 2 }] },
+        options: { responsive: true, maintainAspectRatio: false, cutout: "48%", layout: { padding: 4 }, animation: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.label}: ${n0(c.parsed)} (${shPct(c.parsed, GT)})` } } } },
+        plugins: [{
+          id: "shc", afterDraw(ch) {
+            const { ctx, chartArea: A } = ch, x = (A.left + A.right) / 2, y = (A.top + A.bottom) / 2;
+            ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "middle";
+            ctx.fillStyle = "#6d7c99"; ctx.font = "600 12px Inter,sans-serif"; ctx.fillText("Total", x, y - 16);
+            ctx.fillStyle = "#0f2a5a"; ctx.font = "800 22px Inter,sans-serif"; ctx.fillText(shfF(GT), x, y + 4);
+            ctx.fillStyle = "#6d7c99"; ctx.font = "600 11px Inter,sans-serif"; ctx.fillText("Qty", x, y + 22);
+            ch.getDatasetMeta(0).data.forEach((arc, i) => {
+              if (!GT || SH[i] / GT < .08) return;
+              const m = (arc.startAngle + arc.endAngle) / 2, r = (arc.innerRadius + arc.outerRadius) / 2;
+              ctx.fillStyle = "#fff"; ctx.font = "800 11px Inter,sans-serif";
+              ctx.fillText(shPct(SH[i], GT), arc.x + Math.cos(m) * r, arc.y + Math.sin(m) * r);
+            });
+            ctx.restore()
+          }
+        }]
+      });
+    }
     function ov(a) {
       $("#pgc").innerHTML = cards(a) + `<div class="cg">${mtHTML(a)}${ytHTML(a)}
  <div class="c w hxc cmp" id="hmc"></div>
- <div class="c w"><h4>Year to Year Trend · Unit wise</h4><div class="cv"><canvas id="c3"></canvas></div><div id="c3n" style="font-size:12px;color:var(--mute);margin-top:6px"></div></div>
- <div class="c"><h4>Shift wise</h4><div class="cv"><canvas id="p1"></canvas></div></div><div class="c"><h4>MC Type wise</h4><div class="cv"><canvas id="p2"></canvas></div></div><div class="c"><h4>Process wise</h4><div class="cv" style="height:360px"><canvas id="p3"></canvas></div></div><div class="c"><h4>Types of Process</h4><div class="cv" style="height:360px"><canvas id="p4"></canvas></div></div>
+ <div class="c w ftc" id="ftc"></div>
+ <div class="c shf" id="shf"></div><div class="c"><h4>MC Type wise</h4><div class="cv"><canvas id="p2"></canvas></div></div><div class="c"><div class="bd-hd"><div class="bd-ht"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Process wise<span class="bd-sub"> – FG Stock</span></div></div><div class="cv" style="height:360px"><canvas id="p3"></canvas></div></div><div class="c"><div class="bd-hd"><div class="bd-ht"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Types of Process<span class="bd-sub"> – FG Stock</span></div></div><div class="cv" style="height:360px"><canvas id="p4"></canvas></div></div>
  <div class="c w"><div style="font-size:19px;font-weight:800;color:var(--navy);letter-spacing:.01em;line-height:1.2">TOP BUYER CONTRIBUTION ANALYSIS</div><div id="c4s" style="font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--mute);margin:6px 0 10px"></div><div class="cv" style="height:400px"><canvas id="c4"></canvas></div><div style="text-align:right;font-size:12px;color:var(--mute);margin-top:6px">Share of total volume &nbsp;·&nbsp; Darker green = higher share</div></div></div>`;
       const mm = grp(a, r => r.y * 100 + r.m).sort((x, y) => x.k - y.k);
       mtChart();
       const yy = grp(a, r => r.y).sort((x, y) => x.k - y.k);
+      YTA = a;
       ytChart();
-      const Y = yy.map(x => x.k), UL = [...new Set(a.map(r => r.unit))].sort(), yu = new Map(); a.forEach(r => { const k = r.y + "|" + r.unit; yu.set(k, (yu.get(k) || 0) + r.q) });
-      const uc = u => UN.indexOf(u) >= 0 ? PAL[UN.indexOf(u) % 8] : "#51607a", ysum = Y.map(y => UL.reduce((t, u) => t + (yu.get(y + "|" + u) || 0), 0));
-      const sh = (y, u, i) => ysum[i] ? (yu.get(y + "|" + u) || 0) / ysum[i] * 100 : 0;
-      mk("c3", {
-        type: "bar",
-        data: { labels: Y, datasets: UL.map(u => ({ label: u, data: Y.map((y, i) => sh(y, u, i)), backgroundColor: uc(u), borderColor: "#fff", borderWidth: 1.5, borderSkipped: false, barPercentage: .62, categoryPercentage: .92 })) },
-        options: {
-          responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: { top: 6 } },
-          plugins: { legend: { display: true, position: "bottom", labels: { boxWidth: 26, boxHeight: 10, padding: 18, font: { size: 13 }, color: "#0f2a5a" } }, tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${n0(yu.get(Y[c.dataIndex] + "|" + c.dataset.label) || 0)} (${c.parsed.y.toFixed(1)}%)` } } },
-          scales: { x: { stacked: true, grid: { display: false }, border: { color: "#9aa3b8" }, ticks: { color: "#0f2a5a", font: { size: 13 } } }, y: { stacked: true, min: 0, max: 100, border: { display: false }, grid: { color: "#e9ebf0" }, ticks: { stepSize: 25, callback: v => v + "%", color: "#6d7c99", font: { size: 12 } } } }
-        },
-        plugins: [{
-          id: "sp", afterDatasetsDraw(ch) {
-            const { ctx } = ch; ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#fff"; ctx.font = "700 12.5px Inter,sans-serif";
-            ch.data.datasets.forEach((ds, di) => ch.getDatasetMeta(di).data.forEach((b, i) => { const v = ds.data[i], h = Math.abs(b.base - b.y); if (v > 0 && h >= 13) ctx.fillText(v.toFixed(1) + "%", b.x, (b.y + b.base) / 2) })); ctx.restore()
-          }
-        }]
-      });
-      const cn = document.getElementById("c3n"); if (cn) cn.textContent = Y.length && Y[Y.length - 1] === new Date().getFullYear() ? Y[Y.length - 1] + " = year-to-date" : "";
+      ftRender(a);
       const pie = (id, key) => {
         let g = grp(a, r => r[key] || "N/A").sort((x, y) => y.q - x.q);
         if (g.length > 8) g = g.slice(0, 7).concat({ k: "Others", q: g.slice(7).reduce((s, x) => s + x.q, 0) });
@@ -1975,7 +2315,7 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
           }]
         })
       };
-      pie("p1", "shift"); pie("p2", "mc");
+      shiftCard(a); pie("p2", "mc");
       const pie2 = (id, key) => {
         const g = grp(a, r => r[key] || "N/A").sort((x, y) => y.q - x.q), v = g.map(x => x.q), T = v.reduce((x, y) => x + y, 0), P = x => T ? (x / T * 100).toFixed(1) + "%" : "0%",
           TC = ["#3d7a87", "#74cde4", "#4a9db5", "#6fcbe3", "#4e9fb7", "#b9e3ef", "#5aa7bd", "#86d3e8", "#a6dcec", "#2f6f7e", "#9fd9ea", "#c8eaf3"], cut = s => s.length > 26 ? s.slice(0, 24) + "…" : s;
@@ -1996,7 +2336,7 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
       let fm, mkExt;
       {
         const fq = v => Math.abs(v) >= 1e6 ? (v / 1e6).toFixed(2) + "M" : Math.abs(v) >= 1e3 ? (v / 1e3).toFixed(1) + "K" : n0(v);
-        let g = grp(a, r => r.proc || "N/A").sort((x, y) => y.q - x.q); if (g.length > 7) g = g.slice(0, 6).concat({ k: "Others", q: g.slice(6).reduce((t, x) => t + x.q, 0) });
+        let g = grp(a, r => r.proc || "N/A").sort((x, y) => y.q - x.q); if (g.length > 11) g = g.slice(0, 11);
         const v = g.map(x => x.q), T = v.reduce((x, y) => x + y, 0), P = x => T ? (x / T * 100).toFixed(1) + "%" : "0%", cut = t => t.length > 28 ? t.slice(0, 26) + "…" : t;
         const isO = (x, i) => x.k === "Others" && g.length > 1 && i === g.length - 1 && g.length === 7;
         const bc = g.map((x, i) => isO(x, i) ? "#d9d9d9" : i === 0 ? "#2f6f7e" : "#a8d8e6");
@@ -2027,32 +2367,63 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
           if (x + tp.offsetWidth > innerWidth - 8) x = R.left + t.caretX - tp.offsetWidth - 16; if (y + tp.offsetHeight > innerHeight - 8) y = innerHeight - tp.offsetHeight - 8; tp.style.left = Math.max(8, x) + "px"; tp.style.top = Math.max(8, y) + "px"
         };
         const tt = { enabled: false, external: mkExt(g.map(x => x.k), v, P, topM) };
+        const nm3 = g.map(x => String(x.k).toUpperCase()), cut3 = t => t.length > 34 ? t.slice(0, 32) + "…" : t;
+        const mc3 = document.createElement("canvas").getContext("2d"); mc3.font = "700 12px Inter,sans-serif";
+        const padL3 = Math.ceil(Math.max(...nm3.map(t => mc3.measureText(cut3(t)).width), 80)) + 44;
+        const cv3 = document.getElementById("p3"); if (cv3) cv3.parentNode.style.height = (g.length * 38 + 44) + "px";
+        const axF = x => x >= 1e6 ? (x / 1e6).toFixed(1) + "M" : x >= 1e3 ? Math.round(x / 1e3) + "K" : String(Math.round(x));
+        const vF = x => x >= 1e6 ? (x / 1e6).toFixed(1) + "M" : x >= 1e3 ? Math.round(x / 1e3) + "K" : n0(x);
+        const mxV = Math.max(...v, 1), stepsP = [1e5, 2e5, 2.5e5, 5e5, 1e6, 2.5e6, 5e6, 1e7, 2.5e7, 5e7], stpP = stepsP.find(q => mxV / q <= 6) || 1e8;
         mk("p3", {
-          type: "bar", data: { labels: g.map(x => x.k), datasets: [{ data: v, backgroundColor: bc, borderRadius: 0, barPercentage: .62, categoryPercentage: 1 }] },
+          type: "bar",
+          data: {
+            labels: g.map(x => x.k), datasets: [{
+              data: v, borderRadius: 6, barPercentage: .66, categoryPercentage: .9,
+              backgroundColor: c => { const el = c.element, cx = c.chart.ctx; if (!el || el.x == null || el.base == null) return "#ff9f3c"; const gr = cx.createLinearGradient(el.base, 0, el.x, 0); gr.addColorStop(0, "#ffc56e"); gr.addColorStop(1, "#ff8a00"); return gr }
+            }]
+          },
           options: {
-            indexAxis: "y", responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: { right: 56, top: 4, bottom: 4 } },
+            indexAxis: "y", responsive: true, maintainAspectRatio: false, animation: false,
+            layout: { padding: { left: padL3, right: 36, top: 6, bottom: 4 } },
             plugins: { legend: { display: false }, tooltip: tt },
-            scales: { x: { display: false, beginAtZero: true }, y: { grid: { display: false }, border: { color: "#b9c0cc" }, ticks: { color: "#3a4d73", font: { size: 11.5 }, padding: 8, callback: function (val) { return cut(String(this.getLabelForValue(val))) } } } }
+            scales: {
+              x: { display: true, position: "bottom", beginAtZero: true, max: Math.ceil(mxV * 1.18 / stpP) * stpP, grid: { color: "#e9ecf3" }, border: { display: false }, ticks: { stepSize: stpP, color: "#6d7c99", font: { size: 11 }, callback: axF, maxRotation: 0 } },
+              y: { display: false, grid: { display: false } }
+            }
           },
           plugins: [{
-            id: "pl", afterDatasetsDraw(ch) {
-              const { ctx } = ch; ctx.save(); ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.fillStyle = "#3a4d73";
-              ch.getDatasetMeta(0).data.forEach((b, i) => { ctx.font = (i === 0 ? "800 13px" : "500 12.5px") + " Inter,sans-serif"; ctx.fillStyle = i === 0 ? "#0f2a5a" : "#3a4d73"; ctx.fillText(P(v[i]), b.x + 8, b.y) }); ctx.restore()
+            id: "rk", afterDatasetsDraw(ch) {
+              const cx = ch.ctx; cx.save();
+              ch.getDatasetMeta(0).data.forEach((b, i) => {
+                cx.beginPath(); cx.arc(16, b.y, 9, 0, 7); cx.fillStyle = "#0f2a5a"; cx.fill();
+                cx.fillStyle = "#fff"; cx.font = "800 10.5px Inter,sans-serif"; cx.textAlign = "center"; cx.textBaseline = "middle"; cx.fillText(String(i + 1), 16, b.y + .5);
+                cx.textAlign = "left"; cx.fillStyle = "#0f2a5a"; cx.font = "700 12px Inter,sans-serif"; cx.fillText(cut3(nm3[i]), 32, b.y);
+                const txt = vF(v[i]) + " – " + P(v[i]); cx.font = "700 12px Inter,sans-serif"; const w = cx.measureText(txt).width;
+                if (b.x - b.base > w + 18) { cx.textAlign = "right"; cx.fillStyle = "#fff"; cx.fillText(txt, b.x - 9, b.y) }
+                else { cx.textAlign = "left"; cx.fillStyle = "#0f2a5a"; cx.fillText(txt, b.x + 8, b.y) }
+              });
+              cx.restore()
             }
           }]
         });
         /* Types of Process doughnut = "Times of Process" column of the uploaded file (1 TIME / 2 TIME / 3 TIME PROCESS) */
         const g2 = grp(a, r => r.tp || "N/A").sort((x, y) => String(x.k).localeCompare(String(y.k), undefined, { numeric: true })), v2 = g2.map(x => x.q), T2 = v2.reduce((x, y) => x + y, 0), P2 = x => T2 ? (x / T2 * 100).toFixed(1) + "%" : "0%";
         const hasTP = a.some(r => r.tp), cv = document.getElementById("p4");
-        let nt = document.getElementById("p4n"); if (!nt) { nt = document.createElement("div"); nt.id = "p4n"; nt.style.cssText = "font-size:12.5px;color:var(--mute);padding:8px 2px"; cv.parentNode.appendChild(nt) }
+        let nt = document.getElementById("p4n"); if (!nt) { nt = document.createElement("div"); nt.id = "p4n"; nt.style.cssText = "font-size:12.5px;color:var(--mute);padding:8px 2px" }
         nt.textContent = hasTP || !a.length ? "" : "Times of Process data not found. Re-upload the FG file with fg-pack.html (column: Times of Process).";
         const PC = ["#2f6f7e", "#74cde4", "#e08a00", "#a61935", "#7c4dff", "#1f9d55"], PT = ["#fff", "#0f2a5a", "#fff", "#fff", "#fff", "#fff"];
         const dc = g2.map((x, i) => x.k === "N/A" ? "#d9d9d9" : PC[i % 6]), dtx = g2.map((x, i) => x.k === "N/A" ? "#0f2a5a" : PT[i % 6]);
         const pm2 = new Map(); a.forEach(r => { const tk = r.tp || "N/A"; let m = pm2.get(tk); if (!m) pm2.set(tk, m = new Map()); m.set(r.model, (m.get(r.model) || 0) + r.q) });
         const topM2 = i => [...(pm2.get(g2[i].k) || new Map())].map(([k, q]) => ({ k: k || "N/A", q })).sort((x, y) => y.q - x.q).slice(0, 10);
+        const tpF = x => x >= 1e6 ? (x / 1e6).toFixed(1) + "M" : x >= 1e3 ? Math.round(x / 1e3) + "K" : n0(x);
+        const box4 = cv.parentNode;
+        box4.style.cssText = "display:flex;gap:24px;align-items:center;justify-content:center;flex-wrap:wrap;height:auto;flex:1 1 auto;padding:6px 0"; const card4 = box4.parentNode; card4.style.display = "flex"; card4.style.flexDirection = "column";
+        const rows4 = g2.map((x, i) => `<tr><td><span class="tpd" style="background:${dc[i]}"></span>${esc(String(x.k).toUpperCase())}</td><td><em style="background:${dc[i]}26;color:#0f2a5a">${T2 ? (x.q / T2 * 100).toFixed(1) : "0.0"}%</em></td><td>${tpF(x.q)}</td></tr>`).join("");
+        box4.innerHTML = `<div style="position:relative;width:250px;height:250px;flex:0 0 250px"><canvas id="p4"></canvas></div><div style="flex:1 1 300px;min-width:0;border-radius:12px;overflow:hidden;border:1px solid #e3e8f2"><table class="tpT"><thead><tr><th>Times of Process</th><th>Percentage (%)</th><th>Qty</th></tr></thead><tbody>${rows4}</tbody></table></div>`;
+        nt.style.flex = "0 0 100%"; box4.appendChild(nt);
         mk("p4", {
           type: "doughnut", data: { labels: g2.map(x => x.k), datasets: [{ data: v2, backgroundColor: dc, borderColor: "#fff", borderWidth: 2 }] },
-          options: { responsive: true, maintainAspectRatio: false, cutout: "58%", animation: false, plugins: { legend: { position: "bottom", labels: { boxWidth: 10, font: { size: 11 } } }, tooltip: { enabled: false, external: mkExt(g2.map(x => x.k), v2, P2, topM2) } } },
+          options: { responsive: true, maintainAspectRatio: false, cutout: "58%", animation: false, plugins: { legend: { display: false }, tooltip: { enabled: false, external: mkExt(g2.map(x => x.k), v2, P2, topM2) } } },
           plugins: [{
             id: "ctr", afterDraw(ch) {
               const { ctx, chartArea: A } = ch, x = (A.left + A.right) / 2, y = (A.top + A.bottom) / 2; ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#0f2a5a"; ctx.font = "800 22px Inter,sans-serif"; ctx.fillText(ab(T2), x, y - 8); ctx.fillStyle = "#6d7c99"; ctx.font = "600 11px Inter,sans-serif"; ctx.fillText("TOTAL", x, y + 13);
