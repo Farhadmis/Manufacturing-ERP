@@ -2607,10 +2607,26 @@
       $("#sd-n").textContent = fv(tot); $("#sd-t").innerHTML = "Stock Status Distribution" + `<em class="ts"> – ${esc(AG[TB].s)}</em>`;
       $("#sd-l").innerHTML = `<div class="sdh"><span class="n">Stock Status</span><span class="d">Description</span><span class="p">Percentage (%)</span><span class="q">Qty</span></div>` +
         T.map(x => `<div class="sdr"><span class="n"><i style="background:${x.c}"></i>${esc(x.n)}</span><span class="d">${esc(x.d)}</span><span class="p"><span style="background:${x.bg};color:${x.fg}">${pc1(x.q)}</span></span><span class="q">${fv(x.q)}</span></div>`).join("");
+      /* hover tooltip (donut slice + table row): Top 10 Model · Qty of that Stock Status */
+      const ssTip = document.getElementById("ag-tip") || document.body.appendChild(Object.assign(document.createElement("div"), { id: "ag-tip" }));
+      const ssShow = (i, px, py) => {
+        const s = T[i]; if (!s || !s.q) { ssTip.style.display = "none"; return }
+        const m = new Map(); a.forEach(r => { if (stn(r.st) === s.k) { const q = (r[TB] || []).reduce((u, v) => u + v, 0); if (q > 0) { const k = r.model || "N/A"; m.set(k, (m.get(k) || 0) + q) } } });
+        const L = [...m].map(([k, q]) => ({ k, q })).sort((x, y) => y.q - x.q).slice(0, 10), mx = L.length ? L[0].q : 1;
+        ssTip.innerHTML = `<div class="h">${esc(s.n)}<span>${fv(s.q)} · ${pc1(s.q)}</span></div><div class="by">TOP ${L.length} MODEL · QTY</div>` + L.map(x => `<div class="r"><em title="${esc(x.k)}">${esc(x.k)}</em><u><i style="width:${(x.q / mx * 100).toFixed(1)}%;background:linear-gradient(90deg,${s.c}99,${s.c})"></i></u><b>${fv(x.q)}</b></div>`).join("");
+        ssTip.style.display = "block"; let x = px + 16, y = py - 20;
+        if (x + ssTip.offsetWidth > innerWidth - 8) x = px - ssTip.offsetWidth - 16; if (y + ssTip.offsetHeight > innerHeight - 8) y = innerHeight - ssTip.offsetHeight - 8;
+        ssTip.style.left = Math.max(8, x) + "px"; ssTip.style.top = Math.max(8, y) + "px"
+      };
+      document.querySelectorAll("#sd-l .sdr").forEach((el, i) => { el.onmousemove = e => ssShow(i, e.clientX, e.clientY); el.onmouseleave = () => ssTip.style.display = "none" });
+      const ext = c => {
+        const t = c.tooltip; if (!t || t.opacity === 0 || !t.dataPoints || !t.dataPoints.length) { ssTip.style.display = "none"; return }
+        const R = c.chart.canvas.getBoundingClientRect(); ssShow(t.dataPoints[0].dataIndex, R.left + t.caretX, R.top + t.caretY)
+      };
       mk("c2", {
         type: "doughnut",
         data: { labels: T.map(x => x.n), datasets: [{ data: tot ? T.map(x => x.q) : [1], backgroundColor: tot ? T.map(x => x.c) : ["#e5e9f2"], borderColor: "#fff", borderWidth: 3, hoverOffset: 6 }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout: "58%", plugins: { legend: { display: false }, tooltip: { enabled: !!tot, callbacks: { label: c => ` ${c.label}: ${fv(c.parsed)} (${pc1(c.parsed)})` } } } },
+        options: { responsive: true, maintainAspectRatio: false, cutout: "58%", plugins: { legend: { display: false }, tooltip: { enabled: false, external: ext } } },
         plugins: [{
           id: "sdp", afterDatasetsDraw(ch) {
             if (!tot) return; const { ctx } = ch; ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#fff"; ctx.font = "800 12.5px Inter,sans-serif";
