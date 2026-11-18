@@ -869,7 +869,7 @@
           <div class="err" id="pe"></div>
         </div>
         <div class="row"><label class="rem"><input type="checkbox" id="r" checked><span data-i="rem">Remember
-              Me</span></label><a href="#forgot" data-i="fp">Forgot Password?</a></div>
+              Me</span></label><a href="#" id="fpo" data-i="fp">Forgot Password?</a></div>
         <button class="go" id="go" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" />
@@ -888,6 +888,118 @@
   </div>
   <div id="wl" role="dialog" aria-label="Welcome to Mainetti"><img id="wli" alt="Welcome to Mainetti" decoding="async">
     <div class="wlbar"><i></i></div>
+  </div>
+  <style>
+    .fp-ov {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 24, 52, .45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 16px
+    }
+
+    .fp-ov.on {
+      display: flex
+    }
+
+    .fp-box {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      width: min(380px, 92vw);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: #0f2a5a;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, .25)
+    }
+
+    .fp-box h3 {
+      margin: 0 0 8px;
+      font-size: 19px
+    }
+
+    .fp-box p {
+      margin: 0 0 14px;
+      font-size: 13.5px;
+      color: #4a5a78;
+      line-height: 1.5
+    }
+
+    .fp-box input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 11px 14px;
+      border: 1px solid #d5dded;
+      border-radius: 10px;
+      font-size: 14px
+    }
+
+    .fp-err {
+      color: #b3261e;
+      font-size: 13px;
+      min-height: 18px;
+      margin-top: 8px
+    }
+
+    .fp-ok {
+      background: #e4f6ec;
+      color: #14532d;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 13.5px;
+      margin-top: 8px;
+      line-height: 1.5
+    }
+
+    .fp-ok b {
+      font-family: Consolas, monospace;
+      font-size: 14px
+    }
+
+    .fp-act {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 14px
+    }
+
+    .fp-act button {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer
+    }
+
+    .fp-c {
+      background: #eef2f9;
+      color: #0f2a5a
+    }
+
+    .fp-k {
+      background: #a61935;
+      color: #fff
+    }
+
+    .fp-k:disabled {
+      opacity: .5;
+      cursor: wait
+    }
+  </style>
+  <div class="fp-ov" id="fpm" role="dialog" aria-modal="true" aria-labelledby="fpt">
+    <div class="fp-box">
+      <h3 id="fpt">Reset Password</h3>
+      <p>Enter your Employee ID. Your password will be reset to <b>ID@123</b>. Change it later from the Settings module.
+      </p>
+      <input id="fpi" placeholder="Employee ID" autocomplete="username">
+      <div class="fp-err" id="fpe"></div>
+      <div class="fp-ok" id="fpr" hidden></div>
+      <div class="fp-act"><button type="button" class="fp-c" id="fpc">Close</button><button type="button" class="fp-k"
+          id="fpk">Reset</button></div>
+    </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
   <script src="erp.js"></script>
@@ -925,6 +1037,31 @@
       im.onload = go; im.onerror = () => { location.href = "portal.html" }; im.src = "assets/welcome.jpg";
       if (im.complete && im.naturalWidth) go()
     }
+    /* Forgot Password: ID দিলে password ID@123 হয়ে যায় */
+    const fpm = $("fpm"), fpi = $("fpi"), fpe = $("fpe"), fpr = $("fpr"), fpk = $("fpk");
+    const fpClose = () => fpm.classList.remove("on");
+    $("fpo").onclick = e => { e.preventDefault(); fpm.classList.add("on"); fpi.value = $("u").value.trim(); fpe.textContent = ""; fpr.hidden = true; fpi.focus() };
+    $("fpc").onclick = fpClose;
+    fpm.addEventListener("click", e => { if (e.target === fpm) fpClose() });
+    async function fpReset() {
+      const id = fpi.value.trim(); fpe.textContent = ""; fpr.hidden = true;
+      if (!id) { fpe.textContent = "Employee ID লিখুন"; fpi.focus(); return }
+      fpk.disabled = true;
+      try {
+        const { data, error } = await sb.rpc("forgot_reset", { p_login: id });
+        if (error) throw error;
+        fpr.textContent = "";
+        fpr.append("Password has been reset. Your new password is: ");
+        const b = document.createElement("b"); b.textContent = data; fpr.append(b);
+        fpr.append(" — Log in with this password and change it from Settings.");
+        fpr.hidden = false;
+      } catch (e) {
+        fpe.textContent = /not found|ID/i.test(e.message || "") ? "এই ID পাওয়া যায়নি" : "Reset করা যায়নি, আবার চেষ্টা করুন";
+      }
+      fpk.disabled = false;
+    }
+    fpk.onclick = fpReset;
+    fpi.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); fpReset() } });
     new Image().src = "assets/welcome.jpg";   // Login পেজেই আগে থেকে ছবি নামিয়ে রাখে, যাতে সাথে সাথে দেখা যায়
     sb.auth.getSession().then(({ data }) => { if (data.session) location.replace("portal.html") });
     addEventListener("resize", () => { scale(); fit() }); scale(); syncEye();
