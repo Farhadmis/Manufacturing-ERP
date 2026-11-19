@@ -1093,7 +1093,7 @@
     #by-tip {
       position: fixed;
       z-index: 9999;
-      pointer-events: none;
+      pointer-events: auto;
       display: none;
       width: 380px;
       background: #fff;
@@ -1163,6 +1163,97 @@
     }
 
     #by-tip .r b {
+      text-align: right;
+      color: #0f2a5a;
+      font-weight: 800
+    }
+
+    #by-tip .r[data-c] {
+      padding: 3px 4px;
+      margin: 2px -4px;
+      border-radius: 7px;
+      cursor: default
+    }
+
+    #by-tip .r[data-c]:hover {
+      background: #eaf3fb
+    }
+
+    /* Side panel · customer → top 10 model */
+    #by-side {
+      position: fixed;
+      z-index: 10000;
+      pointer-events: none;
+      display: none;
+      width: 330px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 10px 30px rgba(15, 42, 90, .22);
+      border: 1px solid #e3e8f2;
+      font-family: Inter, sans-serif
+    }
+
+    #by-side .h {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0f2a5a;
+      line-height: 1.3;
+      word-break: break-word
+    }
+
+    #by-side .h span {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #6d7c99;
+      margin-top: 2px
+    }
+
+    #by-side .by {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: #6d7c99;
+      margin: 10px 0 6px;
+      text-transform: uppercase
+    }
+
+    #by-side .r {
+      display: grid;
+      grid-template-columns: 90px 1fr 54px;
+      align-items: center;
+      gap: 8px;
+      margin: 5px 0;
+      font-size: 12.5px
+    }
+
+    #by-side .r em {
+      font-style: normal;
+      color: #0b5fa5;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    #by-side .r u {
+      display: block;
+      height: 8px;
+      border-radius: 9px;
+      background: #e8ecf3;
+      text-decoration: none;
+      overflow: hidden
+    }
+
+    #by-side .r u i {
+      display: block;
+      height: 100%;
+      border-radius: 9px;
+      background: linear-gradient(90deg, #0a84c6, #00bcd4)
+    }
+
+    #by-side .r b {
       text-align: right;
       color: #0f2a5a;
       font-weight: 800
@@ -1498,7 +1589,7 @@
     #mt-tip {
       position: fixed;
       z-index: 9999;
-      pointer-events: none;
+      pointer-events: auto;
       display: none;
       width: 380px;
       background: #fff;
@@ -1568,6 +1659,299 @@
     }
 
     #mt-tip .r b {
+      text-align: right;
+      color: #0f2a5a;
+      font-weight: 800
+    }
+
+    /* Rich hover tooltip · heatmap month (top models) & year bar (by month) */
+    #mm-tip {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      display: none;
+      width: 310px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 10px 30px rgba(15, 42, 90, .22);
+      border: 1px solid #e3e8f2;
+      font-family: Inter, sans-serif
+    }
+
+    #mm-tip.mo {
+      width: 270px;
+      pointer-events: auto
+    }
+
+    #mm-tip .r[data-m] {
+      padding: 3px 4px;
+      margin: 2px -4px;
+      border-radius: 7px;
+      cursor: default
+    }
+
+    #mm-tip .r[data-m]:hover {
+      background: #eaf3fb
+    }
+
+    #mm-tip .h {
+      font-size: 15px;
+      font-weight: 800;
+      color: #0f2a5a;
+      line-height: 1.3
+    }
+
+    #mm-tip .h span {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6d7c99;
+      margin-top: 2px
+    }
+
+    #mm-tip .by {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: #6d7c99;
+      margin: 10px 0 6px;
+      text-transform: uppercase
+    }
+
+    #mm-tip .r {
+      display: grid;
+      grid-template-columns: 78px 1fr 58px;
+      align-items: center;
+      gap: 8px;
+      margin: 5px 0;
+      font-size: 12.5px
+    }
+
+    #mm-tip.mo .r {
+      grid-template-columns: 34px 1fr 58px
+    }
+
+    #mm-tip .r em {
+      font-style: normal;
+      color: #0b5fa5;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    #mm-tip.mo .r em {
+      font-weight: 600
+    }
+
+    #mm-tip .r u {
+      display: block;
+      height: 8px;
+      border-radius: 9px;
+      background: #e8ecf3;
+      text-decoration: none;
+      overflow: hidden
+    }
+
+    #mm-tip .r u i {
+      display: block;
+      height: 100%;
+      border-radius: 9px;
+      background: linear-gradient(90deg, #0a84c6, #00bcd4)
+    }
+
+    #mm-tip .r b {
+      text-align: right;
+      color: #0f2a5a;
+      font-weight: 800
+    }
+
+    /* Side panel · month → top 10 model with buyer & value */
+    #mm-side {
+      position: fixed;
+      z-index: 10000;
+      pointer-events: none;
+      display: none;
+      width: 360px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 10px 30px rgba(15, 42, 90, .22);
+      border: 1px solid #e3e8f2;
+      font-family: Inter, sans-serif
+    }
+
+    #mm-side .h {
+      font-size: 15px;
+      font-weight: 800;
+      color: #0f2a5a;
+      line-height: 1.3
+    }
+
+    #mm-side .h span {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6d7c99;
+      margin-top: 2px
+    }
+
+    #mm-side .by {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: #6d7c99;
+      margin: 10px 0 6px;
+      text-transform: uppercase
+    }
+
+    #mm-side .r {
+      display: grid;
+      grid-template-columns: 70px 1fr 58px;
+      align-items: center;
+      gap: 8px;
+      margin: 6px 0;
+      font-size: 12.5px
+    }
+
+    #mm-side .r em {
+      font-style: normal;
+      color: #0b5fa5;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    #mm-side .bb {
+      min-width: 0
+    }
+
+    #mm-side .bb span {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: #44557a;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 3px
+    }
+
+    #mm-side .bb span small {
+      color: #6d7c99;
+      font-weight: 700;
+      margin-left: 4px
+    }
+
+    #mm-side .bb u {
+      display: block;
+      height: 6px;
+      border-radius: 9px;
+      background: #e8ecf3;
+      text-decoration: none;
+      overflow: hidden
+    }
+
+    #mm-side .bb u i {
+      display: block;
+      height: 100%;
+      border-radius: 9px;
+      background: linear-gradient(90deg, #0a84c6, #00bcd4)
+    }
+
+    #mm-side .r b {
+      text-align: right;
+      color: #0f2a5a;
+      font-weight: 800
+    }
+
+    #mt-tip .r[data-c] {
+      padding: 3px 4px;
+      margin: 2px -4px;
+      border-radius: 7px;
+      cursor: default
+    }
+
+    #mt-tip .r[data-c]:hover {
+      background: #eaf3fb
+    }
+
+    /* Side panel · customer → top 10 buyer */
+    #mt-side {
+      position: fixed;
+      z-index: 10000;
+      pointer-events: none;
+      display: none;
+      width: 330px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 10px 30px rgba(15, 42, 90, .22);
+      border: 1px solid #e3e8f2;
+      font-family: Inter, sans-serif
+    }
+
+    #mt-side .h {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0f2a5a;
+      line-height: 1.3;
+      word-break: break-word
+    }
+
+    #mt-side .h span {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #6d7c99;
+      margin-top: 2px
+    }
+
+    #mt-side .by {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: #6d7c99;
+      margin: 10px 0 6px;
+      text-transform: uppercase
+    }
+
+    #mt-side .r {
+      display: grid;
+      grid-template-columns: 110px 1fr 54px;
+      align-items: center;
+      gap: 8px;
+      margin: 5px 0;
+      font-size: 12.5px
+    }
+
+    #mt-side .r em {
+      font-style: normal;
+      color: #0b5fa5;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    #mt-side .r u {
+      display: block;
+      height: 8px;
+      border-radius: 9px;
+      background: #e8ecf3;
+      text-decoration: none;
+      overflow: hidden
+    }
+
+    #mt-side .r u i {
+      display: block;
+      height: 100%;
+      border-radius: 9px;
+      background: linear-gradient(90deg, #0a84c6, #00bcd4)
+    }
+
+    #mt-side .r b {
       text-align: right;
       color: #0f2a5a;
       font-weight: 800
@@ -1764,6 +2148,64 @@
       }
     }
   </style>
+<style id="rsp-v1">
+/* ===================== RESPONSIVE v1 · Mobile collapsible filter ===================== */
+.fbc{display:contents}
+.fbt,.fba{display:none}
+@media(max-width:767px){
+  .fbt{display:flex;align-items:center;gap:10px;width:100%;height:46px;margin:10px 0 8px;padding:0 14px;border:1px solid #dbe4f2;border-radius:14px;background:#fff;color:#0f2a5a;font:700 14px Inter,system-ui,sans-serif;text-align:left;cursor:pointer;position:sticky;top:6px;z-index:45;box-shadow:0 0 0 6px #f1f5fb,0 4px 12px rgba(16,44,92,.10);-webkit-tap-highlight-color:transparent}
+  .fbt[hidden]{display:none!important}
+  .fbt svg{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .fbt .fbl{flex:1}
+  .fbt .fbn{min-width:22px;height:22px;padding:0 7px;border-radius:999px;background:#a61935;color:#fff;font-size:12px;line-height:22px;text-align:center}
+  .fbt .fbn:empty{display:none}
+  .fbt .fbv{transition:transform .3s ease}
+  .fbt[aria-expanded="true"] .fbv{transform:rotate(180deg)}
+
+  .fbc{display:block;overflow:hidden;max-height:var(--fbh,0px);opacity:0;visibility:hidden;transition:max-height .35s ease,opacity .3s ease,visibility 0s linear .35s}
+  .fbc.open{opacity:1;visibility:visible;transition:max-height .35s ease,opacity .3s ease,visibility 0s}
+
+  .fbc #fb{position:static!important;display:flex!important;flex-direction:column!important;flex-wrap:nowrap!important;align-items:stretch!important;gap:10px!important;overflow:visible!important;white-space:normal!important;height:auto!important;zoom:1!important;margin:0!important;padding:12px 12px 6px!important;background:#fff!important;border:1px solid #dbe4f2!important;border-bottom:0!important;border-radius:14px 14px 0 0!important;box-shadow:none!important}
+  .fbc #fb:empty{padding:0!important;border:0!important}
+  .fbc #fb .f,.fbc #fb .f.d{flex:none!important;width:100%!important;min-width:0!important}
+  .fbc #fb .f button,.fbc #fb .f input{height:44px!important;font-size:14px!important;padding:0 12px!important;letter-spacing:normal!important;border-radius:12px!important}
+  .fbc #fb .f.d{display:flex!important;align-items:center!important;gap:10px!important}
+  .fbc #fb .f.d span{flex:none;width:44px;font-size:13px!important}
+  .fbc #fb .f.d input{flex:1 1 auto;min-width:0;width:auto!important}
+  .fbc #fb .rs{display:none!important}
+  /* Shopfloor pills / dates */
+  .fbc #fb .fp{width:100%!important;min-height:44px;padding:10px 14px!important;font-size:14px!important;gap:10px!important;border-radius:12px!important;white-space:normal;flex:none!important}
+  .fbc #fb .fp .fl{flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis}
+  .fbc #fb .fp svg:not(.cv){display:block!important}
+  .fbc #fb .fd{width:100%;justify-content:space-between;gap:10px!important;font-size:13px!important;flex:none}
+  .fbc #fb .fd input{flex:1 1 auto;width:auto!important;min-width:0;max-width:220px;padding:10px 12px!important;font-size:14px!important;border-radius:12px!important}
+  .fbc #fb .fsep{display:none!important}
+
+  .fba{display:flex;gap:10px;padding:10px 12px 12px;margin:0 0 8px;background:#fff;border:1px solid #dbe4f2;border-top:1px dashed #dbe4f2;border-radius:0 0 14px 14px}
+  .fba button{flex:1;height:44px;border-radius:12px;font:700 14px Inter,system-ui,sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .fba .fbr{background:#fff;color:#0f2a5a;border:1.5px solid #cfdcf3}
+  .fba .fbp{background:#0f2a5a;color:#fff;border:0}
+
+  .fbw{position:static!important;margin:0!important;padding:0!important;background:none!important}
+
+  /* dropdown → bottom sheet (কোনো filter-এর ওপর ভাসে না) */
+  #pn,.pop{left:0!important;right:0!important;top:auto!important;bottom:0!important;width:100%!important;max-height:72vh;border-radius:18px 18px 0 0!important;padding-bottom:env(safe-area-inset-bottom,0px);overflow:hidden}
+  #pn .ls,.pop .ls{max-height:calc(72vh - 150px)!important;-webkit-overflow-scrolling:touch}
+  #pn label,.pop label{padding:12px 16px!important;font-size:14px!important}
+  #pn input[type=text],.pop input[type=text]{font-size:16px!important;padding:10px 12px!important}
+  #pn .ac button,.pop .ft a{padding:10px!important;font-size:14px!important}
+}
+
+/* ===================== RESPONSIVE v1 · layout (mobile / tablet / large display) ===================== */
+html{-webkit-text-size-adjust:100%}
+@media(max-width:767px){
+  main{padding-left:12px!important;padding-right:12px!important;padding-bottom:24px!important}
+  .kp,.rkp{scroll-snap-type:x proximity}
+}
+@media(min-width:2000px){
+  main>*{max-width:2100px;margin-left:auto;margin-right:auto}
+}
+</style>
 </head>
 
 <body>
@@ -2025,6 +2467,66 @@
     }
 
 
+    /* ---------- Shared rich tooltip (heatmap month · year bar · month → model/buyer panel) ---------- */
+    const mmFq = v => Math.abs(v) >= 1e6 ? (v / 1e6).toFixed(2) + "M" : Math.abs(v) >= 1e3 ? Math.round(v / 1e3) + "K" : n0(v);
+    const MM = { ht: 0, over: false, ctx: null };
+    function mmSideEl() { let s = document.getElementById("mm-side"); if (!s) { s = document.createElement("div"); s.id = "mm-side"; document.body.appendChild(s) } return s }
+    function mmSideHide() { const s = document.getElementById("mm-side"); if (s) { s.style.display = "none" } }
+    function mmEl() {
+      let t = document.getElementById("mm-tip"); if (t) return t;
+      t = document.createElement("div"); t.id = "mm-tip"; document.body.appendChild(t);
+      t.onmouseenter = () => { clearTimeout(MM.ht); MM.over = true };
+      t.onmouseleave = () => { MM.over = false; mmSideHide(); mmHideSoon() };
+      t.onmousemove = e => {
+        const r = e.target.closest(".r[data-m]"); if (!r || !MM.ctx) { mmSideHide(); return }
+        const y = +r.dataset.y, m = +r.dataset.m, k = y * 100 + m, s = mmSideEl();
+        if (s._k !== k) { s.innerHTML = mmDetailHTML(MM.ctx.a, MM.ctx.key, y, m); s._k = k }
+        s.style.display = "block"; const tr = t.getBoundingClientRect();
+        let l = tr.right + 2; if (l + s.offsetWidth > innerWidth - 8) l = tr.left - s.offsetWidth - 2;
+        let tp = tr.top; if (tp + s.offsetHeight > innerHeight - 8) tp = innerHeight - s.offsetHeight - 8;
+        s.style.left = Math.max(8, l) + "px"; s.style.top = Math.max(8, tp) + "px"
+      };
+      return t
+    }
+    function mmPlace(html, xr, xl, y, cls) {
+      const t = mmEl(); clearTimeout(MM.ht);
+      if (t._h !== html) { t.innerHTML = html; t._h = html; const s = document.getElementById("mm-side"); if (s) { s._k = null; s.style.display = "none" } }
+      t.className = cls || ""; t.style.display = "block";
+      let l = xr; if (l + t.offsetWidth > innerWidth - 8) l = xl - t.offsetWidth;
+      let tp = y; if (tp + t.offsetHeight > innerHeight - 8) tp = innerHeight - t.offsetHeight - 8;
+      t.style.left = Math.max(8, l) + "px"; t.style.top = Math.max(8, tp) + "px"
+    }
+    function mmShow(html, x, y, cls) { MM.ctx = null; mmPlace(html, x + 16, x - 16, y - 20, cls) }
+    function mmHide() { clearTimeout(MM.ht); MM.over = false; const t = document.getElementById("mm-tip"); if (t) t.style.display = "none"; mmSideHide() }
+    function mmHideSoon() { clearTimeout(MM.ht); MM.ht = setTimeout(() => { if (!MM.over) mmHide() }, 140) }
+    function mmMonthHTML(a, key, y, m) {
+      const mp = new Map(); let tot = 0;
+      a.forEach(r => { if (r.y === y && r.m === m && r[key] > 0) { const k = r.model || "N/A"; mp.set(k, (mp.get(k) || 0) + r[key]); tot += r[key] } });
+      const L = [...mp].map(([k, q]) => ({ k, q })).sort((p, q) => q.q - p.q), top = L.slice(0, 10), mx = top.length ? top[0].q : 1;
+      return `<div class="h">${MN[m - 1]} ${y}<span>${mmFq(tot)} · ${L.length} models</span></div><div class="by">By model · Top ${top.length}</div>`
+        + top.map(x => `<div class="r"><em title="${esc(x.k)}">${esc(x.k)}</em><u><i style="width:${(x.q / mx * 100).toFixed(1)}%"></i></u><b>${mmFq(x.q)}</b></div>`).join("")
+    }
+    function mmYearHTML(a, key, y, T) {
+      const mv = Array(12).fill(0); a.forEach(r => { if (r.y === y) mv[r.m - 1] += r[key] });
+      const tot = mv.reduce((s, v) => s + v, 0), mx = Math.max(...mv) || 1;
+      return `<div class="h">${y}<span>${fmtM(tot)} · ${T ? (tot / T * 100).toFixed(1) : 0}% of total</span></div><div class="by">By month · 12 months</div>`
+        + mv.map((v, i) => `<div class="r"${v > 0 ? ` data-y="${y}" data-m="${i + 1}"` : ""}><em>${MN[i]}</em><u><i style="width:${(v / mx * 100).toFixed(1)}%"></i></u><b>${v > 0 ? fmtM(v) : "–"}</b></div>`).join("")
+    }
+    function mmDetailHTML(a, key, y, m) {
+      const mp = new Map(); let tot = 0;
+      a.forEach(r => {
+        const v = r[key]; if (r.y !== y || r.m !== m || !(v > 0)) return;
+        const k = r.model || "N/A"; let o = mp.get(k); if (!o) mp.set(k, o = { k, q: 0, b: new Map() });
+        o.q += v; tot += v; const by = r.buyer || "N/A"; o.b.set(by, (o.b.get(by) || 0) + v)
+      });
+      const L = [...mp.values()].sort((p, q) => q.q - p.q), top = L.slice(0, 10), mx = top.length ? top[0].q : 1;
+      return `<div class="h">${MN[m - 1]} ${y}<span>${mmFq(tot)} · ${L.length} models</span></div><div class="by">By model · Top ${top.length} · buyer &amp; value</div>`
+        + top.map(x => {
+          const bs = [...x.b].sort((p, q) => q[1] - p[1]), more = bs.length - 1;
+          return `<div class="r"><em title="${esc(x.k)}">${esc(x.k)}</em><div class="bb"><span>${esc(bs[0][0])}${more > 0 ? `<small>+${more}</small>` : ""}</span><u><i style="width:${(x.q / mx * 100).toFixed(1)}%"></i></u></div><b>${mmFq(x.q)}</b></div>`
+        }).join("")
+    }
+
     /* ---------- Year-to-Year Trend · premium card (best year = green, running year = hatched) ---------- */
     const YTMs = {}, YT_GREEN = "#1f9d55", YT_GREY = "#c9cfdd";
     const ytRGB = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)).join(",");
@@ -2058,7 +2560,7 @@
       let best = null; full.forEach(x => { if (!best || x.q > best.q) best = x });
       const avg = full.length ? full.reduce((s, x) => s + x.q, 0) / full.length : null;
       const P = v => T ? (v / T * 100).toFixed(1) + "%" : "0%";
-      YTMs[id] = { yy, N, T, partial, full, best, avg, col };
+      YTMs[id] = { yy, N, T, partial, full, best, avg, col, a, key };
       const sty = `--yc:${col};--ycr:${ytRGB(col)}`;
       if (!N || !T) return `<div class="c yt" style="${sty}"><div class="yt-t">${title}</div><div class="yt-s">No data for the selected filters</div></div>`;
       const cur = partial ? yy[N - 1] : null, rng = yy[0].k + (N > 1 ? " – " + yy[N - 1].k : "") + (partial ? " YTD" : "");
@@ -2108,7 +2610,17 @@
         data: { labels: yy.map(x => x.k), datasets: [{ label: id === "c3" ? "Hanger Qty" : "Sizer Qty", data: yy.map(x => x.q), backgroundColor: bg, borderRadius: 8, borderSkipped: false, borderColor: col, borderDash: [5, 4], borderWidth: yy.map((x, i) => isY(i) ? 2 : 0), maxBarThickness: 120 }] },
         options: {
           responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: { top: 24, bottom: 36 } },
-          plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${n0(c.parsed.y)} (${P(c.parsed.y)})` } } },
+          interaction: { mode: "index", intersect: false },
+          plugins: {
+            legend: { display: false }, tooltip: {
+              enabled: false, external: c => {
+                const t = c.tooltip; if (!t || t.opacity === 0 || !t.dataPoints || !t.dataPoints.length) { mmHideSoon(); return }
+                const i = t.dataPoints[0].dataIndex, b = c.chart.getDatasetMeta(0).data[i], R = c.chart.canvas.getBoundingClientRect(), cx = R.left + b.x, hw = (b.width || 80) / 2;
+                MM.ctx = { a: M.a, key: M.key };
+                mmPlace(mmYearHTML(M.a, M.key, yy[i].k, T), cx + hw + 2, cx - hw - 2, R.top + t.caretY - 20, "mo")
+              }
+            }
+          },
           scales: { x: { grid: { display: false }, border: { color: "#d9dfec" }, ticks: { color: "#0f2a5a", font: { size: 14, weight: "700" }, padding: 8 } }, y: { display: false, beginAtZero: true, suggestedMax: mx * 1.08 } }
         }, plugins: [plug]
       })
@@ -2199,9 +2711,9 @@
         const cells = MN.map((_, i) => {
           const m = i + 1, v = V(y, m), tip = `${MN[i]} ${y}|${FN(v)}`;
           if (v <= 0) return `<div class="hx-c no">–</div>`;
-          if (run(y, m)) return `<div class="hx-c run" data-t="${tip}">${f1(v)}<em>MTD</em></div>`;
+          if (run(y, m)) return `<div class="hx-c run" data-t="${tip}" data-y="${y}" data-m="${m}">${f1(v)}<em>MTD</em></div>`;
           const b = bin(v), isP = pk && pk.y === y && pk.m === m, isL = lw && lw.y === y && lw.m === m;
-          return `<div class="hx-c ${isP ? "pk" : ""} ${isL ? "lw" : ""}" style="background:${HX_BIN[b]};color:${HX_TX[b]}" data-t="${tip}">${f1(v)}${isP ? "<em>PEAK</em>" : isL ? "<em>LOW</em>" : ""}</div>`
+          return `<div class="hx-c ${isP ? "pk" : ""} ${isL ? "lw" : ""}" style="background:${HX_BIN[b]};color:${HX_TX[b]}" data-t="${tip}" data-y="${y}" data-m="${m}">${f1(v)}${isP ? "<em>PEAK</em>" : isL ? "<em>LOW</em>" : ""}</div>`
         }).join("");
         const isRun = y === cY && partial;
         return `<div class="hx-y">${y}${y === cY ? "<small>YTD</small>" : ""}</div>${cells}<div class="hx-tt" data-t="Total ${y}|${FN(yt[yi])}"><div><b>${fu(yt[yi])}</b><span>${(yt[yi] / T * 100).toFixed(1)}%</span></div><u><i class="${isRun ? "r" : ""}" style="width:${(yt[yi] / mxY * 100).toFixed(1)}%"></i></u></div>`
@@ -2219,8 +2731,13 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
 <div class="hx-ft">${partial ? `<span><i style="background:repeating-linear-gradient(135deg,#dfe5f1 0 3px,#f6f8fc 3px 6px);border:1.5px dashed #8d9ab5"></i>Month still running (${MN[lastM - 1]} ${lastY}, ${cD} days in)</span>` : ""}${pk ? `<span><i style="background:${HX_BIN[5]};box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--navy)"></i>Peak month</span><span><i style="background:${HX_BIN[0]};box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--navy)"></i>Lowest full month</span>` : ""}<span><i style="background:#fafbfd;border:1.5px dashed #d5dbe8"></i>No data yet</span></div>`;
       const hs = box.querySelector("#hs"); if (hs) hs.onchange = e => { HMK = e.target.value; hmRender(a) };
       const tip = document.getElementById("hx-tip");
-      box.onmousemove = e => { const c = e.target.closest("[data-t]"); if (!c) { tip.style.display = "none"; return } const [l, v] = c.dataset.t.split("|"); tip.innerHTML = `${l}<b>${v}</b>`; tip.style.display = "block"; tip.style.left = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8) + "px"; tip.style.top = e.clientY + 16 + "px" };
-      box.onmouseleave = () => tip.style.display = "none";
+      let lastC = null, lastH = "";
+      box.onmousemove = e => {
+        const c = e.target.closest("[data-t]"); if (!c) { tip.style.display = "none"; mmHide(); lastC = null; return }
+        if (c.dataset.y) { tip.style.display = "none"; if (c !== lastC) { lastC = c; lastH = mmMonthHTML(a, key, +c.dataset.y, +c.dataset.m) } mmShow(lastH, e.clientX, e.clientY, ""); return }
+        mmHide(); lastC = null; const [l, v] = c.dataset.t.split("|"); tip.innerHTML = `${l}<b>${v}</b>`; tip.style.display = "block"; tip.style.left = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8) + "px"; tip.style.top = e.clientY + 16 + "px"
+      };
+      box.onmouseleave = () => { tip.style.display = "none"; mmHide(); lastC = null };
     }
 
 
@@ -2271,20 +2788,48 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
       $("#bsm").innerHTML = `<div class="bi"><div class="ci" style="background:linear-gradient(135deg,#c8102e,#7a0a1c)">${DIC.h}</div><div><small>Top Buyer (Hanger)</small><b>${h}</b></div></div><div class="bi"><div class="ci" style="background:linear-gradient(135deg,#1b7fe0,#0a3a8f)">${DIC.s}</div><div><small>Top Buyer (Sizer)</small><b>${z}</b></div></div>`;
       if (BY.on) return; BY.on = true;
       const tp = document.createElement("div"); tp.id = "by-tip"; document.body.appendChild(tp);
+      const sd = document.createElement("div"); sd.id = "by-side"; document.body.appendChild(sd);
+      let ht = 0, cur = null, sk = null;
+      const hide = () => { tp.style.display = "none"; sd.style.display = "none"; cur = null; sk = null };
+      const soon = () => { clearTimeout(ht); ht = setTimeout(hide, 160) };
       document.addEventListener("mousemove", e => {
-        const row = e.target.closest && e.target.closest(".bq .br"); if (!row) { tp.style.display = "none"; return }
-        const k = row.closest(".bq").dataset.k, name = row.dataset.b, rows = BY.a.filter(r => (r.buyer || "N/A") === name);
+        const el = e.target; if (!el || !el.closest) return;
+        if (el.closest("#by-tip")) {
+          clearTimeout(ht); const r = el.closest(".r[data-c]"); if (!r || !cur) { sd.style.display = "none"; sk = null; return }
+          const c = r.dataset.c, id = cur.k + "|" + cur.name + "|" + c;
+          if (sk !== id) {
+            const rs = cur.rows.filter(x => (x.cust || "N/A") === c), tot = rs.reduce((s, x) => s + x[cur.k], 0);
+            const ms = grp(rs, x => x.model || "N/A").filter(x => x[cur.k] > 0).sort((x, y) => y[cur.k] - x[cur.k]), top = ms.slice(0, 10), mx = top.length ? top[0][cur.k] : 1;
+            sd.innerHTML = `<div class="h">${E(c)}<span>${fm(tot)} · ${pc(tot, cur.tot)} of ${E(cur.name)} · ${ms.length} models</span></div><div class="by">By model · Top ${top.length}</div>` + top.map(x => `<div class="r"><em title="${E(x.k)}">${E(x.k)}</em><u><i style="width:${(x[cur.k] / mx * 100).toFixed(1)}%"></i></u><b>${fm(x[cur.k])}</b></div>`).join("");
+            sk = id
+          }
+          sd.style.display = "block"; const tr = tp.getBoundingClientRect();
+          let l = tr.right + 2; if (l + sd.offsetWidth > innerWidth - 8) l = tr.left - sd.offsetWidth - 2;
+          let t = tr.top; if (t + sd.offsetHeight > innerHeight - 8) t = innerHeight - sd.offsetHeight - 8;
+          sd.style.left = Math.max(8, l) + "px"; sd.style.top = Math.max(8, t) + "px"; return
+        }
+        const row = el.closest(".bq .br"); if (!row) { if (tp.style.display !== "none") soon(); return }
+        clearTimeout(ht);
+        const k = row.closest(".bq").dataset.k, name = row.dataset.b, id = k + "|" + name;
+        if (cur && cur.id === id) return;
+        const rows = BY.a.filter(r => (r.buyer || "N/A") === name);
         const tot = rows.reduce((s, r) => s + r[k], 0), all = BY.a.reduce((s, r) => s + r[k], 0);
         const cs = grp(rows, r => r.cust || "N/A").filter(x => x[k] > 0).sort((x, y) => y[k] - x[k]).slice(0, 10), mx = cs.length ? cs[0][k] : 1;
-        tp.innerHTML = `<div class="h">${E(name)}<span>${fm(tot)} · ${pc(tot, all)}</span></div><div class="by">By customer · Top ${cs.length}</div>` + cs.map(x => `<div class="r"><em title="${E(x.k)}">${E(x.k)}</em><u><i style="width:${(x[k] / mx * 100).toFixed(1)}%"></i></u><b>${fm(x[k])}</b></div>`).join("");
-        tp.style.display = "block"; let x = e.clientX + 16, y = e.clientY - 20;
-        if (x + tp.offsetWidth > innerWidth - 8) x = e.clientX - tp.offsetWidth - 16; if (y + tp.offsetHeight > innerHeight - 8) y = innerHeight - tp.offsetHeight - 8;
+        cur = { id, k, name, rows, tot }; sk = null; sd.style.display = "none";
+        tp.innerHTML = `<div class="h">${E(name)}<span>${fm(tot)} · ${pc(tot, all)}</span></div><div class="by">By customer · Top ${cs.length}</div>` + cs.map(x => `<div class="r" data-c="${E(x.k)}"><em title="${E(x.k)}">${E(x.k)}</em><u><i style="width:${(x[k] / mx * 100).toFixed(1)}%"></i></u><b>${fm(x[k])}</b></div>`).join("");
+        tp.style.display = "block"; let x = e.clientX + 6, y = e.clientY - 20;
+        if (x + tp.offsetWidth > innerWidth - 8) x = e.clientX - tp.offsetWidth - 6; if (y + tp.offsetHeight > innerHeight - 8) y = innerHeight - tp.offsetHeight - 8;
         tp.style.left = Math.max(8, x) + "px"; tp.style.top = Math.max(8, y) + "px"
       });
-      document.addEventListener("mouseleave", () => tp.style.display = "none")
+      document.addEventListener("mouseleave", hide)
     }
 
-    /* ---------- Top 20 Model (Hanger Qty) · green bars · Top 5 customer tooltip ---------- */
+    /* ---------- Top 20 Model (Hanger Qty) · green bars · Top 5 customer tooltip (+ customer → Top 10 buyer panel) ---------- */
+    const MT = {
+      ht: 0, over: false, a: [], fq: null, tp: null, sd: null,
+      hide() { clearTimeout(this.ht); this.over = false; if (this.tp) this.tp.style.display = "none"; if (this.sd) this.sd.style.display = "none" },
+      soon() { clearTimeout(this.ht); this.ht = setTimeout(() => { if (!MT.over) MT.hide() }, 160) }
+    };
     function topModel(a) {
       const fq = v => Math.abs(v) >= 1e6 ? (v / 1e6).toFixed(2) + "M" : Math.abs(v) >= 1e3 ? Math.round(v / 1e3) + "K" : n0(v);
       const tb = grp(a, r => r.model || "N/A").filter(x => x.hq > 0).sort((x, y) => y.hq - x.hq).slice(0, 20), T = sum(a, "hq");
@@ -2292,19 +2837,43 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
       const mxq = tb.length ? tb[0].hq : 1, mix = t => { const L = [191, 230, 205], D = [18, 77, 47]; return "rgb(" + L.map((l, k) => Math.round(l + (D[k] - l) * t)).join(",") + ")" };
       const bc = tb.map(x => mix(mxq ? Math.pow(x.hq / mxq, .55) : 0));
       const cm = new Map(); a.forEach(r => { const m = r.model || "N/A"; let o = cm.get(m); if (!o) cm.set(m, o = new Map()); const c = r.cust || "N/A"; o.set(c, (o.get(c) || 0) + r.hq) });
-      let tp = document.getElementById("mt-tip"); if (!tp) { tp = document.createElement("div"); tp.id = "mt-tip"; document.body.appendChild(tp) }
+      MT.a = a; MT.fq = fq;
+      let tp = document.getElementById("mt-tip"); if (!tp) {
+        tp = document.createElement("div"); tp.id = "mt-tip"; document.body.appendChild(tp);
+        const sd = document.createElement("div"); sd.id = "mt-side"; document.body.appendChild(sd); MT.tp = tp; MT.sd = sd;
+        tp.onmouseenter = () => { clearTimeout(MT.ht); MT.over = true };
+        tp.onmouseleave = () => { MT.over = false; sd.style.display = "none"; MT.soon() };
+        tp.onmousemove = e => {
+          const r = e.target.closest(".r[data-c]"); if (!r) { sd.style.display = "none"; return }
+          const mo = r.dataset.mo, c = r.dataset.c, id = mo + "|" + c;
+          if (sd._k !== id) {
+            const rs = MT.a.filter(x => (x.model || "N/A") === mo && (x.cust || "N/A") === c), tot = rs.reduce((s, x) => s + x.hq, 0);
+            const bs = grp(rs, x => x.buyer || "N/A").filter(x => x.hq > 0).sort((x, y) => y.hq - x.hq), top = bs.slice(0, 10), mx = top.length ? top[0].hq : 1;
+            sd.innerHTML = `<div class="h">${esc(c)}<span>${MT.fq(tot)} · ${esc(mo)} · ${bs.length} buyers</span></div><div class="by">By buyer · Top ${top.length}</div>` + top.map(x => `<div class="r"><em title="${esc(x.k)}">${esc(x.k)}</em><u><i style="width:${(x.hq / mx * 100).toFixed(1)}%"></i></u><b>${MT.fq(x.hq)}</b></div>`).join("");
+            sd._k = id
+          }
+          sd.style.display = "block"; const tr = tp.getBoundingClientRect();
+          let l = tr.right + 2; if (l + sd.offsetWidth > innerWidth - 8) l = tr.left - sd.offsetWidth - 2;
+          let t = tr.top; if (t + sd.offsetHeight > innerHeight - 8) t = innerHeight - sd.offsetHeight - 8;
+          sd.style.left = Math.max(8, l) + "px"; sd.style.top = Math.max(8, t) + "px"
+        }
+      }
       const ext = c => {
-        const t = c.tooltip; if (!t || t.opacity === 0 || !t.dataPoints || !t.dataPoints.length) { tp.style.display = "none"; return }
+        const t = c.tooltip; if (!t || t.opacity === 0 || !t.dataPoints || !t.dataPoints.length) { MT.soon(); return }
+        clearTimeout(MT.ht);
         const i = t.dataPoints[0].dataIndex, L = [...(cm.get(tb[i].k) || new Map())].map(([k, q]) => ({ k, q })).filter(x => x.q > 0).sort((x, y) => y.q - x.q).slice(0, 5), mx = L.length ? L[0].q : 1;
-        tp.innerHTML = `<div class="h">${esc(tb[i].k)}<span>${fq(tb[i].hq)} · ${T ? (tb[i].hq / T * 100).toFixed(1) : 0}%</span></div><div class="by">By customer · Top ${L.length}</div>` + L.map(x => `<div class="r"><em title="${esc(x.k)}">${esc(x.k)}</em><u><i style="width:${(x.q / mx * 100).toFixed(1)}%"></i></u><b>${fq(x.q)}</b></div>`).join("");
-        tp.style.display = "block"; const R = c.chart.canvas.getBoundingClientRect(); let x = R.left + t.caretX + 16, y = R.top + t.caretY - 20;
-        if (x + tp.offsetWidth > innerWidth - 8) x = R.left + t.caretX - tp.offsetWidth - 16; if (y + tp.offsetHeight > innerHeight - 8) y = innerHeight - tp.offsetHeight - 8;
+        const html = `<div class="h">${esc(tb[i].k)}<span>${fq(tb[i].hq)} · ${T ? (tb[i].hq / T * 100).toFixed(1) : 0}%</span></div><div class="by">By customer · Top ${L.length}</div>` + L.map(x => `<div class="r" data-c="${esc(x.k)}" data-mo="${esc(tb[i].k)}"><em title="${esc(x.k)}">${esc(x.k)}</em><u><i style="width:${(x.q / mx * 100).toFixed(1)}%"></i></u><b>${fq(x.q)}</b></div>`).join("");
+        if (tp._h !== html) { tp.innerHTML = html; tp._h = html; if (MT.sd) { MT.sd.style.display = "none"; MT.sd._k = null } }
+        tp.style.display = "block"; const R = c.chart.canvas.getBoundingClientRect(), b = c.chart.getDatasetMeta(0).data[i], cx = R.left + b.x, hw = (b.width || 40) / 2;
+        let x = cx + hw + 2, y = R.top + t.caretY - 20;
+        if (x + tp.offsetWidth > innerWidth - 8) x = cx - hw - 2 - tp.offsetWidth; if (y + tp.offsetHeight > innerHeight - 8) y = innerHeight - tp.offsetHeight - 8;
         tp.style.left = Math.max(8, x) + "px"; tp.style.top = Math.max(8, y) + "px"
       };
       mk("c9", {
         type: "bar", data: { labels: tb.map(x => x.k), datasets: [{ label: "Hanger Qty", data: tb.map(x => x.hq), backgroundColor: bc, borderRadius: 0, barPercentage: .66, categoryPercentage: 1 }] },
         options: {
           responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: { top: 28, right: 8 } },
+          interaction: { mode: "index", intersect: false },
           plugins: { legend: { display: false }, tooltip: { enabled: false, external: ext } },
           scales: { x: { grid: { display: false }, border: { color: "#c9d2e3" }, ticks: { autoSkip: false, minRotation: 30, maxRotation: 30, color: "#0f2a5a", font: { size: 12 } } }, y: { beginAtZero: true, border: { display: false }, grid: { color: "#eceff5" }, ticks: { callback: v => fmtM(v), color: "#6d7c99", font: { size: 11.5 }, maxTicksLimit: 6 } } }
         },
@@ -2399,6 +2968,76 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
     }
     init();
   </script>
+<script id="rsp-v1-js">
+/* ===================== RESPONSIVE v1 · collapsible filter (UI only) ===================== */
+(function(){
+  var MQ=matchMedia('(max-width:767px)'),isOpen=false,tmr=0,obs=null,raf=0;
+  var FUN='<svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg>';
+  var CHV='<svg class="fbv" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>';
+  function closePopup(){var p=document.getElementById('pn');if(p)p.style.display='none';var q=document.getElementById('pop');if(q)q.classList.remove('on')}
+  function setOpen(wrap,on,instant){
+    clearTimeout(tmr);
+    if(on){
+      wrap.style.setProperty('--fbh',wrap.scrollHeight+'px');
+      if(instant){wrap.classList.add('open');wrap.style.setProperty('--fbh','none')}
+      else{wrap.classList.add('open');tmr=setTimeout(function(){wrap.style.setProperty('--fbh','none')},400)}
+    }else{
+      closePopup();
+      if(instant){wrap.style.setProperty('--fbh','0px');wrap.classList.remove('open')}
+      else{wrap.style.setProperty('--fbh',wrap.scrollHeight+'px');void wrap.offsetHeight;wrap.style.setProperty('--fbh','0px');wrap.classList.remove('open')}
+    }
+    isOpen=on;sync();
+  }
+  function count(fb){
+    var n=fb.querySelectorAll('.f button.on,.fp.on').length;
+    fb.querySelectorAll('input[type=date]').forEach(function(i){if(i.value)n++});
+    return n;
+  }
+  function sync(){
+    var fb=document.getElementById('fb');if(!fb)return;
+    var t=document.querySelector('.fbt');if(!t)return;
+    t.setAttribute('aria-expanded',isOpen?'true':'false');
+    var n=count(fb),b=t.querySelector('.fbn');b.textContent=n?n+' active':'';
+    t.hidden=!fb.children.length;
+  }
+  function ensure(){
+    var fb=document.getElementById('fb');
+    if(!fb){document.querySelectorAll('.fbt').forEach(function(t){t.remove()});return}
+    var wrap=fb.parentElement;
+    if(!wrap.classList.contains('fbc')){
+      wrap=document.createElement('div');wrap.className='fbc';
+      fb.parentNode.insertBefore(wrap,fb);wrap.appendChild(fb);
+      var a=document.createElement('div');a.className='fba';
+      a.innerHTML='<button type="button" class="fbr">Reset</button><button type="button" class="fbp">Apply</button>';
+      wrap.appendChild(a);
+      a.querySelector('.fbr').onclick=function(){var r=fb.querySelector('.rs');if(r)r.click();setTimeout(sync,60)};
+      a.querySelector('.fbp').onclick=function(){setOpen(wrap,false)};
+      if(isOpen&&MQ.matches)setOpen(wrap,true,true);
+      if(obs)obs.disconnect();
+      obs=new MutationObserver(function(){sync()});
+      obs.observe(fb,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+    }
+    var host=fb.closest('.fbw')||wrap;
+    var prev=host.previousElementSibling;
+    if(!prev||!prev.classList.contains('fbt')){
+      document.querySelectorAll('.fbt').forEach(function(t){t.remove()});
+      var t=document.createElement('button');t.type='button';t.className='fbt';t.setAttribute('aria-expanded','false');
+      t.innerHTML=FUN+'<span class="fbl">Filters</span><span class="fbn"></span>'+CHV;
+      t.onclick=function(){var w=document.querySelector('.fbc');if(w)setOpen(w,!isOpen)};
+      host.parentNode.insertBefore(t,host);
+    }
+    sync();
+  }
+  function sched(){cancelAnimationFrame(raf);raf=requestAnimationFrame(ensure)}
+  new MutationObserver(sched).observe(document.body,{childList:true,subtree:true});
+  document.addEventListener('change',function(e){if(e.target.closest&&e.target.closest('#fb'))sync()});
+  (MQ.addEventListener?MQ.addEventListener.bind(MQ,'change'):MQ.addListener.bind(MQ))(function(){
+    var w=document.querySelector('.fbc');if(w){w.style.removeProperty('--fbh');if(!MQ.matches)w.classList.remove('open')}
+    if(!MQ.matches){isOpen=false;sync()}
+  });
+  ensure();
+})();
+</script>
 </body>
 
 </html>
