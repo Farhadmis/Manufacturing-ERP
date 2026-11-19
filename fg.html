@@ -1602,6 +1602,310 @@
       }
     }
   </style>
+  <style id="rsp-v1">
+    /* ===================== RESPONSIVE v1 · Mobile collapsible filter ===================== */
+    .fbc {
+      display: contents
+    }
+
+    .fbt,
+    .fba {
+      display: none
+    }
+
+    @media(max-width:767px) {
+      .fbt {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        height: 46px;
+        margin: 10px 0 8px;
+        padding: 0 14px;
+        border: 1px solid #dbe4f2;
+        border-radius: 14px;
+        background: #fff;
+        color: #0f2a5a;
+        font: 700 14px Inter, system-ui, sans-serif;
+        text-align: left;
+        cursor: pointer;
+        position: sticky;
+        top: 6px;
+        z-index: 45;
+        box-shadow: 0 0 0 6px #f1f5fb, 0 4px 12px rgba(16, 44, 92, .10);
+        -webkit-tap-highlight-color: transparent
+      }
+
+      .fbt[hidden] {
+        display: none !important
+      }
+
+      .fbt svg {
+        width: 18px;
+        height: 18px;
+        flex: none;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round
+      }
+
+      .fbt .fbl {
+        flex: 1
+      }
+
+      .fbt .fbn {
+        min-width: 22px;
+        height: 22px;
+        padding: 0 7px;
+        border-radius: 999px;
+        background: #a61935;
+        color: #fff;
+        font-size: 12px;
+        line-height: 22px;
+        text-align: center
+      }
+
+      .fbt .fbn:empty {
+        display: none
+      }
+
+      .fbt .fbv {
+        transition: transform .3s ease
+      }
+
+      .fbt[aria-expanded="true"] .fbv {
+        transform: rotate(180deg)
+      }
+
+      .fbc {
+        display: block;
+        overflow: hidden;
+        max-height: var(--fbh, 0px);
+        opacity: 0;
+        visibility: hidden;
+        transition: max-height .35s ease, opacity .3s ease, visibility 0s linear .35s
+      }
+
+      .fbc.open {
+        opacity: 1;
+        visibility: visible;
+        transition: max-height .35s ease, opacity .3s ease, visibility 0s
+      }
+
+      .fbc #fb {
+        position: static !important;
+        display: flex !important;
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        overflow: visible !important;
+        white-space: normal !important;
+        height: auto !important;
+        zoom: 1 !important;
+        margin: 0 !important;
+        padding: 12px 12px 6px !important;
+        background: #fff !important;
+        border: 1px solid #dbe4f2 !important;
+        border-bottom: 0 !important;
+        border-radius: 14px 14px 0 0 !important;
+        box-shadow: none !important
+      }
+
+      .fbc #fb:empty {
+        padding: 0 !important;
+        border: 0 !important
+      }
+
+      .fbc #fb .f,
+      .fbc #fb .f.d {
+        flex: none !important;
+        width: 100% !important;
+        min-width: 0 !important
+      }
+
+      .fbc #fb .f button,
+      .fbc #fb .f input {
+        height: 44px !important;
+        font-size: 14px !important;
+        padding: 0 12px !important;
+        letter-spacing: normal !important;
+        border-radius: 12px !important
+      }
+
+      .fbc #fb .f.d {
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important
+      }
+
+      .fbc #fb .f.d span {
+        flex: none;
+        width: 44px;
+        font-size: 13px !important
+      }
+
+      .fbc #fb .f.d input {
+        flex: 1 1 auto;
+        min-width: 0;
+        width: auto !important
+      }
+
+      .fbc #fb .rs {
+        display: none !important
+      }
+
+      /* Shopfloor pills / dates */
+      .fbc #fb .fp {
+        width: 100% !important;
+        min-height: 44px;
+        padding: 10px 14px !important;
+        font-size: 14px !important;
+        gap: 10px !important;
+        border-radius: 12px !important;
+        white-space: normal;
+        flex: none !important
+      }
+
+      .fbc #fb .fp .fl {
+        flex: 1;
+        text-align: left;
+        overflow: hidden;
+        text-overflow: ellipsis
+      }
+
+      .fbc #fb .fp svg:not(.cv) {
+        display: block !important
+      }
+
+      .fbc #fb .fd {
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px !important;
+        font-size: 13px !important;
+        flex: none
+      }
+
+      .fbc #fb .fd input {
+        flex: 1 1 auto;
+        width: auto !important;
+        min-width: 0;
+        max-width: 220px;
+        padding: 10px 12px !important;
+        font-size: 14px !important;
+        border-radius: 12px !important
+      }
+
+      .fbc #fb .fsep {
+        display: none !important
+      }
+
+      .fba {
+        display: flex;
+        gap: 10px;
+        padding: 10px 12px 12px;
+        margin: 0 0 8px;
+        background: #fff;
+        border: 1px solid #dbe4f2;
+        border-top: 1px dashed #dbe4f2;
+        border-radius: 0 0 14px 14px
+      }
+
+      .fba button {
+        flex: 1;
+        height: 44px;
+        border-radius: 12px;
+        font: 700 14px Inter, system-ui, sans-serif;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent
+      }
+
+      .fba .fbr {
+        background: #fff;
+        color: #0f2a5a;
+        border: 1.5px solid #cfdcf3
+      }
+
+      .fba .fbp {
+        background: #0f2a5a;
+        color: #fff;
+        border: 0
+      }
+
+      .fbw {
+        position: static !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: none !important
+      }
+
+      /* dropdown → bottom sheet (কোনো filter-এর ওপর ভাসে না) */
+      #pn,
+      .pop {
+        left: 0 !important;
+        right: 0 !important;
+        top: auto !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        max-height: 72vh;
+        border-radius: 18px 18px 0 0 !important;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        overflow: hidden
+      }
+
+      #pn .ls,
+      .pop .ls {
+        max-height: calc(72vh - 150px) !important;
+        -webkit-overflow-scrolling: touch
+      }
+
+      #pn label,
+      .pop label {
+        padding: 12px 16px !important;
+        font-size: 14px !important
+      }
+
+      #pn input[type=text],
+      .pop input[type=text] {
+        font-size: 16px !important;
+        padding: 10px 12px !important
+      }
+
+      #pn .ac button,
+      .pop .ft a {
+        padding: 10px !important;
+        font-size: 14px !important
+      }
+    }
+
+    /* ===================== RESPONSIVE v1 · layout (mobile / tablet / large display) ===================== */
+    html {
+      -webkit-text-size-adjust: 100%
+    }
+
+    @media(max-width:767px) {
+      main {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        padding-bottom: 24px !important
+      }
+
+      .kp,
+      .rkp {
+        scroll-snap-type: x proximity
+      }
+    }
+
+    @media(min-width:2000px) {
+      main>* {
+        max-width: 2100px;
+        margin-left: auto;
+        margin-right: auto
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -1897,9 +2201,14 @@
     }
     /* ---------- Year-to-Year hover · 12-month breakdown panel (like the Top-10 model panel) ---------- */
     let YTA = [];
+    const YTS = {
+      ht: 0, over: false, k: null,
+      hide() { clearTimeout(this.ht); this.over = false; this.k = null; const t = document.getElementById("yt-tip"), s = document.getElementById("yt-side"); if (t) t.style.display = "none"; if (s) s.style.display = "none" },
+      soon() { clearTimeout(this.ht); this.ht = setTimeout(() => { if (!YTS.over) YTS.hide() }, 160) }
+    };
     if (!document.getElementById("yt-tip-css")) {
       const st = document.createElement("style"); st.id = "yt-tip-css";
-      st.textContent = `#yt-tip{position:fixed;z-index:9999;pointer-events:none;display:none;width:280px;background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 10px 30px rgba(15,42,90,.22);border:1px solid #e3e8f2;font-family:Inter,sans-serif}
+      st.textContent = `#yt-tip{position:fixed;z-index:9999;pointer-events:auto;display:none;width:280px;background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 10px 30px rgba(15,42,90,.22);border:1px solid #e3e8f2;font-family:Inter,sans-serif}
 #yt-tip .h{font-size:14px;font-weight:800;color:#0f2a5a;line-height:1.3}#yt-tip .h span{display:block;font-size:12px;font-weight:600;color:#6d7c99;margin-top:2px}
 #yt-tip .by{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#6d7c99;margin:10px 0 4px;text-transform:uppercase}
 #yt-tip .r{display:grid;grid-template-columns:40px 1fr 56px;align-items:center;gap:8px;margin:5px 0;font-size:12.5px}
@@ -1907,21 +2216,62 @@
 #yt-tip .r u{display:block;height:8px;border-radius:9px;background:#e8ecf3;text-decoration:none;overflow:hidden}
 #yt-tip .r u i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#0a84c6,#00bcd4)}
 #yt-tip .r b{text-align:right;color:#0f2a5a;font-weight:800}
-#yt-tip .r.z b{color:#9aa3b8;font-weight:600}`;
+#yt-tip .r.z b{color:#9aa3b8;font-weight:600}
+#yt-tip .r[data-m]{padding:3px 4px;margin:2px -4px;border-radius:7px;cursor:default}
+#yt-tip .r[data-m]:hover{background:#eaf3fb}
+#yt-side{position:fixed;z-index:10000;pointer-events:none;display:none;width:360px;background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 10px 30px rgba(15,42,90,.22);border:1px solid #e3e8f2;font-family:Inter,sans-serif}
+#yt-side .h{font-size:15px;font-weight:800;color:#0f2a5a;line-height:1.3}#yt-side .h span{display:block;font-size:12px;font-weight:600;color:#6d7c99;margin-top:2px}
+#yt-side .by{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#6d7c99;margin:10px 0 6px;text-transform:uppercase}
+#yt-side .r{display:grid;grid-template-columns:70px 1fr 58px;align-items:center;gap:8px;margin:6px 0;font-size:12.5px}
+#yt-side .r em{font-style:normal;color:#0b5fa5;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#yt-side .bb{min-width:0}#yt-side .bb span{display:block;font-size:11px;font-weight:600;color:#44557a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+#yt-side .bb span small{color:#6d7c99;font-weight:700;margin-left:4px}
+#yt-side .bb u{display:block;height:6px;border-radius:9px;background:#e8ecf3;text-decoration:none;overflow:hidden}
+#yt-side .bb u i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#0a84c6,#00bcd4)}
+#yt-side .r b{text-align:right;color:#0f2a5a;font-weight:800}
+#yt-side .none{font-size:12.5px;color:#6d7c99;padding:8px 0}`;
       document.head.appendChild(st);
       const d = document.createElement("div"); d.id = "yt-tip"; document.body.appendChild(d);
+      const sd = document.createElement("div"); sd.id = "yt-side"; document.body.appendChild(sd);
+      d.onmouseenter = () => { clearTimeout(YTS.ht); YTS.over = true };
+      d.onmouseleave = () => { YTS.over = false; sd.style.display = "none"; YTS.soon() };
+      d.onmousemove = e => {
+        const r = e.target.closest(".r[data-m]"); if (!r) { sd.style.display = "none"; return }
+        const y = +r.dataset.y, m = +r.dataset.m, id = y * 100 + m;
+        if (YTS.k !== id) {
+          const mp = new Map(); let tot = 0;
+          YTA.forEach(x => {
+            if (x.y !== y || x.m !== m || !(x.q > 0)) return;
+            const k = x.model || "N/A"; let o = mp.get(k); if (!o) mp.set(k, o = { k, q: 0, b: new Map() });
+            o.q += x.q; tot += x.q; const by = x.buyer || "N/A"; o.b.set(by, (o.b.get(by) || 0) + x.q)
+          });
+          const L = [...mp.values()].sort((p, q) => q.q - p.q), top = L.slice(0, 10), mx = top.length ? top[0].q : 1;
+          sd.innerHTML = `<div class="h">${MN[m - 1]} ${y}<span>${hxF(tot)} · ${L.length} models</span></div>` + (top.length ? `<div class="by">By model · Top ${top.length} · buyer &amp; value</div>` + top.map(x => {
+            const bs = [...x.b].sort((p, q) => q[1] - p[1]), more = bs.length - 1;
+            return `<div class="r"><em title="${esc(x.k)}">${esc(x.k)}</em><div class="bb"><span>${esc(bs[0][0])}${more > 0 ? `<small>+${more}</small>` : ""}</span><u><i style="width:${(x.q / mx * 100).toFixed(1)}%"></i></u></div><b>${hxF(x.q)}</b></div>`
+          }).join("") : `<div class="none">No model data for this month</div>`);
+          YTS.k = id
+        }
+        sd.style.display = "block"; const tr = d.getBoundingClientRect();
+        let l = tr.right + 2; if (l + sd.offsetWidth > innerWidth - 8) l = tr.left - sd.offsetWidth - 2;
+        let t = tr.top; if (t + sd.offsetHeight > innerHeight - 8) t = innerHeight - sd.offsetHeight - 8;
+        sd.style.left = Math.max(8, l) + "px"; sd.style.top = Math.max(8, t) + "px"
+      };
     }
     function ytExt(c) {
       const tp = document.getElementById("yt-tip"), t = c.tooltip;
-      if (!t || t.opacity === 0 || !t.dataPoints || !t.dataPoints.length || !YTM || !YTM.yy) { tp.style.display = "none"; return }
+      if (!t || t.opacity === 0 || !t.dataPoints || !t.dataPoints.length || !YTM || !YTM.yy) { YTS.soon(); return }
+      clearTimeout(YTS.ht);
       const i = t.dataPoints[0].dataIndex, row = YTM.yy[i], y = row.k;
       const ms = MN.map((mn, m) => { let q = 0; YTA.forEach(r => { if (r.y === y && r.m === m + 1) q += r.q }); return { k: mn, q } });
       const mx = Math.max(...ms.map(x => x.q), 1);
-      tp.innerHTML = `<div class="h">${y}<span>${fmtM(row.q)} · ${YTM.T ? (row.q / YTM.T * 100).toFixed(1) : "0.0"}% of total</span></div><div class="by">By month · 12 months</div>` +
-        ms.map(x => `<div class="r${x.q ? "" : " z"}"><em>${x.k}</em><u><i style="width:${(x.q / mx * 100).toFixed(1)}%"></i></u><b>${x.q ? fmtM(x.q) : "–"}</b></div>`).join("");
+      const html = `<div class="h">${y}<span>${fmtM(row.q)} · ${YTM.T ? (row.q / YTM.T * 100).toFixed(1) : "0.0"}% of total</span></div><div class="by">By month · 12 months</div>` +
+        ms.map((x, m) => `<div class="r${x.q ? "" : " z"}"${x.q ? ` data-y="${y}" data-m="${m + 1}"` : ""}><em>${x.k}</em><u><i style="width:${(x.q / mx * 100).toFixed(1)}%"></i></u><b>${x.q ? fmtM(x.q) : "–"}</b></div>`).join("");
+      if (tp._h !== html) { tp.innerHTML = html; tp._h = html; YTS.k = null; const sd = document.getElementById("yt-side"); if (sd) sd.style.display = "none" }
       tp.style.display = "block";
-      const R = c.chart.canvas.getBoundingClientRect(); let x = R.left + t.caretX + 16, yy = R.top + t.caretY - 20;
-      if (x + tp.offsetWidth > innerWidth - 8) x = R.left + t.caretX - tp.offsetWidth - 16;
+      const R = c.chart.canvas.getBoundingClientRect(), b = c.chart.getDatasetMeta(0).data[i], cx = R.left + b.x, hw = (b.width || 80) / 2;
+      let x = cx + hw + 2, yy = R.top + t.caretY - 20;
+      if (x + tp.offsetWidth > innerWidth - 8) x = cx - hw - 2 - tp.offsetWidth;
       if (yy + tp.offsetHeight > innerHeight - 8) yy = innerHeight - tp.offsetHeight - 8;
       tp.style.left = Math.max(8, x) + "px"; tp.style.top = Math.max(8, yy) + "px";
     }
@@ -1959,6 +2309,7 @@
         data: { labels: yy.map(x => x.k), datasets: [{ label: "Total Qty", data: yy.map(x => x.q), backgroundColor: bg, borderRadius: 8, borderSkipped: false, borderColor: YT_RED, borderDash: [5, 4], borderWidth: yy.map((x, i) => isY(i) ? 2 : 0), maxBarThickness: 120 }] },
         options: {
           responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: { top: 24, bottom: 36 } },
+          interaction: { mode: "index", intersect: false },
           plugins: { legend: { display: false }, tooltip: { enabled: false, external: ytExt } },
           scales: { x: { grid: { display: false }, border: { color: "#d9dfec" }, ticks: { color: "#0f2a5a", font: { size: 14, weight: "700" }, padding: 8 } }, y: { display: false, beginAtZero: true, suggestedMax: mx * 1.08 } }
         }, plugins: [plug]
@@ -2517,6 +2868,76 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
       fbuild(); draw()
     }
     init();
+  </script>
+  <script id="rsp-v1-js">
+    /* ===================== RESPONSIVE v1 · collapsible filter (UI only) ===================== */
+    (function () {
+      var MQ = matchMedia('(max-width:767px)'), isOpen = false, tmr = 0, obs = null, raf = 0;
+      var FUN = '<svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg>';
+      var CHV = '<svg class="fbv" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>';
+      function closePopup() { var p = document.getElementById('pn'); if (p) p.style.display = 'none'; var q = document.getElementById('pop'); if (q) q.classList.remove('on') }
+      function setOpen(wrap, on, instant) {
+        clearTimeout(tmr);
+        if (on) {
+          wrap.style.setProperty('--fbh', wrap.scrollHeight + 'px');
+          if (instant) { wrap.classList.add('open'); wrap.style.setProperty('--fbh', 'none') }
+          else { wrap.classList.add('open'); tmr = setTimeout(function () { wrap.style.setProperty('--fbh', 'none') }, 400) }
+        } else {
+          closePopup();
+          if (instant) { wrap.style.setProperty('--fbh', '0px'); wrap.classList.remove('open') }
+          else { wrap.style.setProperty('--fbh', wrap.scrollHeight + 'px'); void wrap.offsetHeight; wrap.style.setProperty('--fbh', '0px'); wrap.classList.remove('open') }
+        }
+        isOpen = on; sync();
+      }
+      function count(fb) {
+        var n = fb.querySelectorAll('.f button.on,.fp.on').length;
+        fb.querySelectorAll('input[type=date]').forEach(function (i) { if (i.value) n++ });
+        return n;
+      }
+      function sync() {
+        var fb = document.getElementById('fb'); if (!fb) return;
+        var t = document.querySelector('.fbt'); if (!t) return;
+        t.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        var n = count(fb), b = t.querySelector('.fbn'); b.textContent = n ? n + ' active' : '';
+        t.hidden = !fb.children.length;
+      }
+      function ensure() {
+        var fb = document.getElementById('fb');
+        if (!fb) { document.querySelectorAll('.fbt').forEach(function (t) { t.remove() }); return }
+        var wrap = fb.parentElement;
+        if (!wrap.classList.contains('fbc')) {
+          wrap = document.createElement('div'); wrap.className = 'fbc';
+          fb.parentNode.insertBefore(wrap, fb); wrap.appendChild(fb);
+          var a = document.createElement('div'); a.className = 'fba';
+          a.innerHTML = '<button type="button" class="fbr">Reset</button><button type="button" class="fbp">Apply</button>';
+          wrap.appendChild(a);
+          a.querySelector('.fbr').onclick = function () { var r = fb.querySelector('.rs'); if (r) r.click(); setTimeout(sync, 60) };
+          a.querySelector('.fbp').onclick = function () { setOpen(wrap, false) };
+          if (isOpen && MQ.matches) setOpen(wrap, true, true);
+          if (obs) obs.disconnect();
+          obs = new MutationObserver(function () { sync() });
+          obs.observe(fb, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+        }
+        var host = fb.closest('.fbw') || wrap;
+        var prev = host.previousElementSibling;
+        if (!prev || !prev.classList.contains('fbt')) {
+          document.querySelectorAll('.fbt').forEach(function (t) { t.remove() });
+          var t = document.createElement('button'); t.type = 'button'; t.className = 'fbt'; t.setAttribute('aria-expanded', 'false');
+          t.innerHTML = FUN + '<span class="fbl">Filters</span><span class="fbn"></span>' + CHV;
+          t.onclick = function () { var w = document.querySelector('.fbc'); if (w) setOpen(w, !isOpen) };
+          host.parentNode.insertBefore(t, host);
+        }
+        sync();
+      }
+      function sched() { cancelAnimationFrame(raf); raf = requestAnimationFrame(ensure) }
+      new MutationObserver(sched).observe(document.body, { childList: true, subtree: true });
+      document.addEventListener('change', function (e) { if (e.target.closest && e.target.closest('#fb')) sync() });
+      (MQ.addEventListener ? MQ.addEventListener.bind(MQ, 'change') : MQ.addListener.bind(MQ))(function () {
+        var w = document.querySelector('.fbc'); if (w) { w.style.removeProperty('--fbh'); if (!MQ.matches) w.classList.remove('open') }
+        if (!MQ.matches) { isOpen = false; sync() }
+      });
+      ensure();
+    })();
   </script>
 </body>
 
