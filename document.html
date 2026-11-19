@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Mainetti · Document Manager</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="erp.js"></script>
+  <style>
+    :root {
+      --navy: #0f2a5a;
+      --red: #a61935;
+      --mute: #6d7c99;
+      --line: #dbe4f2;
+      --bg: #f1f5fb
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--navy);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      font-size: 13px
+    }
+
+    /* ===== Portal-style header (same as FG) ===== */
+    header {
+      flex: none;
+      height: clamp(66px, 9vh, 88px);
+      display: flex;
+      align-items: stretch;
+      background: linear-gradient(90deg, #f8fbff, #e8f0fc);
+      box-shadow: 0 4px 18px rgba(16, 44, 92, .12);
+      position: relative;
+      z-index: 20
+    }
+
+    header .hl {
+      display: flex;
+      align-items: center;
+      gap: clamp(12px, 1.5vw, 24px);
+      padding: 0 clamp(14px, 1.8vw, 30px);
+      position: relative;
+      z-index: 2;
+      flex: none
+    }
+
+    header .hl img {
+      height: clamp(40px, 6.2vh, 58px);
+      display: block
+    }
+
+    header .bk {
+      width: 36px;
+      height: 36px;
+      flex: none;
+      border-radius: 10px;
+      border: 1px solid #b9c8e3;
+      background: #fff;
+      color: #12408f;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(16, 44, 92, .10)
+    }
+
+    header .bk:hover {
+      border-color: #2f6fe4
+    }
+
+    header .logo {
+      font-weight: 800;
+      letter-spacing: .06em;
+      font-size: 20px;
+      line-height: 1;
+      color: var(--navy)
+    }
+
+    header .logo small {
+      display: block;
+      font-size: 9px;
+      letter-spacing: .2em;
+      margin-top: 3px;
+      color: #12408f;
+      font-weight: 700
+    }
+
+    header .sep {
+      width: 1px;
+      height: 46px;
+      background: #9fb3d3;
+      flex: none
+    }
+
+    header .tag {
+      font-style: italic;
+      font-weight: 600;
+      color: #12408f;
+      font-size: clamp(12px, 1.15vw, 18px);
+      white-space: nowrap
+    }
+
+    header .tag i {
+      font-style: normal;
+      margin: 0 .7em;
+      opacity: .55
+    }
+
+    header .gr {
+      font-size: 11.5px;
+      color: var(--mute);
+      margin-top: 3px;
+      white-space: nowrap
+    }
+
+    header .hp {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+      overflow: hidden
+    }
+
+    header .hp:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url(assets/header-photo.jpg) right center/cover no-repeat;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 40%);
+      mask-image: linear-gradient(90deg, transparent, #000 40%)
+    }
+
+    header .hr {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: clamp(10px, 1.2vw, 18px);
+      padding: 0 clamp(14px, 1.6vw, 26px) 0 clamp(54px, 5vw, 84px);
+      color: #fff;
+      flex: none
+    }
+
+    header .hr:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg, #0a2a70, #0b3d94);
+      clip-path: polygon(44px 0, 100% 0, 100% 100%, 0 100%);
+      z-index: 0
+    }
+
+    header .hr>* {
+      position: relative;
+      z-index: 1
+    }
+
+    header .hr svg.fy {
+      width: clamp(30px, 2.6vw, 42px);
+      height: clamp(30px, 2.6vw, 42px);
+      flex: none
+    }
+
+    header .ht b {
+      display: block;
+      font-size: clamp(15px, 1.5vw, 23px);
+      font-weight: 800;
+      white-space: nowrap
+    }
+
+    header .ht span {
+      display: block;
+      font-size: clamp(9.5px, .8vw, 12px);
+      opacity: .92;
+      margin-top: 2px;
+      white-space: nowrap
+    }
+
+    .user {
+      position: relative
+    }
+
+    .ub {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, .14);
+      border: 1px solid rgba(255, 255, 255, .4);
+      color: #fff;
+      border-radius: 999px;
+      padding: 4px 14px 4px 4px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: inherit
+    }
+
+    .av {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #fff;
+      color: #0b3d94;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 12px
+    }
+
+    .menu {
+      position: absolute;
+      right: 0;
+      top: 46px;
+      background: #fff;
+      color: var(--navy);
+      border-radius: 12px;
+      box-shadow: 0 14px 34px rgba(16, 44, 92, .25);
+      min-width: 160px;
+      display: none;
+      overflow: hidden;
+      z-index: 30
+    }
+
+    .menu div {
+      padding: 11px 16px;
+      cursor: pointer;
+      font-weight: 600
+    }
+
+    .menu div:hover {
+      background: #f1f5fc
+    }
+
+    /* ===== layout ===== */
+    .lay {
+      flex: 1;
+      min-height: 0;
+      display: flex
+    }
+
+    aside {
+      flex: none;
+      width: 250px;
+      background: #fff;
+      border-right: 1px solid var(--line);
+      padding: 10px 0;
+      transition: .2s;
+      overflow-x: hidden;
+      overflow-y: auto
+    }
+
+    aside.col {
+      width: 62px
+    }
+
+    .nv {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 20px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #3a4d73;
+      border-left: 3px solid transparent
+    }
+
+    .nv span {
+      line-height: 1.25
+    }
+
+    aside.col .nv span {
+      white-space: nowrap
+    }
+
+    .nv svg {
+      width: 20px;
+      height: 20px;
+      flex: none;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .nv:hover {
+      background: #f5f8fd
+    }
+
+    .nv.on {
+      color: var(--red);
+      background: #fdeff2;
+      border-left-color: var(--red)
+    }
+
+    .nv.t {
+      color: var(--mute);
+      margin-bottom: 6px
+    }
+
+    main {
+      flex: 1;
+      min-width: 0;
+      overflow: auto;
+      padding: 0 22px 30px
+    }
+
+    .ttl {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 18px 0 2px
+    }
+
+    .sub {
+      color: var(--mute);
+      margin: 0 0 14px
+    }
+
+    .empty {
+      background: #fff;
+      border-radius: 16px;
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--mute);
+      box-shadow: 0 5px 16px rgba(16, 44, 92, .07)
+    }
+
+    .empty b {
+      display: block;
+      color: var(--navy);
+      font-size: 17px;
+      margin-bottom: 6px
+    }
+
+    .tbar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin: 0 0 12px
+    }
+
+    .tbar input[type=text] {
+      height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0 12px;
+      font: 600 12px Inter, sans-serif;
+      color: var(--navy);
+      background: #fff;
+      min-width: 0
+    }
+
+    .tbar .gap {
+      flex: 1
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 9px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--navy);
+      color: #fff;
+      font-size: 12px;
+      font-family: inherit
+    }
+
+    .btn.red {
+      background: var(--red)
+    }
+
+    .btn.g {
+      background: #fff;
+      color: var(--navy);
+      border: 1px solid var(--line)
+    }
+
+    .btn.sm {
+      padding: 5px 10px;
+      font-size: 11.5px;
+      border-radius: 8px
+    }
+
+    .btn.del {
+      background: #fff;
+      color: var(--red);
+      border: 1px solid #f0c4cc
+    }
+
+    .btn:disabled {
+      opacity: .5;
+      cursor: wait
+    }
+
+    .tb {
+      overflow: auto;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 5px 16px rgba(16, 44, 92, .07);
+      max-height: calc(100vh - 260px)
+    }
+
+    .tb table {
+      width: 100%;
+      border-collapse: collapse
+    }
+
+    .tb th {
+      position: sticky;
+      top: 0;
+      background: #f4f8ff;
+      color: var(--mute);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      text-align: left;
+      padding: 11px 12px;
+      white-space: nowrap
+    }
+
+    .tb td {
+      padding: 9px 12px;
+      border-bottom: 1px solid #edf2fa;
+      white-space: nowrap
+    }
+
+    .tb td.t {
+      max-width: 320px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 700
+    }
+
+    .tb tr:hover td {
+      background: #fafcff
+    }
+
+    .ft {
+      padding: 2px 9px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 800
+    }
+
+    .ft.pdf {
+      background: #fde4e8;
+      color: #a61935
+    }
+
+    .ft.xls {
+      background: #dcf5e6;
+      color: #1f7a3f
+    }
+
+    a.btn.lnk {
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 36px;
+      padding: 0 16px;
+      font-size: 13px;
+      background: linear-gradient(180deg, #0f4bb5, #0a2a70);
+      box-shadow: 0 3px 10px rgba(10, 42, 112, .25)
+    }
+
+    a.btn.lnk:hover {
+      filter: brightness(1.12)
+    }
+
+    .msg {
+      font-size: 12.5px;
+      color: var(--mute);
+      margin: 8px 2px;
+      white-space: pre-wrap
+    }
+
+    .msg.err {
+      color: #b3261e
+    }
+
+    @media(max-width:900px) {
+      aside {
+        width: 62px
+      }
+
+      .nv span {
+        display: none
+      }
+
+      header .hp,
+      header .gr {
+        display: none
+      }
+    }
+
+    @media(max-width:700px) {
+
+      header .tag,
+      header .sep {
+        display: none
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="hl">
+      <button class="bk" onclick="location.href='portal.html'" title="Back to portal">←</button>
+      <img src="assets/logo.png" alt="Mainetti Bangladesh"
+        onerror="this.outerHTML='&lt;div class=&quot;logo&quot;&gt;MAINETTI&lt;small&gt;BANGLADESH PVT. LTD.&lt;/small&gt;&lt;/div&gt;'">
+      <div class="sep"></div>
+      <div>
+        <div class="tag">Drive Efficiency<i>/</i>Ensure Quality<i>/</i>Grow Together</div>
+        <div class="gr" id="gr"></div>
+      </div>
+    </div>
+    <div class="hp"></div>
+    <div class="hr"><svg class="fy" viewBox="0 0 24 24">
+        <path fill="#fff" d="M2 21V10l6 3.6V10l6 3.6V4h3.4v9.6H22V21z" />
+        <path fill="rgba(11,61,148,.55)" d="M5 17h2.2v2.2H5zM10 17h2.2v2.2H10zM15 17h2.2v2.2H15z" />
+        <path fill="#fff" opacity=".7" d="M16.2 1.5h2.6v2h-2.6z" />
+      </svg>
+      <div class="ht"><b>Document Manager</b><span>Controlled SOPs, formats &amp; records</span></div>
+      <div class="user"><button class="ub" id="ub"><span class="av" id="av"></span><span id="un"></span> ▾</button>
+        <div class="menu" id="mn">
+          <div onclick="location.href='portal.html'">Portal</div>
+          <div id="adm" style="display:none" onclick="location.href='admin.html'">Admin Console</div>
+          <div onclick="out()">Sign out</div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="lay">
+    <aside id="sd"></aside>
+    <main>
+      <div id="pgc"></div>
+    </main>
+  </div>
+  <script>
+    const $ = s => document.querySelector(s), esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const out = () => ERP.signOut(), norm = s => String(s).toLowerCase().replace(/[^a-z0-9]/g, "");
+    $("#ub").onclick = e => { e.stopPropagation(); const m = $("#mn"); m.style.display = m.style.display === "block" ? "none" : "block" };
+    document.addEventListener("click", () => $("#mn").style.display = "none");
+
+    /* Sidebar-er 7ta section (ekhane naam/order bodlale sidebar bodlabe) */
+    const SECTIONS = [
+      { k: "hr", n: "HR & Compliance", ic: "M9 11a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM2 20c0-4 3-6 7-6s7 2 7 6M17 5a3 3 0 010 6M19 14c2 .6 3 2.5 3 5" },
+      { k: "sales", n: "Sales & Marketing", ic: "M3 17l6-6 4 4 8-8M15 7h6v6" },
+      { k: "prod", n: "Production & Planning", ic: "M4 6.5h16v14H4zM4 10.5h16M8 4v4M16 4v4M8 14.5l2 2 4-4" },
+      { k: "tech", n: "Technical", ic: "M14 6a4 4 0 005 5l-9 9a2.8 2.8 0 01-4-4l9-9z" },
+      { k: "qual", n: "Quality", links: [{ n: "Quality Manual", href: "quality-manual.html" }], ic: "M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM8.5 12l2.5 2.5 4.5-5" },
+      { k: "supply", n: "Supply Chain", ic: "M2 6h12v10H2zM14 9h4l4 4v3h-8zM6 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z" },
+      { k: "ci", n: "Continuous Improvement", ic: "M4 12a8 8 0 0114-5.3M20 4v4h-4M20 12a8 8 0 01-14 5.3M4 20v-4h4" }
+    ];
+    let ME = null, M = null, VIS = [], CUR = null;
+
+    function nav() {
+      $("#sd").innerHTML = `<div class="nv t" onclick="$('#sd').classList.toggle('col')"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Menu</span></div>` +
+        VIS.map(s => `<div class="nv ${s.k === CUR ? "on" : ""}" onclick="show('${s.k}')"><svg viewBox="0 0 24 24"><path d="${s.ic}"/></svg><span>${esc(s.n)}</span></div>`).join("");
+      if (window.ERP && ERP.sideBanner) ERP.sideBanner([M.id, ...M.subs.map(x => x.id)], []);
+    }
+    const BUCKET = "erp-docs", MAXMB = 40, fmtSize = b => b >= 1048576 ? (b / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(b / 1024)) + " KB";
+    const secKey = s => norm(s.n);
+    /* SQL-er can_doc()-er sathe mil: admin = shob; sub-module thakle tar flag (view-e parent-o cholbe); na thakle module-er flag */
+    function pm(s, k) {
+      if (ME.role === "admin") return true; const g = x => !!(ME.perm && ME.perm[x] && ME.perm[x][k]);
+      const sub = M.subs.find(x => norm(x.name) === norm(s.n)); return sub ? (g(sub.id) || (k === "v" && g(M.id))) : g(M.id)
+    }
+    let DOCS = [], TK = 0;
+    const msg = (t, e) => { const m = $("#um"); if (m) { m.textContent = t; m.className = "msg" + (e ? " err" : "") } };
+    async function show(k) {
+      CUR = k; const s = SECTIONS.find(x => x.k === k), t = ++TK; nav();
+      try { history.replaceState(null, "", "#" + k) } catch (e) { }
+      const A = pm(s, "a");
+      $("#pgc").innerHTML = `<div class="ttl">${esc(s.n)}</div><p class="sub">Document Manager · ${esc(s.n)} · PDF &amp; Excel</p>
+        <div class="tbar"><input type="text" id="q" placeholder="Search title / doc no…" oninput="draw()" style="width:240px">
+        ${(s.links || []).map(l => `<a class="btn lnk" href="${esc(l.href)}">📖 ${esc(l.n)}</a>`).join("")}
+        ${A ? `<input type="text" id="dn" placeholder="Doc No (optional)" style="width:150px"><input type="text" id="dv" placeholder="Version (optional)" style="width:130px">
+        <span class="gap"></span><label class="btn red" style="margin:0">⬆ Upload files<input type="file" id="fi" multiple hidden accept=".pdf,.xls,.xlsx,.xlsm,.csv" onchange="upl(this)"></label>` : ""}</div>
+        <div class="msg" id="um"></div><div id="lst"><div class="empty">Loading…</div></div>`;
+      const { data, error } = await sb.from("documents").select("*").eq("section", secKey(s)).order("created_at", { ascending: false });
+      if (t !== TK) return; if (error) { $("#lst").innerHTML = `<div class="empty">Load error: ${esc(error.message)}<br>Supabase-e documents SQL chalano hoyeche to?</div>`; return }
+      DOCS = data; draw()
+    }
+    function draw() {
+      const s = SECTIONS.find(x => x.k === CUR), q = ($("#q") ? $("#q").value : "").toLowerCase().trim(), E = pm(s, "e"), D = pm(s, "d");
+      const L = DOCS.filter(d => !q || (d.title + " " + (d.doc_no || "")).toLowerCase().includes(q));
+      if (!L.length) { $("#lst").innerHTML = `<div class="empty"><b>${DOCS.length ? "No match" : "No documents yet"}</b>${DOCS.length ? "Search bodle dekhun." : esc(s.n) + " section-er documents ekhane dekha jabe."}</div>`; return }
+      $("#lst").innerHTML = `<div class="tb"><table><thead><tr><th>#</th><th>Title</th><th>Doc No</th><th>Version</th><th>Type</th><th>Size</th><th>Uploaded by</th><th>Date</th><th></th></tr></thead><tbody>${L.map((d, i) => {
+        const pdf = /\.pdf$/i.test(d.file_name);
+        return `<tr><td>${i + 1}</td><td class="t" title="${esc(d.file_name)}">${esc(d.title)}</td><td>${esc(d.doc_no || "—")}</td><td>${esc(d.version || "—")}</td><td><span class="ft ${pdf ? "pdf" : "xls"}">${pdf ? "PDF" : "EXCEL"}</span></td><td>${fmtSize(d.size || 0)}</td><td>${esc(d.uploaded_by_name || "—")}</td><td>${(d.created_at || "").slice(0, 10)}</td>
+        <td style="white-space:nowrap">${pdf ? `<button class="btn sm g" onclick="dOpen('${d.id}',0)">View</button> ` : ""}<button class="btn sm g" onclick="dOpen('${d.id}',1)">Download</button>${E ? ` <button class="btn sm g" onclick="dEdit('${d.id}')">Edit</button>` : ""}${D ? ` <button class="btn sm del" onclick="dDel('${d.id}')">Delete</button>` : ""}</td></tr>`
+      }).join("")}</tbody></table></div><div class="msg">${L.length} file${L.length > 1 ? "s" : ""}</div>`
+    }
+    async function dOpen(id, dl) {
+      const d = DOCS.find(x => x.id === id); if (!d) return;
+      const { data, error } = await sb.storage.from(BUCKET).createSignedUrl(d.path, 300, dl ? { download: d.file_name } : undefined);
+      if (error) return msg("Open error: " + error.message, 1); if (dl) { const a = document.createElement("a"); a.href = data.signedUrl; a.click() } else window.open(data.signedUrl, "_blank")
+    }
+    async function upl(inp) {
+      const files = [...inp.files]; inp.value = ""; if (!files.length) return;
+      const s = SECTIONS.find(x => x.k === CUR), sec = secKey(s), dn = $("#dn").value.trim(), dv = $("#dv").value.trim(); let ok = 0, log = [];
+      for (const f of files) {
+        if (!/\.(pdf|xlsx?|xlsm|csv)$/i.test(f.name)) { log.push("✖ " + f.name + " — shudhu PDF/Excel/CSV"); continue }
+        if (f.size > MAXMB * 1048576) { log.push("✖ " + f.name + " — " + MAXMB + " MB-er beshi"); continue }
+        msg("Uploading " + (ok + 1) + "/" + files.length + " … " + f.name + (log.length ? "\n" + log.join("\n") : ""));
+        const ext = f.name.split(".").pop().toLowerCase(), path = sec + "/" + crypto.randomUUID() + "." + ext;
+        let r = await sb.storage.from(BUCKET).upload(path, f, { contentType: f.type || (ext === "pdf" ? "application/pdf" : "application/octet-stream"), cacheControl: "0" });
+        if (r.error) { log.push("✖ " + f.name + " — " + r.error.message); continue }
+        r = await sb.from("documents").insert({ section: sec, title: f.name.replace(/\.[^.]+$/, ""), doc_no: dn || null, version: dv || null, file_name: f.name, path, size: f.size, mime: f.type || null, uploaded_by: ME.id, uploaded_by_name: ME.name || ME.login_id });
+        if (r.error) { await sb.storage.from(BUCKET).remove([path]); log.push("✖ " + f.name + " — " + r.error.message); continue }
+        ok++
+      }
+      await show(CUR); msg("✔ " + ok + " file uploaded" + (log.length ? "\n" + log.join("\n") : ""), log.length && !ok)
+    }
+    async function dEdit(id) {
+      const d = DOCS.find(x => x.id === id); if (!d) return;
+      const t = prompt("Title", d.title); if (t === null) return; const n = prompt("Doc No", d.doc_no || ""); if (n === null) return; const v = prompt("Version", d.version || ""); if (v === null) return;
+      const { error } = await sb.from("documents").update({ title: t.trim() || d.title, doc_no: n.trim() || null, version: v.trim() || null }).eq("id", id);
+      if (error) return msg("Edit error: " + error.message, 1); await show(CUR); msg("✔ Updated")
+    }
+    async function dDel(id) {
+      const d = DOCS.find(x => x.id === id); if (!d || !confirm('Delete "' + d.title + '" ?')) return;
+      let r = await sb.storage.from(BUCKET).remove([d.path]); if (r.error) return msg("Delete error: " + r.error.message, 1);
+      r = await sb.from("documents").delete().eq("id", id); if (r.error) return msg("Delete error: " + r.error.message, 1); await show(CUR); msg("✔ Deleted")
+    }
+    (async () => {
+      ME = await ERP.require(); if (!ME) return;
+      const nm = ME.name || ME.login_id; $("#un").textContent = nm; $("#av").textContent = nm.slice(0, 2).toUpperCase();
+      const h = new Date().getHours(); $("#gr").textContent = `Good ${h < 12 ? "morning" : h < 17 ? "afternoon" : "evening"}, ${String(nm).split(" ")[0]}. Here is your operation at a glance.`;
+      if (ME.role === "admin") $("#adm").style.display = "block";
+      const tree = await ERP.tree(); M = tree.find(m => /document/i.test(m.name));
+      if (!M || !(ERP.can(ME, M.id) || M.subs.some(s => ERP.can(ME, s.id, "v", M.id)))) { location.replace("portal.html"); return }
+      /* Admin Console-e ekoi naam-er sub-module thakle tar view permission lagbe; na thakle module permission-i jothesto */
+      VIS = SECTIONS.filter(s => { const sub = M.subs.find(x => norm(x.name) === norm(s.n)); return sub ? ERP.can(ME, sub.id, "v", M.id) : ERP.can(ME, M.id) });
+      if (!VIS.length) { $("#pgc").innerHTML = '<div class="empty"><b>No access</b>Kono section-e apnar access nei.</div>'; return }
+      const hk = location.hash.slice(1); show(VIS.some(x => x.k === hk) ? hk : VIS[0].k);
+    })().catch(e => { console.error(e); $("#pgc").innerHTML = '<div class="empty">Load error: ' + esc(e.message || e) + '</div>' });
+  </script>
+</body>
+
+</html>
