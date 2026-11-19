@@ -2403,6 +2403,310 @@
       white-space: nowrap
     }
   </style>
+  <style id="rsp-v1">
+    /* ===================== RESPONSIVE v1 · Mobile collapsible filter ===================== */
+    .fbc {
+      display: contents
+    }
+
+    .fbt,
+    .fba {
+      display: none
+    }
+
+    @media(max-width:767px) {
+      .fbt {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        height: 46px;
+        margin: 10px 0 8px;
+        padding: 0 14px;
+        border: 1px solid #dbe4f2;
+        border-radius: 14px;
+        background: #fff;
+        color: #0f2a5a;
+        font: 700 14px Inter, system-ui, sans-serif;
+        text-align: left;
+        cursor: pointer;
+        position: sticky;
+        top: 6px;
+        z-index: 45;
+        box-shadow: 0 0 0 6px #f1f5fb, 0 4px 12px rgba(16, 44, 92, .10);
+        -webkit-tap-highlight-color: transparent
+      }
+
+      .fbt[hidden] {
+        display: none !important
+      }
+
+      .fbt svg {
+        width: 18px;
+        height: 18px;
+        flex: none;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round
+      }
+
+      .fbt .fbl {
+        flex: 1
+      }
+
+      .fbt .fbn {
+        min-width: 22px;
+        height: 22px;
+        padding: 0 7px;
+        border-radius: 999px;
+        background: #a61935;
+        color: #fff;
+        font-size: 12px;
+        line-height: 22px;
+        text-align: center
+      }
+
+      .fbt .fbn:empty {
+        display: none
+      }
+
+      .fbt .fbv {
+        transition: transform .3s ease
+      }
+
+      .fbt[aria-expanded="true"] .fbv {
+        transform: rotate(180deg)
+      }
+
+      .fbc {
+        display: block;
+        overflow: hidden;
+        max-height: var(--fbh, 0px);
+        opacity: 0;
+        visibility: hidden;
+        transition: max-height .35s ease, opacity .3s ease, visibility 0s linear .35s
+      }
+
+      .fbc.open {
+        opacity: 1;
+        visibility: visible;
+        transition: max-height .35s ease, opacity .3s ease, visibility 0s
+      }
+
+      .fbc #fb {
+        position: static !important;
+        display: flex !important;
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        overflow: visible !important;
+        white-space: normal !important;
+        height: auto !important;
+        zoom: 1 !important;
+        margin: 0 !important;
+        padding: 12px 12px 6px !important;
+        background: #fff !important;
+        border: 1px solid #dbe4f2 !important;
+        border-bottom: 0 !important;
+        border-radius: 14px 14px 0 0 !important;
+        box-shadow: none !important
+      }
+
+      .fbc #fb:empty {
+        padding: 0 !important;
+        border: 0 !important
+      }
+
+      .fbc #fb .f,
+      .fbc #fb .f.d {
+        flex: none !important;
+        width: 100% !important;
+        min-width: 0 !important
+      }
+
+      .fbc #fb .f button,
+      .fbc #fb .f input {
+        height: 44px !important;
+        font-size: 14px !important;
+        padding: 0 12px !important;
+        letter-spacing: normal !important;
+        border-radius: 12px !important
+      }
+
+      .fbc #fb .f.d {
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important
+      }
+
+      .fbc #fb .f.d span {
+        flex: none;
+        width: 44px;
+        font-size: 13px !important
+      }
+
+      .fbc #fb .f.d input {
+        flex: 1 1 auto;
+        min-width: 0;
+        width: auto !important
+      }
+
+      .fbc #fb .rs {
+        display: none !important
+      }
+
+      /* Shopfloor pills / dates */
+      .fbc #fb .fp {
+        width: 100% !important;
+        min-height: 44px;
+        padding: 10px 14px !important;
+        font-size: 14px !important;
+        gap: 10px !important;
+        border-radius: 12px !important;
+        white-space: normal;
+        flex: none !important
+      }
+
+      .fbc #fb .fp .fl {
+        flex: 1;
+        text-align: left;
+        overflow: hidden;
+        text-overflow: ellipsis
+      }
+
+      .fbc #fb .fp svg:not(.cv) {
+        display: block !important
+      }
+
+      .fbc #fb .fd {
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px !important;
+        font-size: 13px !important;
+        flex: none
+      }
+
+      .fbc #fb .fd input {
+        flex: 1 1 auto;
+        width: auto !important;
+        min-width: 0;
+        max-width: 220px;
+        padding: 10px 12px !important;
+        font-size: 14px !important;
+        border-radius: 12px !important
+      }
+
+      .fbc #fb .fsep {
+        display: none !important
+      }
+
+      .fba {
+        display: flex;
+        gap: 10px;
+        padding: 10px 12px 12px;
+        margin: 0 0 8px;
+        background: #fff;
+        border: 1px solid #dbe4f2;
+        border-top: 1px dashed #dbe4f2;
+        border-radius: 0 0 14px 14px
+      }
+
+      .fba button {
+        flex: 1;
+        height: 44px;
+        border-radius: 12px;
+        font: 700 14px Inter, system-ui, sans-serif;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent
+      }
+
+      .fba .fbr {
+        background: #fff;
+        color: #0f2a5a;
+        border: 1.5px solid #cfdcf3
+      }
+
+      .fba .fbp {
+        background: #0f2a5a;
+        color: #fff;
+        border: 0
+      }
+
+      .fbw {
+        position: static !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: none !important
+      }
+
+      /* dropdown → bottom sheet (কোনো filter-এর ওপর ভাসে না) */
+      #pn,
+      .pop {
+        left: 0 !important;
+        right: 0 !important;
+        top: auto !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        max-height: 72vh;
+        border-radius: 18px 18px 0 0 !important;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        overflow: hidden
+      }
+
+      #pn .ls,
+      .pop .ls {
+        max-height: calc(72vh - 150px) !important;
+        -webkit-overflow-scrolling: touch
+      }
+
+      #pn label,
+      .pop label {
+        padding: 12px 16px !important;
+        font-size: 14px !important
+      }
+
+      #pn input[type=text],
+      .pop input[type=text] {
+        font-size: 16px !important;
+        padding: 10px 12px !important
+      }
+
+      #pn .ac button,
+      .pop .ft a {
+        padding: 10px !important;
+        font-size: 14px !important
+      }
+    }
+
+    /* ===================== RESPONSIVE v1 · layout (mobile / tablet / large display) ===================== */
+    html {
+      -webkit-text-size-adjust: 100%
+    }
+
+    @media(max-width:767px) {
+      main {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        padding-bottom: 24px !important
+      }
+
+      .kp,
+      .rkp {
+        scroll-snap-type: x proximity
+      }
+    }
+
+    @media(min-width:2000px) {
+      main>* {
+        max-width: 2100px;
+        margin-left: auto;
+        margin-right: auto
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -2476,7 +2780,9 @@
       const mv = j => (P.m && (P.m[KS[j]] || P.m[j])) || [], dv = (k, j) => P.c[k] ? clean((P.dict[k] || [])[P.c[k][j]]) : "", n = P.c.buyer.length, M = [0, 1, 2, 3].map(mv);
       const G = k => { const x = P.m && (Array.isArray(P.m) ? P.m[ERP.PACK.order.meas.indexOf(k)] : P.m[k]); return x || [] };
       const GP = ORD_P.map(G), GO = ORD_O.map(G), GS = ORD_S.map(G);
-      for (let j = 0; j < n; j++) R.push({ buyer: dv("buyer", j).toUpperCase() || "N/A", model: dv("model", j).toUpperCase() || "N/A", color: dv("color", j).toUpperCase(), art: dv("art", j), cat: dv("category", j).toUpperCase() || "N/A", st: dv("stockstatus", j), proc: dv("process", j).toUpperCase(), tp: dv("timesofprocess", j).toUpperCase(), av: num(M[0][j]), dm: num(M[1][j]), lc: num(M[2][j]), pr: num(M[3][j]), pri: GP.map(a => num(a[j])), oa: GO.map(a => num(a[j])), sa: GS.map(a => num(a[j])) });
+      const pk = (j, ...ks) => { for (const k of ks) if (P.c[k]) return dv(k, j); return "" };
+      if (!["hook", "print", "accessories", "other"].some(k => P.c[k])) console.warn("Outstanding: Hook / Print / Accessories / Other column not found in data pack. Available:", Object.keys(P.c));
+      for (let j = 0; j < n; j++) R.push({ buyer: dv("buyer", j).toUpperCase() || "N/A", model: dv("model", j).toUpperCase() || "N/A", color: dv("color", j).toUpperCase(), art: dv("art", j), cat: dv("category", j).toUpperCase() || "N/A", st: dv("stockstatus", j), proc: dv("process", j).toUpperCase(), tp: dv("timesofprocess", j).toUpperCase(), av: num(M[0][j]), dm: num(M[1][j]), lc: num(M[2][j]), pr: num(M[3][j]), pri: GP.map(a => num(a[j])), oa: GO.map(a => num(a[j])), sa: GS.map(a => num(a[j])), hook: pk(j, "hook", "hooks"), prt: pk(j, "print", "prints"), acc: pk(j, "accessories", "accessory"), oth: pk(j, "other", "others") });
       if (!R.length) msg = "The uploaded sheet has no valid rows."
       return true
     }
@@ -2776,6 +3082,43 @@
       topModel(a, "pr")
     }
 
+    /* ---------- raw data : Model hover · Hook - Print - Accessories - Other of that model ---------- */
+    (function () {
+      if (!document.getElementById("mh-css")) {
+        const st = document.createElement("style"); st.id = "mh-css";
+        st.textContent = `#mh-tip{position:fixed;z-index:9999;pointer-events:none;display:none;min-width:180px;max-width:420px;background:#fff;border-radius:12px;padding:11px 14px;box-shadow:0 10px 30px rgba(15,42,90,.22);border:1px solid #e3e8f2;font-family:Inter,sans-serif}
+#mh-tip .h{font-size:14px;font-weight:800;color:#0f2a5a;line-height:1.3;word-break:break-word}
+#mh-tip .by{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#6d7c99;margin:9px 0 5px;text-transform:uppercase}
+#mh-tip .v{font-size:12.5px;font-weight:600;color:#0b5fa5;margin:4px 0;line-height:1.35;word-break:break-word}`;
+        document.head.appendChild(st);
+      }
+      const tp = document.createElement("div"); tp.id = "mh-tip"; document.body.appendChild(tp);
+      let MHC = null, cur = null;
+      const build = () => {
+        MHC = new Map();
+        R.forEach(r => {
+          const v = [r.hook, r.prt, r.acc, r.oth].map(x => String(x || "").trim()).filter(Boolean); if (!v.length) return;
+          let m = MHC.get(r.model); if (!m) MHC.set(r.model, m = new Set()); m.add(v.join(" - "))
+        })
+      };
+      const hide = () => { tp.style.display = "none"; cur = null };
+      document.addEventListener("mousemove", e => {
+        const td = e.target && e.target.closest && e.target.closest(".pv2 td.c2"); if (!td) { if (cur) hide(); return }
+        const mo = td.dataset.m; if (mo == null) { if (cur) hide(); return }
+        if (cur !== td) {
+          if (!MHC) build();
+          const L = [...(MHC.get(mo) || [])].slice(0, 12);
+          tp.innerHTML = `<div class="h">${esc(mo)}</div>` + (L.length ? `<div class="by">Hook · Print · Accessories · Other</div>` + L.map(x => `<div class="v">${esc(x)}</div>`).join("") : "");
+          cur = td
+        }
+        tp.style.display = "block"; let x = e.clientX + 16, y = e.clientY + 16;
+        if (x + tp.offsetWidth > innerWidth - 8) x = e.clientX - tp.offsetWidth - 16; if (y + tp.offsetHeight > innerHeight - 8) y = e.clientY - tp.offsetHeight - 16;
+        tp.style.left = Math.max(8, x) + "px"; tp.style.top = Math.max(8, y) + "px"
+      });
+      document.addEventListener("mouseleave", hide);
+      document.addEventListener("scroll", hide, true)
+    })();
+
     /* ---------- raw data : pivot (ART · Model · Color) ---------- */
     const GK = ["pri", "oa", "sa"], GD = { pri: [PL, "Priority Ageing (Wks)"], oa: [OL, "Order Ageing (Wks)"], sa: [SL, "Stock Ageing"] };
     let SK = { k: null, d: 1 };
@@ -2812,7 +3155,7 @@
       const cell = (v, mx, f, txt) => v ? `<td class="bc${f ? " ys" : ""}"><i style="width:${mx ? Math.max(4, Math.round(v / mx * 100)) : 0}%"></i><span>${txt || n0(v)}</span></td>` : `<td class="bc z${f ? " ys" : ""}"><span>-</span></td>`;
       const gh = GK.map(g => `<th class="yh" colspan="${POPEN.has(g) ? GD[g][0].length : 1}" onclick="gTog('${g}')">${GD[g][1]}<i>${POPEN.has(g) ? "▾" : "▸"}</i></th>`).join("");
       const sh = GK.map(g => POPEN.has(g) ? GD[g][0].map((l, i) => `<th class="sh sx${i ? "" : " ys"}" onclick="srt('${g}:${i}')">${l}${sico(g + ":" + i)}</th>`).join("") : `<th class="sh sx ys" onclick="srt('${g}:t')">Total${sico(g + ":t")}</th>`).join("");
-      const body = p.map(o => `<tr><td class="c1" title="${esc(o.art)}">${esc(o.art)}</td><td class="c2" title="${esc(o.model)}">${esc(o.model)}</td><td class="c3" title="${esc(o.color)}">${esc(o.color)}</td>${cell(o.dm, PT.mdm, false)}${cell(o.av, PT.mav, true, o.av ? n0(o.av) + " | " + pc(o.av, PT.av) : "")}${cell(o.pr, PT.mpr, true)}${GK.map(g => POPEN.has(g) ? GD[g][0].map((_, i) => cell(o[g][i], PT.gm[g], i === 0)).join("") : cell(o[g + "t"], PT.gt[g], true)).join("")}<td class="ss ${o.st.size === 1 ? "s-" + stn([...o.st][0]) : ""}">${[...o.st].map(SBADGE).join(" ") || "–"}</td></tr>`).join("");
+      const body = p.map(o => `<tr><td class="c1" title="${esc(o.art)}">${esc(o.art)}</td><td class="c2" data-m="${esc(o.model)}">${esc(o.model)}</td><td class="c3" title="${esc(o.color)}">${esc(o.color)}</td>${cell(o.dm, PT.mdm, false)}${cell(o.av, PT.mav, true, o.av ? n0(o.av) + " | " + pc(o.av, PT.av) : "")}${cell(o.pr, PT.mpr, true)}${GK.map(g => POPEN.has(g) ? GD[g][0].map((_, i) => cell(o[g][i], PT.gm[g], i === 0)).join("") : cell(o[g + "t"], PT.gt[g], true)).join("")}<td class="ss ${o.st.size === 1 ? "s-" + stn([...o.st][0]) : ""}">${[...o.st].map(SBADGE).join(" ") || "–"}</td></tr>`).join("");
       const ft = GK.map(g => POPEN.has(g) ? PT.gs[g].map((v, i) => `<td${i ? "" : ' class="ys"'}>${v ? n0(v) : "-"}</td>`).join("") : `<td>${n0(PT[g + "x"] ?? PT.gs[g].reduce((x, y) => x + y, 0))}</td>`).join("");
       const foot = RW.length ? `<tfoot><tr><td class="f1" colspan="3"><svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>Total</td><td>${n0(PT.dm)}</td><td>${n0(PT.av)} | 100%</td><td>${n0(PT.pr)}</td>${ft}<td class="ss"></td></tr></tfoot>` : "";
       $("#tb").innerHTML = `<table class="pv2"><thead><tr><th class="mh c1 sx" rowspan="2" onclick="srt('art')">ART${sico("art")}</th><th class="mh c2 sx" rowspan="2" onclick="srt('model')">Model${sico("model")}</th><th class="mh c3 sx" rowspan="2" onclick="srt('color')">Color${sico("color")}</th><th class="mh sx" rowspan="2" onclick="srt('dm')">Total Demand${sico("dm")}</th><th class="mh sx" rowspan="2" onclick="srt('av')">Available Stock | % Contribution${sico("av")}</th><th class="mh sx" rowspan="2" onclick="srt('pr')">Production Requirement${sico("pr")}</th>${gh}<th class="mh ssh sx" rowspan="2" onclick="srt('st')">Stock Status${sico("st")}</th></tr><tr>${sh}</tr></thead><tbody>${body || `<tr><td colspan="9" style="text-align:center;padding:40px;color:#6d7c99">No data for the selected filters</td></tr>`}</tbody>${foot}</table>`
@@ -2829,6 +3172,76 @@
       fbuild(); draw()
     }
     init();
+  </script>
+  <script id="rsp-v1-js">
+    /* ===================== RESPONSIVE v1 · collapsible filter (UI only) ===================== */
+    (function () {
+      var MQ = matchMedia('(max-width:767px)'), isOpen = false, tmr = 0, obs = null, raf = 0;
+      var FUN = '<svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg>';
+      var CHV = '<svg class="fbv" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>';
+      function closePopup() { var p = document.getElementById('pn'); if (p) p.style.display = 'none'; var q = document.getElementById('pop'); if (q) q.classList.remove('on') }
+      function setOpen(wrap, on, instant) {
+        clearTimeout(tmr);
+        if (on) {
+          wrap.style.setProperty('--fbh', wrap.scrollHeight + 'px');
+          if (instant) { wrap.classList.add('open'); wrap.style.setProperty('--fbh', 'none') }
+          else { wrap.classList.add('open'); tmr = setTimeout(function () { wrap.style.setProperty('--fbh', 'none') }, 400) }
+        } else {
+          closePopup();
+          if (instant) { wrap.style.setProperty('--fbh', '0px'); wrap.classList.remove('open') }
+          else { wrap.style.setProperty('--fbh', wrap.scrollHeight + 'px'); void wrap.offsetHeight; wrap.style.setProperty('--fbh', '0px'); wrap.classList.remove('open') }
+        }
+        isOpen = on; sync();
+      }
+      function count(fb) {
+        var n = fb.querySelectorAll('.f button.on,.fp.on').length;
+        fb.querySelectorAll('input[type=date]').forEach(function (i) { if (i.value) n++ });
+        return n;
+      }
+      function sync() {
+        var fb = document.getElementById('fb'); if (!fb) return;
+        var t = document.querySelector('.fbt'); if (!t) return;
+        t.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        var n = count(fb), b = t.querySelector('.fbn'); b.textContent = n ? n + ' active' : '';
+        t.hidden = !fb.children.length;
+      }
+      function ensure() {
+        var fb = document.getElementById('fb');
+        if (!fb) { document.querySelectorAll('.fbt').forEach(function (t) { t.remove() }); return }
+        var wrap = fb.parentElement;
+        if (!wrap.classList.contains('fbc')) {
+          wrap = document.createElement('div'); wrap.className = 'fbc';
+          fb.parentNode.insertBefore(wrap, fb); wrap.appendChild(fb);
+          var a = document.createElement('div'); a.className = 'fba';
+          a.innerHTML = '<button type="button" class="fbr">Reset</button><button type="button" class="fbp">Apply</button>';
+          wrap.appendChild(a);
+          a.querySelector('.fbr').onclick = function () { var r = fb.querySelector('.rs'); if (r) r.click(); setTimeout(sync, 60) };
+          a.querySelector('.fbp').onclick = function () { setOpen(wrap, false) };
+          if (isOpen && MQ.matches) setOpen(wrap, true, true);
+          if (obs) obs.disconnect();
+          obs = new MutationObserver(function () { sync() });
+          obs.observe(fb, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+        }
+        var host = fb.closest('.fbw') || wrap;
+        var prev = host.previousElementSibling;
+        if (!prev || !prev.classList.contains('fbt')) {
+          document.querySelectorAll('.fbt').forEach(function (t) { t.remove() });
+          var t = document.createElement('button'); t.type = 'button'; t.className = 'fbt'; t.setAttribute('aria-expanded', 'false');
+          t.innerHTML = FUN + '<span class="fbl">Filters</span><span class="fbn"></span>' + CHV;
+          t.onclick = function () { var w = document.querySelector('.fbc'); if (w) setOpen(w, !isOpen) };
+          host.parentNode.insertBefore(t, host);
+        }
+        sync();
+      }
+      function sched() { cancelAnimationFrame(raf); raf = requestAnimationFrame(ensure) }
+      new MutationObserver(sched).observe(document.body, { childList: true, subtree: true });
+      document.addEventListener('change', function (e) { if (e.target.closest && e.target.closest('#fb')) sync() });
+      (MQ.addEventListener ? MQ.addEventListener.bind(MQ, 'change') : MQ.addListener.bind(MQ))(function () {
+        var w = document.querySelector('.fbc'); if (w) { w.style.removeProperty('--fbh'); if (!MQ.matches) w.classList.remove('open') }
+        if (!MQ.matches) { isOpen = false; sync() }
+      });
+      ensure();
+    })();
   </script>
 </body>
 
