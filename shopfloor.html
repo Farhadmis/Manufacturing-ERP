@@ -2470,7 +2470,7 @@
         #ctip {
             position: fixed;
             z-index: 400;
-            pointer-events: none;
+            pointer-events: auto;
             display: none;
             width: max-content;
             max-width: 440px;
@@ -3006,6 +3006,64 @@
             font-weight: 700
         }
     </style>
+<style id="rsp-v1">
+/* ===================== RESPONSIVE v1 · Mobile collapsible filter ===================== */
+.fbc{display:contents}
+.fbt,.fba{display:none}
+@media(max-width:767px){
+  .fbt{display:flex;align-items:center;gap:10px;width:100%;height:46px;margin:10px 0 8px;padding:0 14px;border:1px solid #dbe4f2;border-radius:14px;background:#fff;color:#0f2a5a;font:700 14px Inter,system-ui,sans-serif;text-align:left;cursor:pointer;position:sticky;top:6px;z-index:45;box-shadow:0 0 0 6px #f1f5fb,0 4px 12px rgba(16,44,92,.10);-webkit-tap-highlight-color:transparent}
+  .fbt[hidden]{display:none!important}
+  .fbt svg{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .fbt .fbl{flex:1}
+  .fbt .fbn{min-width:22px;height:22px;padding:0 7px;border-radius:999px;background:#a61935;color:#fff;font-size:12px;line-height:22px;text-align:center}
+  .fbt .fbn:empty{display:none}
+  .fbt .fbv{transition:transform .3s ease}
+  .fbt[aria-expanded="true"] .fbv{transform:rotate(180deg)}
+
+  .fbc{display:block;overflow:hidden;max-height:var(--fbh,0px);opacity:0;visibility:hidden;transition:max-height .35s ease,opacity .3s ease,visibility 0s linear .35s}
+  .fbc.open{opacity:1;visibility:visible;transition:max-height .35s ease,opacity .3s ease,visibility 0s}
+
+  .fbc #fb{position:static!important;display:flex!important;flex-direction:column!important;flex-wrap:nowrap!important;align-items:stretch!important;gap:10px!important;overflow:visible!important;white-space:normal!important;height:auto!important;zoom:1!important;margin:0!important;padding:12px 12px 6px!important;background:#fff!important;border:1px solid #dbe4f2!important;border-bottom:0!important;border-radius:14px 14px 0 0!important;box-shadow:none!important}
+  .fbc #fb:empty{padding:0!important;border:0!important}
+  .fbc #fb .f,.fbc #fb .f.d{flex:none!important;width:100%!important;min-width:0!important}
+  .fbc #fb .f button,.fbc #fb .f input{height:44px!important;font-size:14px!important;padding:0 12px!important;letter-spacing:normal!important;border-radius:12px!important}
+  .fbc #fb .f.d{display:flex!important;align-items:center!important;gap:10px!important}
+  .fbc #fb .f.d span{flex:none;width:44px;font-size:13px!important}
+  .fbc #fb .f.d input{flex:1 1 auto;min-width:0;width:auto!important}
+  .fbc #fb .rs{display:none!important}
+  /* Shopfloor pills / dates */
+  .fbc #fb .fp{width:100%!important;min-height:44px;padding:10px 14px!important;font-size:14px!important;gap:10px!important;border-radius:12px!important;white-space:normal;flex:none!important}
+  .fbc #fb .fp .fl{flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis}
+  .fbc #fb .fp svg:not(.cv){display:block!important}
+  .fbc #fb .fd{width:100%;justify-content:space-between;gap:10px!important;font-size:13px!important;flex:none}
+  .fbc #fb .fd input{flex:1 1 auto;width:auto!important;min-width:0;max-width:220px;padding:10px 12px!important;font-size:14px!important;border-radius:12px!important}
+  .fbc #fb .fsep{display:none!important}
+
+  .fba{display:flex;gap:10px;padding:10px 12px 12px;margin:0 0 8px;background:#fff;border:1px solid #dbe4f2;border-top:1px dashed #dbe4f2;border-radius:0 0 14px 14px}
+  .fba button{flex:1;height:44px;border-radius:12px;font:700 14px Inter,system-ui,sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .fba .fbr{background:#fff;color:#0f2a5a;border:1.5px solid #cfdcf3}
+  .fba .fbp{background:#0f2a5a;color:#fff;border:0}
+
+  .fbw{position:static!important;margin:0!important;padding:0!important;background:none!important}
+
+  /* dropdown → bottom sheet (কোনো filter-এর ওপর ভাসে না) */
+  #pn,.pop{left:0!important;right:0!important;top:auto!important;bottom:0!important;width:100%!important;max-height:72vh;border-radius:18px 18px 0 0!important;padding-bottom:env(safe-area-inset-bottom,0px);overflow:hidden}
+  #pn .ls,.pop .ls{max-height:calc(72vh - 150px)!important;-webkit-overflow-scrolling:touch}
+  #pn label,.pop label{padding:12px 16px!important;font-size:14px!important}
+  #pn input[type=text],.pop input[type=text]{font-size:16px!important;padding:10px 12px!important}
+  #pn .ac button,.pop .ft a{padding:10px!important;font-size:14px!important}
+}
+
+/* ===================== RESPONSIVE v1 · layout (mobile / tablet / large display) ===================== */
+html{-webkit-text-size-adjust:100%}
+@media(max-width:767px){
+  main{padding-left:12px!important;padding-right:12px!important;padding-bottom:24px!important}
+  .kp,.rkp{scroll-snap-type:x proximity}
+}
+@media(min-width:2000px){
+  main>*{max-width:2100px;margin-left:auto;margin-right:auto}
+}
+</style>
 </head>
 
 <body>
@@ -3132,7 +3190,10 @@
             LOADING = false
         }
         function prep(pk) {
-            const D = pk.dict, dd = D.date.map(s => { const y = +s.slice(0, 4), mo = +s.slice(5, 7); return { s, y, mo, mi: y * 12 + mo - 1 } });
+            const D = pk.dict;
+            /* MC Type : column-এর নাম একটু আলাদা (যেমন Machine Type) হলেও ধরবে */
+            if (!(D.mctype && D.mctype.length && pk.c.mctype)) { const ak = Object.keys(D).find(k => k !== "mctype" && pk.c[k] && /(mc|machine).*type/i.test(k)); if (ak) { D.mctype = D[ak]; pk.c.mctype = pk.c[ak] } }
+            const dd = D.date.map(s => { const y = +s.slice(0, 4), mo = +s.slice(5, 7); return { s, y, mo, mi: y * 12 + mo - 1 } });
             let mi0 = 1e9, mi1 = -1, last = ""; dd.forEach(x => { if (x.mi < mi0) mi0 = x.mi; if (x.mi > mi1) mi1 = x.mi; if (x.s > last) last = x.s });
             const lm = +last.slice(5, 7), ly = +last.slice(0, 4), ldays = new Date(ly, lm, 0).getDate();
             let pid = null, npair = 0; const pbay = [], pmc = [];
@@ -3240,10 +3301,10 @@
             document.querySelectorAll("#fb .fp").forEach(b => {
                 const k = b.dataset.f, n = F[k].size, ct = b.querySelector(".ct"), lb = b.querySelector(".fl");
                 if (!b.dataset.l) b.dataset.l = lb.textContent;
-                let nm = b.dataset.l; if (n === 1) { const v = [...F[k]][0], o = optsFor(k).find(x => x.c === v); if (o) nm = o.l }
+                let nm = b.dataset.l; if (n === 1) { const v = [...F[k]][0], o = optsFor(k).find(x => String(x.c) === String(v)); if (o) nm = o.l }
                 lb.textContent = nm; b.title = n === 1 ? b.dataset.l + ": " + nm : "";
                 b.classList.toggle("on", n > 0); ct.style.display = n > 1 ? "" : "none"; ct.textContent = n;
-                const f = FDEF.find(x => x[0] === k); b.classList.toggle("dis", !!f[2] && !optsFor(k).length)
+                const f = FDEF.find(x => x[0] === k), dz = !!f[2] && !optsFor(k).length; b.classList.toggle("dis", dz); if (dz) b.title = b.dataset.l + ": uploaded data-te ei column nai"
             })
         }
         let POPK = null;
@@ -3255,12 +3316,12 @@
             pop.innerHTML = `<input type="text" placeholder="Search ${esc(fl)}…" id="psr"><div class="ls" id="pls"></div><div class="ft"><a id="pall">All</a><a id="pclr">Clear</a></div>`;
             const draw = q => {
                 q = (q || "").toLowerCase(); const items = o.filter(x => !q || x.l.toLowerCase().includes(q)), lim = 300, show = items.slice(0, lim);
-                $("#pls").innerHTML = show.map(x => `<label><input type="checkbox" value="${esc(x.c)}"${F[k].has(x.c) ? " checked" : ""}>${esc(x.l)}</label>`).join("") + (items.length > lim ? `<div class="nt">${items.length - lim} more — type to search</div>` : "") + (!items.length ? `<div class="nt">No match</div>` : "")
+                $("#pls").innerHTML = show.map(x => `<label><input type="checkbox" value="${esc(x.c)}"${F[k].has(String(x.c)) ? " checked" : ""}>${esc(x.l)}</label>`).join("") + (items.length > lim ? `<div class="nt">${items.length - lim} more — type to search</div>` : "") + (!items.length ? `<div class="nt">No match</div>` : "")
             };
             draw("");
             $("#psr").oninput = e => draw(e.target.value);
             $("#pls").onchange = e => { const v = e.target.value; e.target.checked ? F[k].add(v) : F[k].delete(v); changed() };
-            $("#pall").onclick = () => { optsFor(k).forEach(x => F[k].add(x.c)); draw($("#psr").value); changed() };
+            $("#pall").onclick = () => { optsFor(k).forEach(x => F[k].add(String(x.c))); draw($("#psr").value); changed() };
             $("#pclr").onclick = () => { F[k].clear(); draw($("#psr").value); changed() };
             const r = btn.getBoundingClientRect(); pop.classList.add("on");
             pop.style.left = Math.max(8, Math.min(r.left, innerWidth - 238)) + "px"; pop.style.top = (r.bottom + 6) + "px";
@@ -3361,6 +3422,170 @@
             }
             return `<section class="cd dk"><div class="ch"><div class="ic">${ic("chart")}</div><div class="tt"><h3>Month-wise Trend</h3><p>${esc(sub)}</p></div><div class="lg"><span><i></i>Actual</span><span><i class="d"></i>Month to date</span></div>${tgl("mm", met)}</div><div class="kps">${kps}</div><div class="cvw">${drawMonth(R, met)}</div></section>`
         }
+        /* ---------- Heatmap tooltip: Month hover → Day wise · Day click → Bay wise · Bay click → M/C No. & Model wise ---------- */
+        let HMS = null, HMPIN = false, HMT = 0; const HMCACHE = new Map();
+        const hmG = id => document.getElementById(id);
+        const hmCancel = () => clearTimeout(HMT);
+        const hmSched = () => { if (HMPIN) return; clearTimeout(HMT); HMT = setTimeout(hmHideAll, 380) };
+        function hmHideAll() {
+            clearTimeout(HMT); HMPIN = false; HMS = null; if (window.ctClose) window.ctClose();
+            ["hmt1", "hmt2", "hmt3", "hmt4"].forEach(id => { const d = hmG(id); if (d) d.style.display = "none" });
+            document.querySelectorAll("#hmt1 tr.sel,#hmt2 tr.sel").forEach(r => r.classList.remove("sel"))
+        }
+        const hmDayLab = s => s.slice(8, 10) + " " + MON[+s.slice(5, 7) - 1] + " · " + ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][new Date(s + "T00:00:00").getDay()];
+        const hmPct = (t, T) => (T > 0 ? (t / T * 100).toFixed(1) : "0.0") + "%";
+        const hmCols = () => '<th title="Production Planning target">TGT</th>' + YB_C.map(k => `<th>${k[0]}</th>`).join("");
+        const hmSum = (rows) => YB_C.map((_, k) => rows.reduce((s, r) => s + r.cs[k], 0));
+        const hmFoot = (lab, mid, rows, T) => `<tfoot><tr class="tt"><td>${lab}</td>${mid}<td>${ybF(rows.reduce((s, r) => s + r.tg, 0))}</td>${hmSum(rows).map(v => `<td>${ybF(v)}</td>`).join("")}<td>${ybF(T)}</td><td>100%</td></tr></tfoot>`;
+        const hmHead = (badge, title, small, x) => `<div class="hd"><div class="ic">${badge}</div><div><b>${title}</b><small>${small}</small></div>${x ? '<div class="x" title="Close">×</div>' : ""}</div>`;
+        const hmBay = bi => ((P.D.bayname || [""])[bi] || "All");
+        const hmBayCol = bi => { const k = YBR && YBR.bays ? YBR.bays.indexOf(bi) : -1; return PAL[(k >= 0 ? k : bi) % PAL.length] };
+        function hmData(y, m, met) {
+            const key = y + "|" + m + "|" + met; let out = HMCACHE.get(key); if (out) return out;
+            const { D, C, M, n, dd } = P, A = M[MET[met][1]], TG = P.tg ? M[P.tg] : null; if (!A) return [];
+            const dOK = dd.map(x => x.y === y && x.mo - 1 === m && (!F.year.size || F.year.has(String(x.y))) && (!F.month.size || F.month.has(String(x.mo))) && (!F.from || x.s >= F.from) && (!F.to || x.s <= F.to));
+            const act = []; FDEF.forEach(f => {
+                if (f === "date" || !f[2] || !F[f[0]].size || !D[f[2]] || !C[f[2]]) return;
+                const ok = new Uint8Array(D[f[2]].length); F[f[0]].forEach(c => ok[c] = 1); act.push({ ok, col: C[f[2]] })
+            });
+            const catD = D.productcategory && D.productcategory.length ? D.productcategory : [""], colOf = catD.map(nm => YB_C.findIndex(k => k[1].test(String(nm))));
+            const bc = C.bayname, cc = C.productcategory, mcc = C.mcno, mdc = C.modelname, dc = C.date, days = new Map();
+            for (let i = 0; i < n; i++) {
+                const d = dc[i]; if (!dOK[d]) continue;
+                let ok = true; for (let k = 0; k < act.length; k++) if (!act[k].ok[act[k].col[i]]) { ok = false; break }
+                if (!ok) continue; const v = A[i] || 0, g = TG ? TG[i] || 0 : 0; if (!v && !g) continue;
+                const ci = colOf[cc ? cc[i] : 0], bi = bc ? bc[i] : 0;
+                let dy = days.get(d); if (!dy) days.set(d, dy = { d, s: dd[d].s, cs: [0, 0, 0, 0], t: 0, tg: 0, bays: new Map() });
+                let by = dy.bays.get(bi); if (!by) dy.bays.set(bi, by = { bi, cs: [0, 0, 0, 0], t: 0, tg: 0, mm: new Map() });
+                const mc = mcc ? mcc[i] : 0, md = mdc ? mdc[i] : 0, k2 = mc * 1000003 + md; let o = by.mm.get(k2);
+                if (!o) by.mm.set(k2, o = { mc: String((D.mcno || [])[mc] ?? "").trim() || "—", md: String((D.modelname || [])[md] ?? "").trim() || "—", cs: [0, 0, 0, 0], t: 0, tg: 0, sh: new Map() });
+                [dy, by, o].forEach(z => { if (ci >= 0) z.cs[ci] += v; z.t += v; z.tg += g });
+                { const sc = C.shifttime ? C.shifttime[i] : -1; let q = o.sh.get(sc); if (!q) o.sh.set(sc, q = { cs: [0, 0, 0, 0], t: 0, tg: 0 }); if (ci >= 0) q.cs[ci] += v; q.t += v; q.tg += g }
+            }
+            out = [...days.values()].sort((a, b) => a.s < b.s ? -1 : 1); HMCACHE.set(key, out); return out
+        }
+        (function () {
+            if (document.getElementById("hmt1")) return;
+            const S = ["#hmt1", "#hmt2", "#hmt3", "#hmt4"], sel = s => S.map(i => i + " " + s).join(",");
+            const st = document.createElement("style"); st.id = "hmt-css";
+            st.textContent = `${S.join(",")}{position:fixed;z-index:9999;display:none;max-width:calc(100vw - 16px);background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(15,42,90,.28);border:1px solid #d6dfef;font-family:Inter,sans-serif;color:#0f2a5a}
+#hmt4{width:640px;z-index:10002}#hmt4 th:nth-child(2),#hmt4 td:nth-child(2){text-align:left;white-space:normal;max-width:170px}
+#hmt3 tbody tr[data-i],#ybt3 tbody tr[data-i]{cursor:pointer}#hmt3 tbody tr[data-i]:hover td,#ybt3 tbody tr[data-i]:hover td{background:#eef4ff}#hmt3 tbody tr.sel td,#ybt3 tbody tr.sel td{background:#e1ecff}
+#hmt1{width:540px}#hmt2{width:570px;z-index:10000}#hmt3{width:640px;z-index:10001}
+${sel(".hd")}{background:linear-gradient(100deg,#0a2a70,#17479a);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px}
+${sel(".hd .ic")}{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;flex:none;font-size:12px;font-weight:800;letter-spacing:.03em}
+${sel(".hd b")}{display:block;font-size:20px;font-weight:800;letter-spacing:.02em;line-height:1.1}
+${sel(".hd small")}{display:block;font-size:12.5px;font-weight:600;opacity:.9;margin-top:3px}
+${sel(".hd .x")}{margin-left:auto;cursor:pointer;width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;line-height:1;flex:none}
+${sel(".hd .x:hover")}{background:rgba(255,255,255,.3)}
+${sel(".sc")}{max-height:min(58vh,440px);overflow:auto}
+${sel("table")}{width:100%;border-collapse:collapse;font-size:12.5px}
+${sel("th")}{background:#0a2a70;color:#fff;font-weight:700;padding:9px 8px;text-align:right;white-space:nowrap;position:sticky;top:0;z-index:1}
+${sel("th:first-child")},${sel("td:first-child")}{text-align:left}
+${sel("td")}{padding:6px 8px;text-align:right;border-bottom:1px solid #eef2f8;white-space:nowrap;font-weight:600}
+${sel("td:first-child")}{color:#0b5fa5;font-weight:700}
+${sel("td.tc")}{color:#1259c4;font-weight:800}
+${sel("td.z")}{color:#9aa3b8;font-weight:500}
+${sel("tfoot td")}{position:sticky;bottom:0;background:#e9f0fb;font-weight:800;border-bottom:0;border-top:1px solid #c9d7ee}
+#hmt1 tr[data-d],#hmt2 tr[data-b]{cursor:pointer}
+#hmt1 tr[data-d]:hover td,#hmt2 tr[data-b]:hover td{background:#eef4ff}
+#hmt1 tr.sel td,#hmt2 tr.sel td{background:#e1ecff}
+#hmt2 i.dt{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:7px}
+#hmt3 th:nth-child(2),#hmt3 td:nth-child(2){text-align:left;white-space:normal;max-width:170px}
+#hmt3 td.rp:first-child{color:transparent}
+${sel(".ft")}{padding:7px 12px;font-size:11.5px;font-weight:600;color:#6d7c99;background:#f6f9fe;border-top:1px solid #e3eaf6}
+.hc[data-hy]{cursor:pointer}`;
+            document.head.appendChild(st);
+            S.forEach(i => { const d = document.createElement("div"); d.id = i.slice(1); document.body.appendChild(d) });
+            const CEL = ".hc[data-hy]", ALL = "#hmt1,#hmt2,#hmt3", FAM = CEL + "," + ALL, cl = (e, s) => (e.target && e.target.closest) ? e.target.closest(s) : null;
+            document.addEventListener("mouseover", e => {
+                const el = cl(e, CEL);
+                if (el) { if (!HMPIN) { hmCancel(); hmShow(el, e) } return }
+                if (cl(e, ALL)) hmCancel()
+            });
+            document.addEventListener("mousemove", e => { if (!HMPIN && cl(e, CEL)) hmPos(e) });
+            document.addEventListener("mouseout", e => {
+                if (!cl(e, FAM)) return; const r = e.relatedTarget;
+                if (r && r.closest && r.closest(FAM)) return; hmSched()
+            });
+            document.addEventListener("click", e => {
+                let tr = cl(e, "#hmt1 tr[data-d]"); if (tr) { hmDay(tr); return }
+                if (cl(e, "#hmt4 .x")) { hmG("hmt4").style.display = "none"; return }
+                tr = cl(e, "#hmt3 tr[data-i]"); if (tr) { shClick(tr, hmG("hmt3")); return }
+                tr = cl(e, "#hmt2 tr[data-b]"); if (tr) { hmBayClick(tr); return }
+                if (cl(e, "#hmt1 .x,#hmt2 .x,#hmt3 .x")) { hmHideAll(); return }
+                if (HMPIN && !cl(e, FAM) && !cl(e, "#ctip,#hmt4")) hmHideAll()
+            });
+            document.addEventListener("keydown", e => { if (e.key === "Escape") hmHideAll() });
+        })();
+        function hmPos(e) {
+            const tp = hmG("hmt1"); let x = e.clientX + 18, y = e.clientY - 20;
+            if (x + tp.offsetWidth > innerWidth - 8) x = e.clientX - tp.offsetWidth - 18;
+            if (y + tp.offsetHeight > innerHeight - 8) y = innerHeight - tp.offsetHeight - 8;
+            tp.style.left = Math.max(8, x) + "px"; tp.style.top = Math.max(8, y) + "px"
+        }
+        /* Month hover → Day wise */
+        function hmShow(el, e) {
+            const y = +el.dataset.hy, m = +el.dataset.hm, met = ST.hm, p1 = hmG("hmt1");
+            if (HMS && HMS.y === y && HMS.m === m && p1.style.display === "block") return;
+            HMS = { y, m, met, d: -1, bi: -1 }; hmG("hmt2").style.display = "none"; hmG("hmt3").style.display = "none"; hmG("hmt4").style.display = "none";
+            const days = hmData(y, m, met), T = days.reduce((s, r) => s + r.t, 0);
+            p1.innerHTML = hmHead(MON[m].toUpperCase(), `${MON[m]} ${y}`, `Day wise · ${MET[met][0]} · ${ybF(T)}`, true) +
+                (days.length ? `<div class="sc"><table><thead><tr><th>Day</th>${hmCols()}<th>Total</th><th>%</th></tr></thead><tbody>` +
+                    days.map(r => `<tr data-d="${r.d}"><td>${hmDayLab(r.s)}</td>${ybCell(r.tg)}${r.cs.map(ybCell).join("")}<td class="tc">${ybF(r.t)}</td><td class="tc">${hmPct(r.t, T)}</td></tr>`).join("") +
+                    `</tbody>${hmFoot("Total", "", days, T)}</table></div><div class="ft">Day-এর উপর click করুন → Bay wise</div>` : `<div style="padding:18px;text-align:center;color:#6d7c99;font-weight:600">No data</div>`);
+            p1.style.display = "block"; hmPos(e)
+        }
+        /* Day click → Bay wise */
+        function hmDay(tr) {
+            if (!HMS) return; const d = +tr.dataset.d, dy = hmData(HMS.y, HMS.m, HMS.met).find(z => z.d === d); if (!dy) return;
+            HMPIN = true; hmCancel(); HMS.d = d; HMS.bi = -1; hmG("hmt3").style.display = "none"; hmG("hmt4").style.display = "none";
+            document.querySelectorAll("#hmt1 tr.sel").forEach(r => r.classList.remove("sel")); tr.classList.add("sel");
+            const rows = [...dy.bays.values()].sort((a, b) => nat(hmBay(a.bi), hmBay(b.bi))), T = dy.t, p2 = hmG("hmt2");
+            p2.innerHTML = hmHead(String(+dy.s.slice(8, 10)).padStart(2, "0"), hmDayLab(dy.s) + " " + dy.s.slice(0, 4), `Bay wise · ${MET[HMS.met][0]} · ${ybF(T)}`, true) +
+                `<div class="sc"><table><thead><tr><th>Bay</th>${hmCols()}<th>Total</th><th>%</th></tr></thead><tbody>` +
+                rows.map(r => `<tr data-b="${r.bi}"><td><i class="dt" style="background:${hmBayCol(r.bi)}"></i>${esc(hmBay(r.bi))}</td>${ybCell(r.tg)}${r.cs.map(ybCell).join("")}<td class="tc">${ybF(r.t)}</td><td class="tc">${hmPct(r.t, T)}</td></tr>`).join("") +
+                `</tbody>${hmFoot("Total", "", rows, T)}</table></div><div class="ft">Bay-এর উপর click করুন → M/C No. &amp; Model wise</div>`;
+            p2.style.display = "block"; ybSide(p2, hmG("hmt1"), 4)
+        }
+        /* Bay click → M/C No. & Model wise */
+        function hmBayClick(tr) {
+            if (!HMS || HMS.d < 0) return; const bi = +tr.dataset.b, dy = hmData(HMS.y, HMS.m, HMS.met).find(z => z.d === HMS.d), by = dy && dy.bays.get(bi); if (!by) return;
+            HMS.bi = bi; document.querySelectorAll("#hmt2 tr.sel").forEach(r => r.classList.remove("sel")); tr.classList.add("sel");
+            const list = [...by.mm.values()].sort((p, q) => nat(p.mc, q.mc) || q.t - p.t), T = by.t; let prev = null;
+            const body = list.map((r, ix) => { const first = r.mc !== prev; prev = r.mc; return `<tr data-i="${ix}"><td${first ? "" : ' class="rp"'}>${esc(r.mc)}</td><td>${esc(r.md)}</td>${ybCell(r.tg)}${r.cs.map(ybCell).join("")}<td class="tc">${ybF(r.t)}</td><td class="tc">${hmPct(r.t, T)}</td></tr>` }).join("");
+            const p3 = hmG("hmt3"); SHCTX = { list, title: esc(hmBay(bi)) + " · " + hmDayLab(dy.s) + " " + dy.s.slice(0, 4) };
+            p3.innerHTML = hmHead(String(+dy.s.slice(8, 10)).padStart(2, "0"), esc(hmBay(bi)), `${hmDayLab(dy.s)} ${dy.s.slice(0, 4)} · M/C No. &amp; Model wise · ${ybF(T)}`, true) +
+                `<div class="sc"><table><thead><tr><th>M/C No.</th><th>Model</th>${hmCols()}<th>Total</th><th>%</th></tr></thead><tbody>${body}</tbody>${hmFoot("Total", `<td>${list.length} rows</td>`, list, T)}</table></div>`;
+            p3.style.display = "block"; hmG("hmt4").style.display = "none"; ybSide(p3, hmG("hmt2"), 6)
+        }
+        /* MC row click → সেই MC-র Shift wise (Heatmap · Year-to-Year · Calendar সবখানে) */
+        let SHCTX = null;
+        function shClick(tr, anchor) {
+            const X = SHCTX; if (!X) return; const sel = X.list[+tr.dataset.i]; if (!sel) return;
+            anchor.querySelectorAll("tr.sel").forEach(r => r.classList.remove("sel")); tr.classList.add("sel");
+            const rows = []; X.list.filter(x => x.mc === sel.mc).forEach(en => en.sh.forEach((q, sc) => {
+                const raw = sc >= 0 ? String((P.D.shifttime || [])[sc] ?? "").trim() : "", g = sc >= 0 && P.shg ? P.shg[sc] : -1;
+                rows.push({ lab: (g === 0 ? "☀ " : g === 1 ? "☾ " : "") + (raw || "—"), ord: g < 0 ? 2 : g, md: en.md, cs: q.cs, t: q.t, tg: q.tg })
+            }));
+            rows.sort((a, b) => a.ord - b.ord || nat(a.lab, b.lab) || nat(a.md, b.md));
+            const T = rows.reduce((s, r) => s + r.t, 0), p4 = hmG("hmt4");
+            p4.innerHTML = hmHead("SH", esc(sel.mc), `${X.title} · Shift wise · ${ybF(T)}`, true) +
+                (rows.length ? `<div class="sc"><table><thead><tr><th>Shift</th><th>Model</th>${hmCols()}<th>Total</th><th>%</th></tr></thead><tbody>` +
+                    rows.map(r => `<tr><td>${esc(r.lab)}</td><td>${esc(r.md)}</td>${ybCell(r.tg)}${r.cs.map(ybCell).join("")}<td class="tc">${ybF(r.t)}</td><td class="tc">${hmPct(r.t, T)}</td></tr>`).join("") +
+                    `</tbody>${hmFoot("Total", `<td>${rows.length} rows</td>`, rows, T)}</table></div>` : `<div style="padding:18px;text-align:center;color:#6d7c99;font-weight:600">No data</div>`);
+            p4.style.display = "block"; ybSide(p4, anchor, 6)
+        }
+        /* M/C No. & Model wise panel — Calendar tooltip-এর Bay click থেকে (Heatmap-এর সাথে একই panel) */
+        function hmMCPanel(y, m, met, d, bi, anchor) {
+            const dy = hmData(y, m, met).find(z => z.d === d), by = dy && dy.bays.get(bi), s = P.dd[d].s;
+            const list = by ? [...by.mm.values()].sort((p, q) => nat(p.mc, q.mc) || q.t - p.t) : [], T = by ? by.t : 0; let prev = null;
+            const body = list.map((r, ix) => { const first = r.mc !== prev; prev = r.mc; return `<tr data-i="${ix}"><td${first ? "" : ' class="rp"'}>${esc(r.mc)}</td><td>${esc(r.md)}</td>${ybCell(r.tg)}${r.cs.map(ybCell).join("")}<td class="tc">${ybF(r.t)}</td><td class="tc">${hmPct(r.t, T)}</td></tr>` }).join("");
+            const p3 = hmG("hmt3"); SHCTX = { list, title: esc(hmBay(bi)) + " · " + hmDayLab(s) + " " + s.slice(0, 4) };
+            p3.innerHTML = hmHead(String(+s.slice(8, 10)).padStart(2, "0"), esc(hmBay(bi)), `${hmDayLab(s)} ${s.slice(0, 4)} · M/C No. &amp; Model wise · ${ybF(T)}`, true) +
+                (list.length ? `<div class="sc"><table><thead><tr><th>M/C No.</th><th>Model</th>${hmCols()}<th>Total</th><th>%</th></tr></thead><tbody>${body}</tbody>${hmFoot("Total", `<td>${list.length} rows</td>`, list, T)}</table></div>` : `<div style="padding:18px;text-align:center;color:#6d7c99;font-weight:600">No data</div>`);
+            p3.style.display = "block"; hmG("hmt4").style.display = "none"; ybSide(p3, anchor, 6)
+        }
         /* ---------- Year & Month wise Heatmap ---------- */
         const HLV = [{ bg: "#d92d3f", fg: "#fff" }, { bg: "#f6b9c0", fg: "#7a1d2a" }, { bg: "#e4ecf8", fg: "#0f2a5a" }, { bg: "#c3e9cb", fg: "#14532d" }, { bg: "#62b97b", fg: "#08341a" }, { bg: "#0f7d3e", fg: "#fff" }];
         function heatData(R, met) {
@@ -3377,7 +3602,7 @@
             return { rows, a, b }
         }
         function heatCard(R) {
-            const met = ST.hm, H = heatData(R, met), tg = tgl("hm", met);
+            hmHideAll(); HMCACHE.clear(); const met = ST.hm, H = heatData(R, met), tg = tgl("hm", met);
             const head = (lg) => `<div class="ch"><div class="ic">${ic("chart")}</div><div class="tt"><h3>Year &amp; Month wise Heatmap</h3><p>Performance Overview at a Glance</p></div>${lg || ""}</div>`;
             if (!H) return `<section class="cd dk hm">${head()}<div class="ld">No data for the selected filters</div></section>`;
             const comp = []; H.rows.forEach(r => r.cells.forEach(c => { if (c.has && !c.run) comp.push(c.v) }));
@@ -3407,9 +3632,9 @@
                 g += `<div class="hy">${r.y}${r.run ? "<small>YTD</small>" : ""}</div>`;
                 r.cells.forEach(c => {
                     if (!c.has) { g += `<div class="hc nd" title="${MON[c.m]} ${r.y}: no data yet">–</div>`; return }
-                    if (c.run) { g += `<div class="hc mtd" title="${MON[c.m]} ${r.y}: ${fc(c.v)} (month still running)">${f1(c.v)}<small>MTD</small></div>`; return }
+                    if (c.run) { g += `<div class="hc mtd" data-hy="${r.y}" data-hm="${c.m}">${f1(c.v)}<small>MTD</small></div>`; return }
                     const L = HLV[lvl(c.v)], isP = pk && pk.c === c, isL = lw && lw.c === c && lw.c !== (pk && pk.c);
-                    g += `<div class="hc${isP ? " pk" : ""}${isL ? " lw" : ""}" style="background:${L.bg};color:${L.fg}" title="${MON[c.m]} ${r.y}: ${fc(c.v)}">${f1(c.v)}${isP ? "<small>PEAK</small>" : isL ? "<small>LOW</small>" : ""}</div>`
+                    g += `<div class="hc${isP ? " pk" : ""}${isL ? " lw" : ""}" style="background:${L.bg};color:${L.fg}" data-hy="${r.y}" data-hm="${c.m}">${f1(c.v)}${isP ? "<small>PEAK</small>" : isL ? "<small>LOW</small>" : ""}</div>`
                 });
                 g += `<div class="ts" title="${fc(r.tot)}"><div>${fU(r.tot)}<span>${(r.tot / grand * 100).toFixed(1)}%</span></div><div class="br"><i${r.run ? ' class="run"' : ""} style="width:${(r.tot / maxTot * 100).toFixed(1)}%"></i></div></div>`
             });
@@ -3767,65 +3992,181 @@
             });
             return s + "</svg>"
         }
-        /* ---------- Year-to-Year · bay hover: Jan–Dec × Hanger / Sizer / Clip / Accessories ---------- */
-        let YBR = null;
+        /* ---------- Year-to-Year · bay hover: Jan–Dec × Hanger / Sizer / Clip / Accessories
+           Month row-এ hover → সেই month-এর Bay wise table · Bay row-এ click → সেই bay-এর M/C No. & Model wise ---------- */
+        let YBR = null, YBC = null, YBPIN = false, YBT = 0;
         const YB_C = [["Hanger", /hanger/i], ["Sizer", /sizer/i], ["Clip", /clip/i], ["Accessories", /access/i]];
         const ybF = v => { const a = Math.abs(v); return a >= 1e9 ? (v / 1e9).toFixed(2) + "B" : a >= 1e6 ? (v / 1e6).toFixed(2) + "M" : a >= 1e3 ? Math.round(v / 1e3) + "K" : String(Math.round(v)) };
+        const ybG = id => document.getElementById(id);
+        const ybColOf = () => YBR.catD.map(n => YB_C.findIndex(k => k[1].test(String(n))));
+        const ybCell = v => v > 0 ? `<td>${ybF(v)}</td>` : `<td class="z">-</td>`;
+        const YBTG = new Map();
+        /* TGT (Production Planning) : বছরের প্রতি month × bay-র target যোগফল, বর্তমান সব filter প্রযোজ্য */
+        function ybTgtYear(yi) {
+            if (YBTG.has(yi)) return YBTG.get(yi);
+            const { D, C, M, n, dd } = P, TG = P.tg ? M[P.tg] : null, nb = YBR.nb, y0 = P.years[0], out = new Float64Array(12 * nb);
+            if (TG) {
+                const dOK = dd.map(x => x.y - y0 === yi && (!F.year.size || F.year.has(String(x.y))) && (!F.month.size || F.month.has(String(x.mo))) && (!F.from || x.s >= F.from) && (!F.to || x.s <= F.to));
+                const act = []; FDEF.forEach(f => {
+                    if (f === "date" || !f[2] || !F[f[0]].size || !D[f[2]] || !C[f[2]]) return;
+                    const ok = new Uint8Array(D[f[2]].length); F[f[0]].forEach(c => ok[c] = 1); act.push({ ok, col: C[f[2]] })
+                });
+                const bc = C.bayname, dc = C.date;
+                for (let i = 0; i < n; i++) {
+                    const d = dc[i]; if (!dOK[d]) continue;
+                    let ok = true; for (let k = 0; k < act.length; k++) if (!act[k].ok[act[k].col[i]]) { ok = false; break }
+                    if (!ok) continue; out[(dd[d].mi % 12) * nb + (bc ? bc[i] : 0)] += TG[i] || 0
+                }
+            }
+            YBTG.set(yi, out); return out
+        }
+        function ybCancel() { clearTimeout(YBT) }
+        function ybSched() { if (YBPIN) return; clearTimeout(YBT); YBT = setTimeout(ybHideAll, 380) }
+        function ybHideAll() {
+            clearTimeout(YBT); YBPIN = false;
+            ["ybt", "ybt2", "ybt3", "hmt4"].forEach(id => { const d = ybG(id); if (d) d.style.display = "none" });
+            document.querySelectorAll("#ybt tr.on,#ybt2 tr.sel").forEach(r => r.classList.remove("on", "sel"))
+        }
         (function () {
             if (document.getElementById("ybt")) return;
             const st = document.createElement("style"); st.id = "ybt-css";
-            st.textContent = `#ybt{position:fixed;z-index:9999;pointer-events:none;display:none;width:470px;max-width:calc(100vw - 16px);background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(15,42,90,.28);border:1px solid #d6dfef;font-family:Inter,sans-serif;color:#0f2a5a}
-#ybt .hd{background:linear-gradient(100deg,#0a2a70,#17479a);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px}
-#ybt .hd .ic{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;flex:none}
+            st.textContent = `#ybt,#ybt2,#ybt3{position:fixed;z-index:9999;display:none;max-width:calc(100vw - 16px);background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(15,42,90,.28);border:1px solid #d6dfef;font-family:Inter,sans-serif;color:#0f2a5a}
+#ybt{width:520px}#ybt2{width:590px;z-index:10000}#ybt3{width:640px;z-index:10001}
+#ybt .hd,#ybt2 .hd,#ybt3 .hd{background:linear-gradient(100deg,#0a2a70,#17479a);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px}
+#ybt .hd .ic,#ybt2 .hd .ic,#ybt3 .hd .ic{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;flex:none;font-size:12px;font-weight:800;letter-spacing:.03em}
 #ybt .hd .ic i{width:12px;height:12px;border-radius:3px;display:block}
-#ybt .hd b{display:block;font-size:20px;font-weight:800;letter-spacing:.02em;line-height:1.1}
-#ybt .hd small{display:block;font-size:12.5px;font-weight:600;opacity:.9;margin-top:3px}
-#ybt table{width:100%;border-collapse:collapse;font-size:12.5px}
-#ybt th{background:#0a2a70;color:#fff;font-weight:700;padding:9px 8px;text-align:right;white-space:nowrap}
-#ybt th:first-child,#ybt td:first-child{text-align:left}
-#ybt td{padding:6px 8px;text-align:right;border-bottom:1px solid #eef2f8;white-space:nowrap;font-weight:600}
-#ybt td:first-child{color:#0b5fa5;font-weight:700}
-#ybt td.tc{color:#1259c4;font-weight:800}
-#ybt td.z{color:#9aa3b8;font-weight:500}
-#ybt tr.tt td{background:#e9f0fb;font-weight:800;border-bottom:0;border-top:1px solid #c9d7ee}`;
+#ybt .hd b,#ybt2 .hd b,#ybt3 .hd b{display:block;font-size:20px;font-weight:800;letter-spacing:.02em;line-height:1.1}
+#ybt .hd small,#ybt2 .hd small,#ybt3 .hd small{display:block;font-size:12.5px;font-weight:600;opacity:.9;margin-top:3px}
+#ybt3 .hd .x{margin-left:auto;cursor:pointer;width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;line-height:1;flex:none}
+#ybt3 .hd .x:hover{background:rgba(255,255,255,.3)}
+#ybt table,#ybt2 table,#ybt3 table{width:100%;border-collapse:collapse;font-size:12.5px}
+#ybt th,#ybt2 th,#ybt3 th{background:#0a2a70;color:#fff;font-weight:700;padding:9px 8px;text-align:right;white-space:nowrap}
+#ybt th:first-child,#ybt td:first-child,#ybt2 th:first-child,#ybt2 td:first-child,#ybt3 th:first-child,#ybt3 td:first-child{text-align:left}
+#ybt td,#ybt2 td,#ybt3 td{padding:6px 8px;text-align:right;border-bottom:1px solid #eef2f8;white-space:nowrap;font-weight:600}
+#ybt td:first-child,#ybt2 td:first-child,#ybt3 td:first-child{color:#0b5fa5;font-weight:700}
+#ybt td.tc,#ybt2 td.tc,#ybt3 td.tc{color:#1259c4;font-weight:800}
+#ybt td.z,#ybt2 td.z,#ybt3 td.z{color:#9aa3b8;font-weight:500}
+#ybt tr.tt td,#ybt2 tr.tt td,#ybt3 tr.tt td{background:#e9f0fb;font-weight:800;border-bottom:0;border-top:1px solid #c9d7ee}
+#ybt tr[data-m],#ybt2 tr[data-b]{cursor:pointer}
+#ybt tr[data-m]:hover td,#ybt2 tr[data-b]:hover td{background:#eef4ff}
+#ybt tr.on td{background:#e1ecff}
+#ybt2 tr.cur td:first-child{box-shadow:inset 3px 0 0 #1565d8}
+#ybt2 tr.sel td{background:#e1ecff}
+#ybt2 i.dt{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:7px}
+#ybt2 .ft{padding:7px 12px;font-size:11.5px;font-weight:600;color:#6d7c99;background:#f6f9fe;border-top:1px solid #e3eaf6}
+#ybt3 .sc{max-height:min(56vh,430px);overflow:auto}
+#ybt3 th{position:sticky;top:0;z-index:1}
+#ybt3 tfoot td{position:sticky;bottom:0}
+#ybt3 th:nth-child(2),#ybt3 td:nth-child(2){text-align:left;white-space:normal;max-width:170px}
+#ybt3 td.rp:first-child{color:transparent}`;
             document.head.appendChild(st);
-            const d = document.createElement("div"); d.id = "ybt"; document.body.appendChild(d);
-            const seg = e => (e.target && e.target.closest) ? e.target.closest(".ytseg") : null;
-            document.addEventListener("mouseover", e => { const el = seg(e); if (el) ybShow(el, e) });
-            document.addEventListener("mousemove", e => { if (seg(e)) ybPos(e) });
-            document.addEventListener("mouseout", e => {
-                const el = seg(e); if (el && !(e.relatedTarget && el.contains(e.relatedTarget))) document.getElementById("ybt").style.display = "none";
+            ["ybt", "ybt2", "ybt3"].forEach(id => { const d = document.createElement("div"); d.id = id; document.body.appendChild(d) });
+            const FAM = ".ytseg,#ybt,#ybt2,#ybt3", cl = (e, s) => (e.target && e.target.closest) ? e.target.closest(s) : null;
+            document.addEventListener("mouseover", e => {
+                const el = cl(e, ".ytseg");
+                if (el) { if (!YBPIN) { ybCancel(); ybShow(el, e) } return }
+                if (cl(e, "#ybt,#ybt2,#ybt3")) { ybCancel(); const tr = cl(e, "#ybt tr[data-m]"); if (tr) ybMonth(tr) }
             });
+            document.addEventListener("mousemove", e => { if (!YBPIN && cl(e, ".ytseg")) ybPos(e) });
+            document.addEventListener("mouseout", e => {
+                if (!cl(e, FAM)) return; const r = e.relatedTarget;
+                if (r && r.closest && r.closest(FAM)) return; ybSched()
+            });
+            document.addEventListener("click", e => {
+                const tr = cl(e, "#ybt2 tr[data-b]"); if (tr) { ybMC(tr); return }
+                const t3 = cl(e, "#ybt3 tr[data-i]"); if (t3) { shClick(t3, ybG("ybt3")); return }
+                if (cl(e, "#ybt3 .x")) { ybHideAll(); return }
+                if (YBPIN && !cl(e, FAM) && !cl(e, "#hmt4")) ybHideAll()
+            });
+            document.addEventListener("keydown", e => { if (e.key === "Escape") ybHideAll() });
         })();
         function ybShow(el, e) {
             if (!YBR) return;
-            const tp = document.getElementById("ybt"), bi = +el.dataset.b, yi = +el.dataset.yi, mi = MK.indexOf(YBR.met), nb = YBR.nb, nc = YBR.ncat, c = el.dataset.col;
-            const colOf = YBR.catD.map(n => YB_C.findIndex(k => k[1].test(String(n))));
+            const tp = ybG("ybt"), bi = +el.dataset.b, yi = +el.dataset.yi, mi = MK.indexOf(YBR.met), nb = YBR.nb, nc = YBR.ncat, c = el.dataset.col;
+            const colOf = ybColOf(), TG = ybTgtYear(yi);
+            YBC = { yi, y: +el.dataset.y, bi, m: -1, n: el.dataset.n, col: c };
+            ybG("ybt2").style.display = "none"; ybG("ybt3").style.display = "none"; ybG("hmt4").style.display = "none";
             const rows = MON.map((n, m) => {
                 const cs = YB_C.map(() => 0); let tot = 0;
                 for (let ci = 0; ci < nc; ci++) {
                     const v = YBR.ymc[((((yi * 12 + m) * nb + bi) * nc) + ci) * 3 + mi];
                     if (!v) continue; tot += v; if (colOf[ci] >= 0) cs[colOf[ci]] += v;
                 }
-                return { n, cs, tot };
+                return { n, m, cs, tot, tg: TG[m * nb + bi] };
             });
-            const T = rows.reduce((s, r) => s + r.tot, 0), colT = YB_C.map((_, k) => rows.reduce((s, r) => s + r.cs[k], 0));
-            const cell = v => v > 0 ? `<td>${ybF(v)}</td>` : `<td class="z">-</td>`;
+            const T = rows.reduce((s, r) => s + r.tot, 0), colT = YB_C.map((_, k) => rows.reduce((s, r) => s + r.cs[k], 0)), tgT = rows.reduce((s, r) => s + r.tg, 0);
             tp.innerHTML = `<div class="hd"><div class="ic"><i style="background:${c}"></i></div><div><b>${esc(el.dataset.n)}</b><small>${el.dataset.y} · ${el.dataset.share}% of 1 year · ${ybF(T)}</small></div></div>` +
-                `<table><thead><tr><th>Month</th>${YB_C.map(k => `<th>${k[0]}</th>`).join("")}<th>Total</th><th>%</th></tr></thead><tbody>` +
-                rows.map(r => `<tr class="${r.tot ? "" : "z"}"><td>${r.n}</td>${r.cs.map(cell).join("")}${r.tot ? `<td class="tc">${ybF(r.tot)}</td><td class="tc">${(r.tot / T * 100).toFixed(1)}%</td>` : `<td class="z">-</td><td class="z">-</td>`}</tr>`).join("") +
-                `</tbody><tfoot><tr class="tt"><td>Total</td>${colT.map(v => `<td>${ybF(v)}</td>`).join("")}<td>${ybF(T)}</td><td>100%</td></tr></tfoot></table>`;
+                `<table><thead><tr><th>Month</th><th title="Production Planning target">TGT</th>${YB_C.map(k => `<th>${k[0]}</th>`).join("")}<th>Total</th><th>%</th></tr></thead><tbody>` +
+                rows.map(r => `<tr class="${r.tot ? "" : "z"}"${r.tot ? ` data-m="${r.m}"` : ""}><td>${r.n}</td>${ybCell(r.tg)}${r.cs.map(ybCell).join("")}${r.tot ? `<td class="tc">${ybF(r.tot)}</td><td class="tc">${(r.tot / T * 100).toFixed(1)}%</td>` : `<td class="z">-</td><td class="z">-</td>`}</tr>`).join("") +
+                `</tbody><tfoot><tr class="tt"><td>Total</td><td>${ybF(tgT)}</td>${colT.map(v => `<td>${ybF(v)}</td>`).join("")}<td>${ybF(T)}</td><td>100%</td></tr></tfoot></table>`;
             tp.style.display = "block"; ybPos(e);
         }
         function ybPos(e) {
-            const tp = document.getElementById("ybt"); let x = e.clientX + 18, y = e.clientY - 20;
+            const tp = ybG("ybt"); let x = e.clientX + 18, y = e.clientY - 20;
             if (x + tp.offsetWidth > innerWidth - 8) x = e.clientX - tp.offsetWidth - 18;
             if (y + tp.offsetHeight > innerHeight - 8) y = innerHeight - tp.offsetHeight - 8;
             tp.style.left = Math.max(8, x) + "px"; tp.style.top = Math.max(8, y) + "px";
         }
+        /* p কে ref-এর পাশে বসায় (ডানে → না হলে বামে → না হলে overlay) */
+        function ybSide(p, ref, gap) {
+            const r = ref.getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight; let x = r.right + gap;
+            if (x + w > innerWidth - 8) { x = r.left - gap - w; if (x < 8) x = Math.max(8, innerWidth - w - 8) }
+            p.style.left = x + "px"; p.style.top = Math.max(8, Math.min(r.top, innerHeight - h - 8)) + "px";
+        }
+        /* Month row hover → সেই month-এর Bay wise */
+        function ybMonth(tr) {
+            if (!YBR || !YBC) return; const m = +tr.dataset.m, p2 = ybG("ybt2"), p1 = ybG("ybt");
+            if (YBC.m === m && p2.style.display === "block") return;
+            YBC.m = m; YBPIN = false; ybG("ybt3").style.display = "none"; ybG("hmt4").style.display = "none";
+            document.querySelectorAll("#ybt tr.on").forEach(r => r.classList.remove("on")); tr.classList.add("on");
+            const R = YBR, mi = MK.indexOf(R.met), nb = R.nb, nc = R.ncat, colOf = ybColOf(), rows = [], TG = ybTgtYear(YBC.yi);
+            R.bays.forEach((bi, i) => {
+                const cs = YB_C.map(() => 0); let tot = 0;
+                for (let ci = 0; ci < nc; ci++) {
+                    const v = R.ymc[((((YBC.yi * 12 + m) * nb + bi) * nc) + ci) * 3 + mi];
+                    if (!v) continue; tot += v; if (colOf[ci] >= 0) cs[colOf[ci]] += v;
+                }
+                if (tot > 0) rows.push({ bi, i, cs, tot, tg: TG[m * nb + bi] });
+            });
+            const T = rows.reduce((s, r) => s + r.tot, 0), colT = YB_C.map((_, k) => rows.reduce((s, r) => s + r.cs[k], 0)), tgT = rows.reduce((s, r) => s + r.tg, 0);
+            p2.innerHTML = `<div class="hd"><div class="ic">${MON[m].toUpperCase()}</div><div><b>${MON[m]} ${YBC.y}</b><small>Bay wise · ${MET[R.met][0]} · ${ybF(T)}</small></div></div>` +
+                `<table><thead><tr><th>Bay</th><th title="Production Planning target">TGT</th>${YB_C.map(k => `<th>${k[0]}</th>`).join("")}<th>Total</th><th>%</th></tr></thead><tbody>` +
+                rows.map(r => `<tr data-b="${r.bi}" class="${r.bi === YBC.bi ? "cur" : ""}"><td><i class="dt" style="background:${PAL[r.i % PAL.length]}"></i>${esc(R.bayD[r.bi] || "All")}</td>${ybCell(r.tg)}${r.cs.map(ybCell).join("")}<td class="tc">${ybF(r.tot)}</td><td class="tc">${(r.tot / T * 100).toFixed(1)}%</td></tr>`).join("") +
+                `</tbody><tfoot><tr class="tt"><td>Total</td><td>${ybF(tgT)}</td>${colT.map(v => `<td>${ybF(v)}</td>`).join("")}<td>${ybF(T)}</td><td>100%</td></tr></tfoot></table><div class="ft">Bay-এর উপর click করুন → M/C No. &amp; Model wise</div>`;
+            p2.style.display = "block"; ybSide(p2, p1, 4);
+        }
+        /* Bay row click → সেই bay + month-এর M/C No. & Model wise (বর্তমান সব filter প্রযোজ্য) */
+        function ybMC(tr) {
+            if (!YBR || !YBC || !P || YBC.m < 0) return;
+            const bi = +tr.dataset.b, yi = YBC.yi, m = YBC.m, R = YBR, { D, C, M, n, dd } = P, y0 = P.years[0], A = M[MET[R.met][1]], TG = P.tg ? M[P.tg] : null;
+            if (!A) return;
+            const dOK = dd.map(x => (!F.year.size || F.year.has(String(x.y))) && (!F.month.size || F.month.has(String(x.mo))) && (!F.from || x.s >= F.from) && (!F.to || x.s <= F.to));
+            const act = []; FDEF.forEach(f => {
+                if (f === "date" || !f[2] || !F[f[0]].size || !D[f[2]] || !C[f[2]]) return;
+                const ok = new Uint8Array(D[f[2]].length); F[f[0]].forEach(c => ok[c] = 1); act.push({ ok, col: C[f[2]] })
+            });
+            const bc = C.bayname, cc = C.productcategory, mcc = C.mcno, mdc = C.modelname, dc = C.date, colOf = ybColOf(), mp = new Map();
+            for (let i = 0; i < n; i++) {
+                const d = dc[i]; if (!dOK[d]) continue; const x = dd[d];
+                if (x.y - y0 !== yi || (x.mi % 12) !== m || (bc ? bc[i] : 0) !== bi) continue;
+                let ok = true; for (let k = 0; k < act.length; k++) if (!act[k].ok[act[k].col[i]]) { ok = false; break }
+                if (!ok) continue; const v = A[i] || 0, g = TG ? TG[i] || 0 : 0; if (!v && !g) continue;
+                const mc = mcc ? mcc[i] : 0, md = mdc ? mdc[i] : 0, key = mc * 1000003 + md; let o = mp.get(key);
+                if (!o) mp.set(key, o = { mc: String((D.mcno || [])[mc] ?? "").trim() || "—", md: String((D.modelname || [])[md] ?? "").trim() || "—", cs: YB_C.map(() => 0), t: 0, tg: 0, sh: new Map() });
+                const ci = colOf[cc ? cc[i] : 0]; if (ci >= 0) o.cs[ci] += v; o.t += v; o.tg += g;
+                { const sc = C.shifttime ? C.shifttime[i] : -1; let q = o.sh.get(sc); if (!q) o.sh.set(sc, q = { cs: [0, 0, 0, 0], t: 0, tg: 0 }); if (ci >= 0) q.cs[ci] += v; q.t += v; q.tg += g }
+            }
+            const list = [...mp.values()].sort((p, q) => nat(p.mc, q.mc) || q.t - p.t), T = list.reduce((s, r) => s + r.t, 0), colT = YB_C.map((_, k) => list.reduce((s, r) => s + r.cs[k], 0)), tgT = list.reduce((s, r) => s + r.tg, 0);
+            let prev = null; const body = list.map((r, ix) => { const first = r.mc !== prev; prev = r.mc; return `<tr data-i="${ix}"><td${first ? "" : ' class="rp"'}>${esc(r.mc)}</td><td>${esc(r.md)}</td>${ybCell(r.tg)}${r.cs.map(ybCell).join("")}<td class="tc">${ybF(r.t)}</td><td class="tc">${T > 0 ? (r.t / T * 100).toFixed(1) : "0.0"}%</td></tr>` }).join("");
+            const p3 = ybG("ybt3"), p2 = ybG("ybt2"); SHCTX = { list, title: esc(R.bayD[bi] || "All") + " · " + MON[m] + " " + YBC.y };
+            document.querySelectorAll("#ybt2 tr.sel").forEach(r => r.classList.remove("sel")); tr.classList.add("sel");
+            p3.innerHTML = `<div class="hd"><div class="ic">${MON[m].toUpperCase()}</div><div><b>${esc(R.bayD[bi] || "All")}</b><small>${MON[m]} ${YBC.y} · M/C No. &amp; Model wise · ${ybF(T)}</small></div><div class="x" title="Close">×</div></div>` +
+                (list.length ? `<div class="sc"><table><thead><tr><th>M/C No.</th><th>Model</th><th title="Production Planning target">TGT</th>${YB_C.map(k => `<th>${k[0]}</th>`).join("")}<th>Total</th><th>%</th></tr></thead><tbody>${body}</tbody><tfoot><tr class="tt"><td>Total</td><td>${list.length} rows</td><td>${ybF(tgT)}</td>${colT.map(v => `<td>${ybF(v)}</td>`).join("")}<td>${ybF(T)}</td><td>100%</td></tr></tfoot></table></div>` : `<div style="padding:18px;text-align:center;color:#6d7c99;font-weight:600">No data</div>`);
+            YBPIN = true; ybCancel(); p3.style.display = "block"; hmG("hmt4").style.display = "none"; ybSide(p3, p2, 6);
+        }
         function bestYear(YD) { const c = YD.ys.filter(o => !o.run), L = c.length ? c : YD.ys; let b = null; L.forEach(o => { if (!b || o.t > b.t) b = o }); return b }
         function yearCard(R) {
-            const met = ST.ym, YD = yearData(R, met), { ys, bays, cell, grand } = YD; YBR = { met, nb: R.nb, ymc: R.ymc, ncat: R.ncat, catD: R.catD }; let kps = "", legend = "", foot = "", sub = "% on each bar = that year’s contribution to the grand total";
+            const met = ST.ym, YD = yearData(R, met), { ys, bays, cell, grand } = YD; ybHideAll(); YBTG.clear(); YBR = { met, nb: R.nb, ymc: R.ymc, ncat: R.ncat, catD: R.catD, bayD: R.bayD, bays }; let kps = "", legend = "", foot = "", sub = "% on each bar = that year’s contribution to the grand total";
             if (ys.length && grand > 0) {
                 const best = bestYear(YD), last = ys[ys.length - 1], S = monthSeries(R, met), d = S ? delta12(S) : null;
                 const first = ys[0].y; let bb = null;
@@ -3935,23 +4276,47 @@
                         tot += v; if (colOf[ci] >= 0) cs[colOf[ci]] += v
                     }
                     const tg = R.dtb ? (R.dtb[d * R.nb + bi] || 0) : 0;
-                    if (tot > 0 || tg > 0) { rows.push({ n: R.bayD[bi], cs, tot, tg }); cs.forEach((v, k) => gc[k] += v); gt += tot; gtg += tg }
+                    if (tot > 0 || tg > 0) { rows.push({ bi, n: R.bayD[bi], cs, tot, tg }); cs.forEach((v, k) => gc[k] += v); gt += tot; gtg += tg }
                 }
                 rows.sort((a, b) => nat(a.n, b.n));
                 const pc = (a, t) => t > 0 ? `<td>${(a / t * 100).toFixed(1)}%</td>` : `<td class="z">-</td>`;
                 const cell = v => v > 0 ? `<td>${fx(v)}</td>` : `<td class="z">-</td>`;
-                const body = rows.map(r => `<tr><td>${esc(bayN(r.n))}</td>${cell(r.tg)}${r.cs.map(cell).join("")}<td><b>${fx(r.tot)}</b></td>${pc(r.tot, r.tg)}</tr>`).join("");
+                const body = rows.map(r => `<tr data-b="${r.bi}"><td>${esc(bayN(r.n))}</td>${cell(r.tg)}${r.cs.map(cell).join("")}<td><b>${fx(r.tot)}</b></td>${pc(r.tot, r.tg)}</tr>`).join("");
                 return `<div class="th"><b>${fx(gt)}</b><span>${esc(t)} · Total Production</span></div>
 <table><thead><tr><th>Bay Name</th><th>TGT</th>${CC.map(c => `<th>${c[0]}</th>`).join("")}<th>Total</th><th>%</th></tr></thead><tbody>${body}
-<tr class="tt"><td>Total</td>${cell(gtg)}${gc.map(cell).join("")}<td>${fx(gt)}</td>${pc(gt, gtg)}</tr></tbody></table>`
+<tr class="tt"><td>Total</td>${cell(gtg)}${gc.map(cell).join("")}<td>${fx(gt)}</td>${pc(gt, gtg)}</tr></tbody></table><div class="cft2">Bay-এর উপর click করুন → M/C No. &amp; Model wise</div>`
+            }
+            const cst = document.createElement("style");
+            cst.textContent = `#ctip tbody tr[data-b]{cursor:pointer}#ctip tbody tr[data-b]:hover td{background:#eef4ff}#ctip tbody tr.sel td{background:#e1ecff}#ctip .cft2{margin:6px -2px -2px;padding:6px 8px;font-size:11px;font-weight:600;color:#6d7c99;background:#f6f9fe;border-top:1px solid #e3eaf6;border-radius:0 0 8px 8px}`;
+            document.head.appendChild(cst);
+            let CTL = null, CTT = 0, CTPIN = false;
+            window.ctClose = () => { clearTimeout(CTT); CTPIN = false; CTL = null; ct.style.display = "none"; ct.querySelectorAll("tr.sel").forEach(r => r.classList.remove("sel")) };
+            /* tooltip month-column-এর পাশে বসে (cursor-এর পিছনে ছোটে না) — তাই mouse নিয়ে click করা যায় */
+            function ctPlace(el) {
+                const col = el.closest(".pcm") || el, cr = col.getBoundingClientRect(), r = el.getBoundingClientRect(), w = ct.offsetWidth, h = ct.offsetHeight;
+                let x = cr.right + 4; if (x + w > innerWidth - 8) x = cr.left - 4 - w; if (x < 6) x = Math.max(6, innerWidth - w - 8);
+                ct.style.left = x + "px"; ct.style.top = Math.max(6, Math.min(r.top - 8, innerHeight - h - 8)) + "px"
             }
             document.addEventListener("mousemove", e => {
+                if (CTPIN) return;
                 const el = e.target.closest && e.target.closest(".pcd[data-d]");
-                if (!el) { ct.style.display = "none"; last = null; return }
-                if (el !== last) { ct.innerHTML = ctHTML(el); last = el }
-                ct.style.display = "block";
-                ct.style.left = Math.max(6, Math.min(e.clientX + 14, innerWidth - ct.offsetWidth - 8)) + "px";
-                ct.style.top = Math.max(6, Math.min(e.clientY + 16, innerHeight - ct.offsetHeight - 8)) + "px"
+                if (!el) {
+                    if (e.target.closest && e.target.closest("#ctip")) { clearTimeout(CTT); return }
+                    if (ct.style.display === "block") { clearTimeout(CTT); CTT = setTimeout(window.ctClose, 300) }
+                    return
+                }
+                clearTimeout(CTT);
+                if (el !== CTL) { ct.innerHTML = ctHTML(el); ct.dataset.d = el.dataset.d; CTL = el; ct.style.display = "block"; ctPlace(el) }
+            });
+            document.addEventListener("click", e => {
+                const tr = e.target.closest && e.target.closest("#ctip tr[data-b]");
+                if (tr) {
+                    const d = +ct.dataset.d, x = P.dd[d]; if (!x) return;
+                    CTPIN = true; clearTimeout(CTT); HMPIN = true; clearTimeout(HMT);
+                    ct.querySelectorAll("tr.sel").forEach(r => r.classList.remove("sel")); tr.classList.add("sel");
+                    hmMCPanel(x.y, x.mo - 1, "good", d, +tr.dataset.b, ct); return
+                }
+                if (CTPIN && !(e.target.closest && e.target.closest("#ctip,#hmt3,#hmt4"))) hmHideAll()
             })
         }
         let LASTR = null;
@@ -3999,6 +4364,76 @@
             const h = location.hash.slice(1); show(PG[h] ? h : "oee")
         })().catch(e => console.error(e));
     </script>
+<script id="rsp-v1-js">
+/* ===================== RESPONSIVE v1 · collapsible filter (UI only) ===================== */
+(function(){
+  var MQ=matchMedia('(max-width:767px)'),isOpen=false,tmr=0,obs=null,raf=0;
+  var FUN='<svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg>';
+  var CHV='<svg class="fbv" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>';
+  function closePopup(){var p=document.getElementById('pn');if(p)p.style.display='none';var q=document.getElementById('pop');if(q)q.classList.remove('on')}
+  function setOpen(wrap,on,instant){
+    clearTimeout(tmr);
+    if(on){
+      wrap.style.setProperty('--fbh',wrap.scrollHeight+'px');
+      if(instant){wrap.classList.add('open');wrap.style.setProperty('--fbh','none')}
+      else{wrap.classList.add('open');tmr=setTimeout(function(){wrap.style.setProperty('--fbh','none')},400)}
+    }else{
+      closePopup();
+      if(instant){wrap.style.setProperty('--fbh','0px');wrap.classList.remove('open')}
+      else{wrap.style.setProperty('--fbh',wrap.scrollHeight+'px');void wrap.offsetHeight;wrap.style.setProperty('--fbh','0px');wrap.classList.remove('open')}
+    }
+    isOpen=on;sync();
+  }
+  function count(fb){
+    var n=fb.querySelectorAll('.f button.on,.fp.on').length;
+    fb.querySelectorAll('input[type=date]').forEach(function(i){if(i.value)n++});
+    return n;
+  }
+  function sync(){
+    var fb=document.getElementById('fb');if(!fb)return;
+    var t=document.querySelector('.fbt');if(!t)return;
+    t.setAttribute('aria-expanded',isOpen?'true':'false');
+    var n=count(fb),b=t.querySelector('.fbn');b.textContent=n?n+' active':'';
+    t.hidden=!fb.children.length;
+  }
+  function ensure(){
+    var fb=document.getElementById('fb');
+    if(!fb){document.querySelectorAll('.fbt').forEach(function(t){t.remove()});return}
+    var wrap=fb.parentElement;
+    if(!wrap.classList.contains('fbc')){
+      wrap=document.createElement('div');wrap.className='fbc';
+      fb.parentNode.insertBefore(wrap,fb);wrap.appendChild(fb);
+      var a=document.createElement('div');a.className='fba';
+      a.innerHTML='<button type="button" class="fbr">Reset</button><button type="button" class="fbp">Apply</button>';
+      wrap.appendChild(a);
+      a.querySelector('.fbr').onclick=function(){var r=fb.querySelector('.rs');if(r)r.click();setTimeout(sync,60)};
+      a.querySelector('.fbp').onclick=function(){setOpen(wrap,false)};
+      if(isOpen&&MQ.matches)setOpen(wrap,true,true);
+      if(obs)obs.disconnect();
+      obs=new MutationObserver(function(){sync()});
+      obs.observe(fb,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+    }
+    var host=fb.closest('.fbw')||wrap;
+    var prev=host.previousElementSibling;
+    if(!prev||!prev.classList.contains('fbt')){
+      document.querySelectorAll('.fbt').forEach(function(t){t.remove()});
+      var t=document.createElement('button');t.type='button';t.className='fbt';t.setAttribute('aria-expanded','false');
+      t.innerHTML=FUN+'<span class="fbl">Filters</span><span class="fbn"></span>'+CHV;
+      t.onclick=function(){var w=document.querySelector('.fbc');if(w)setOpen(w,!isOpen)};
+      host.parentNode.insertBefore(t,host);
+    }
+    sync();
+  }
+  function sched(){cancelAnimationFrame(raf);raf=requestAnimationFrame(ensure)}
+  new MutationObserver(sched).observe(document.body,{childList:true,subtree:true});
+  document.addEventListener('change',function(e){if(e.target.closest&&e.target.closest('#fb'))sync()});
+  (MQ.addEventListener?MQ.addEventListener.bind(MQ,'change'):MQ.addListener.bind(MQ))(function(){
+    var w=document.querySelector('.fbc');if(w){w.style.removeProperty('--fbh');if(!MQ.matches)w.classList.remove('open')}
+    if(!MQ.matches){isOpen=false;sync()}
+  });
+  ensure();
+})();
+</script>
 </body>
 
 </html>
