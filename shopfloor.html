@@ -3005,6 +3005,681 @@
             font-size: 10px;
             font-weight: 700
         }
+
+        /* ===== OEE Performance Overview (isolated styles · prefix .oe) ===== */
+        .oe {
+            --b1: #1f6fe5;
+            --b2: #0b3d94;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            animation: oeIn .45s ease both
+        }
+
+        @keyframes oeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .oe * {
+            box-sizing: border-box
+        }
+
+        .oe-hd {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            padding: 6px 4px
+        }
+
+        .oe-hd svg.lg {
+            width: 54px;
+            height: 54px;
+            flex: none
+        }
+
+        .oe-hd h2 {
+            margin: 0;
+            font-size: clamp(18px, 2.4vw, 28px);
+            font-weight: 800;
+            color: #0b2f73;
+            letter-spacing: -.3px
+        }
+
+        .oe-hd p {
+            margin: 2px 0 0;
+            font-size: clamp(11px, 1.2vw, 14px);
+            font-weight: 600;
+            color: #3f5a8c
+        }
+
+        .oe-hd .tx {
+            flex: 1;
+            min-width: 220px
+        }
+
+        .oe-st {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 800;
+            font-size: 13px;
+            line-height: 1.15;
+            box-shadow: 0 6px 16px rgba(20, 120, 60, .35);
+            background: linear-gradient(135deg, #1fa653, #0c7a3a)
+        }
+
+        .oe-st small {
+            display: block;
+            font-weight: 600;
+            font-size: 10.5px;
+            opacity: .9
+        }
+
+        .oe-st.w {
+            background: linear-gradient(135deg, #f5a000, #d97500);
+            box-shadow: 0 6px 16px rgba(217, 117, 0, .35)
+        }
+
+        .oe-st i {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #fff;
+            display: grid;
+            place-items: center;
+            flex: none
+        }
+
+        .oe-st i svg {
+            width: 15px;
+            height: 15px;
+            stroke: #0c7a3a;
+            fill: none;
+            stroke-width: 3
+        }
+
+        .oe-st.w i svg {
+            stroke: #d97500
+        }
+
+        .oe-kp {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px
+        }
+
+        .oe-k {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            padding: 16px 16px 22px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-height: 112px;
+            box-shadow: 0 10px 22px rgba(15, 42, 90, .22);
+            transition: transform .2s, box-shadow .2s;
+            border: 2px solid rgba(255, 255, 255, .55)
+        }
+
+        .oe-k:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 28px rgba(15, 42, 90, .3)
+        }
+
+        .oe-k.a {
+            background: linear-gradient(135deg, #2f8bff, #0b4fc7)
+        }
+
+        .oe-k.p {
+            background: linear-gradient(135deg, #34c759, #0d8a3a)
+        }
+
+        .oe-k.q {
+            background: linear-gradient(135deg, #9b5cf6, #5b21b6)
+        }
+
+        .oe-k.e {
+            background: linear-gradient(135deg, #ffb020, #e8640c)
+        }
+
+        .oe-k .ic {
+            width: clamp(44px, 5vw, 64px);
+            height: clamp(44px, 5vw, 64px);
+            flex: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .16);
+            display: grid;
+            place-items: center;
+            border: 2px solid rgba(255, 255, 255, .45)
+        }
+
+        .oe-k .ic svg {
+            width: 60%;
+            height: 60%;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .oe-k .bd {
+            position: relative;
+            z-index: 1;
+            min-width: 0
+        }
+
+        .oe-k .kl {
+            font-size: clamp(13px, 1.5vw, 18px);
+            font-weight: 700;
+            opacity: .95
+        }
+
+        .oe-k .kv {
+            font-size: clamp(28px, 3.6vw, 46px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -1px
+        }
+
+        .oe-k .kd {
+            display: inline-block;
+            margin-top: 3px;
+            padding: 1px 9px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, .2);
+            font-size: 12.5px;
+            font-weight: 800
+        }
+
+        .oe-k .kd.up {
+            color: #d9ffe3
+        }
+
+        .oe-k .kd.dn {
+            color: #ffe0e0
+        }
+
+        .oe-k .wv {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 34px;
+            width: 100%;
+            opacity: .28
+        }
+
+        .oe-g2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px
+        }
+
+        .oe-g3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.45fr;
+            gap: 14px
+        }
+
+        .oe-c {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(15, 42, 90, .12);
+            border: 1px solid #cfdcf3;
+            overflow: hidden;
+            min-width: 0;
+            transition: box-shadow .2s, transform .2s
+        }
+
+        .oe-c:hover {
+            box-shadow: 0 12px 26px rgba(15, 42, 90, .18)
+        }
+
+        .oe-h {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 14px;
+            color: #fff;
+            font-weight: 800;
+            font-size: clamp(13px, 1.3vw, 16px);
+            background: linear-gradient(90deg, #1b56c4, #0b3d94);
+            flex-wrap: wrap
+        }
+
+        .oe-h svg {
+            width: 22px;
+            height: 22px;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex: none
+        }
+
+        .oe-h .t {
+            flex: 1;
+            min-width: 120px
+        }
+
+        .oe-h.pu {
+            background: linear-gradient(90deg, #6d35d6, #4a1fa8)
+        }
+
+        .oe-h.gr {
+            background: linear-gradient(90deg, #1fa653, #0d7a3a)
+        }
+
+        .oe-h.rd {
+            background: linear-gradient(90deg, #e5383b, #b3121a)
+        }
+
+        .oe-lg {
+            display: flex;
+            gap: 12px;
+            font-size: 11.5px;
+            font-weight: 700;
+            background: rgba(255, 255, 255, .95);
+            color: #0f2a5a;
+            border-radius: 20px;
+            padding: 3px 11px;
+            flex-wrap: wrap
+        }
+
+        .oe-lg span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap
+        }
+
+        .oe-lg i {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block
+        }
+
+        .oe-b {
+            padding: 8px 10px 10px
+        }
+
+        .oe-b svg.ch {
+            width: 100%;
+            height: auto;
+            display: block
+        }
+
+        .oe-t {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: clamp(12px, 1.2vw, 14px)
+        }
+
+        .oe-t th {
+            padding: 7px 8px;
+            text-align: center;
+            font-weight: 800;
+            color: #0f2a5a;
+            background: #eef3fc;
+            font-size: 12px
+        }
+
+        .oe-t td {
+            padding: 9px 8px;
+            text-align: center;
+            font-weight: 700;
+            border-top: 1px solid #e3ebf8
+        }
+
+        .oe-t td.bn {
+            color: #1b56c4
+        }
+
+        .oe-t tr:hover td {
+            background: #f5f9ff
+        }
+
+        .oe-t .rk {
+            display: inline-grid;
+            place-items: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #eef3fc;
+            font-size: 12px
+        }
+
+        .oe-dl {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 800
+        }
+
+        .oe-dl.up {
+            color: #0d7a3a;
+            background: #e2f7e9
+        }
+
+        .oe-dl.dn {
+            color: #b3121a;
+            background: #fde5e6
+        }
+
+        .oe-dl.na {
+            color: #6d7c99;
+            background: #eef1f7
+        }
+
+        .oe-em {
+            padding: 30px 12px;
+            text-align: center;
+            color: #6d7c99;
+            font-weight: 600;
+            font-size: 13px
+        }
+
+        .oe-nt {
+            font-size: 11px;
+            color: #6d7c99;
+            font-weight: 600;
+            padding: 0 4px
+        }
+
+        @media(max-width:1100px) {
+            .oe-kp {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .oe-g3 {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .oe-g3>.oe-c:last-child {
+                grid-column: 1/-1
+            }
+        }
+
+        @media(max-width:767px) {
+
+            .oe-g2,
+            .oe-g3 {
+                grid-template-columns: 1fr
+            }
+
+            .oe-kp {
+                gap: 10px
+            }
+
+            .oe-k {
+                padding: 12px 10px 20px;
+                gap: 9px;
+                min-height: 96px
+            }
+
+            .oe-hd svg.lg {
+                width: 40px;
+                height: 40px
+            }
+
+            .oe-st {
+                padding: 6px 11px
+            }
+        }
+
+        @media(max-width:420px) {
+            .oe-kp {
+                grid-template-columns: 1fr
+            }
+        }
+
+        /* OEE header replaces the page title */
+        main:has(.oe-top) .ttl,
+        main:has(.oe-top) .sub {
+            display: none
+        }
+
+        .oe-top {
+            margin-bottom: 8px
+        }
+
+        .oe-lg .oe-yb {
+            cursor: pointer;
+            padding: 0 3px;
+            border-radius: 6px;
+            transition: opacity .15s
+        }
+
+        .oe-lg .oe-yb:hover {
+            background: #eef3fc;
+            text-decoration: underline
+        }
+
+        .oe-lg .oe-yb.off {
+            opacity: .4;
+            text-decoration: line-through
+        }
+
+        .oe-g4 {
+            display: grid;
+            grid-template-columns: 2.2fr 1fr;
+            gap: 14px
+        }
+
+        .oe-av {
+            margin-left: auto;
+            background: rgba(255, 255, 255, .92);
+            color: #0f2a5a;
+            border-radius: 14px;
+            padding: 3px 12px;
+            font-size: 13px;
+            font-weight: 800
+        }
+
+        .oe-in {
+            list-style: none;
+            margin: 0;
+            padding: 6px 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 9px
+        }
+
+        .oe-in li {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            font-size: clamp(12.5px, 1.2vw, 14.5px);
+            font-weight: 600;
+            color: #1c2f57
+        }
+
+        .oe-in li i {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #22a447;
+            display: grid;
+            place-items: center;
+            flex: none;
+            margin-top: 1px
+        }
+
+        .oe-in li i svg {
+            width: 12px;
+            height: 12px;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 3.2
+        }
+
+        .oe-ar.up {
+            color: #0d7a3a;
+            font-weight: 800
+        }
+
+        .oe-ar.dn {
+            color: #b3121a;
+            font-weight: 800
+        }
+
+        .oe-fc {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 2px 2px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #d9f7e2, #b6ebc7);
+            border: 1px solid #8fd6a6;
+            color: #0b4d24;
+            font-size: 13.5px;
+            font-weight: 600
+        }
+
+        .oe-fc svg {
+            width: 34px;
+            height: 34px;
+            flex: none;
+            stroke: #e5383b;
+            fill: none;
+            stroke-width: 2
+        }
+
+        @media(max-width:1100px) {
+            .oe-g4 {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .oe-c.soft.b {
+            background: linear-gradient(180deg, #dcecff, #f3f9ff);
+            border-color: #b7d3f6
+        }
+
+        .oe-c.soft.g {
+            background: linear-gradient(180deg, #d9f4e1, #f2fbf5);
+            border-color: #b2e0c1
+        }
+
+        .soft .oe-h {
+            background: transparent;
+            color: #0f2a5a
+        }
+
+        .soft.b .oe-h svg {
+            stroke: #1b56c4
+        }
+
+        .soft.g .oe-h svg {
+            stroke: #1e9e3a
+        }
+
+        .soft .oe-av {
+            background: #c9e0fb;
+            color: #0b3d94
+        }
+
+        .soft.g .oe-av {
+            background: #c3eed0;
+            color: #0d6a30
+        }
+
+        .oe-pk {
+            cursor: pointer
+        }
+
+        text.oe-pk:hover {
+            fill: #1b56c4;
+            text-decoration: underline
+        }
+
+        #oepop {
+            position: fixed;
+            z-index: 10001;
+            display: none;
+            background: #fff;
+            border: 1px solid #cfdcf3;
+            border-radius: 14px;
+            box-shadow: 0 18px 40px rgba(15, 42, 90, .3);
+            width: min(660px, calc(100vw - 16px));
+            max-height: min(72vh, 540px);
+            overflow: auto;
+            font-family: Inter, system-ui, sans-serif;
+            color: #0f2a5a
+        }
+
+        #oepop .oe-ph {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: linear-gradient(90deg, #1b56c4, #0b3d94);
+            color: #fff;
+            font-size: 14px
+        }
+
+        #oepop .oe-px {
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: rgba(255, 255, 255, .2);
+            font-size: 12px
+        }
+
+        #oepop .oe-px:hover {
+            background: rgba(255, 255, 255, .35)
+        }
+
+        #oepop tr.oe-br {
+            cursor: pointer
+        }
+
+        #oepop tr.oe-br:hover td {
+            background: #eef5ff
+        }
+
+        #oepop tr.oe-mr td {
+            background: #f6f9ff;
+            font-weight: 600;
+            font-size: 12.5px
+        }
+
+        #oepop tr.oe-mr td.bn {
+            padding-left: 34px;
+            color: #3f5a8c
+        }
+
+        #oepop .oe-cv {
+            display: inline-block;
+            width: 14px;
+            margin-right: 4px;
+            color: #6d7c99
+        }
     </style>
     <style id="rsp-v1">
         /* ===================== RESPONSIVE v1 · Mobile collapsible filter ===================== */
@@ -3574,7 +4249,7 @@
             setTimeout(() => $("#psr") && $("#psr").focus(), 0)
         }
         function closePop() { $("#pop").classList.remove("on"); POPK = null }
-        let RT = 0; function changed() { syncPills(); fitBar(); clearTimeout(RT); RT = setTimeout(renderCards, 40) }
+        let RT = 0; function changed() { syncPills(); fitBar(); clearTimeout(RT); RT = setTimeout(() => CUR === "oee" ? renderOEE() : renderCards(), 40) }
         function bindFilters() {
             document.querySelectorAll("#fb .fp").forEach(b => b.onclick = e => { e.stopPropagation(); openPop(b) });
             $("#dfrom").value = F.from; $("#dto").value = F.to;
@@ -4805,6 +5480,7 @@ ${sel(".ft")}{padding:7px 12px;font-size:11.5px;font-weight:600;color:#6d7c99;ba
             document.querySelectorAll(".nv[data-p]").forEach(n => n.classList.toggle("on", n.dataset.p === p));
             $("#pt").textContent = PG[p][0]; $("#ps").textContent = PG[p][1];
             if (p === "prod") showProd();
+            else if (p === "oee") showOEE();
             else $("#pgc").innerHTML = `<div class="empty"><b>${PG[p][0]}</b>No data connected yet. This page will fill in once its Excel source is added in Admin Console → Data Manager.</div>`;
             location.hash = p
         }
@@ -4820,6 +5496,437 @@ ${sel(".ft")}{padding:7px 12px;font-size:11.5px;font-weight:600;color:#6d7c99;ba
             ERP.sideBanner([M.id, ...M.subs.map(s => s.id)], SUB ? [[SUB.id, "shopfloor"]] : []);
             const h = location.hash.slice(1); show(PG[h] ? h : "oee")
         })().catch(e => console.error(e));
+    </script>
+    <script id="oee-v1-js">
+        /* ===================== OEE Performance Overview (isolated) =====================
+           Same Production Performance filter bar/state (F, filterBarHTML, bindFilters) and the same packed data (P).
+           Formulas = erp.js standard:  A = 1 − Σunplanned DT ÷ Σshift length · P = Σeffprod ÷ Σcapacity · Q = Σgood ÷ Σtotal
+           OEE = A × P × Q · PPPH = Σgood ÷ Σmanhours · Cavity Loss Ratio = Σ lost cavity ÷ Σ standard cavity · Cycle Loss Ratio = Σ lost cycle ÷ Σ standard cycle */
+        (function () {
+            const C0 = { A: "#1f6fe5", P: "#22a447", Q: "#f5a623", E: "#e8640c", cav: "#f5a623", cyc: "#e5383b", y1: "#1b4fb8", y2: "#35b4f0", pp: "#5b21b6" };
+            const pf = v => parseFloat(String(v == null ? "" : v).replace(/,/g, "")) || 0, K = 11;
+            const SV = (p, x) => `<svg viewBox="0 0 24 24" ${x || ""}>${p}</svg>`;
+            const IC = {
+                gear: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/><circle cx="12" cy="12" r="7.5"/>',
+                rocket: '<path d="M12 2c3 2 5 5.5 5 9l-2 4H9l-2-4c0-3.5 2-7 5-9zM9 15l-2 4 3-1M15 15l2 4-3-1"/><circle cx="12" cy="9" r="1.6"/>',
+                shield: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+                cup: '<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/>',
+                cal: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/>', trend: '<path d="M3 17l6-6 4 4 8-9M15 6h6v6"/>',
+                bars: '<path d="M5 20V11M11 20V5M17 20v-6M3 20h18"/>', warn: '<path d="M12 3l10 18H2zM12 10v5M12 18v.5"/>', ck: '<path d="M5 12l4 4 10-10"/>'
+            };
+            const MS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            let HD = "", HID = new Set();
+            /* day-wise metrics of one month (same filters; used when exactly one Month is selected) */
+            function daily(y, mo) {
+                const { D, C, M, n, dd } = P, out = Array.from({ length: 31 }, () => new Float64Array(K));
+                const g = k => (M && M[k]) || null, SH = g("shiftlengthmin"), UN = g("totalunplanneddt"), GD = g("goodproduction"), TT = g("totalproduction"), CP = g("capacity"), EF = g("effprod"), MH = g("manhours");
+                const dim = k => C[k] && D[k] && D[k].length ? { c: C[k], v: D[k].map(pf) } : null;
+                const sC = dim("standardcavity"), rC = dim("runningcavity"), sY = dim("standardcycle"), rY = dim("runningcycle");
+                const dOK = dd.map(x => x.y === y && x.mo === mo && (!F.from || x.s >= F.from) && (!F.to || x.s <= F.to));
+                const act = []; FDEF.forEach(f => { if (f === "date" || !f[2] || !F[f[0]].size || !D[f[2]] || !C[f[2]]) return; const ok = new Uint8Array(D[f[2]].length); F[f[0]].forEach(c => ok[c] = 1); act.push({ ok, col: C[f[2]] }) });
+                for (let i = 0; i < n; i++) {
+                    const d = C.date[i]; if (!dOK[d]) continue;
+                    let ok = true; for (let k = 0; k < act.length; k++) if (!act[k].ok[act[k].col[i]]) { ok = false; break } if (!ok) continue;
+                    const a = out[+dd[d].s.slice(8, 10) - 1];
+                    if (SH) a[0] += SH[i] || 0; if (UN) a[1] += UN[i] || 0; if (GD) a[2] += GD[i] || 0; if (TT) a[3] += TT[i] || 0; if (CP) a[4] += CP[i] || 0; if (EF) a[5] += EF[i] || 0; if (MH) a[6] += MH[i] || 0;
+                    if (sC && rC) { const s = sC.v[sC.c[i]], r = rC.v[rC.c[i]]; if (s > 0 && r > 0) { a[7] += s; a[8] += Math.max(0, s - r) } }
+                    if (sY && rY) { const s = sY.v[sY.c[i]], r = rY.v[rY.c[i]]; if (s > 0 && r > 0) { a[9] += s; a[10] += Math.max(0, r - s) } }
+                }
+                return out.slice(0, new Date(y, mo, 0).getDate()).map(a => (a[0] > 0 || a[3] > 0) ? met(a) : null)
+            }
+
+            /* ---- one pass over the rows (same filters as Production Performance; Year/Month are applied afterwards at month level) ---- */
+            function base() {
+                const { D, C, M, n, dd, mi0, mi1 } = P, nm = mi1 - mi0 + 1, bayD = D.bayname && D.bayname.length ? D.bayname : [""], nb = bayD.length;
+                const S = new Float64Array(nm * nb * K), dOK = new Uint8Array(dd.length);
+                dd.forEach((x, i) => { dOK[i] = (!F.from || x.s >= F.from) && (!F.to || x.s <= F.to) ? 1 : 0 });
+                const act = []; FDEF.forEach(f => { if (f === "date" || !f[2] || !F[f[0]].size || !D[f[2]] || !C[f[2]]) return; const ok = new Uint8Array(D[f[2]].length); F[f[0]].forEach(c => ok[c] = 1); act.push({ ok, col: C[f[2]] }) });
+                const g = k => (M && M[k]) || null, SH = g("shiftlengthmin"), UN = g("totalunplanneddt"), GD = g("goodproduction"), TT = g("totalproduction"), CP = g("capacity"), EF = g("effprod"), MH = g("manhours");
+                const dim = k => C[k] && D[k] && D[k].length ? { c: C[k], v: D[k].map(pf) } : null;
+                const sC = dim("standardcavity"), rC = dim("runningcavity"), sY = dim("standardcycle"), rY = dim("runningcycle"), bc = C.bayname, dc = C.date;
+                for (let i = 0; i < n; i++) {
+                    const d = dc[i]; if (!dOK[d]) continue;
+                    let ok = true; for (let k = 0; k < act.length; k++) if (!act[k].ok[act[k].col[i]]) { ok = false; break } if (!ok) continue;
+                    const q = ((dd[d].mi - mi0) * nb + (bc ? bc[i] : 0)) * K;
+                    if (SH) S[q] += SH[i] || 0; if (UN) S[q + 1] += UN[i] || 0; if (GD) S[q + 2] += GD[i] || 0; if (TT) S[q + 3] += TT[i] || 0;
+                    if (CP) S[q + 4] += CP[i] || 0; if (EF) S[q + 5] += EF[i] || 0; if (MH) S[q + 6] += MH[i] || 0;
+                    if (sC && rC) { const s = sC.v[sC.c[i]], r = rC.v[rC.c[i]]; if (s > 0 && r > 0) { S[q + 7] += s; S[q + 8] += Math.max(0, s - r) } }
+                    if (sY && rY) { const s = sY.v[sY.c[i]], r = rY.v[rY.c[i]]; if (s > 0 && r > 0) { S[q + 9] += s; S[q + 10] += Math.max(0, r - s) } }
+                }
+                return { S, nm, nb, bayD, mi0 };
+            }
+            const sumOf = (B, mis, b) => { const a = new Float64Array(K); mis.forEach(m => { for (let y = 0; y < B.nb; y++) { if (b != null && y !== b) continue; const q = (m * B.nb + y) * K; for (let k = 0; k < K; k++) a[k] += B.S[q + k] } }); return a };
+            const met = a => {
+                const A = a[0] > 0 ? 1 - a[1] / a[0] : null, Pf = a[4] > 0 ? a[5] / a[4] : null, Q = a[3] > 0 ? a[2] / a[3] : null;
+                return { A: A == null ? null : A * 100, P: Pf == null ? null : Pf * 100, Q: Q == null ? null : Q * 100, E: A != null && Pf != null && Q != null ? A * Pf * Q * 100 : null, H: a[6] > 0 ? a[2] / a[6] : null, cav: a[7] > 0 ? a[8] / a[7] * 100 : null, cyc: a[9] > 0 ? a[10] / a[9] * 100 : null }
+            };
+            const has = (B, m) => { for (let y = 0; y < B.nb; y++) { const q = (m * B.nb + y) * K; if (B.S[q] > 0 || B.S[q + 3] > 0 || B.S[q + 2] > 0) return true } return false };
+            const fp = (v, d) => v == null ? "—" : v.toFixed(d == null ? 1 : d) + "%", fn = v => v == null ? "—" : Math.round(v).toLocaleString("en-US");
+            const dl = (a, b, u) => (a == null || b == null) ? null : a - b;
+            const dpill = (d, u) => d == null ? `<span class="oe-dl na">—</span>` : `<span class="oe-dl ${d >= 0 ? "up" : "dn"}">${d >= 0 ? "▲" : "▼"} ${d >= 0 ? "+" : "−"}${Math.abs(d).toFixed(u === "n" ? 0 : 1)}${u === "n" ? "" : "%"}</span>`;
+            const em = t => `<div class="oe-em">${t || "No data for the selected filters"}</div>`;
+
+            /* ---- generic SVG line chart ---- */
+            function line(o) {
+                const W = 640, H = o.h || 270, L = 46, R = 22, T = 26, B = 32, pw = W - L - R, ph = H - T - B, cats = o.cats, N = cats.length;
+                const all = []; o.series.forEach(s => s.v.forEach(v => { if (v != null) all.push(v) })); if (!all.length) return em();
+                let lo = Math.min(...all), hi = Math.max(...all); const sp = (hi - lo) || Math.max(1, Math.abs(hi) * .1); lo -= sp * .3; hi += sp * .3; if (o.zero) lo = Math.min(lo, 0); if (lo < 0 && !o.neg) lo = 0; if (o.cap) hi = Math.min(hi, o.cap);
+                let stp = (() => { const r = (hi - lo) / 4, p = Math.pow(10, Math.floor(Math.log10(r))); return [1, 2, 2.5, 5, 10].map(x => x * p).find(x => x >= r - 1e-9) })(); if (o.dec === 0) stp = Math.max(1, Math.round(stp)); lo = Math.floor(lo / stp) * stp; hi = Math.ceil(hi / stp) * stp;
+                const X = i => L + (N > 1 ? i / (N - 1) * pw : pw / 2), Y = v => T + ph - (v - lo) / (hi - lo) * ph, dec = o.dec == null ? 1 : o.dec, u = o.unit || "", f = v => v.toFixed(dec) + u;
+                let s = `<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.label || "chart"}">`;
+                for (let v = lo; v <= hi + stp / 1e6; v += stp) { const y = Y(v); s += `<line x1="${L}" x2="${W - R}" y1="${y}" y2="${y}" stroke="#e1e9f6"/><text x="${L - 7}" y="${y + 4}" text-anchor="end" font-size="11.5" font-weight="700" fill="#2b4170">${(+v.toFixed(2)) + (u === "%" ? "%" : "")}</text>` }
+                cats.forEach((c, i) => { if (N > 8 && o.skip && i % o.skip) return; s += `<text x="${X(i)}" y="${H - 10}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#2b4170"${o.xpk ? ` class="oe-pk" data-pk="${o.xpk(i)}"` : ""}>${c}</text>` });
+                o.series.forEach((sr, si) => {
+                    let d = "", seg = false, pts = [];
+                    let px = 0, py = 0; sr.v.forEach((v, i) => { if (v == null) { if (o.join === false) seg = false; return } const x = X(i), y = Y(v); d += (seg ? (o.smooth ? `C${((px + x) / 2).toFixed(1)} ${py.toFixed(1)} ${((px + x) / 2).toFixed(1)} ${y.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)} ` : `L${x.toFixed(1)} ${y.toFixed(1)} `) : `M${x.toFixed(1)} ${y.toFixed(1)} `); px = x; py = y; seg = true; pts.push(i) });
+                    if (!pts.length) return;
+                    if (o.area && o.series.length === 1 && pts.length > 1) s += `<path d="${d}L${X(pts[pts.length - 1])} ${T + ph} L${X(pts[0])} ${T + ph} Z" fill="${sr.c}" opacity="${o.smooth ? ".2" : ".12"}"/>`;
+                    s += `<path d="${d}" fill="none" stroke="${sr.c}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"${sr.dash ? ' stroke-dasharray="6 4"' : ""}/>`;
+                    pts.forEach(i => {
+                        const v = sr.v[i], x = X(i), y = Y(v);
+                        s += `<circle cx="${x}" cy="${y}" r="4.6" fill="${sr.c}" stroke="#fff" stroke-width="1.8"/>`;
+                        const last = i === pts[pts.length - 1];
+                        if (o.labels === "all" || (o.labels === "alt" && true)) {
+                            const up = o.labels === "alt" ? (() => { let rk = 0; o.series.forEach((z, zi) => { const w = z.v[i]; if (w != null && (w > v || (w === v && zi < si))) rk++ }); const cn = o.series.filter(z => z.v[i] != null).length; return rk < cn / 2 })() : true, ty = up ? y - 9 : y + 17;
+                            s += `<text x="${x}" y="${ty}" text-anchor="middle" font-size="${N > 8 && o.series.length > 1 ? 9.5 : 10.5}" font-weight="800" fill="${sr.c}" stroke="#fff" stroke-width="3" paint-order="stroke">${f(v)}</text>`
+                        } else if (o.labels === "end" && last) {
+                            const w = f(v).length * 7 + 14; s += `<g><rect x="${Math.min(x + 5, W - w - 2)}" y="${y - 10}" width="${w}" height="20" rx="10" fill="${sr.c}"/><text x="${Math.min(x + 5, W - w - 2) + w / 2}" y="${y + 4.5}" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">${f(v)}</text></g>`
+                        }
+                        s += `<circle class="trp${o.pk ? " oe-pk" : ""}" cx="${x}" cy="${y}" r="11" fill="transparent"${o.pk ? ` data-pk="${o.pk(i, sr)}"` : ""}${o.lk ? ` data-lk="${o.lk(i, sr)}" style="cursor:pointer"` : ""} data-h="${cats[i]}${sr.n ? " · " + sr.n : ""}" data-v="${f(v)}"/>`
+                    })
+                });
+                return s + "</svg>"
+            }
+            const card = (cls, ico, title, right, body) => `<section class="oe-c"><div class="oe-h ${cls}">${SV(IC[ico])}<span class="t">${title}</span>${right || ""}</div><div class="oe-b">${body}</div></section>`;
+            const lgd = (a, id) => `<div class="oe-lg">${a.map(x => `<span class="oe-yb${HID.has(id + ":" + x[0]) ? " off" : ""}" data-k="${id}:${x[0]}" title="Click to show / hide ${x[0]}"><i style="background:${x[1]}"></i>${x[0]}</span>`).join("")}</div>`;
+            const soft = (k, ico, title, right, body) => `<section class="oe-c soft ${k}"><div class="oe-h">${SV(IC[ico])}<span class="t">${title}</span>${right || ""}</div><div class="oe-b">${body}</div></section>`;
+            const wave = '<svg class="wv" viewBox="0 0 200 34" preserveAspectRatio="none"><path d="M0 20 C25 6 50 6 75 18 S125 32 150 16 S190 8 200 14 V34 H0Z" fill="#fff"/></svg>';
+            const kcard = (cls, ico, lab, v, d) => `<div class="oe-k ${cls}"><div class="ic">${SV(IC[ico])}</div><div class="bd"><div class="kl">${lab}</div><div class="kv">${fp(v)}</div>${d == null ? "" : `<span class="kd ${d >= 0 ? "up" : "dn"}">${d >= 0 ? "▲ +" : "▼ −"}${Math.abs(d).toFixed(1)}%</span>`}</div>${wave}</div>`;
+            const rankTbl = (rows, hdr) => !rows.length ? em() : `<table class="oe-t"><thead><tr><th>#</th><th>Bay</th><th>OEE %</th><th>${hdr}</th></tr></thead><tbody>${rows.map((r, i) => `<tr><td><span class="rk">${i + 1}</span></td><td class="bn">${esc(r.n)}</td><td>${fp(r.e)}</td><td>${dpill(r.d)}</td></tr>`).join("")}</tbody></table>`;
+
+            function build() {
+                HD = "";
+                const B = base(), { nm, nb, bayD, mi0 } = B, all = [...Array(nm).keys()], hm = all.filter(m => has(B, m));
+                if (!hm.length) return `<div class="oe">${em("No data for the selected filters")}</div>`;
+                const yOf = m => Math.floor((mi0 + m) / 12), mOf = m => (mi0 + m) % 12;
+                const narrowed = F.year.size || F.month.size || F.from || F.to;
+                let per = narrowed ? hm.filter(m => (!F.year.size || F.year.has(String(yOf(m)))) && (!F.month.size || F.month.has(String(mOf(m) + 1)))) : [hm[hm.length - 1]];
+                if (!per.length) return `<div class="oe">${em("No data for the selected Year / Month")}</div>`;
+                const first = per[0], len = per.length, prev = []; for (let m = first - len; m < first; m++) if (m >= 0 && has(B, m)) prev.push(m);
+                const single = per.length === 1, lastM = per[per.length - 1], ty = yOf(lastM);
+                const cur = met(sumOf(B, per)), pre = prev.length ? met(sumOf(B, prev)) : null, dd_ = k => pre ? dl(cur[k], pre[k]) : null;
+                const perLab = single ? MS[mOf(first)] + " " + yOf(first) : (MS[mOf(first)] + " " + yOf(first) + " – " + MS[mOf(lastM)] + " " + yOf(lastM));
+                /* status */
+                const ok = cur.E != null && (pre == null || dd_("E") == null || dd_("E") >= 0);
+                const status = `<div class="oe-st ${ok ? "" : "w"}"><i>${SV(ok ? IC.ck : IC.warn)}</i><div>${ok ? "On Track" : "Needs Attention"}<small>${ok ? "for Excellence" : "below previous period"}</small></div></div>`;
+                const hdr = `<div class="oe-hd">${SV('<path d="M3 21h18" /><path d="M5 18v-5M10 18V9M15 18v-7M20 18V5" stroke-width="2.6"/><path d="M4 9l5-4 4 3 6-5M16 3h3v3" />', 'class="lg" fill="none" stroke="#1b56c4" stroke-linecap="round" stroke-linejoin="round"')}<div class="tx"><h2>Manufacturing Performance Dashboard</h2><p>Real-Time Performance &nbsp;|&nbsp; Data Driven Decision &nbsp;|&nbsp; Continuous Improvement</p></div>${status}</div>`;
+                const kp = `<div class="oe-kp">${kcard("a", "gear", "Availability", cur.A, dd_("A"))}${kcard("p", "rocket", "Performance", cur.P, dd_("P"))}${kcard("q", "shield", "Quality", cur.Q, dd_("Q"))}${kcard("e", "cup", "OEE", cur.E, dd_("E"))}</div>`;
+                /* Year to Year (ignores Year filter — it is a comparison; ≥2 selected years → those) */
+                const yrs = [...new Set(hm.map(yOf))].sort((a, b) => a - b), selY = F.year.size >= 2 ? yrs.filter(y => F.year.has(String(y))) : yrs, yy = selY.slice(-2);
+                const oneM = F.month.size === 1 ? +[...F.month][0] : 0;
+                const yAll = yy.map((y, i) => ({ n: String(y), c: i === yy.length - 1 && yy.length > 1 ? C0.y2 : C0.y1, v: oneM ? daily(y, oneM).map(x => x && x.E) : MS.map((_, mo) => { const m = y * 12 + mo - mi0; return m >= 0 && m < nm && has(B, m) ? met(sumOf(B, [m])).E : null }) }));
+                const yser = yAll.filter(s => !HID.has("yoy:" + s.n)), dN = oneM ? Math.max(0, ...yAll.map(s => s.v.length)) : 12;
+                const ycats = oneM ? Array.from({ length: dN }, (_, i) => String(i + 1)) : MS, yleg = lgd(yAll.map(s => [s.n, s.c]), "yoy");
+                yser.forEach(s => { while (s.v.length < dN) s.v.push(null) });
+                const yoy = card("", "trend", oneM ? `Year to Year Trend (OEE) · ${MS[oneM - 1]} day-wise` : "Year to Year Trend (OEE)", yleg, yser.length ? line({ cats: ycats, series: yser, pk: (i, sr) => `${sr.n}|${oneM || i + 1}|${oneM ? i + 1 : 0}`, xpk: i => `${yser[yser.length - 1].n}|${oneM || i + 1}|${oneM ? i + 1 : 0}`, unit: "%", labels: oneM ? "none" : "alt", skip: 2, cap: 100, label: "Year to Year OEE" }) : em("Click a year above to show its data"));
+                /* Month / period view by bay */
+                const bays = [...Array(nb).keys()].filter(b => sumOf(B, per, b)[0] > 0 || sumOf(B, per, b)[3] > 0).sort((a, b) => nat(bayD[a], bayD[b]));
+                const bcur = bays.map(b => met(sumOf(B, per, b)).E), bpre = bays.map(b => prev.length ? met(sumOf(B, prev, b)).E : null);
+                const mvS = [{ n: single ? "Current Month" : "Selected Period", c: C0.y1, v: bcur }]; if (prev.length) mvS.push({ n: single ? "Last Month" : "Previous Period", c: C0.y2, v: bpre });
+                const mv = card("", "cal", single ? `Month View (${perLab})` : `Period View (${perLab})`, lgd(mvS.map(s => [s.n, s.c]), "mv"), bays.length && mvS.some(s => !HID.has("mv:" + s.n)) ? line({ cats: bays.map(b => bayD[b] || "All"), series: mvS.filter(s => !HID.has("mv:" + s.n)), unit: "%", labels: "alt", cap: 100, label: "Bay-wise OEE" }) : em());
+                /* A/P/Q trend for the trend-year */
+                const mm = oneM ? daily(ty, oneM) : MS.map((_, mo) => { const m = ty * 12 + mo - mi0; return m >= 0 && m < nm && has(B, m) ? met(sumOf(B, [m])) : null }), tc = oneM ? mm.map((_, i) => String(i + 1)) : MS, tl = oneM ? MS[oneM - 1] + " " + ty + " · day-wise" : String(ty), lb = l => oneM ? "none" : l;
+                const apq = card("", "shield", `Availability, Performance &amp; Quality Trend (${tl})`, lgd([["Availability", C0.A], ["Performance", C0.P], ["Quality", C0.Q]], "apq"), line({ cats: tc, skip: 2, unit: "%", labels: "end", cap: 100, label: "A P Q trend", series: [{ n: "Availability", c: C0.A, v: mm.map(x => x && x.A) }, { n: "Performance", c: C0.P, v: mm.map(x => x && x.P) }, { n: "Quality", c: C0.Q, v: mm.map(x => x && x.Q) }].filter(s => !HID.has("apq:" + s.n)) }));
+                const ls = [{ n: "Cavity Loss Ratio", c: C0.cav, v: mm.map(x => x && x.cav) }, { n: "Cycle Loss Ratio", c: C0.cyc, v: mm.map(x => x && x.cyc) }];
+                const loss = ls.some(s => s.v.some(v => v != null)) ? line({ cats: tc, skip: 2, series: ls.filter(s => !HID.has("cl:" + s.n)), unit: "%", labels: lb("alt"), zero: true, label: "Cavity and cycle loss" }) : em("Standard / Running Cavity & Cycle data not found");
+                const lossC = card("pu", "bars", `Cavity &amp; Cycle Time Loss Trend (${tl})`, lgd([["Cavity Loss Ratio", C0.cav], ["Cycle Loss Ratio", C0.cyc]], "cl"), loss);
+                /* Top / lowest bays */
+                const rk = bays.map(b => { const e = met(sumOf(B, per, b)).E, p = prev.length ? met(sumOf(B, prev, b)).E : null; return { n: bayD[b] || "All", e, d: dl(e, p) } }).filter(r => r.e != null);
+                const top = [...rk].sort((a, b) => b.e - a.e).slice(0, 3), low = [...rk].sort((a, b) => a.e - b.e).slice(0, 3), lm = single ? "vs LM" : "vs Prev";
+                const topC = card("gr", "cup", "Top Bay Wise Performance Summary", "", rankTbl(top, lm)), lowC = card("rd", "warn", "Lowest Bay Performance", "", rankTbl(low, lm));
+                /* AVG PPPH */
+                const pp = mm.map(x => x && x.H);
+                const ppC = card("pu", "bars", `AVG PPPH (${tl})`, "", pp.some(v => v != null) ? line({ cats: tc, skip: 2, unit: "", dec: 0, area: true, labels: lb("all"), label: "Average PPPH", series: [{ n: "PPPH", c: C0.pp, v: pp }] }) : em("Man-hours data not found"));
+
+                /* Availability / Quality losses (trend-year) */
+                const tyA = met(sumOf(B, oneM ? [ty * 12 + oneM - 1 - mi0].filter(m => m >= 0 && m < nm) : MS.map((_, mo) => ty * 12 + mo - mi0).filter(m => m >= 0 && m < nm && has(B, m)))), avg = v => v == null ? "" : `<span class="oe-av">Avg: ${(100 - v).toFixed(1)}%</span>`;
+                const aL = mm.map(x => x && x.A != null ? 100 - x.A : null), qL = mm.map(x => x && x.Q != null ? 100 - x.Q : null);
+                const aLc = soft("b", "cal", `Availability Losses % (${tl})`, avg(tyA.A), aL.some(v => v != null) ? line({ cats: tc, skip: 2, series: [{ n: "Availability Loss", c: "#1f8bff", v: aL }], unit: "%", dec: 1, area: true, smooth: true, labels: lb("all"), zero: true, label: "Availability losses", lk: i => oneM ? `${ty}|${oneM}|${i + 1}` : `${ty}|${i + 1}|0` }) : em());
+                const qLc = soft("g", "shield", `Quality Losses % (${tl})`, avg(tyA.Q), qL.some(v => v != null) ? line({ cats: tc, skip: 2, series: [{ n: "Quality Loss", c: "#1e9e3a", v: qL }], unit: "%", dec: 2, area: true, smooth: true, labels: lb("all"), zero: true, label: "Quality losses" }) : em());
+                /* Bay wise summary + insights */
+                const ly = per.map(m => m - 12).filter(m => m >= 0 && has(B, m)), BC = ["#1f6fe5", "#22a447", "#7c3aed", "#f5a623", "#e5383b", "#1b4fb8"];
+                const sumRows = bays.map((b, i) => { const x = met(sumOf(B, per, b)), p = prev.length ? met(sumOf(B, prev, b)) : null, l = ly.length ? met(sumOf(B, ly, b)) : null; return { n: bayD[b] || "All", x, dm: p ? dl(x.E, p.E) : null, dy: l ? dl(x.E, l.E) : null, c: BC[i % BC.length] } });
+                const sumTbl = sumRows.length ? `<div style="overflow-x:auto"><table class="oe-t" style="min-width:560px"><thead><tr><th>Bay</th><th>OEE</th><th>Availability</th><th>Performance</th><th>Quality</th><th>${single ? "vs Last Month" : "vs Prev"}</th><th>vs LY</th></tr></thead><tbody>${sumRows.map(r => `<tr><td class="bn" style="text-align:left"><i style="display:inline-block;width:13px;height:13px;border-radius:3px;background:${r.c};vertical-align:-2px;margin-right:7px"></i>${esc(r.n)}</td><td>${fp(r.x.E)}</td><td>${fp(r.x.A)}</td><td>${fp(r.x.P)}</td><td>${fp(r.x.Q)}</td><td>${dpill(r.dm)}</td><td>${dpill(r.dy)}</td></tr>`).join("")}</tbody></table></div>` : em();
+                const sumC = card("", "bars", "Bay Wise Performance Summary", "", sumTbl);
+                const arr = (d, goodDown) => d == null ? "" : ` <span class="oe-ar ${(goodDown ? d <= 0 : d >= 0) ? "up" : "dn"}">(${d >= 0 ? "▲" : "▼"} ${Math.abs(d).toFixed(1)}${goodDown ? "" : ""}%)</span>`;
+                const best = [...rk].sort((a, b) => b.e - a.e)[0], imp = rk.filter(r => r.d != null).sort((a, b) => b.d - a.d)[0];
+                const useCyc = (cur.cyc || 0) > (cur.cav || 0), lk = useCyc ? "cyc" : "cav", wb = bays.map(b => ({ n: bayD[b] || "All", v: met(sumOf(B, per, b))[lk] })).filter(r => r.v != null).sort((a, b) => b.v - a.v).slice(0, 2);
+                const li = (t) => `<li><i>${SV(IC.ck)}</i><span>${t}</span></li>`;
+                const ins = `<ul class="oe-in">${li(`Overall OEE: <b>${fp(cur.E)}</b>${arr(dd_("E"))}`)}${best ? li(`Best Performing Bay: <b>${esc(best.n)} (${fp(best.e)})</b>`) : ""}${imp ? li(`Top Improvement: <b>${esc(imp.n)} (${imp.d >= 0 ? "+" : "−"}${Math.abs(imp.d).toFixed(1)}%)</b>`) : ""}${cur.cav != null ? li(`Cavity Loss: <b>${fp(cur.cav)}</b>${arr(dd_("cav"), true)}`) : ""}${cur.cyc != null ? li(`Cycle Time Loss: <b>${fp(cur.cyc)}</b>${arr(dd_("cyc"), true)}`) : ""}</ul>${wb.length ? `<div class="oe-fc">${SV('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>')}<div><b>Focus:</b> Reduce ${useCyc ? "Cycle" : "Cavity"} Loss in ${wb.map(r => esc(r.n)).join(" &amp; ")}</div></div>` : ""}`;
+                const insC = card("", "trend", "Key Insights", "", ins);
+                const note = `<div class="oe-nt">KPI, Month View and rankings use the selected period (${perLab})${prev.length ? " vs the equal period before it" : ""}. Trend charts show ${ty}; Year to Year ignores the Year filter. All other filters apply everywhere.</div>`;
+                HD = hdr; return `<div class="oe">${kp}<div class="oe-g2">${yoy}${mv}</div><div class="oe-g2">${aLc}${qLc}</div><div class="oe-g2">${apq}${lossC}</div><div class="oe-g3">${topC}${lowC}${ppC}</div><div class="oe-g4">${sumC}${insC}</div>${note}</div>`
+            }
+
+            /* ---- click a month / date point on Year-to-Year → Bay-wise table → click a Bay → M/C-wise rows ---- */
+            function bdAgg(y, mo, day) {
+                const { D, C, M, n, dd } = P, out = new Map(), g = k => (M && M[k]) || null, A = [g("shiftlengthmin"), g("totalunplanneddt"), g("goodproduction"), g("totalproduction"), g("capacity"), g("effprod"), g("manhours")];
+                const dOK = dd.map(x => x.y === y && x.mo === mo && (!day || +x.s.slice(8, 10) === day) && (!F.from || x.s >= F.from) && (!F.to || x.s <= F.to));
+                const act = []; FDEF.forEach(f => { if (f === "date" || !f[2] || !F[f[0]].size || !D[f[2]] || !C[f[2]]) return; const ok = new Uint8Array(D[f[2]].length); F[f[0]].forEach(c => ok[c] = 1); act.push({ ok, col: C[f[2]] }) });
+                const add = (a, i) => { for (let k = 0; k < 7; k++) if (A[k]) a[k] += A[k][i] || 0 };
+                for (let i = 0; i < n; i++) {
+                    const d = C.date[i]; if (!dOK[d]) continue;
+                    let ok = true; for (let k = 0; k < act.length; k++) if (!act[k].ok[act[k].col[i]]) { ok = false; break } if (!ok) continue;
+                    const bi = C.bayname ? C.bayname[i] : 0; let o = out.get(bi); if (!o) out.set(bi, o = { a: new Float64Array(K), mc: new Map() }); add(o.a, i);
+                    if (C.mcno) { const mc = C.mcno[i]; let q = o.mc.get(mc); if (!q) o.mc.set(mc, q = new Float64Array(K)); add(q, i) }
+                }
+                return out
+            }
+            const BCOL = ["#1f6fe5", "#22a447", "#7c3aed", "#f5a623", "#e5383b", "#1b4fb8"];
+            let BD = null;
+            function bdHTML() {
+                const { cur, prev, title, pl } = BD, { D } = P, bn = b => String((D.bayname || [""])[b] ?? "") || "All", mn = c => String((D.mcno || [])[c] ?? "").trim() || "—";
+                const row = (lab, x, p, cls, bay, col, open) => { const e = met(x), pe = p ? met(p) : null; return `<tr class="${cls}"${bay != null ? ` data-bay="${bay}"` : ""}><td class="bn" style="text-align:left">${col ? `<i style="display:inline-block;width:13px;height:13px;border-radius:3px;background:${col};vertical-align:-2px;margin-right:7px"></i>` : ""}${bay != null ? `<span class="oe-cv">${open ? "▾" : "▸"}</span>` : ""}${esc(lab)}</td><td>${fp(e.E)}</td><td>${fp(e.A)}</td><td>${fp(e.P)}</td><td>${fp(e.Q)}</td><td>${dpill(pe ? dl(e.E, pe.E) : null)}</td></tr>` };
+                const bays = [...cur.keys()].sort((a, b) => nat(bn(a), bn(b)));
+                let rows = ""; bays.forEach((b, i) => {
+                    const o = cur.get(b), po = prev.get(b), open = BD.open.has(b); rows += row(bn(b), o.a, po && po.a, "oe-br", b, BCOL[i % BCOL.length], open);
+                    if (open) [...o.mc.keys()].sort((a, c) => nat(mn(a), mn(c))).forEach(m => { rows += row("M/C " + mn(m), o.mc.get(m), po && po.mc.get(m), "oe-mr").replace('class="oe-mr"', `class="oe-mr" data-mb="${b}" data-mc="${m}"`) })
+                });
+                return `<div class="oe-ph"><b>OEE · ${title}</b><span class="oe-px" id="oepx">✕</span></div>${bays.length ? `<div style="overflow-x:auto"><table class="oe-t" style="min-width:520px"><thead><tr><th>Bay</th><th>OEE</th><th>Availability</th><th>Performance</th><th>Quality</th><th>${pl}</th></tr></thead><tbody>${rows}</tbody></table></div><div class="oe-nt" style="padding:6px 10px">Click a Bay to see its M/C No. wise values</div>` : em()}`
+            }
+            function bdPaint() { const p = document.getElementById("oepop"); p.innerHTML = bdHTML(); document.getElementById("oepx").onclick = () => p.style.display = "none"; p.querySelectorAll("tr.oe-br").forEach(r => r.onclick = () => { const b = +r.dataset.bay; BD.open.has(b) ? BD.open.delete(b) : BD.open.add(b); const st = p.scrollTop; bdPaint(); p.scrollTop = st }); p.querySelectorAll("tr.oe-mr").forEach(r => r.onclick = e => { e.stopPropagation(); lsDonutOE(+r.dataset.mb, +r.dataset.mc, e) }) }
+            document.addEventListener("click", e => {
+                let p = document.getElementById("oepop"); const t = e.target.closest && e.target.closest("#oeb [data-pk]");
+                if (!t) { if (p && p.style.display !== "none" && !e.target.closest("#oepop")) p.style.display = "none"; return }
+                if (!p) { p = document.createElement("div"); p.id = "oepop"; document.body.appendChild(p) }
+                const [yn, mn_, dn] = t.dataset.pk.split("|"), y = +yn, mo = +mn_, day = +dn;
+                let y2 = y, m2 = mo, d2 = 0; if (day) { const q = new Date(y, mo - 1, day - 1); y2 = q.getFullYear(); m2 = q.getMonth() + 1; d2 = q.getDate() } else { m2 = mo - 1; if (!m2) { m2 = 12; y2 = y - 1 } }
+                BD = { cur: bdAgg(y, mo, day), prev: bdAgg(y2, m2, d2), title: day ? `${day} ${MS[mo - 1]} ${y}` : `${MS[mo - 1]} ${y}`, pl: day ? "vs Prev Day" : "vs Last Month", open: new Set(), ymd: [y, mo, day] };
+                bdPaint(); p.style.display = "block";
+                const w = p.offsetWidth, h = p.offsetHeight; let x = e.clientX + 12, yy = e.clientY + 12; if (x + w > innerWidth - 8) x = Math.max(8, innerWidth - w - 8); if (yy + h > innerHeight - 8) yy = Math.max(8, innerHeight - h - 8);
+                p.style.left = x + "px"; p.style.top = yy + "px"; e.stopPropagation()
+            }, true);
+            document.addEventListener("keydown", e => { if (e.key === "Escape") { const p = document.getElementById("oepop"); if (p) p.style.display = "none" } });
+            /* ---- Availability Losses point click → Bay wise (Unplanned breakdown, expand / collapse) → M/C No. wise · popup draggable ---- */
+            const LS_UN = [["machineunplandt", "Machine"], ["moldunplandt", "Mold"], ["materialunplandt", "Material"], ["systemproblemunplandt", "System Problem"], ["utilityunplandt", "Utility"], ["manpowershortageunplandt", "Manpower Shortage"]];
+            const LSO = new Set(); let LSB = null;
+            const lsNew = () => ({ sh: 0, t: 0, s: 0, h: 0, u: new Float64Array(LS_UN.length) });
+            const lsU = a => a.h ? a.t : a.s;   /* Unplanned = totalunplanneddt column (chart-এর সাথে এক সূত্র); না থাকলে category যোগফল */
+            const lsCol = (M, k) => { const key = M && Object.keys(M).find(x => String(x).toLowerCase().replace(/[^a-z]/g, "") === k); return key ? M[key] : null };
+            const lsAdd = (a, i, V) => { if (V.sh) a.sh += +V.sh[i] || 0; V.u.forEach((c, k) => { if (c) { a.u[k] += +c[i] || 0; a.s += +c[i] || 0 } }); if (V.tu) { a.t += +V.tu[i] || 0; a.h = 1 } };
+            const lsSP = a => a.reduce((s, v) => s + v, 0);
+            const lsMin = v => Math.round(v).toLocaleString("en-US");
+            const lsPc = (v, sh) => sh > 0 ? (v / sh * 100).toFixed(1) + "%" : "–";
+            const lsHrs = v => Math.round(v / 60).toLocaleString("en-US");
+            const lsCell = (v, sh) => `${lsMin(v)} min (${lsHrs(v)} Hrs)`;
+            function lsAgg(y, mo, day) {
+                const { D, C, M, n, dd } = P, out = new Map();
+                const V = { sh: lsCol(M, "shiftlengthmin"), tu: lsCol(M, "totalunplanneddt"), u: LS_UN.map(([k]) => lsCol(M, k)) };
+                const dOK = dd.map(x => x.y === y && x.mo === mo && (!day || +x.s.slice(8, 10) === day) && (!F.from || x.s >= F.from) && (!F.to || x.s <= F.to));
+                const act = []; FDEF.forEach(f => { if (f === "date" || !f[2] || !F[f[0]].size || !D[f[2]] || !C[f[2]]) return; const ok = new Uint8Array(D[f[2]].length); F[f[0]].forEach(c => ok[c] = 1); act.push({ ok, col: C[f[2]] }) });
+                for (let i = 0; i < n; i++) {
+                    const d = C.date[i]; if (!dOK[d]) continue;
+                    let ok = true; for (let k = 0; k < act.length; k++) if (!act[k].ok[act[k].col[i]]) { ok = false; break } if (!ok) continue;
+                    const bi = C.bayname ? C.bayname[i] : 0, mc = C.mcno ? C.mcno[i] : 0;
+                    let o = out.get(bi); if (!o) out.set(bi, o = { g: lsNew(), mc: new Map() });
+                    lsAdd(o.g, i, V);
+                    let q = o.mc.get(mc); if (!q) o.mc.set(mc, q = lsNew()); lsAdd(q, i, V);
+                }
+                return out;
+            }
+            function lsTot(map) { const t = lsNew(); map.forEach(o => { t.sh += o.g.sh; t.t += o.g.t; t.s += o.g.s; t.h = t.h || o.g.h; o.g.u.forEach((v, k) => t.u[k] += v) }); return t }
+            function lsSub(arr, sh, other) {
+                const it = LS_UN.map(([, lab], k) => ({ lab, v: arr[k] }));
+                if (Math.abs(other) >= 0.5) it.push({ lab: "Other / Unmapped", v: other });
+                const vis = it.filter(x => Math.abs(x.v) >= 0.5);           /* 0 min / 0.0% category লুকানো */
+                const top = vis.reduce((m, x) => (!m || x.v > m.v) ? x : m, null);  /* সবচেয়ে বেশি category highlight */
+                return vis.map(x => `<tr class="ls-s${x === top ? " ls-hi" : ""}"><td class="ls-l">↳ ${x.lab}</td><td>${lsPc(x.v, sh)}</td><td>${lsCell(x.v, sh)}</td></tr>`).join("");
+            }
+            function lsRows() {
+                const { map, bayName, mcName } = LSB; let h = "";
+                const cell = (k, v, sh) => `<td class="ls-c${LSO.has(k) ? " on" : ""}" data-k="${k}">${lsCell(v, sh)}</td>`;
+                [...map.keys()].sort((a, b) => nat(bayName(a), bayName(b))).forEach(b => {
+                    const o = map.get(b), g = o.g, open = LSO.has("b:" + b), U = lsU(g);
+                    h += `<tr class="ls-r ls-b"><td class="ls-n" data-t="bay" data-b="${b}"><span class="ls-cv">${open ? "▾" : "▸"}</span>${esc(bayName(b))}</td><td>${g.sh > 0 ? (U / g.sh * 100).toFixed(1) + "%" : "–"}</td>${cell("u:" + b, U, g.sh)}</tr>`;
+                    if (LSO.has("u:" + b)) h += lsSub(g.u, U, U - lsSP(g.u));
+                    if (open) [...o.mc.keys()].sort((x, y) => nat(mcName(x), mcName(y))).forEach(c => {
+                        const q = o.mc.get(c), ku = `u:${b}:${c}`, Uq = lsU(q);
+                        h += `<tr class="ls-r ls-m"><td class="ls-n ls-mn" data-t="mc" data-b="${b}" data-c="${c}">M/C ${esc(mcName(c))}</td><td>${q.sh > 0 ? (Uq / q.sh * 100).toFixed(1) + "%" : "–"}</td>${cell(ku, Uq, q.sh)}</tr>`;
+                        if (LSO.has(ku)) h += lsSub(q.u, Uq, Uq - lsSP(q.u));
+                    });
+                });
+                return h;
+            }
+            function lsHTML() {
+                const { tot, title } = LSB, U1 = lsU(tot);
+                return `<div class="ls-h"><b>Availability Losses · ${esc(title)}</b><span class="ls-x" id="lsx">✕</span></div>` +
+                    `<div class="ls-t"><span>Total Breakdown</span><b>${lsMin(U1)} min (${lsHrs(U1)} Hrs)</b><em>${lsPc(U1, tot.sh)}</em></div>` +
+                    `<div class="ls-w"><table class="ls-tb"><thead><tr><th>Bay</th><th>Loss %</th><th>Unplanned Breakdown</th></tr></thead><tbody>${lsRows() || `<tr><td colspan="3">No breakdown data</td></tr>`}</tbody></table></div>` +
+                    `<div class="ls-n2">Bay click → M/C No. wise · Unplanned value click → breakdown details · Header drag → move</div>`;
+            }
+            function lsPaint() {
+                const p = document.getElementById("lsop"); const st = p.scrollTop; p.innerHTML = lsHTML(); p.scrollTop = st;
+                document.getElementById("lsx").onclick = () => p.style.display = "none";
+                p.querySelectorAll("[data-k]").forEach(c => c.onclick = e => { e.stopPropagation(); const k = c.dataset.k; LSO.has(k) ? LSO.delete(k) : LSO.add(k); lsPaint() });
+                p.querySelectorAll("[data-t='bay']").forEach(c => c.onclick = () => { const k = "b:" + c.dataset.b; LSO.has(k) ? LSO.delete(k) : LSO.add(k); lsPaint() });
+                p.querySelectorAll("[data-t='mc']").forEach(c => c.onclick = e => { e.stopPropagation(); lsDonut(+c.dataset.b, +c.dataset.c, e) });
+            }
+            (function () {
+                const st = document.createElement("style");
+                st.textContent = "#lsop{position:fixed;z-index:1000;width:min(560px,94vw);max-height:72vh;overflow:auto;background:#fff;border-radius:14px;box-shadow:0 18px 44px rgba(16,44,92,.28);font-family:Inter,system-ui,sans-serif;color:#0f2a5a;display:none}" +
+                    "#lsop .ls-h{cursor:move;user-select:none;touch-action:none;display:flex;align-items:center;justify-content:space-between;height:44px;box-sizing:border-box;padding:0 14px;background:linear-gradient(90deg,#0c3a8f,#052a72);color:#fff;border-radius:14px 14px 0 0;font-weight:800;font-size:13px;position:sticky;top:0;z-index:2}" +
+                    "#lsop .ls-x{cursor:pointer;padding:2px 8px;border-radius:8px;background:rgba(255,255,255,.18)}" +
+                    "#lsop .ls-t{position:sticky;top:44px;z-index:2;background:#fff;height:44px;box-sizing:border-box;display:flex;align-items:center;gap:10px;padding:0 14px;border-bottom:1px solid #dbe4f2;font-size:13px;font-weight:700}" +
+                    "#lsop .ls-t b{font-size:16px;color:#a61935}" +
+                    "#lsop .ls-t em{font-style:normal;background:#fde8ec;color:#a61935;border-radius:999px;padding:2px 9px;font-size:12px;font-weight:800}" +
+                    "#lsop .ls-w{padding:0 10px}" +
+                    "#lsop .ls-tb{width:100%;border-collapse:collapse;font-size:12px;min-width:420px}" +
+                    "#lsop .ls-tb th{position:sticky;top:88px;z-index:1;background:#fff;text-align:left;font-size:11px;color:#6d7c99;padding:7px 8px;border-bottom:1px solid #dbe4f2;white-space:nowrap}" +
+                    "#lsop .ls-tb td{padding:8px;border-bottom:1px solid #eef3fb;white-space:nowrap}" +
+                    "#lsop .ls-n{cursor:pointer;font-weight:700}" +
+                    "#lsop .ls-cv{display:inline-block;width:14px;color:#1b56c4}" +
+                    "#lsop .ls-b{background:#f4f8ff}" +
+                    "#lsop .ls-m .ls-mn{padding-left:26px;color:#12408f;cursor:default;font-weight:600}" +
+                    "#lsop .ls-s td{background:#fbfcff;color:#2b4170;font-size:11.5px}" +
+                    "#lsop .ls-s.ls-hi td{background:#fff1c7;color:#7a4b00;font-weight:800}" +
+                    "#lsdn{position:fixed;z-index:10002;width:340px;max-width:94vw;background:#fff;border-radius:14px;box-shadow:0 18px 44px rgba(16,44,92,.28);font-family:Inter,system-ui,sans-serif;color:#0f2a5a;display:none;overflow:hidden}" +
+                    "#lsdn .ls-h{display:flex;align-items:center;justify-content:space-between;height:44px;box-sizing:border-box;padding:0 14px;background:linear-gradient(90deg,#0c3a8f,#052a72);color:#fff;font-weight:800;font-size:12.5px}" +
+                    "#lsdn .ls-x{cursor:pointer;padding:2px 8px;border-radius:8px;background:rgba(255,255,255,.18)}" +
+                    "#lsdn .ls-dw{display:flex;justify-content:center;padding:12px 0 4px}" +
+                    "#lsdn .ls-dsvg{width:200px;height:200px}" +
+                    "#lsdn .ls-lgs{padding:4px 14px 6px}" +
+                    "#lsdn .ls-lg{display:grid;grid-template-columns:14px 1fr auto;gap:1px 8px;align-items:center;padding:6px 0;font-size:12px;border-bottom:1px solid #eef3fb}" +
+                    "#lsdn .ls-lg i{width:12px;height:12px;border-radius:3px;display:block}" +
+                    "#lsdn .ls-lg span{font-weight:700}" +
+                    "#lsdn .ls-lg b{color:#a61935}" +
+                    "#lsdn .ls-lg em{grid-column:2/4;font-style:normal;color:#6d7c99;font-size:11px}" +
+                    "#lsdn .ls-n2{padding:6px 14px 12px;font-size:11px;color:#6d7c99}" +
+                    "#lsop .ls-mn{cursor:pointer}" +
+                    "#lsop .ls-l{padding-left:34px !important}" +
+                    "#lsop .ls-c{cursor:pointer;font-weight:700}" +
+                    "#lsop .ls-c:hover{color:#1b56c4;text-decoration:underline}" +
+                    "#lsop .ls-c.on{background:#e6efff;border-radius:6px}" +
+                    "#lsop .ls-n2{padding:8px 14px 12px;font-size:11px;color:#6d7c99}";
+                document.head.appendChild(st);
+            })();
+            /* popup drag (mouse + touch) — header ধরে টেনে সরানো যাবে: Availability popup, Breakdown donut, OEE drill popup */
+            (function () {
+                const st = document.createElement("style");
+                st.textContent = "#oepop .oe-ph{cursor:move;user-select:none;touch-action:none}";
+                document.head.appendChild(st);
+                const SEL = "#lsop .ls-h, #lsdn .ls-h, #oepop .oe-ph", BOX = "#lsop, #lsdn, #oepop";
+                let box = null, dx = 0, dy = 0;
+                document.addEventListener("pointerdown", e => {
+                    if (!e.target.closest || !e.target.closest(SEL) || e.target.closest(".ls-x, .oe-px, #lsdx")) return;
+                    const el = e.target.closest(BOX); if (!el || el.style.display === "none") return;
+                    const r = el.getBoundingClientRect(); box = el; dx = e.clientX - r.left; dy = e.clientY - r.top; e.preventDefault();
+                });
+                document.addEventListener("pointermove", e => {
+                    if (!box) return;
+                    const x = Math.min(Math.max(8, e.clientX - dx), innerWidth - box.offsetWidth - 8), y = Math.min(Math.max(8, e.clientY - dy), innerHeight - box.offsetHeight - 8);
+                    box.style.left = x + "px"; box.style.top = y + "px";
+                });
+                const stop = () => { box = null };
+                document.addEventListener("pointerup", stop); document.addEventListener("pointercancel", stop);
+            })();
+            document.addEventListener("click", e => {
+                let p = document.getElementById("lsop");
+                const t = e.target.closest && e.target.closest("#oeb [data-lk]");
+                if (!t) { if (p && p.style.display !== "none" && !e.target.closest("#lsop")) p.style.display = "none"; return }
+                if (!p) { p = document.createElement("div"); p.id = "lsop"; document.body.appendChild(p) }
+                const [yn, mn_, dn] = t.dataset.lk.split("|"), y = +yn, mo = +mn_, day = +dn, { D } = P;
+                const map = lsAgg(y, mo, day);
+                LSB = {
+                    map, tot: lsTot(map), title: day ? `${day} ${MS[mo - 1]} ${y}` : `${MS[mo - 1]} ${y}`,
+                    bayName: b => String((D.bayname || [""])[b] ?? "") || "All",
+                    mcName: c => String((D.mcno || [])[c] ?? "").trim() || "—"
+                };
+                LSO.clear(); lsPaint(); p.style.display = "block";
+                const w = p.offsetWidth, h = p.offsetHeight; let x = e.clientX + 12, yy = e.clientY + 12;
+                if (x + w > innerWidth - 8) x = Math.max(8, innerWidth - w - 8); if (yy + h > innerHeight - 8) yy = Math.max(8, innerHeight - h - 8);
+                p.style.left = x + "px"; p.style.top = yy + "px"; e.stopPropagation();
+            }, true);
+            document.addEventListener("keydown", e => { if (e.key === "Escape") { const p = document.getElementById("lsop"); if (p) p.style.display = "none" } });
+            /* ---- M/C click → "Breakdown Of Losses" donut · ring = ওই M/C-র মোট unplanned (100%), slice-এর উপর % ---- */
+            const LS_DC = ["#27307a", "#2a52a0", "#3a8cc8", "#2fb8d8", "#f48fa0", "#e8515b", "#8b8b8b"];
+            function lsDonut(b, c, e) {
+                const o = LSB.map.get(b); if (!o) return; const q = o.mc.get(c); if (!q) return;
+                const U = lsU(q), it = LS_UN.map(([, lab], k) => ({ lab, v: q.u[k] }));
+                const other = U - lsSP(q.u); if (Math.abs(other) >= 0.5) it.push({ lab: "Other / Unmapped", v: other });
+                const vis = it.map((x, i) => ({ ...x, c: LS_DC[i] })).filter(x => x.v >= 0.5);
+                const R = 70, Cc = 2 * Math.PI * R, tot = vis.reduce((s, x) => s + x.v, 0) || 1; let acc = 0;
+                const arcs = vis.map(x => {
+                    const f = x.v / tot, L = f * Cc, mid = (acc + L / 2) / Cc * 2 * Math.PI - Math.PI / 2;
+                    const s = `<circle r="${R}" cx="100" cy="100" fill="none" stroke="${x.c}" stroke-width="34" stroke-dasharray="${L} ${Cc - L}" stroke-dashoffset="${-acc}" transform="rotate(-90 100 100)"/>` +
+                        (f >= 0.04 ? `<text x="${(100 + R * Math.cos(mid)).toFixed(1)}" y="${(100 + R * Math.sin(mid) + 4).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">${(f * 100).toFixed(1)}%</text>` : "");
+                    acc += L; return s;
+                }).join("");
+                const leg = vis.map(x => `<div class="ls-lg"><i style="background:${x.c}"></i><span>${x.lab}</span><b>${lsPc(x.v, U)}</b><em>${lsMin(x.v)} min (${lsHrs(x.v)} Hrs)</em></div>`).join("");
+                let p = document.getElementById("lsdn");
+                if (!p) { p = document.createElement("div"); p.id = "lsdn"; document.body.appendChild(p) }
+                p.innerHTML = `<div class="ls-h"><b>Breakdown Of Losses · M/C ${esc(LSB.mcName(c))}</b><span class="ls-x" id="lsdx">✕</span></div>` +
+                    `<div class="ls-dw"><svg viewBox="0 0 200 200" class="ls-dsvg">${arcs || `<circle r="${R}" cx="100" cy="100" fill="none" stroke="#e6ecf6" stroke-width="34"/>`}` +
+                    `<circle r="50" cx="100" cy="100" fill="#fff"/>` +
+                    `<text x="100" y="98" text-anchor="middle" font-size="19" font-weight="800" fill="#0f2a5a">${lsHrs(U)} Hrs</text>` +
+                    `<text x="100" y="114" text-anchor="middle" font-size="10" font-weight="700" fill="#6d7c99">TOTAL</text>` +
+                    `<rect x="88" y="119" width="24" height="2.5" rx="1" fill="#1b56c4"/></svg></div>` +
+                    `<div class="ls-lgs">${leg || "<div class='ls-lg'>No unplanned breakdown</div>"}</div>` +
+                    `<div class="ls-n2">${esc(LSB.bayName(b))} · ${esc(LSB.title)} · slice = % of M/C unplanned</div>`;
+                document.getElementById("lsdx").onclick = () => p.style.display = "none";
+                p.style.display = "block";
+                const w = p.offsetWidth, h = p.offsetHeight; let x = e.clientX + 14, yy = e.clientY + 14;
+                if (x + w > innerWidth - 8) x = Math.max(8, innerWidth - w - 8); if (yy + h > innerHeight - 8) yy = Math.max(8, innerHeight - h - 8);
+                p.style.left = x + "px"; p.style.top = yy + "px";
+            }
+            document.addEventListener("click", e => {
+                const d = document.getElementById("lsdn");
+                if (d && d.style.display !== "none" && !e.target.closest("#lsdn") && !e.target.closest(".ls-mn")) d.style.display = "none";
+            }, true);
+            document.addEventListener("keydown", e => { if (e.key === "Escape") { const d = document.getElementById("lsdn"); if (d) d.style.display = "none" } });
+            /* OEE drill popup → M/C click → same "Breakdown Of Losses" donut (ওই M/C-র unplanned category) */
+            function lsDonutOE(b, c, e) {
+                const o = BD.cur.get(b); if (!o) return; const x = o.mc.get(c); if (!x) return;
+                const { D } = P, po = BD.prev.get(b), px = po && po.mc.get(c), m = met(x), pm = px ? met(px) : null, d = pm ? dl(m.E, pm.E) : null;
+                const bn = String((D.bayname || [""])[b] ?? "") || "All", mcn = String((D.mcno || [])[c] ?? "").trim() || "—";
+                const vis = [["Availability", m.A, "#0f3f9e"], ["Performance", m.P, "#1f6fe5"], ["Quality", m.Q, "#35b4f0"]].map(([lab, v, col]) => ({ lab, v, c: col })).filter(z => z.v != null && z.v > 0);
+                const R = 70, Cc = 2 * Math.PI * R, tot = vis.reduce((a, z) => a + z.v, 0) || 1; let acc = 0;
+                const arcs = vis.map(z => {
+                    const f = z.v / tot, L = f * Cc, mid = (acc + L / 2) / Cc * 2 * Math.PI - Math.PI / 2;
+                    const t = `<circle r="${R}" cx="100" cy="100" fill="none" stroke="${z.c}" stroke-width="34" stroke-dasharray="${L} ${Cc - L}" stroke-dashoffset="${-acc}" transform="rotate(-90 100 100)"/>` +
+                        `<text x="${(100 + R * Math.cos(mid)).toFixed(1)}" y="${(100 + R * Math.sin(mid) + 4).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">${z.v.toFixed(1)}%</text>`;
+                    acc += L; return t;
+                }).join("");
+                const pc = d == null ? ["#eef3fb", "#6d7c99", "—"] : d >= 0 ? ["#e3f6e8", "#1e7a3c", `▲ +${Math.abs(d).toFixed(1)}%`] : ["#fde8ec", "#c0262d", `▼ −${Math.abs(d).toFixed(1)}%`];
+                const leg = vis.map(z => `<div class="ls-lg"><i style="background:${z.c}"></i><span>${z.lab}</span><b style="color:#0f2a5a">${fp(z.v)}</b></div>`).join("");
+                let p = document.getElementById("lsdn");
+                if (!p) { p = document.createElement("div"); p.id = "lsdn"; document.body.appendChild(p) }
+                p.innerHTML = `<div class="ls-h"><b>OEE Breakdown · M/C ${esc(mcn)}</b><span class="ls-x" id="lsdx">✕</span></div>` +
+                    `<div class="ls-dw"><svg viewBox="0 0 200 200" class="ls-dsvg">${arcs || `<circle r="${R}" cx="100" cy="100" fill="none" stroke="#e6ecf6" stroke-width="34"/>`}` +
+                    `<circle r="50" cx="100" cy="100" fill="#fff"/>` +
+                    `<text x="100" y="92" text-anchor="middle" font-size="19" font-weight="800" fill="#0f2a5a">${fp(m.E)}</text>` +
+                    `<text x="100" y="106" text-anchor="middle" font-size="10" font-weight="700" fill="#6d7c99">OEE</text>` +
+                    `<rect x="88" y="110" width="24" height="2.5" rx="1" fill="#1b56c4"/>` +
+                    `<rect x="68" y="118" width="64" height="16" rx="8" fill="${pc[0]}"/>` +
+                    `<text x="100" y="129.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="${pc[1]}">${pc[2]}</text></svg></div>` +
+                    `<div style="text-align:center;font-size:10.5px;color:#6d7c99;margin-top:-2px">${esc(BD.pl)}</div>` +
+                    `<div class="ls-lgs">${leg || "<div class='ls-lg'>No data</div>"}</div>` +
+                    `<div class="ls-n2">${esc(bn)} · ${esc(BD.title)} · OEE = Availability × Performance × Quality</div>`;
+                document.getElementById("lsdx").onclick = () => p.style.display = "none";
+                p.style.display = "block";
+                const w = p.offsetWidth, h = p.offsetHeight; let X = e.clientX + 14, Y = e.clientY + 14;
+                if (X + w > innerWidth - 8) X = Math.max(8, innerWidth - w - 8); if (Y + h > innerHeight - 8) Y = Math.max(8, innerHeight - h - 8);
+                p.style.left = X + "px"; p.style.top = Y + "px";
+            }
+            window.renderOEE = function () { if (!P || !$("#oeb")) return; ensureTrTip(); const h = build(); $("#oeb").innerHTML = h; $("#oeh").innerHTML = HD; document.querySelectorAll("#oeb .oe-yb").forEach(b => b.onclick = () => { const k = b.dataset.k; HID.has(k) ? HID.delete(k) : HID.add(k); renderOEE() }) };
+            window.showOEE = async function () {
+                const c = $("#pgc");
+                if (!SUB) { c.innerHTML = msg("Production-Shopfloor data source not found", "Create the “Production-Shopfloor” sub-module under Production &amp; Planning in Admin Console."); return }
+                if (!PK) c.innerHTML = `<div class="ld">Loading data…</div>`;
+                await loadPK(); if (CUR !== "oee") return;
+                if (!PK) { c.innerHTML = PKERR === "err" ? msg("Could not load data", "Check your connection or your access to Production-Shopfloor, then reload.") : msg("No data connected yet", "Upload the Production Excel in Admin Console → Data Manager → Production &amp; Planning → Production-Shopfloor."); return }
+                c.innerHTML = `<div class="oe-top" id="oeh"></div>` + filterBarHTML() + `<div id="oeb"></div>`; bindFilters(); renderOEE()
+            }
+        })();
     </script>
     <script id="rsp-v1-js">
         /* ===================== RESPONSIVE v1 · collapsible filter (UI only) ===================== */
