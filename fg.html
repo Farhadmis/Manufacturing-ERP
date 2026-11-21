@@ -2053,6 +2053,63 @@
     let MTM = null;
     const MFN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const fmtM = v => { const x = Math.abs(v); return x >= 1e9 ? (v / 1e9).toFixed(1) + "B" : x >= 5e5 ? (v / 1e6).toFixed(1) + "M" : x >= 1e3 ? (v / 1e3).toFixed(0) + "K" : n0(v) };
+    /* Month-wise Trend · one year + one month → that month day-wise · one year → Jan–Dec of that year */
+    function periodOf(a) {
+      const ys = [...F.y].map(Number), ms = [...F.m].map(Number);
+      if (ys.length === 1 && ms.length === 1) return { mode: "day", y: ys[0], m: ms[0] };
+      if (ys.length === 1) return { mode: "year", y: ys[0] };
+      return null;
+    }
+    function mtPeriodHTML(a, per) {
+      const now = new Date(), curK = now.getFullYear() * 100 + now.getMonth() + 1;
+      const isDay = per.mode === "day";
+      let mm, N, partial = false, pI, lab, short, xLabel = null, sub, span, unit, lastD = 0;
+      if (isDay) {
+        const dim = new Date(Date.UTC(per.y, per.m, 0)).getUTCDate(), rows = a.filter(r => r.y === per.y && r.m === per.m);
+        const byD = new Map(); rows.forEach(r => byD.set(r.d, (byD.get(r.d) || 0) + r.q));
+        lastD = rows.length ? Math.max(...rows.map(r => r.d)) : 0;
+        mm = Array.from({ length: dim }, (_, i) => ({ k: i + 1, q: i + 1 <= lastD ? (byD.get(i + 1) || 0) : null }));
+        N = dim; pI = -1;
+        lab = k => `${MN[per.m - 1]} ${k}, ${per.y}`;
+        short = k => `${k} ${MN[per.m - 1]}`;
+        xLabel = i => (i % (N > 20 ? 2 : 1) === 0 ? String(i + 1) : "");
+        const running = curK === per.y * 100 + per.m;
+        sub = `Daily volume · ${MN[per.m - 1]} ${per.y}${running ? " (month is still running)" : ""}`;
+        span = lastD ? `${MN[per.m - 1]} 1 – ${lastD}` : "—";
+        unit = "production day";
+      } else {
+        const byM = new Map(); a.forEach(r => byM.set(r.m, (byM.get(r.m) || 0) + r.q));
+        mm = Array.from({ length: 12 }, (_, i) => ({ k: per.y * 100 + i + 1, q: byM.has(i + 1) ? byM.get(i + 1) : null }));
+        N = 12; pI = mm.findIndex(x => x.k === curK && x.q != null); partial = pI >= 0;
+        if (!partial) pI = N - 1;
+        lab = k => `${MN[k % 100 - 1]} ${Math.floor(k / 100)}`;
+        short = k => MN[k % 100 - 1];
+        xLabel = i => MN[i];
+        sub = `Monthly volume · Jan ${per.y} – Dec ${per.y}${partial ? ` (${MFN[curK % 100 - 1]} is still running)` : ""}`;
+        span = `Jan ${per.y} – Dec ${per.y}${partial ? " MTD" : ""}`;
+        unit = "month";
+      }
+      const isPartialIdx = i => partial && i === pI;
+      let grand = 0, pk = null, tr = null, fullIdx = [];
+      mm.forEach((x, i) => {
+        if (x.q == null) return;
+        grand += x.q;
+        if (isPartialIdx(i)) return;
+        fullIdx.push(i);
+        if (!pk || x.q > pk.q) pk = x; if (!tr || x.q < tr.q) tr = x;
+      });
+      const avg = fullIdx.length ? fullIdx.reduce((s, i) => s + mm[i].q, 0) / fullIdx.length : null;
+      const bandFrom = fullIdx.length ? fullIdx[0] : -1, bandTo = fullIdx.length ? fullIdx[fullIdx.length - 1] : 0;
+      const full = fullIdx.map(i => mm[i]);
+      MTM = { mm, N, partial, pI, full, pk, tr, avg, bandFrom, bandTo, lab, short, avgLabel: isDay ? "Avg / day ≈" : "Avg / month ≈", xLabel, gridAt: () => false };
+      const peakTxt = pk ? (isDay ? `${MN[per.m - 1]} ${pk.k}, ${per.y}` : lab(pk.k)) : "—";
+      return `<div class="c mt"><div class="mt-h"><div><div class="mt-t">Month-wise Trend</div><div class="mt-s">${sub}</div></div>
+<div class="mt-lg"><span><i></i>Actual</span>${partial ? '<span><i class="d"></i>Month to date</span>' : ""}</div></div>
+<div class="mt-k"><div><small>Grand total</small><b>${n0(grand)}</b><span>${span}</span></div>
+<div><small>Peak ${isDay ? "day" : "month"}</small><b>${pk ? fmtM(pk.q) : "—"}</b><span>${peakTxt}</span></div>
+<div><small>Avg / ${isDay ? "day" : "month"} · ${isDay ? MN[per.m - 1] + " " + per.y : per.y}</small><b>${avg != null ? "≈" + fmtM(avg) : "—"}</b><span>${fullIdx.length} ${unit}${fullIdx.length === 1 ? "" : "s"} with data</span></div></div>
+<div class="cv mt-cv"><canvas id="c1"></canvas></div></div>`;
+    }
     function mtHTML(a) {
       if (!document.getElementById("mt-css")) {
         const s = document.createElement("style"); s.id = "mt-css";
@@ -2074,6 +2131,7 @@
 .c.mt .mt-cv{height:340px;margin-top:6px}`;
         document.head.appendChild(s);
       }
+      const per = periodOf(a); if (per) return mtPeriodHTML(a, per);
       const mm = grp(a, r => r.y * 100 + r.m).sort((x, y) => x.k - y.k), N = mm.length;
       const now = new Date(), curK = now.getFullYear() * 100 + now.getMonth() + 1;
       const partial = N > 0 && mm[N - 1].k === curK, full = partial ? mm.slice(0, -1) : mm;
@@ -2086,7 +2144,7 @@
         avg = av(win); bandFrom = full.findIndex(x => mi(x.k) > li - 12);
         if (pri.length >= 6 && av(pri) > 0) delta = (avg / av(pri) - 1) * 100;
       }
-      MTM = { mm, N, partial, full, pk, tr, avg, bandFrom, lab };
+      MTM = { mm, N, partial, pI: N - 1, full, pk, tr, avg, bandFrom, bandTo: full.length - 1, lab, short: k => MN[k % 100 - 1], avgLabel: "Last 12M avg ≈", xLabel: null, gridAt: null };
       const sub = N ? `Monthly volume · ${lab(mm[0].k)} – ${lab(mm[N - 1].k)}${partial ? ` (${MFN[mm[N - 1].k % 100 - 1]} is still running)` : ""}` : "No data for the selected filters";
       return `<div class="c mt"><div class="mt-h"><div><div class="mt-t">Month-wise Trend</div><div class="mt-s">${sub}</div></div>
 <div class="mt-lg"><span><i></i>Actual</span>${partial ? '<span><i class="d"></i>Month to date</span>' : ""}</div></div>
@@ -2096,9 +2154,10 @@
 <div class="cv mt-cv"><canvas id="c1"></canvas></div></div>`
     }
     function mtChart() {
-      const { mm, N, partial, full, pk, tr, avg, bandFrom, lab } = MTM; if (!N) return;
+      const { mm, N, partial, pI, full, pk, tr, avg, bandFrom, bandTo, lab, short, avgLabel, xLabel, gridAt } = MTM; if (!N) return;
       const yr = k => Math.floor(k / 100), yrIdx = new Set(); mm.forEach((x, i) => { if (!i || yr(x.k) !== yr(mm[i - 1].k)) yrIdx.add(i) });
-      const act = mm.map((x, i) => partial && i === N - 1 ? null : x.q), mtd = mm.map((x, i) => partial && i >= N - 2 ? x.q : null);
+      const gridOn = gridAt || (i => yrIdx.has(i)), xLab = xLabel || (i => yrIdx.has(i) ? String(yr(mm[i].k)) : "");
+      const act = mm.map((x, i) => partial && i === pI ? null : x.q), mtd = mm.map((x, i) => partial && i >= pI - 1 && i <= pI ? x.q : null);
       const pkI = pk ? mm.findIndex(x => x.k === pk.k) : -1, trI = tr ? mm.findIndex(x => x.k === tr.k) : -1, mx = Math.max(...mm.map(x => x.q));
       const rr = (c, x, y, w, h, r) => { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath() };
       const dot = (c, x, y, r, st) => { c.beginPath(); c.arc(x, y, r, 0, 7); c.fillStyle = "#fff"; c.fill(); c.lineWidth = 2.5; c.strokeStyle = st; c.stroke() };
@@ -2106,10 +2165,10 @@
         id: "mtx",
         beforeDatasetsDraw(ch) {
           const { ctx, chartArea: A, scales: { x } } = ch; if (bandFrom < 0 || avg == null) return;
-          const st = N > 1 ? x.getPixelForValue(1) - x.getPixelForValue(0) : 0, x0 = Math.max(A.left, x.getPixelForValue(bandFrom) - st / 2), x1 = x.getPixelForValue(full.length - 1), ya = ch.scales.y.getPixelForValue(avg);
+          const st = N > 1 ? x.getPixelForValue(1) - x.getPixelForValue(0) : 0, x0 = Math.max(A.left, x.getPixelForValue(bandFrom) - st / 2), x1 = x.getPixelForValue(bandTo), ya = ch.scales.y.getPixelForValue(avg);
           ctx.save(); ctx.fillStyle = "rgba(166,25,53,.07)"; ctx.fillRect(x0, A.top, Math.max(0, x1 - x0), A.bottom - A.top);
           ctx.setLineDash([7, 6]); ctx.lineWidth = 2; ctx.strokeStyle = "#857b92"; ctx.beginPath(); ctx.moveTo(x0, ya); ctx.lineTo(x1, ya); ctx.stroke(); ctx.setLineDash([]);
-          ctx.fillStyle = "#0f2a5a"; ctx.font = "600 12px Inter,sans-serif"; ctx.textAlign = "right"; ctx.textBaseline = "alphabetic"; ctx.fillText("Last 12M avg ≈" + fmtM(avg), Math.min(A.right, x1 + 6), A.top - 10); ctx.restore()
+          ctx.fillStyle = "#0f2a5a"; ctx.font = "600 12px Inter,sans-serif"; ctx.textAlign = "right"; ctx.textBaseline = "alphabetic"; ctx.fillText(avgLabel + fmtM(avg), Math.min(A.right, x1 + 6), A.top - 10); ctx.restore()
         },
         afterDatasetsDraw(ch) {
           const { ctx, chartArea: A, scales: { x, y } } = ch; ctx.save();
@@ -2128,7 +2187,7 @@
             if (px + 14 + ctx.measureText(t).width > A.right) { ctx.textAlign = "right"; ctx.fillText(t, px - 12, py - 10) } else { ctx.textAlign = "left"; ctx.fillText(t, px + 12, py - 10) }
           }
           if (partial) {
-            const px = x.getPixelForValue(N - 1), py = y.getPixelForValue(mm[N - 1].q), t = MN[mm[N - 1].k % 100 - 1] + " MTD · " + fmtM(mm[N - 1].q) + " · partial";
+            const px = x.getPixelForValue(pI), py = y.getPixelForValue(mm[pI].q), t = short(mm[pI].k) + " MTD · " + fmtM(mm[N - 1].q) + " · partial";
             ctx.font = "600 12.5px Inter,sans-serif"; ctx.textAlign = "right"; ctx.textBaseline = "middle"; ctx.lineJoin = "round"; ctx.lineWidth = 4; ctx.strokeStyle = "rgba(255,255,255,.92)"; ctx.strokeText(t, px - 14, py); ctx.fillStyle = "#0f2a5a"; ctx.fillText(t, px - 14, py)
           }
           ctx.restore()
@@ -2139,13 +2198,13 @@
         data: {
           labels: mm.map(x => lab(x.k)), datasets: [
             { label: "Actual", data: act, borderColor: "#a61935", borderWidth: 3, tension: 0, pointRadius: 0, pointHoverRadius: 5, pointHoverBackgroundColor: "#fff", pointHoverBorderColor: "#a61935", pointHoverBorderWidth: 2, fill: true, spanGaps: false, backgroundColor: c => { const a = c.chart.chartArea; if (!a) return "rgba(166,25,53,.10)"; const g = c.chart.ctx.createLinearGradient(0, a.top, 0, a.bottom); g.addColorStop(0, "rgba(166,25,53,.20)"); g.addColorStop(1, "rgba(166,25,53,.01)"); return g } },
-            { label: "Month to date", data: mtd, borderColor: "#a61935", borderWidth: 2.5, borderDash: [3, 5], borderCapStyle: "round", tension: 0, fill: false, spanGaps: true, pointRadius: c => c.dataIndex === N - 1 ? 6 : 0, pointBackgroundColor: "#fff", pointBorderColor: "#a61935", pointBorderWidth: 2.5 }]
+            { label: "Month to date", data: mtd, borderColor: "#a61935", borderWidth: 2.5, borderDash: [3, 5], borderCapStyle: "round", tension: 0, fill: false, spanGaps: true, pointRadius: c => c.dataIndex === pI ? 6 : 0, pointBackgroundColor: "#fff", pointBorderColor: "#a61935", pointBorderWidth: 2.5 }]
         },
         options: {
           responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: { top: 34, right: 14 } }, interaction: { mode: "index", intersect: false },
-          plugins: { legend: { display: false }, tooltip: { filter: it => it.raw != null && (it.datasetIndex === 0 || it.dataIndex === N - 1), callbacks: { title: it => lab(mm[it[0].dataIndex].k) + (partial && it[0].dataIndex === N - 1 ? " (month to date)" : ""), label: c => " " + n0(c.parsed.y) } } },
+          plugins: { legend: { display: false }, tooltip: { filter: it => it.raw != null && (it.datasetIndex === 0 || it.dataIndex === pI), callbacks: { title: it => lab(mm[it[0].dataIndex].k) + (partial && it[0].dataIndex === pI ? " (month to date)" : ""), label: c => " " + n0(c.parsed.y) } } },
           scales: {
-            x: { grid: { color: c => yrIdx.has(c.index) ? "#ebe6ef" : "transparent", drawTicks: false }, border: { display: false }, ticks: { autoSkip: false, maxRotation: 0, color: "#6d7c99", font: { size: 12 }, callback: (v, i) => yrIdx.has(i) ? String(yr(mm[i].k)) : "" } },
+            x: { grid: { color: c => gridOn(c.index) ? "#ebe6ef" : "transparent", drawTicks: false }, border: { display: false }, ticks: { autoSkip: false, maxRotation: 0, color: "#6d7c99", font: { size: 12 }, callback: (v, i) => xLab(i) } },
             y: { beginAtZero: true, suggestedMax: mx * 1.12, grid: { color: "#ece8f0" }, border: { display: false }, ticks: { callback: v => ab(v), color: "#6d7c99", font: { size: 12 }, maxTicksLimit: 6 } }
           }
         }, plugins: [plug]
