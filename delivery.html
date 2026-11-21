@@ -2148,64 +2148,310 @@
       }
     }
   </style>
-<style id="rsp-v1">
-/* ===================== RESPONSIVE v1 · Mobile collapsible filter ===================== */
-.fbc{display:contents}
-.fbt,.fba{display:none}
-@media(max-width:767px){
-  .fbt{display:flex;align-items:center;gap:10px;width:100%;height:46px;margin:10px 0 8px;padding:0 14px;border:1px solid #dbe4f2;border-radius:14px;background:#fff;color:#0f2a5a;font:700 14px Inter,system-ui,sans-serif;text-align:left;cursor:pointer;position:sticky;top:6px;z-index:45;box-shadow:0 0 0 6px #f1f5fb,0 4px 12px rgba(16,44,92,.10);-webkit-tap-highlight-color:transparent}
-  .fbt[hidden]{display:none!important}
-  .fbt svg{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-  .fbt .fbl{flex:1}
-  .fbt .fbn{min-width:22px;height:22px;padding:0 7px;border-radius:999px;background:#a61935;color:#fff;font-size:12px;line-height:22px;text-align:center}
-  .fbt .fbn:empty{display:none}
-  .fbt .fbv{transition:transform .3s ease}
-  .fbt[aria-expanded="true"] .fbv{transform:rotate(180deg)}
+  <style id="rsp-v1">
+    /* ===================== RESPONSIVE v1 · Mobile collapsible filter ===================== */
+    .fbc {
+      display: contents
+    }
 
-  .fbc{display:block;overflow:hidden;max-height:var(--fbh,0px);opacity:0;visibility:hidden;transition:max-height .35s ease,opacity .3s ease,visibility 0s linear .35s}
-  .fbc.open{opacity:1;visibility:visible;transition:max-height .35s ease,opacity .3s ease,visibility 0s}
+    .fbt,
+    .fba {
+      display: none
+    }
 
-  .fbc #fb{position:static!important;display:flex!important;flex-direction:column!important;flex-wrap:nowrap!important;align-items:stretch!important;gap:10px!important;overflow:visible!important;white-space:normal!important;height:auto!important;zoom:1!important;margin:0!important;padding:12px 12px 6px!important;background:#fff!important;border:1px solid #dbe4f2!important;border-bottom:0!important;border-radius:14px 14px 0 0!important;box-shadow:none!important}
-  .fbc #fb:empty{padding:0!important;border:0!important}
-  .fbc #fb .f,.fbc #fb .f.d{flex:none!important;width:100%!important;min-width:0!important}
-  .fbc #fb .f button,.fbc #fb .f input{height:44px!important;font-size:14px!important;padding:0 12px!important;letter-spacing:normal!important;border-radius:12px!important}
-  .fbc #fb .f.d{display:flex!important;align-items:center!important;gap:10px!important}
-  .fbc #fb .f.d span{flex:none;width:44px;font-size:13px!important}
-  .fbc #fb .f.d input{flex:1 1 auto;min-width:0;width:auto!important}
-  .fbc #fb .rs{display:none!important}
-  /* Shopfloor pills / dates */
-  .fbc #fb .fp{width:100%!important;min-height:44px;padding:10px 14px!important;font-size:14px!important;gap:10px!important;border-radius:12px!important;white-space:normal;flex:none!important}
-  .fbc #fb .fp .fl{flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis}
-  .fbc #fb .fp svg:not(.cv){display:block!important}
-  .fbc #fb .fd{width:100%;justify-content:space-between;gap:10px!important;font-size:13px!important;flex:none}
-  .fbc #fb .fd input{flex:1 1 auto;width:auto!important;min-width:0;max-width:220px;padding:10px 12px!important;font-size:14px!important;border-radius:12px!important}
-  .fbc #fb .fsep{display:none!important}
+    @media(max-width:767px) {
+      .fbt {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        height: 46px;
+        margin: 10px 0 8px;
+        padding: 0 14px;
+        border: 1px solid #dbe4f2;
+        border-radius: 14px;
+        background: #fff;
+        color: #0f2a5a;
+        font: 700 14px Inter, system-ui, sans-serif;
+        text-align: left;
+        cursor: pointer;
+        position: sticky;
+        top: 6px;
+        z-index: 45;
+        box-shadow: 0 0 0 6px #f1f5fb, 0 4px 12px rgba(16, 44, 92, .10);
+        -webkit-tap-highlight-color: transparent
+      }
 
-  .fba{display:flex;gap:10px;padding:10px 12px 12px;margin:0 0 8px;background:#fff;border:1px solid #dbe4f2;border-top:1px dashed #dbe4f2;border-radius:0 0 14px 14px}
-  .fba button{flex:1;height:44px;border-radius:12px;font:700 14px Inter,system-ui,sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent}
-  .fba .fbr{background:#fff;color:#0f2a5a;border:1.5px solid #cfdcf3}
-  .fba .fbp{background:#0f2a5a;color:#fff;border:0}
+      .fbt[hidden] {
+        display: none !important
+      }
 
-  .fbw{position:static!important;margin:0!important;padding:0!important;background:none!important}
+      .fbt svg {
+        width: 18px;
+        height: 18px;
+        flex: none;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round
+      }
 
-  /* dropdown → bottom sheet (কোনো filter-এর ওপর ভাসে না) */
-  #pn,.pop{left:0!important;right:0!important;top:auto!important;bottom:0!important;width:100%!important;max-height:72vh;border-radius:18px 18px 0 0!important;padding-bottom:env(safe-area-inset-bottom,0px);overflow:hidden}
-  #pn .ls,.pop .ls{max-height:calc(72vh - 150px)!important;-webkit-overflow-scrolling:touch}
-  #pn label,.pop label{padding:12px 16px!important;font-size:14px!important}
-  #pn input[type=text],.pop input[type=text]{font-size:16px!important;padding:10px 12px!important}
-  #pn .ac button,.pop .ft a{padding:10px!important;font-size:14px!important}
-}
+      .fbt .fbl {
+        flex: 1
+      }
 
-/* ===================== RESPONSIVE v1 · layout (mobile / tablet / large display) ===================== */
-html{-webkit-text-size-adjust:100%}
-@media(max-width:767px){
-  main{padding-left:12px!important;padding-right:12px!important;padding-bottom:24px!important}
-  .kp,.rkp{scroll-snap-type:x proximity}
-}
-@media(min-width:2000px){
-  main>*{max-width:2100px;margin-left:auto;margin-right:auto}
-}
-</style>
+      .fbt .fbn {
+        min-width: 22px;
+        height: 22px;
+        padding: 0 7px;
+        border-radius: 999px;
+        background: #a61935;
+        color: #fff;
+        font-size: 12px;
+        line-height: 22px;
+        text-align: center
+      }
+
+      .fbt .fbn:empty {
+        display: none
+      }
+
+      .fbt .fbv {
+        transition: transform .3s ease
+      }
+
+      .fbt[aria-expanded="true"] .fbv {
+        transform: rotate(180deg)
+      }
+
+      .fbc {
+        display: block;
+        overflow: hidden;
+        max-height: var(--fbh, 0px);
+        opacity: 0;
+        visibility: hidden;
+        transition: max-height .35s ease, opacity .3s ease, visibility 0s linear .35s
+      }
+
+      .fbc.open {
+        opacity: 1;
+        visibility: visible;
+        transition: max-height .35s ease, opacity .3s ease, visibility 0s
+      }
+
+      .fbc #fb {
+        position: static !important;
+        display: flex !important;
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        overflow: visible !important;
+        white-space: normal !important;
+        height: auto !important;
+        zoom: 1 !important;
+        margin: 0 !important;
+        padding: 12px 12px 6px !important;
+        background: #fff !important;
+        border: 1px solid #dbe4f2 !important;
+        border-bottom: 0 !important;
+        border-radius: 14px 14px 0 0 !important;
+        box-shadow: none !important
+      }
+
+      .fbc #fb:empty {
+        padding: 0 !important;
+        border: 0 !important
+      }
+
+      .fbc #fb .f,
+      .fbc #fb .f.d {
+        flex: none !important;
+        width: 100% !important;
+        min-width: 0 !important
+      }
+
+      .fbc #fb .f button,
+      .fbc #fb .f input {
+        height: 44px !important;
+        font-size: 14px !important;
+        padding: 0 12px !important;
+        letter-spacing: normal !important;
+        border-radius: 12px !important
+      }
+
+      .fbc #fb .f.d {
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important
+      }
+
+      .fbc #fb .f.d span {
+        flex: none;
+        width: 44px;
+        font-size: 13px !important
+      }
+
+      .fbc #fb .f.d input {
+        flex: 1 1 auto;
+        min-width: 0;
+        width: auto !important
+      }
+
+      .fbc #fb .rs {
+        display: none !important
+      }
+
+      /* Shopfloor pills / dates */
+      .fbc #fb .fp {
+        width: 100% !important;
+        min-height: 44px;
+        padding: 10px 14px !important;
+        font-size: 14px !important;
+        gap: 10px !important;
+        border-radius: 12px !important;
+        white-space: normal;
+        flex: none !important
+      }
+
+      .fbc #fb .fp .fl {
+        flex: 1;
+        text-align: left;
+        overflow: hidden;
+        text-overflow: ellipsis
+      }
+
+      .fbc #fb .fp svg:not(.cv) {
+        display: block !important
+      }
+
+      .fbc #fb .fd {
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px !important;
+        font-size: 13px !important;
+        flex: none
+      }
+
+      .fbc #fb .fd input {
+        flex: 1 1 auto;
+        width: auto !important;
+        min-width: 0;
+        max-width: 220px;
+        padding: 10px 12px !important;
+        font-size: 14px !important;
+        border-radius: 12px !important
+      }
+
+      .fbc #fb .fsep {
+        display: none !important
+      }
+
+      .fba {
+        display: flex;
+        gap: 10px;
+        padding: 10px 12px 12px;
+        margin: 0 0 8px;
+        background: #fff;
+        border: 1px solid #dbe4f2;
+        border-top: 1px dashed #dbe4f2;
+        border-radius: 0 0 14px 14px
+      }
+
+      .fba button {
+        flex: 1;
+        height: 44px;
+        border-radius: 12px;
+        font: 700 14px Inter, system-ui, sans-serif;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent
+      }
+
+      .fba .fbr {
+        background: #fff;
+        color: #0f2a5a;
+        border: 1.5px solid #cfdcf3
+      }
+
+      .fba .fbp {
+        background: #0f2a5a;
+        color: #fff;
+        border: 0
+      }
+
+      .fbw {
+        position: static !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: none !important
+      }
+
+      /* dropdown → bottom sheet (কোনো filter-এর ওপর ভাসে না) */
+      #pn,
+      .pop {
+        left: 0 !important;
+        right: 0 !important;
+        top: auto !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        max-height: 72vh;
+        border-radius: 18px 18px 0 0 !important;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        overflow: hidden
+      }
+
+      #pn .ls,
+      .pop .ls {
+        max-height: calc(72vh - 150px) !important;
+        -webkit-overflow-scrolling: touch
+      }
+
+      #pn label,
+      .pop label {
+        padding: 12px 16px !important;
+        font-size: 14px !important
+      }
+
+      #pn input[type=text],
+      .pop input[type=text] {
+        font-size: 16px !important;
+        padding: 10px 12px !important
+      }
+
+      #pn .ac button,
+      .pop .ft a {
+        padding: 10px !important;
+        font-size: 14px !important
+      }
+    }
+
+    /* ===================== RESPONSIVE v1 · layout (mobile / tablet / large display) ===================== */
+    html {
+      -webkit-text-size-adjust: 100%
+    }
+
+    @media(max-width:767px) {
+      main {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        padding-bottom: 24px !important
+      }
+
+      .kp,
+      .rkp {
+        scroll-snap-type: x proximity
+      }
+    }
+
+    @media(min-width:2000px) {
+      main>* {
+        max-width: 2100px;
+        margin-left: auto;
+        margin-right: auto
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -2368,6 +2614,63 @@ html{-webkit-text-size-adjust:100%}
     const MFN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const fmtM = v => { const x = Math.abs(v); return x >= 1e9 ? (v / 1e9).toFixed(1) + "B" : x >= 5e5 ? (v / 1e6).toFixed(1) + "M" : x >= 1e3 ? (v / 1e3).toFixed(0) + "K" : n0(v) };
     const mtRGB = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)).join(",");
+    /* Month-wise Trend · one year + one month → that month day-wise · one year → Jan–Dec of that year */
+    function periodOf(a) {
+      const ys = [...F.y].map(Number), ms = [...F.m].map(Number);
+      if (ys.length === 1 && ms.length === 1) return { mode: "day", y: ys[0], m: ms[0] };
+      if (ys.length === 1) return { mode: "year", y: ys[0] };
+      return null;
+    }
+    function mtPeriodHTML(a, key, title, col, id, per) {
+      const now = new Date(), curK = now.getFullYear() * 100 + now.getMonth() + 1;
+      const isDay = per.mode === "day";
+      let mm, N, partial = false, pI, lab, short, xLabel = null, sub, span, unit, lastD = 0;
+      if (isDay) {
+        const dim = new Date(Date.UTC(per.y, per.m, 0)).getUTCDate(), rows = a.filter(r => r.y === per.y && r.m === per.m);
+        const byD = new Map(); rows.forEach(r => byD.set(r.d, (byD.get(r.d) || 0) + r[key]));
+        lastD = rows.length ? Math.max(...rows.map(r => r.d)) : 0;
+        mm = Array.from({ length: dim }, (_, i) => ({ k: i + 1, q: i + 1 <= lastD ? (byD.get(i + 1) || 0) : null }));
+        N = dim; pI = -1;
+        lab = k => `${MN[per.m - 1]} ${k}, ${per.y}`;
+        short = k => `${k} ${MN[per.m - 1]}`;
+        xLabel = i => (i % (N > 20 ? 2 : 1) === 0 ? String(i + 1) : "");
+        const running = curK === per.y * 100 + per.m;
+        sub = `Daily volume · ${MN[per.m - 1]} ${per.y}${running ? " (month is still running)" : ""}`;
+        span = lastD ? `${MN[per.m - 1]} 1 – ${lastD}` : "—";
+        unit = "production day";
+      } else {
+        const byM = new Map(); a.forEach(r => byM.set(r.m, (byM.get(r.m) || 0) + r[key]));
+        mm = Array.from({ length: 12 }, (_, i) => ({ k: per.y * 100 + i + 1, q: byM.has(i + 1) ? byM.get(i + 1) : null }));
+        N = 12; pI = mm.findIndex(x => x.k === curK && x.q != null); partial = pI >= 0;
+        if (!partial) pI = N - 1;
+        lab = k => `${MN[k % 100 - 1]} ${Math.floor(k / 100)}`;
+        short = k => MN[k % 100 - 1];
+        xLabel = i => MN[i];
+        sub = `Monthly volume · Jan ${per.y} – Dec ${per.y}${partial ? ` (${MFN[curK % 100 - 1]} is still running)` : ""}`;
+        span = `Jan ${per.y} – Dec ${per.y}${partial ? " MTD" : ""}`;
+        unit = "month";
+      }
+      const isPartialIdx = i => partial && i === pI;
+      let grand = 0, pk = null, tr = null; const fullIdx = [];
+      mm.forEach((x, i) => {
+        if (x.q == null) return;
+        grand += x.q;
+        if (isPartialIdx(i)) return;
+        fullIdx.push(i);
+        if (!pk || x.q > pk.q) pk = x; if (!tr || x.q < tr.q) tr = x;
+      });
+      const avg = fullIdx.length ? fullIdx.reduce((s, i) => s + mm[i].q, 0) / fullIdx.length : null;
+      const bandFrom = fullIdx.length ? fullIdx[0] : -1, bandTo = fullIdx.length ? fullIdx[fullIdx.length - 1] : 0;
+      const full = fullIdx.map(i => mm[i]);
+      MTMs[id] = { mm, N, partial, pI, full, pk, tr, avg, bandFrom, bandTo, lab, short, col, avgLabel: isDay ? "Avg / day ≈" : "Avg / month ≈", xLabel, gridAt: () => false };
+      const peakTxt = pk ? (isDay ? `${MN[per.m - 1]} ${pk.k}, ${per.y}` : lab(pk.k)) : "—";
+      return `<div class="c mt" style="--mc:${col}"><div class="mt-h"><div><div class="mt-t">${title}</div><div class="mt-s">${sub}</div></div>
+<div class="mt-lg"><span><i></i>Actual</span>${partial ? '<span><i class="d"></i>Month to date</span>' : ""}</div></div>
+<div class="mt-k"><div><small>Grand total</small><b>${n0(grand)}</b><span>${span}</span></div>
+<div><small>Peak ${isDay ? "day" : "month"}</small><b>${pk ? fmtM(pk.q) : "—"}</b><span>${peakTxt}</span></div>
+<div><small>Avg / ${isDay ? "day" : "month"} · ${isDay ? MN[per.m - 1] + " " + per.y : per.y}</small><b>${avg != null ? "≈" + fmtM(avg) : "—"}</b><span>${fullIdx.length} ${unit}${fullIdx.length === 1 ? "" : "s"} with data</span></div></div>
+<div class="cv mt-cv"><canvas id="${id}"></canvas></div></div>`;
+    }
     function mtHTML(a, key, title, col, id) {
       if (!document.getElementById("mt-css")) {
         const s = document.createElement("style"); s.id = "mt-css";
@@ -2388,6 +2691,7 @@ html{-webkit-text-size-adjust:100%}
 .c.mt .mt-cv{height:340px;margin-top:6px}`;
         document.head.appendChild(s);
       }
+      const per = periodOf(a); if (per) return mtPeriodHTML(a, key, title, col, id, per);
       const mm = grp(a, r => r.y * 100 + r.m).sort((x, y) => x.k - y.k).map(x => ({ k: x.k, q: x[key] })), N = mm.length;
       const now = new Date(), curK = now.getFullYear() * 100 + now.getMonth() + 1;
       const partial = N > 0 && mm[N - 1].k === curK, full = partial ? mm.slice(0, -1) : mm;
@@ -2400,7 +2704,7 @@ html{-webkit-text-size-adjust:100%}
         avg = av(win); bandFrom = full.findIndex(x => mi(x.k) > li - 12);
         if (pri.length >= 6 && av(pri) > 0) delta = (avg / av(pri) - 1) * 100;
       }
-      MTMs[id] = { mm, N, partial, full, pk, tr, avg, bandFrom, lab, col };
+      MTMs[id] = { mm, N, partial, pI: N - 1, full, pk, tr, avg, bandFrom, bandTo: full.length - 1, lab, col, short: k => MN[k % 100 - 1], avgLabel: "Last 12M avg ≈", xLabel: null, gridAt: null };
       const sub = N ? `Monthly volume · ${lab(mm[0].k)} – ${lab(mm[N - 1].k)}${partial ? ` (${MFN[mm[N - 1].k % 100 - 1]} is still running)` : ""}` : "No data for the selected filters";
       return `<div class="c mt" style="--mc:${col}"><div class="mt-h"><div><div class="mt-t">${title}</div><div class="mt-s">${sub}</div></div>
 <div class="mt-lg"><span><i></i>Actual</span>${partial ? '<span><i class="d"></i>Month to date</span>' : ""}</div></div>
@@ -2410,9 +2714,10 @@ html{-webkit-text-size-adjust:100%}
 <div class="cv mt-cv"><canvas id="${id}"></canvas></div></div>`
     }
     function mtChart(id) {
-      const { mm, N, partial, full, pk, tr, avg, bandFrom, lab, col } = MTMs[id], title = id === "c1" ? "Hanger Qty" : "Sizer Qty"; if (!N) return; const rgb = mtRGB(col);
+      const { mm, N, partial, pI, full, pk, tr, avg, bandFrom, bandTo, lab, col, short, avgLabel, xLabel, gridAt } = MTMs[id], title = id === "c1" ? "Hanger Qty" : "Sizer Qty"; if (!N) return; const rgb = mtRGB(col);
       const yr = k => Math.floor(k / 100), yrIdx = new Set(); mm.forEach((x, i) => { if (!i || yr(x.k) !== yr(mm[i - 1].k)) yrIdx.add(i) });
-      const act = mm.map((x, i) => partial && i === N - 1 ? null : x.q), mtd = mm.map((x, i) => partial && i >= N - 2 ? x.q : null);
+      const gridOn = gridAt || (i => yrIdx.has(i)), xLab = xLabel || (i => yrIdx.has(i) ? String(yr(mm[i].k)) : "");
+      const act = mm.map((x, i) => partial && i === pI ? null : x.q), mtd = mm.map((x, i) => partial && i >= pI - 1 && i <= pI ? x.q : null);
       const pkI = pk ? mm.findIndex(x => x.k === pk.k) : -1, trI = tr ? mm.findIndex(x => x.k === tr.k) : -1, mx = Math.max(...mm.map(x => x.q));
       const rr = (c, x, y, w, h, r) => { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath() };
       const dot = (c, x, y, r, st) => { c.beginPath(); c.arc(x, y, r, 0, 7); c.fillStyle = "#fff"; c.fill(); c.lineWidth = 2.5; c.strokeStyle = st; c.stroke() };
@@ -2420,10 +2725,10 @@ html{-webkit-text-size-adjust:100%}
         id: "mtx",
         beforeDatasetsDraw(ch) {
           const { ctx, chartArea: A, scales: { x } } = ch; if (bandFrom < 0 || avg == null) return;
-          const st = N > 1 ? x.getPixelForValue(1) - x.getPixelForValue(0) : 0, x0 = Math.max(A.left, x.getPixelForValue(bandFrom) - st / 2), x1 = x.getPixelForValue(full.length - 1), ya = ch.scales.y.getPixelForValue(avg);
+          const st = N > 1 ? x.getPixelForValue(1) - x.getPixelForValue(0) : 0, x0 = Math.max(A.left, x.getPixelForValue(bandFrom) - st / 2), x1 = x.getPixelForValue(bandTo), ya = ch.scales.y.getPixelForValue(avg);
           ctx.save(); ctx.fillStyle = `rgba(${rgb},.07)`; ctx.fillRect(x0, A.top, Math.max(0, x1 - x0), A.bottom - A.top);
           ctx.setLineDash([7, 6]); ctx.lineWidth = 2; ctx.strokeStyle = "#857b92"; ctx.beginPath(); ctx.moveTo(x0, ya); ctx.lineTo(x1, ya); ctx.stroke(); ctx.setLineDash([]);
-          ctx.fillStyle = "#0f2a5a"; ctx.font = "600 12px Inter,sans-serif"; ctx.textAlign = "right"; ctx.textBaseline = "alphabetic"; ctx.fillText("Last 12M avg ≈" + fmtM(avg), Math.min(A.right, x1 + 6), A.top - 10); ctx.restore()
+          ctx.fillStyle = "#0f2a5a"; ctx.font = "600 12px Inter,sans-serif"; ctx.textAlign = "right"; ctx.textBaseline = "alphabetic"; ctx.fillText(avgLabel + fmtM(avg), Math.min(A.right, x1 + 6), A.top - 10); ctx.restore()
         },
         afterDatasetsDraw(ch) {
           const { ctx, chartArea: A, scales: { x, y } } = ch; ctx.save();
@@ -2442,7 +2747,7 @@ html{-webkit-text-size-adjust:100%}
             if (px + 14 + ctx.measureText(t).width > A.right) { ctx.textAlign = "right"; ctx.fillText(t, px - 12, py - 10) } else { ctx.textAlign = "left"; ctx.fillText(t, px + 12, py - 10) }
           }
           if (partial) {
-            const px = x.getPixelForValue(N - 1), py = y.getPixelForValue(mm[N - 1].q), t = MN[mm[N - 1].k % 100 - 1] + " MTD · " + fmtM(mm[N - 1].q) + " · partial";
+            const px = x.getPixelForValue(pI), py = y.getPixelForValue(mm[pI].q), t = short(mm[pI].k) + " MTD · " + fmtM(mm[N - 1].q) + " · partial";
             ctx.font = "600 12.5px Inter,sans-serif"; ctx.textAlign = "right"; ctx.textBaseline = "middle"; ctx.lineJoin = "round"; ctx.lineWidth = 4; ctx.strokeStyle = "rgba(255,255,255,.92)"; ctx.strokeText(t, px - 14, py); ctx.fillStyle = "#0f2a5a"; ctx.fillText(t, px - 14, py)
           }
           ctx.restore()
@@ -2453,13 +2758,13 @@ html{-webkit-text-size-adjust:100%}
         data: {
           labels: mm.map(x => lab(x.k)), datasets: [
             { label: title, data: act, borderColor: col, borderWidth: 3, tension: 0, pointRadius: 0, pointHoverRadius: 5, pointHoverBackgroundColor: "#fff", pointHoverBorderColor: col, pointHoverBorderWidth: 2, fill: true, spanGaps: false, backgroundColor: c => { const a = c.chart.chartArea; if (!a) return `rgba(${rgb},.10)`; const g = c.chart.ctx.createLinearGradient(0, a.top, 0, a.bottom); g.addColorStop(0, `rgba(${rgb},.20)`); g.addColorStop(1, `rgba(${rgb},.01)`); return g } },
-            { label: "Month to date", data: mtd, borderColor: col, borderWidth: 2.5, borderDash: [3, 5], borderCapStyle: "round", tension: 0, fill: false, spanGaps: true, pointRadius: c => c.dataIndex === N - 1 ? 6 : 0, pointBackgroundColor: "#fff", pointBorderColor: col, pointBorderWidth: 2.5 }]
+            { label: "Month to date", data: mtd, borderColor: col, borderWidth: 2.5, borderDash: [3, 5], borderCapStyle: "round", tension: 0, fill: false, spanGaps: true, pointRadius: c => c.dataIndex === pI ? 6 : 0, pointBackgroundColor: "#fff", pointBorderColor: col, pointBorderWidth: 2.5 }]
         },
         options: {
           responsive: true, maintainAspectRatio: false, animation: false, layout: { padding: { top: 34, right: 14 } }, interaction: { mode: "index", intersect: false },
-          plugins: { legend: { display: false }, tooltip: { filter: it => it.raw != null && (it.datasetIndex === 0 || it.dataIndex === N - 1), callbacks: { title: it => lab(mm[it[0].dataIndex].k) + (partial && it[0].dataIndex === N - 1 ? " (month to date)" : ""), label: c => " " + n0(c.parsed.y) } } },
+          plugins: { legend: { display: false }, tooltip: { filter: it => it.raw != null && (it.datasetIndex === 0 || it.dataIndex === pI), callbacks: { title: it => lab(mm[it[0].dataIndex].k) + (partial && it[0].dataIndex === pI ? " (month to date)" : ""), label: c => " " + n0(c.parsed.y) } } },
           scales: {
-            x: { grid: { color: c => yrIdx.has(c.index) ? "#ebe6ef" : "transparent", drawTicks: false }, border: { display: false }, ticks: { autoSkip: false, maxRotation: 0, color: "#6d7c99", font: { size: 12 }, callback: (v, i) => yrIdx.has(i) ? String(yr(mm[i].k)) : "" } },
+            x: { grid: { color: c => gridOn(c.index) ? "#ebe6ef" : "transparent", drawTicks: false }, border: { display: false }, ticks: { autoSkip: false, maxRotation: 0, color: "#6d7c99", font: { size: 12 }, callback: (v, i) => xLab(i) } },
             y: { beginAtZero: true, suggestedMax: mx * 1.12, grid: { color: "#ece8f0" }, border: { display: false }, ticks: { callback: v => ab(v), color: "#6d7c99", font: { size: 12 }, maxTicksLimit: 6 } }
           }
         }, plugins: [plug]
@@ -2968,76 +3273,76 @@ ${avRow}<div class="hx-gt"><b>${fu(T)}</b><small>GRAND TOTAL · 100%</small></di
     }
     init();
   </script>
-<script id="rsp-v1-js">
-/* ===================== RESPONSIVE v1 · collapsible filter (UI only) ===================== */
-(function(){
-  var MQ=matchMedia('(max-width:767px)'),isOpen=false,tmr=0,obs=null,raf=0;
-  var FUN='<svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg>';
-  var CHV='<svg class="fbv" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>';
-  function closePopup(){var p=document.getElementById('pn');if(p)p.style.display='none';var q=document.getElementById('pop');if(q)q.classList.remove('on')}
-  function setOpen(wrap,on,instant){
-    clearTimeout(tmr);
-    if(on){
-      wrap.style.setProperty('--fbh',wrap.scrollHeight+'px');
-      if(instant){wrap.classList.add('open');wrap.style.setProperty('--fbh','none')}
-      else{wrap.classList.add('open');tmr=setTimeout(function(){wrap.style.setProperty('--fbh','none')},400)}
-    }else{
-      closePopup();
-      if(instant){wrap.style.setProperty('--fbh','0px');wrap.classList.remove('open')}
-      else{wrap.style.setProperty('--fbh',wrap.scrollHeight+'px');void wrap.offsetHeight;wrap.style.setProperty('--fbh','0px');wrap.classList.remove('open')}
-    }
-    isOpen=on;sync();
-  }
-  function count(fb){
-    var n=fb.querySelectorAll('.f button.on,.fp.on').length;
-    fb.querySelectorAll('input[type=date]').forEach(function(i){if(i.value)n++});
-    return n;
-  }
-  function sync(){
-    var fb=document.getElementById('fb');if(!fb)return;
-    var t=document.querySelector('.fbt');if(!t)return;
-    t.setAttribute('aria-expanded',isOpen?'true':'false');
-    var n=count(fb),b=t.querySelector('.fbn');b.textContent=n?n+' active':'';
-    t.hidden=!fb.children.length;
-  }
-  function ensure(){
-    var fb=document.getElementById('fb');
-    if(!fb){document.querySelectorAll('.fbt').forEach(function(t){t.remove()});return}
-    var wrap=fb.parentElement;
-    if(!wrap.classList.contains('fbc')){
-      wrap=document.createElement('div');wrap.className='fbc';
-      fb.parentNode.insertBefore(wrap,fb);wrap.appendChild(fb);
-      var a=document.createElement('div');a.className='fba';
-      a.innerHTML='<button type="button" class="fbr">Reset</button><button type="button" class="fbp">Apply</button>';
-      wrap.appendChild(a);
-      a.querySelector('.fbr').onclick=function(){var r=fb.querySelector('.rs');if(r)r.click();setTimeout(sync,60)};
-      a.querySelector('.fbp').onclick=function(){setOpen(wrap,false)};
-      if(isOpen&&MQ.matches)setOpen(wrap,true,true);
-      if(obs)obs.disconnect();
-      obs=new MutationObserver(function(){sync()});
-      obs.observe(fb,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
-    }
-    var host=fb.closest('.fbw')||wrap;
-    var prev=host.previousElementSibling;
-    if(!prev||!prev.classList.contains('fbt')){
-      document.querySelectorAll('.fbt').forEach(function(t){t.remove()});
-      var t=document.createElement('button');t.type='button';t.className='fbt';t.setAttribute('aria-expanded','false');
-      t.innerHTML=FUN+'<span class="fbl">Filters</span><span class="fbn"></span>'+CHV;
-      t.onclick=function(){var w=document.querySelector('.fbc');if(w)setOpen(w,!isOpen)};
-      host.parentNode.insertBefore(t,host);
-    }
-    sync();
-  }
-  function sched(){cancelAnimationFrame(raf);raf=requestAnimationFrame(ensure)}
-  new MutationObserver(sched).observe(document.body,{childList:true,subtree:true});
-  document.addEventListener('change',function(e){if(e.target.closest&&e.target.closest('#fb'))sync()});
-  (MQ.addEventListener?MQ.addEventListener.bind(MQ,'change'):MQ.addListener.bind(MQ))(function(){
-    var w=document.querySelector('.fbc');if(w){w.style.removeProperty('--fbh');if(!MQ.matches)w.classList.remove('open')}
-    if(!MQ.matches){isOpen=false;sync()}
-  });
-  ensure();
-})();
-</script>
+  <script id="rsp-v1-js">
+    /* ===================== RESPONSIVE v1 · collapsible filter (UI only) ===================== */
+    (function () {
+      var MQ = matchMedia('(max-width:767px)'), isOpen = false, tmr = 0, obs = null, raf = 0;
+      var FUN = '<svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg>';
+      var CHV = '<svg class="fbv" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>';
+      function closePopup() { var p = document.getElementById('pn'); if (p) p.style.display = 'none'; var q = document.getElementById('pop'); if (q) q.classList.remove('on') }
+      function setOpen(wrap, on, instant) {
+        clearTimeout(tmr);
+        if (on) {
+          wrap.style.setProperty('--fbh', wrap.scrollHeight + 'px');
+          if (instant) { wrap.classList.add('open'); wrap.style.setProperty('--fbh', 'none') }
+          else { wrap.classList.add('open'); tmr = setTimeout(function () { wrap.style.setProperty('--fbh', 'none') }, 400) }
+        } else {
+          closePopup();
+          if (instant) { wrap.style.setProperty('--fbh', '0px'); wrap.classList.remove('open') }
+          else { wrap.style.setProperty('--fbh', wrap.scrollHeight + 'px'); void wrap.offsetHeight; wrap.style.setProperty('--fbh', '0px'); wrap.classList.remove('open') }
+        }
+        isOpen = on; sync();
+      }
+      function count(fb) {
+        var n = fb.querySelectorAll('.f button.on,.fp.on').length;
+        fb.querySelectorAll('input[type=date]').forEach(function (i) { if (i.value) n++ });
+        return n;
+      }
+      function sync() {
+        var fb = document.getElementById('fb'); if (!fb) return;
+        var t = document.querySelector('.fbt'); if (!t) return;
+        t.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        var n = count(fb), b = t.querySelector('.fbn'); b.textContent = n ? n + ' active' : '';
+        t.hidden = !fb.children.length;
+      }
+      function ensure() {
+        var fb = document.getElementById('fb');
+        if (!fb) { document.querySelectorAll('.fbt').forEach(function (t) { t.remove() }); return }
+        var wrap = fb.parentElement;
+        if (!wrap.classList.contains('fbc')) {
+          wrap = document.createElement('div'); wrap.className = 'fbc';
+          fb.parentNode.insertBefore(wrap, fb); wrap.appendChild(fb);
+          var a = document.createElement('div'); a.className = 'fba';
+          a.innerHTML = '<button type="button" class="fbr">Reset</button><button type="button" class="fbp">Apply</button>';
+          wrap.appendChild(a);
+          a.querySelector('.fbr').onclick = function () { var r = fb.querySelector('.rs'); if (r) r.click(); setTimeout(sync, 60) };
+          a.querySelector('.fbp').onclick = function () { setOpen(wrap, false) };
+          if (isOpen && MQ.matches) setOpen(wrap, true, true);
+          if (obs) obs.disconnect();
+          obs = new MutationObserver(function () { sync() });
+          obs.observe(fb, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+        }
+        var host = fb.closest('.fbw') || wrap;
+        var prev = host.previousElementSibling;
+        if (!prev || !prev.classList.contains('fbt')) {
+          document.querySelectorAll('.fbt').forEach(function (t) { t.remove() });
+          var t = document.createElement('button'); t.type = 'button'; t.className = 'fbt'; t.setAttribute('aria-expanded', 'false');
+          t.innerHTML = FUN + '<span class="fbl">Filters</span><span class="fbn"></span>' + CHV;
+          t.onclick = function () { var w = document.querySelector('.fbc'); if (w) setOpen(w, !isOpen) };
+          host.parentNode.insertBefore(t, host);
+        }
+        sync();
+      }
+      function sched() { cancelAnimationFrame(raf); raf = requestAnimationFrame(ensure) }
+      new MutationObserver(sched).observe(document.body, { childList: true, subtree: true });
+      document.addEventListener('change', function (e) { if (e.target.closest && e.target.closest('#fb')) sync() });
+      (MQ.addEventListener ? MQ.addEventListener.bind(MQ, 'change') : MQ.addListener.bind(MQ))(function () {
+        var w = document.querySelector('.fbc'); if (w) { w.style.removeProperty('--fbh'); if (!MQ.matches) w.classList.remove('open') }
+        if (!MQ.matches) { isOpen = false; sync() }
+      });
+      ensure();
+    })();
+  </script>
 </body>
 
 </html>
