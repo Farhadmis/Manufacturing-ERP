@@ -1,0 +1,2356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Mainetti · Downtime Analysis</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0f2a5a;
+            --red: #a61935;
+            --mute: #6d7c99;
+            --line: #dbe4f2;
+            --gold: #e0b24a
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, sans-serif;
+            color: var(--navy);
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #f1f5fb;
+            font-size: 13px
+        }
+
+        /* ===== header ===== */
+        header {
+            flex: none;
+            position: relative;
+            z-index: 60;
+            display: flex;
+            align-items: stretch;
+            height: clamp(66px, 9vh, 88px);
+            background: linear-gradient(90deg, #f8fbff, #e8f0fc);
+            box-shadow: 0 4px 18px rgba(16, 44, 92, .12)
+        }
+
+        .hl {
+            display: flex;
+            align-items: center;
+            gap: clamp(12px, 1.5vw, 24px);
+            padding: 0 clamp(14px, 1.8vw, 30px);
+            position: relative;
+            z-index: 2;
+            flex: none
+        }
+
+        .hl img {
+            height: clamp(40px, 6.2vh, 58px);
+            display: block
+        }
+
+        .logo {
+            font-weight: 800;
+            letter-spacing: .06em;
+            font-size: 20px;
+            line-height: 1;
+            color: var(--navy)
+        }
+
+        .logo small {
+            display: block;
+            font-size: 9px;
+            letter-spacing: .2em;
+            margin-top: 3px;
+            color: #12408f
+        }
+
+        .sep {
+            width: 1px;
+            height: 46px;
+            background: #9fb3d3;
+            flex: none
+        }
+
+        .tag {
+            font-style: italic;
+            font-weight: 600;
+            color: #12408f;
+            font-size: clamp(12px, 1.15vw, 18px);
+            white-space: nowrap
+        }
+
+        .tag i {
+            font-style: normal;
+            margin: 0 .7em;
+            opacity: .55
+        }
+
+        .gr {
+            font-size: 11.5px;
+            color: var(--mute);
+            margin-top: 3px;
+            white-space: nowrap
+        }
+
+        .hp {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+            overflow: hidden
+        }
+
+        .hp::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url(assets/header-photo.jpg) right center/cover no-repeat;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 40%);
+            mask-image: linear-gradient(90deg, transparent, #000 40%)
+        }
+
+        .hr {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: clamp(10px, 1.2vw, 18px);
+            padding: 0 clamp(14px, 1.6vw, 26px) 0 clamp(54px, 5vw, 84px);
+            color: #fff;
+            flex: none
+        }
+
+        .hr::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(100deg, #0a2a70, #0b3d94);
+            clip-path: polygon(44px 0, 100% 0, 100% 100%, 0 100%);
+            z-index: -1
+        }
+
+        .hr svg.fy {
+            width: clamp(30px, 2.6vw, 42px);
+            height: clamp(30px, 2.6vw, 42px);
+            flex: none
+        }
+
+        .ht b {
+            display: block;
+            font-size: clamp(15px, 1.5vw, 23px);
+            font-weight: 800;
+            white-space: nowrap
+        }
+
+        .ht span {
+            display: block;
+            font-size: clamp(9.5px, .8vw, 12px);
+            opacity: .92;
+            margin-top: 2px;
+            white-space: nowrap
+        }
+
+        .user {
+            position: relative
+        }
+
+        .ub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, .14);
+            border: 1px solid rgba(255, 255, 255, .4);
+            color: #fff;
+            border-radius: 999px;
+            padding: 4px 14px 4px 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit
+        }
+
+        .av {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #fff;
+            color: #0b3d94;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: 12px
+        }
+
+        .menu {
+            position: absolute;
+            right: 0;
+            top: 46px;
+            background: #fff;
+            color: var(--navy);
+            border-radius: 12px;
+            box-shadow: 0 14px 34px rgba(16, 44, 92, .25);
+            min-width: 170px;
+            display: none;
+            overflow: hidden;
+            z-index: 30
+        }
+
+        .menu div {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-weight: 600
+        }
+
+        .menu div:hover {
+            background: #f1f5fc
+        }
+
+        /* ===== layout ===== */
+        .bk {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid #9fb3d3;
+            background: #fff;
+            color: var(--navy);
+            font-size: 18px;
+            cursor: pointer;
+            flex: none
+        }
+
+        .lay {
+            flex: 1;
+            min-height: 0;
+            display: flex
+        }
+
+        aside {
+            flex: none;
+            width: 250px;
+            background: #fff;
+            border-right: 1px solid var(--line);
+            padding: 10px 0;
+            transition: .2s;
+            overflow: hidden
+        }
+
+        aside.col {
+            width: 62px
+        }
+
+        .nv {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #3a4d73;
+            border-left: 3px solid transparent
+        }
+
+        .nv span {
+            line-height: 1.25
+        }
+
+        aside.col .nv span {
+            white-space: nowrap
+        }
+
+        .nv svg {
+            width: 20px;
+            height: 20px;
+            flex: none;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.9;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .nv:hover {
+            background: #f5f8fd
+        }
+
+        .nv.on {
+            color: var(--red);
+            background: #fdeff2;
+            border-left-color: var(--red)
+        }
+
+        .nv.t {
+            color: var(--mute);
+            margin-bottom: 6px
+        }
+
+        main {
+            flex: 1;
+            min-width: 0;
+            overflow: auto;
+            padding: 0 22px 30px
+        }
+
+        .ttl {
+            font-size: 20px;
+            font-weight: 800;
+            margin: 18px 0 2px
+        }
+
+        .sub {
+            color: var(--mute);
+            margin: 0 0 14px
+        }
+
+        .empty {
+            background: #fff;
+            border-radius: 16px;
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--mute)
+        }
+
+        .empty b {
+            display: block;
+            color: var(--navy);
+            font-size: 17px;
+            margin-bottom: 6px
+        }
+
+        @media(max-width:900px) {
+            body {
+                height: 100dvh;
+                overflow: hidden
+            }
+
+            aside {
+                width: 62px
+            }
+
+            .nv span {
+                display: none
+            }
+
+            .hl {
+                padding: 8px 12px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="hl"><button class="bk" onclick="location.href='shopfloor.html'" title="Back">←</button>
+            <img src="assets/logo.png" style="cursor:pointer" onclick="location.href='portal.html'"
+                alt="Mainetti Bangladesh"
+                onerror="this.outerHTML='<div class=&quot;logo&quot;>MAINETTI<small>BANGLADESH PVT. LTD.</small></div>'">
+            <div class="sep"></div>
+            <div>
+                <div class="tag">Drive Efficiency<i>/</i>Ensure Quality<i>/</i>Grow Together</div>
+                <div class="gr" id="gr"></div>
+            </div>
+        </div>
+        <div class="hp"></div>
+        <div class="hr"><svg class="fy" viewBox="0 0 24 24">
+                <path fill="#fff" d="M2 21V10l6 3.6V10l6 3.6V4h3.4v9.6H22V21z" />
+                <path fill="rgba(11,61,148,.55)" d="M5 17h2.2v2.2H5zM10 17h2.2v2.2H10zM15 17h2.2v2.2H15z" />
+                <path fill="#fff" opacity=".7" d="M16.2 1.5h2.6v2h-2.6z" />
+            </svg>
+            <div class="ht"><b>Downtime Analysis</b><span>Maintenance performance &amp; analytics</span></div>
+            <div class="user"><button class="ub" id="ub"><span class="av" id="av"></span><span id="un"></span>
+                    ▾</button>
+                <div class="menu" id="mn">
+                    <div onclick="location.href='portal.html'">Portal</div>
+                    <div onclick="location.href='production.html'">Production &amp; Planning</div>
+                    <div id="adm" style="display:none" onclick="location.href='admin.html'">Admin Console</div>
+                    <div onclick="out()">Sign out</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="lay">
+        <div class="lay">
+            <aside id="sd">
+                <div class="nv t" onclick="document.querySelector('#sd').classList.toggle('col')"><svg
+                        viewBox="0 0 24 24">
+                        <path d="M4 6h16M4 12h16M4 18h16" />
+                    </svg><span>Menu</span></div>
+                <div class="nv" onclick="location.href='shopfloor.html#oee'"><svg viewBox="0 0 24 24">
+                        <path d="M4 17a8 8 0 1 1 16 0M12 17l4-5M6.5 17h1M16.5 17h1" />
+                    </svg><span>OEE Performance Overview</span></div>
+                <div class="nv" onclick="location.href='shopfloor.html#prod'"><svg viewBox="0 0 24 24">
+                        <path d="M5 20V11M11 20V5M17 20v-6M3 20h18" />
+                    </svg><span>Production Performance</span></div>
+                <div class="nv on"><svg viewBox="0 0 24 24">
+                        <path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2" />
+                    </svg><span>Downtime Analysis</span></div>
+                <div class="nv" onclick="location.href='shopfloor.html#man'"><svg viewBox="0 0 24 24">
+                        <path
+                            d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M17 11a2.5 2.5 0 1 0 0-5M17 14c2.5 0 4 2 4 5" />
+                    </svg><span>Manpower Performance</span></div>
+                <div class="nv" onclick="location.href='shopfloor.html#mat'"><svg viewBox="0 0 24 24">
+                        <path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5" />
+                    </svg><span>Machine-wise Material Allocation</span></div>
+                <div class="nv" onclick="location.href='shopfloor.html#mco'"><svg viewBox="0 0 24 24">
+                        <path d="M3 5h18v11H3zM8 20h8M12 16v4" />
+                    </svg><span>Machine Overview</span></div>
+            </aside>
+            <main>
+                <style>
+                    main {
+                        background: linear-gradient(180deg, #e6eefb, #f3f7fe 45%, #eaf1fc);
+                        padding: 16px 20px 28px;
+                        color: #0f2a5a
+                    }
+
+                    .dh {
+                        position: relative;
+                        overflow: hidden;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        gap: 14px;
+                        flex-wrap: wrap;
+                        margin-bottom: 12px;
+                        padding: 12px 18px;
+                        border-radius: 16px;
+                        background: linear-gradient(100deg, #0a2a70, #0d47b8 55%, #2f84f5);
+                        box-shadow: 0 8px 22px rgba(16, 60, 150, .25)
+                    }
+
+                    .dh::after {
+                        content: "";
+                        position: absolute;
+                        right: -40px;
+                        top: -50%;
+                        width: 380px;
+                        height: 200%;
+                        background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .16), transparent);
+                        transform: skewX(-24deg);
+                        pointer-events: none
+                    }
+
+                    .dh>* {
+                        position: relative;
+                        z-index: 1
+                    }
+
+                    .dh h1 {
+                        margin: 0;
+                        font-size: clamp(22px, 2.6vw, 34px);
+                        font-weight: 800;
+                        color: #fff;
+                        letter-spacing: -.3px
+                    }
+
+                    .dh p {
+                        margin: 2px 0 0;
+                        font-size: 13px;
+                        font-style: italic;
+                        color: #dbe8ff
+                    }
+
+                    .lu {
+                        border: 1px solid rgba(255, 255, 255, .5);
+                        border-radius: 12px;
+                        padding: 8px 14px;
+                        background: rgba(255, 255, 255, .16);
+                        font-size: 12px;
+                        color: #dbe8ff
+                    }
+
+                    .lu b {
+                        display: block;
+                        color: #fff;
+                        font-size: 13px
+                    }
+
+                    .fr {
+                        position: relative;
+                        z-index: 20;
+                        display: flex;
+                        gap: 8px;
+                        flex-wrap: wrap;
+                        align-items: center;
+                        background: #fff;
+                        border: 1px solid #dbe4f2;
+                        border-radius: 14px;
+                        padding: 8px 10px;
+                        margin-bottom: 12px;
+                        box-shadow: 0 3px 12px rgba(16, 44, 92, .07)
+                    }
+
+                    .fr>label,
+                    .ms>button {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                        height: 38px;
+                        font: 600 12px Inter, sans-serif;
+                        color: #6d7c99;
+                        background: #fff;
+                        border: 1px solid #dbe4f2;
+                        border-radius: 12px;
+                        padding: 0 10px;
+                        cursor: pointer;
+                        white-space: nowrap
+                    }
+
+                    .fr>label:hover,
+                    .ms>button:hover,
+                    .ms.open>button {
+                        border-color: #1f8bff
+                    }
+
+                    .fr select {
+                        background: transparent;
+                        border: 0;
+                        color: #0f2a5a;
+                        font: 600 13px Inter, sans-serif;
+                        padding: 8px 2px;
+                        outline: 0;
+                        max-width: 110px;
+                        cursor: pointer
+                    }
+
+                    .fr select option {
+                        background: #fff;
+                        color: #0f2a5a
+                    }
+
+                    .fr input[type=date] {
+                        border: 0;
+                        outline: 0;
+                        background: transparent;
+                        font: 600 13px Inter, sans-serif;
+                        color: #0f2a5a;
+                        padding: 8px 2px;
+                        cursor: pointer
+                    }
+
+                    .ms {
+                        position: relative
+                    }
+
+                    .ms>button b {
+                        color: #0f2a5a;
+                        font-weight: 700;
+                        max-width: 110px;
+                        overflow: hidden;
+                        text-overflow: ellipsis
+                    }
+
+                    .ms>button i {
+                        font-style: normal;
+                        font-size: 10px;
+                        color: #6d7c99
+                    }
+
+                    .mp {
+                        display: none;
+                        position: absolute;
+                        top: 44px;
+                        left: 0;
+                        z-index: 80;
+                        width: 230px;
+                        background: #fff;
+                        border: 1px solid #dbe4f2;
+                        border-radius: 14px;
+                        box-shadow: 0 14px 34px rgba(16, 44, 92, .22);
+                        padding: 10px
+                    }
+
+                    .ms.open .mp {
+                        display: block
+                    }
+
+                    .mq {
+                        width: 100%;
+                        border: 1px solid #dbe4f2;
+                        border-radius: 10px;
+                        padding: 9px 10px;
+                        font: 500 13px Inter, sans-serif;
+                        color: #0f2a5a;
+                        outline: 0;
+                        margin-bottom: 8px
+                    }
+
+                    .mq:focus {
+                        border-color: #1f8bff
+                    }
+
+                    .mo {
+                        max-height: 190px;
+                        overflow: auto
+                    }
+
+                    .mo label {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 7px 6px;
+                        font: 600 13px Inter, sans-serif;
+                        color: #0f2a5a;
+                        cursor: pointer;
+                        border-radius: 8px
+                    }
+
+                    .mo label:hover {
+                        background: #f1f5fc
+                    }
+
+                    .mo input {
+                        width: 16px;
+                        height: 16px;
+                        accent-color: #0b4fd0;
+                        cursor: pointer
+                    }
+
+                    .ma {
+                        display: flex;
+                        gap: 8px;
+                        margin-top: 8px
+                    }
+
+                    .ma button {
+                        flex: 1;
+                        border: 1px solid #dbe4f2;
+                        background: #fff;
+                        border-radius: 10px;
+                        padding: 8px;
+                        font: 700 13px Inter, sans-serif;
+                        color: #0f2a5a;
+                        cursor: pointer
+                    }
+
+                    .ma button:hover {
+                        background: #f1f5fc
+                    }
+
+                    .rf {
+                        margin-left: auto;
+                        height: 38px;
+                        background: linear-gradient(135deg, #1f8bff, #0b4fd0);
+                        color: #fff;
+                        border: 0;
+                        border-radius: 12px;
+                        padding: 0 20px;
+                        font: 700 13px Inter, sans-serif;
+                        cursor: pointer;
+                        box-shadow: 0 4px 10px rgba(11, 79, 208, .3)
+                    }
+
+                    .rf:hover {
+                        filter: brightness(1.1)
+                    }
+
+                    .kg {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+                        gap: 10px;
+                        margin-bottom: 12px
+                    }
+
+                    .kp {
+                        border-radius: 14px;
+                        padding: 11px 13px;
+                        border: 1px solid rgba(255, 255, 255, .4);
+                        min-height: 104px;
+                        position: relative;
+                        overflow: hidden;
+                        box-shadow: 0 6px 16px rgba(16, 44, 92, .18)
+                    }
+
+                    .kp .t {
+                        font-size: 13px;
+                        font-weight: 700;
+                        color: #fff;
+                        line-height: 1.2
+                    }
+
+                    .kp .t small {
+                        display: block;
+                        font-size: 10px;
+                        font-weight: 500;
+                        opacity: .9
+                    }
+
+                    .kp .v {
+                        font-size: 27px;
+                        font-weight: 800;
+                        color: #fff;
+                        margin-top: 6px;
+                        display: flex;
+                        align-items: baseline;
+                        gap: 6px;
+                        flex-wrap: wrap
+                    }
+
+                    .kp .v i {
+                        font-style: normal;
+                        font-size: 13px;
+                        font-weight: 600;
+                        opacity: .95
+                    }
+
+                    .kp .v em {
+                        font-style: normal;
+                        font-size: 11.5px;
+                        font-weight: 700;
+                        background: rgba(255, 255, 255, .22);
+                        border-radius: 99px;
+                        padding: 1px 7px
+                    }
+
+                    .good {
+                        color: #c4ffd8
+                    }
+
+                    .bad {
+                        color: #ffd3d3
+                    }
+
+                    .kp .s {
+                        font-size: 10.5px;
+                        color: #fff;
+                        opacity: .92;
+                        margin-top: 3px
+                    }
+
+                    .k1 {
+                        background: linear-gradient(135deg, #1f7bf2, #0b43b4)
+                    }
+
+                    .k2 {
+                        background: linear-gradient(135deg, #24c45e, #0e8a3e)
+                    }
+
+                    .k3 {
+                        background: linear-gradient(135deg, #ffa328, #e0700c)
+                    }
+
+                    .k4 {
+                        background: linear-gradient(135deg, #9a4cf0, #5a2bc0)
+                    }
+
+                    .k5 {
+                        background: linear-gradient(135deg, #17bdf2, #0a86c6)
+                    }
+
+                    .k6 {
+                        background: linear-gradient(135deg, #ff5757, #c4262e)
+                    }
+
+                    .k7 {
+                        background: linear-gradient(135deg, #2fcb62, #0f8f3f)
+                    }
+
+                    .k8 {
+                        background: linear-gradient(135deg, #6f55ee, #3a2aa8)
+                    }
+
+                    .pg {
+                        display: grid;
+                        gap: 12px;
+                        margin-bottom: 12px
+                    }
+
+                    .g2 {
+                        grid-template-columns: 1.15fr 1fr
+                    }
+
+                    .g3 {
+                        grid-template-columns: 1fr 1.2fr 1.1fr
+                    }
+
+                    @media(max-width:1100px) {
+
+                        .g2,
+                        .g3 {
+                            grid-template-columns: 1fr
+                        }
+                    }
+
+                    .pn {
+                        background: #fff;
+                        border: 1px solid #dbe4f2;
+                        border-radius: 16px;
+                        padding: 0 14px 12px;
+                        min-width: 0;
+                        overflow: hidden;
+                        box-shadow: 0 4px 14px rgba(16, 44, 92, .07)
+                    }
+
+                    .pn h3 {
+                        margin: 0 -14px 8px;
+                        padding: 7px 14px;
+                        font-size: 17px;
+                        font-weight: 800;
+                        color: #0f2a5a;
+                        background: linear-gradient(90deg, #bcd3f6, #eef4ff 65%, #fff)
+                    }
+
+                    .lg2 {
+                        display: flex;
+                        gap: 14px;
+                        flex-wrap: wrap;
+                        font-size: 11.5px;
+                        font-weight: 600;
+                        color: #3a4d73;
+                        margin-bottom: 2px
+                    }
+
+                    .lg2 i {
+                        display: inline-block;
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 50%;
+                        margin-right: 5px
+                    }
+
+                    .pn svg {
+                        width: 100%;
+                        height: auto;
+                        display: block
+                    }
+
+                    .pn text {
+                        font-family: Inter, sans-serif
+                    }
+
+                    .nd2 {
+                        padding: 40px 10px;
+                        text-align: center;
+                        color: #5b6b8c;
+                        font-size: 13px
+                    }
+
+                    .fm {
+                        margin-top: 8px;
+                        font-size: 12px;
+                        color: #5b6b8c
+                    }
+
+                    .fm summary {
+                        cursor: pointer;
+                        color: #0b4fd0;
+                        font-weight: 600
+                    }
+
+                    .fm div {
+                        margin-top: 6px;
+                        line-height: 1.7
+                    }
+
+                    #tt {
+                        position: fixed;
+                        z-index: 999;
+                        pointer-events: none;
+                        background: #031445;
+                        border: 1px solid #35b4f0;
+                        color: #fff;
+                        font-size: 12px;
+                        padding: 7px 10px;
+                        border-radius: 8px;
+                        display: none;
+                        line-height: 1.5;
+                        box-shadow: 0 6px 18px #0008
+                    }
+
+                    .sk {
+                        animation: pl 1.1s infinite alternate
+                    }
+
+                    @keyframes pl {
+                        to {
+                            opacity: .5
+                        }
+                    }
+
+                    .mb {
+                        display: inline-block;
+                        margin-left: 8px;
+                        font-size: 10px;
+                        font-weight: 700;
+                        padding: 2px 8px;
+                        border-radius: 99px;
+                        background: #a61935;
+                        color: #fff;
+                        vertical-align: middle;
+                        border: 1px solid rgba(255, 255, 255, .5)
+                    }
+                </style>
+                <style>
+                    .hm {
+                        background: #fff;
+                        border: 1px solid #dbe4f2;
+                        border-radius: 16px;
+                        margin-bottom: 12px;
+                        box-shadow: 0 4px 14px rgba(16, 44, 92, .07);
+                        overflow: hidden
+                    }
+
+                    .hm-h {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        gap: 12px;
+                        flex-wrap: wrap;
+                        padding: 10px 16px;
+                        background: linear-gradient(100deg, #0a2a70, #0d47b8 60%, #1f6fe0);
+                        color: #fff
+                    }
+
+                    .hm-t {
+                        display: flex;
+                        align-items: center;
+                        gap: 12px
+                    }
+
+                    .hm-t>svg {
+                        width: 38px;
+                        height: 38px;
+                        flex: none
+                    }
+
+                    .hm-t h2 {
+                        margin: 0;
+                        font-size: clamp(17px, 2vw, 26px);
+                        font-weight: 800;
+                        letter-spacing: -.2px
+                    }
+
+                    .hm-t h2 b {
+                        color: #ffd814
+                    }
+
+                    .hm-t small {
+                        display: block;
+                        font-size: 11.5px;
+                        font-weight: 500;
+                        color: #cfe0ff;
+                        margin-top: 2px
+                    }
+
+                    .hm-p {
+                        display: flex;
+                        gap: 8px;
+                        flex-wrap: wrap
+                    }
+
+                    .hm-sel {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        height: 42px;
+                        padding: 0 12px;
+                        border-radius: 12px;
+                        background: rgba(255, 255, 255, .14);
+                        border: 1px solid rgba(255, 255, 255, .45);
+                        color: #cfe0ff;
+                        cursor: pointer
+                    }
+
+                    .hm-sel>svg {
+                        width: 20px;
+                        height: 20px;
+                        flex: none
+                    }
+
+                    .hm-sel span {
+                        display: block;
+                        font: 600 10.5px Inter, sans-serif;
+                        line-height: 1.1
+                    }
+
+                    .hm-sel select {
+                        background: transparent;
+                        border: 0;
+                        outline: 0;
+                        color: #fff;
+                        font: 800 15px Inter, sans-serif;
+                        cursor: pointer;
+                        padding: 0;
+                        margin: 0
+                    }
+
+                    .hm-sel select option {
+                        background: #fff;
+                        color: #0f2a5a
+                    }
+
+                    .hm-lg {
+                        display: flex;
+                        align-items: center;
+                        gap: 18px;
+                        flex-wrap: wrap;
+                        padding: 8px 14px;
+                        border-bottom: 1px solid #dbe4f2;
+                        background: #f4f8ff;
+                        font: 600 12.5px Inter, sans-serif;
+                        color: #0f2a5a
+                    }
+
+                    .hm-lg i {
+                        display: inline-block;
+                        width: 14px;
+                        height: 14px;
+                        border-radius: 50%;
+                        margin-right: 6px;
+                        vertical-align: -2px
+                    }
+
+                    .hm-dt {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        background: #0f2a5a;
+                        color: #fff;
+                        border-radius: 8px;
+                        padding: 6px 12px
+                    }
+
+                    .hm-dt svg {
+                        width: 18px;
+                        height: 18px;
+                        flex: none
+                    }
+
+                    .hm-n {
+                        margin-left: auto;
+                        background: #0f2a5a;
+                        color: #fff;
+                        border-radius: 8px;
+                        padding: 6px 12px;
+                        font-weight: 700
+                    }
+
+                    .hm-note {
+                        padding: 6px 14px;
+                        background: #fff6dc;
+                        color: #8a5a00;
+                        font: 600 12px Inter, sans-serif;
+                        border-bottom: 1px solid #f1deaa
+                    }
+
+                    .hm-w {
+                        overflow-x: auto;
+                        padding: 10px 14px 4px
+                    }
+
+                    .hm-in {
+                        display: grid;
+                        gap: 6px
+                    }
+
+                    .hm-row {
+                        display: grid;
+                        grid-template-columns: 84px 1fr 96px;
+                        gap: 8px;
+                        align-items: stretch
+                    }
+
+                    .hm-bay {
+                        display: grid;
+                        place-items: center;
+                        border-radius: 8px;
+                        background: linear-gradient(135deg, #0d2f78, #0a2158);
+                        color: #fff;
+                        font-weight: 800;
+                        font-size: 14px;
+                        padding: 0 6px;
+                        text-align: center
+                    }
+
+                    .hm-cs {
+                        display: grid;
+                        gap: 3px;
+                        padding: 3px;
+                        border-radius: 10px;
+                        background: #eaf1fc;
+                        border: 1px solid #dbe4f2
+                    }
+
+                    .hm-c {
+                        display: block;
+                        height: 32px;
+                        text-align: center;
+                        border-radius: 6px;
+                        font: 800 10px/30px Inter, sans-serif;
+                        color: #0f2a5a;
+                        border: 1px solid;
+                        cursor: default;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        padding: 0 1px;
+                        min-width: 0
+                    }
+
+                    .hm-c.g {
+                        background: linear-gradient(#c4f5c4, #8ee39a);
+                        border-color: #6fcf7e
+                    }
+
+                    .hm-c.y {
+                        background: linear-gradient(#ffdf70, #ffbe1f);
+                        border-color: #e0a000
+                    }
+
+                    .hm-c.r {
+                        background: linear-gradient(#ff9a9a, #ee5555);
+                        border-color: #d63a3a
+                    }
+
+                    .hm-c:hover {
+                        transform: scale(1.1);
+                        position: relative;
+                        z-index: 2;
+                        box-shadow: 0 3px 8px rgba(16, 44, 92, .3)
+                    }
+
+                    .hm-q {
+                        display: grid;
+                        place-items: center;
+                        border-radius: 8px;
+                        font-weight: 800;
+                        font-size: 15px;
+                        color: #0f2a5a;
+                        border: 1px solid
+                    }
+
+                    .hm-q.r {
+                        background: #ffd0d5;
+                        border-color: #f09aa4
+                    }
+
+                    .hm-q.g {
+                        background: #c9f5cf;
+                        border-color: #8edc9a
+                    }
+
+                    .hm-k {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+                        gap: 10px;
+                        padding: 10px 14px 14px
+                    }
+
+                    .hm-kp {
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        border-radius: 14px;
+                        padding: 10px 14px;
+                        min-height: 78px;
+                        border: 1px solid rgba(255, 255, 255, .4);
+                        box-shadow: 0 4px 12px rgba(16, 44, 92, .15)
+                    }
+
+                    .hm-kp>svg {
+                        width: 40px;
+                        height: 40px;
+                        flex: none
+                    }
+
+                    .hm-kp .l {
+                        font-size: 13px;
+                        font-weight: 700;
+                        line-height: 1.2
+                    }
+
+                    .hm-kp .v {
+                        font-size: 28px;
+                        font-weight: 800;
+                        line-height: 1.1
+                    }
+
+                    .hm-kp .s {
+                        font-size: 11px;
+                        font-weight: 600;
+                        opacity: .85
+                    }
+
+                    .hm-k1 {
+                        background: linear-gradient(135deg, #1553c7, #0a2a70);
+                        color: #fff
+                    }
+
+                    .hm-k2 {
+                        background: linear-gradient(135deg, #e3eeff, #b9d4fb);
+                        color: #0f2a5a;
+                        border-color: #a9c4ee
+                    }
+
+                    .hm-k3 {
+                        background: linear-gradient(135deg, #d2f7d6, #9fe8a8);
+                        color: #0f2a5a;
+                        border-color: #7fd48b
+                    }
+
+                    .hm-k4 {
+                        background: linear-gradient(135deg, #ffe9b0, #ffc65a);
+                        color: #0f2a5a;
+                        border-color: #eab040
+                    }
+
+                    .hm-k5 {
+                        background: linear-gradient(135deg, #123a8f, #081c52);
+                        color: #fff
+                    }
+
+                    .hm-e {
+                        padding: 30px 10px;
+                        text-align: center;
+                        color: #5b6b8c
+                    }
+
+                    #hmtt {
+                        position: fixed;
+                        z-index: 200;
+                        display: none;
+                        pointer-events: auto;
+                        min-width: 500px;
+                        padding: 16px 18px !important;
+                        width: max-content;
+                        max-width: 92vw;
+                        background: #fff;
+                        border: 1px solid var(--line);
+                        border-radius: 12px;
+                        box-shadow: 0 12px 32px rgba(15, 42, 90, .22);
+                        padding: 12px 14px;
+                        font-size: 12px;
+                        color: var(--navy)
+                    }
+
+                    #hmtt .tp-h {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: baseline;
+                        gap: 8px;
+                        margin-bottom: 8px;
+                        padding-bottom: 8px;
+                        border-bottom: 1px solid var(--line)
+                    }
+
+                    #hmtt .tp-h b {
+                        font-size: 14px
+                    }
+
+                    #hmtt .tp-h span {
+                        font-size: 11px;
+                        color: var(--mute);
+                        font-weight: 600
+                    }
+
+                    #hmtt .tp-bar {
+                        display: flex;
+                        height: 22px;
+                        border-radius: 6px;
+                        overflow: hidden;
+                        margin-bottom: 10px;
+                        background: #eef3fb
+                    }
+
+                    #hmtt .tp-s {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: #fff;
+                        font-weight: 700;
+                        font-size: 10.5px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        min-width: 0
+                    }
+
+                    #hmtt .tp-r {
+                        display: grid;
+                        grid-template-columns: 10px 1fr auto 48px;
+                        gap: 8px;
+                        align-items: center;
+                        padding: 4px 0
+                    }
+
+                    #hmtt .tp-r i {
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 3px
+                    }
+
+                    #hmtt .tp-n {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap
+                    }
+
+                    #hmtt .tp-r b {
+                        font-weight: 700;
+                        text-align: right
+                    }
+
+                    #hmtt .tp-r em {
+                        font-style: normal;
+                        color: var(--mute);
+                        text-align: right
+                    }
+
+                    #hmtt .tp-hi {
+                        color: #fff;
+                        background: #dc2626;
+                        padding: 1px 6px;
+                        border-radius: 5px
+                    }
+
+                    #hmtt .tp-f {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-top: 8px;
+                        padding-top: 8px;
+                        border-top: 1px solid var(--line);
+                        font-weight: 700
+                    }
+
+                    #hmtt .tc-top {
+                        display: flex;
+                        justify-content: center;
+                        margin: 4px 0 6px
+                    }
+
+                    #hmtt .tc-pill {
+                        background: #eef3fb;
+                        border: 1px solid var(--line);
+                        border-radius: 999px;
+                        padding: 3px 12px;
+                        font-weight: 700;
+                        font-size: 11.5px
+                    }
+
+                    #hmtt .tc-col {
+                        display: flex;
+                        flex-direction: column-reverse;
+                        width: 110px;
+                        height: 170px;
+                        margin: 0 auto;
+                        border-radius: 6px;
+                        overflow: hidden;
+                        background: #eef3fb
+                    }
+
+                    #hmtt .tc-seg {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: #fff;
+                        font-weight: 700;
+                        font-size: 10.5px;
+                        min-height: 0;
+                        background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, .22) 0 6px, transparent 6px 12px)
+                    }
+
+                    #hmtt .tc-foot {
+                        text-align: center;
+                        margin: 6px 0 8px;
+                        font-size: 11px;
+                        font-weight: 700;
+                        color: var(--mute)
+                    }
+
+                    #hmtt .tp-h {
+                        background: #0f2a5a;
+                        color: #fff;
+                        margin: -12px -14px 10px;
+                        padding: 10px 14px;
+                        border-radius: 12px 12px 0 0;
+                        border-bottom: 0
+                    }
+
+                    #hmtt .tp-h b {
+                        color: #fff;
+                        font-size: 14px
+                    }
+
+                    #hmtt .tp-h span {
+                        color: #cfe0ff
+                    }
+
+                    #hmtt .tc-cc {
+                        display: flex;
+                        justify-content: space-between;
+                        gap: 6px;
+                        margin: 0 0 10px;
+                        font-size: 11px
+                    }
+
+                    #hmtt .tc-cc span {
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+                        flex-wrap: wrap
+                    }
+
+                    #hmtt .tc-cc i {
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 3px;
+                        display: inline-block
+                    }
+
+                    #hmtt .tc-cc b {
+                        font-weight: 700
+                    }
+
+                    #hmtt .tc-cc em {
+                        font-style: normal;
+                        color: var(--mute)
+                    }
+
+                    .tc-seg {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: #fff;
+                        font-weight: 700;
+                        font-size: 10.5px;
+                        min-height: 0;
+                        background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, .22) 0 6px, transparent 6px 12px)
+                    }
+
+                    #hmtt .tc-pill.tp-hi {
+                        background: #dc2626;
+                        border-color: #dc2626;
+                        color: #fff
+                    }
+
+                    #hmtt .tc-foot span {
+                        white-space: nowrap
+                    }
+
+                    #hmtt2 {
+                        position: fixed;
+                        z-index: 201;
+                        display: none;
+                        width: min(1040px, 94vw);
+                        background: #fff;
+                        border: 1px solid var(--line);
+                        border-radius: 12px;
+                        box-shadow: 0 12px 32px rgba(15, 42, 90, .22);
+                        padding: 0 14px 12px;
+                        font-size: 12px;
+                        color: var(--navy);
+                        overflow: hidden
+                    }
+
+                    #hmtt2 .tp-h {
+                        background: #0f2a5a;
+                        color: #fff;
+                        margin: 0 -14px 12px;
+                        padding: 10px 14px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: baseline
+                    }
+
+                    #hmtt2 .tp-h b {
+                        color: #fff;
+                        font-size: 14px
+                    }
+
+                    #hmtt2 .tp-h span {
+                        color: #cfe0ff;
+                        font-size: 11px;
+                        font-weight: 600
+                    }
+
+                    #hmtt2 .mc-row {
+                        display: flex;
+                        gap: 4px;
+                        align-items: flex-end
+                    }
+
+                    #hmtt2 .mc {
+                        flex: 1;
+                        min-width: 0;
+                        text-align: center
+                    }
+
+                    #hmtt2 .mc-col {
+                        display: flex;
+                        flex-direction: column-reverse;
+                        height: 150px;
+                        border-radius: 4px;
+                        overflow: hidden;
+                        background: #eef3fb
+                    }
+
+                    #hmtt2 .mc-col .tc-seg {
+                        font-size: 8px
+                    }
+
+                    #hmtt2 .mc-n {
+                        display: block;
+                        font-size: 9.5px;
+                        color: var(--mute);
+                        font-weight: 700;
+                        margin-top: 4px
+                    }
+
+                    #hmtt2 .mc-h {
+                        display: block;
+                        font-size: 8px;
+                        color: var(--navy);
+                        font-weight: 600
+                    }
+
+                    #hmtt .tp-h b {
+                        font-size: 16px
+                    }
+
+                    #hmtt .tp-h {
+                        margin: -16px -18px 14px;
+                        padding: 12px 18px
+                    }
+
+                    #hmtt .tc-pill {
+                        font-size: 13px;
+                        padding: 4px 14px
+                    }
+
+                    #hmtt .yc-row {
+                        display: flex;
+                        gap: 18px;
+                        justify-content: center;
+                        align-items: flex-end;
+                        margin: 4px 0 12px
+                    }
+
+                    #hmtt .yc {
+                        text-align: center;
+                        cursor: pointer;
+                        border-radius: 10px;
+                        padding: 4px;
+                        transition: background .15s
+                    }
+
+                    #hmtt .yc:hover {
+                        background: #eef3fb
+                    }
+
+                    #hmtt .yc-col {
+                        display: flex;
+                        flex-direction: column-reverse;
+                        width: 120px;
+                        height: 230px;
+                        margin: 0 auto;
+                        border-radius: 10px;
+                        overflow: hidden;
+                        background: #eef3fb
+                    }
+
+                    #hmtt .yc-col .tc-seg {
+                        font-size: 12px
+                    }
+
+                    #hmtt .yc-n {
+                        display: block;
+                        font-size: 15px;
+                        font-weight: 800;
+                        margin-top: 8px;
+                        color: var(--navy)
+                    }
+
+                    #hmtt .yc-h {
+                        display: block;
+                        font-size: 12px;
+                        color: var(--mute);
+                        font-weight: 600;
+                        margin-top: 2px;
+                        padding: 1px 6px;
+                        border-radius: 6px
+                    }
+
+                    #hmtt .yc-h.tp-hi {
+                        color: #fff;
+                        background: #dc2626
+                    }
+
+                    #hmtt .tc-cc {
+                        font-size: 12px
+                    }
+
+                    #hmtt2 .tp-h {
+                        margin: 0 -14px 14px
+                    }
+
+                    #hmtt2 .mc-col {
+                        height: 230px
+                    }
+
+                    #hmtt2 .mc-col .tc-seg {
+                        font-size: 12px
+                    }
+
+                    #hmtt2 .mc-n {
+                        font-size: 13px
+                    }
+
+                    #hmtt2 .mc-h {
+                        font-size: 11px;
+                        padding: 1px 3px
+                    }
+
+                    #hmtt2 .mc-h.tp-hi {
+                        color: #fff;
+                        background: #dc2626;
+                        border-radius: 4px
+                    }
+
+                    #hmtt2 .mc-row {
+                        gap: 8px
+                    }
+
+                    #hmtt .tp-h,
+                    #hmtt2 .tp-h {
+                        cursor: move;
+                        user-select: none
+                    }
+
+                    .tt-x {
+                        background: none;
+                        border: 0;
+                        color: #fff;
+                        font-size: 20px;
+                        line-height: 1;
+                        cursor: pointer;
+                        margin-left: 10px;
+                        padding: 0 2px;
+                        opacity: .85
+                    }
+
+                    .tt-x:hover {
+                        opacity: 1
+                    }
+
+                    #hmtt2 .tp-h .tt-back {
+                        background: none;
+                        border: 0;
+                        color: #fff;
+                        font-size: 24px;
+                        line-height: 1;
+                        cursor: pointer;
+                        margin-right: 8px;
+                        padding: 0 4px
+                    }
+
+                    #hmtt2 .mc[data-mi] {
+                        cursor: pointer;
+                        border-radius: 6px
+                    }
+
+                    #hmtt2 .mc[data-mi]:hover .mc-col {
+                        outline: 2px solid #0f2a5a;
+                        outline-offset: 1px
+                    }
+
+                    #hmtt2 .mc-row.dy {
+                        gap: 3px
+                    }
+
+                    #hmtt2 .mc-row.dy .mc-n {
+                        font-size: 11px
+                    }
+
+                    #hmtt2 .mc-row.dy .mc-h {
+                        font-size: 8px;
+                        display: none
+                    }
+
+                    #hmtt2 .mc-row.dy .mc-col .tc-seg {
+                        font-size: 10px
+                    }
+
+                    #hmtt2 .tc-cc {
+                        font-size: 12px;
+                        margin-top: 10px
+                    }
+
+                    #hmtt2.dayw {
+                        width: min(1040px, 94vw)
+                    }
+
+                    #hmtt2.dayw .mc-row.dy .mc-col {
+                        height: 200px
+                    }
+
+                    #hmtt2.dayw .mc-row.dy .tc-seg {
+                        font-size: 10px
+                    }
+
+                    #hmtt2.dayw .mc-row.dy .mc-col {
+                        border-radius: 5px
+                    }
+
+                    #hmtt2 .tc-cc {
+                        display: flex;
+                        justify-content: center;
+                        gap: 22px;
+                        font-size: 12px;
+                        margin-top: 12px
+                    }
+
+                    #hmtt2 .tc-cc span {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                        font-weight: 600
+                    }
+
+                    #hmtt2 .tc-cc i {
+                        width: 11px;
+                        height: 11px;
+                        border-radius: 3px;
+                        display: inline-block
+                    }
+
+                    #hmtt2.rsn {
+                        width: min(640px, 94vw)
+                    }
+
+                    #hmtt2 .rr-list {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 14px;
+                        padding: 6px 2px 4px
+                    }
+
+                    #hmtt2 .rr {
+                        display: grid;
+                        grid-template-columns: 150px 1fr 150px 56px;
+                        gap: 12px;
+                        align-items: center;
+                        font-size: 13px
+                    }
+
+                    #hmtt2 .rr-n {
+                        font-weight: 700;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap
+                    }
+
+                    #hmtt2 .rr-bar {
+                        height: 22px;
+                        background: #eef3fb;
+                        border-radius: 6px;
+                        overflow: hidden
+                    }
+
+                    #hmtt2 .rr-bar div {
+                        height: 100%;
+                        border-radius: 6px
+                    }
+
+                    #hmtt2 .rr b {
+                        text-align: right;
+                        font-weight: 700
+                    }
+
+                    #hmtt2 .rr b.tp-hi {
+                        color: #fff;
+                        background: #dc2626;
+                        border-radius: 5px;
+                        padding: 1px 6px;
+                        justify-self: end
+                    }
+
+                    #hmtt2 .rr em {
+                        font-style: normal;
+                        color: var(--mute);
+                        text-align: right
+                    }
+
+                    #hmtt2 .tp-e {
+                        padding: 12px 0;
+                        text-align: center
+                    }
+
+                    #hmtt2 .mc[data-di] {
+                        cursor: pointer;
+                        border-radius: 5px
+                    }
+
+                    #hmtt2 .mc[data-di]:hover .mc-col {
+                        outline: 2px solid #0f2a5a;
+                        outline-offset: 1px
+                    }
+
+                    #hmtt2 .rr[data-r] {
+                        cursor: pointer;
+                        padding: 6px;
+                        margin: -6px;
+                        border-radius: 8px
+                    }
+
+                    #hmtt2 .rr[data-r]:hover {
+                        background: #eef3fb
+                    }
+
+                    #hmtt2 .rr b {
+                        white-space: nowrap
+                    }
+
+                    #hmtt .tp-e {
+                        color: #0e8a3e;
+                        font-weight: 600;
+                        padding: 4px 0
+                    }
+                </style>
+                <div class="dh">
+                    <div>
+                        <h1>Maintenance Performance <span class="mb" id="mb" style="display:none">AUDIT MODE</span></h1>
+                        <p>Maximize Uptime • Minimize Downtime • Drive Operational Excellence</p>
+                    </div>
+                    <div class="lu">Last Updated<b id="lu">—</b></div>
+                </div>
+                <div class="fr" id="fr"></div>
+                <div id="dash"></div>
+                <div id="tt"></div>
+
+            </main>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+        <script src="erp.js"></script>
+        <script>
+            (function () {
+                const $ = s => document.querySelector(s), MS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+                const nat = (a, b) => String(a).localeCompare(String(b), undefined, { numeric: true, sensitivity: "base" });
+                const pre = s => String(s || "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+                const f1 = v => v == null ? "–" : (Math.abs(v) >= 100 ? Math.round(v).toLocaleString("en-US") : (+v.toFixed(1)).toString());
+                const pc = v => v == null ? "–" : (+v.toFixed(1)) + "%";
+                const newF = () => ({ year: new Set(), month: new Set(), from: "", to: "", mct: new Set(), mc: new Set(), bay: new Set(), shift: new Set(), tool: new Set(), cat: new Set() });
+                let P = null, F = newF(), B = null, DB = null, MALL = 1, RG = null, HM = null, HMD = new Map(), HIST = new Map();
+
+                /* ---------- data prep ---------- */
+                /* Machine history: all rows, no heatmap/filter dependency. key = machine index */
+                function buildHist() {
+                    const { C, n, dd, dur, un, D } = P, cm = C.mcno, cb = C.bayname, cc = C.category, cr = C.reason, RL = D.reason || [], cd = C.detailsoccurrence, DL = D.detailsoccurrence || [], out = new Map();
+                    for (let i = 0; i < n; i++) {
+                        const du = dur[i] || 0; if (!du) continue;
+                        const x = dd[C.date[i]]; if (!x) continue;
+                        const m = cm ? cm[i] : 0;
+                        let h = out.get(String(m));
+                        if (!h) {
+                            h = { name: String(D.mcno ? D.mcno[m] : m), bay: cb && D.bayname ? String(D.bayname[cb[i]]) : "", pl: 0, un: 0, years: new Map() };
+                            out.set(String(m), h);
+                        }
+                        const isUn = !!(cc && un[cc[i]]);
+                        let y = h.years.get(x.y);
+                        if (!y) { y = { pl: 0, un: 0, mon: Array.from({ length: 12 }, () => ({ pl: 0, un: 0 })), day: Array.from({ length: 12 }, () => Array.from({ length: 31 }, () => ({ pl: 0, un: 0 }))) }; h.years.set(x.y, y) }
+                        const dy = y.day[x.mo - 1][x.d - 1] || { pl: 0, un: 0 };
+                        if (isUn) { h.un += du; y.un += du; y.mon[x.mo - 1].un += du; dy.un += du }
+                        else { h.pl += du; y.pl += du; y.mon[x.mo - 1].pl += du; dy.pl += du }
+                        const rl = cr && RL.length ? String(RL[cr[i]] ?? "Other") : "Other";
+                        if (!dy.rs) dy.rs = { pl: new Map(), un: new Map() };
+                        const tg = isUn ? dy.rs.un : dy.rs.pl; tg.set(rl, (tg.get(rl) || 0) + du);
+                        const dl = cd && DL.length ? String(DL[cd[i]] ?? "") : "";
+                        if (!dy.dt) dy.dt = { pl: new Map(), un: new Map() };
+                        const tk2 = isUn ? dy.dt.un : dy.dt.pl; const kk = rl + "\u0001" + dl; tk2.set(kk, (tk2.get(kk) || 0) + du);
+                    }
+                    return out;
+                }
+                window.DT_prep = function (pk) {
+                    const D = pk.dict, C = pk.c, M = pk.m || {}, n = C.date.length;
+                    const dd = D.date.map(s => ({ s, y: +s.slice(0, 4), mo: +s.slice(5, 7), d: +s.slice(8, 10) }));
+                    let mi0 = 1e9, last = dd[0]; dd.forEach(x => { x.mi = x.y * 12 + x.mo - 1; if (x.mi < mi0) mi0 = x.mi; if (x.s > last.s) last = x });
+                    const cat = D.category || [];
+                    /* Tool No column-er key — data-te onno nam hole ekhane add korun */
+                    const tk = ["toolno", "toolnumber", "toolid", "tool"].find(k => C[k] && D[k]) || null;
+                    HM = null;
+                    P = {
+                        D, C, n, dd, mi0, miN: last.mi, lastD: last.d, lastS: last.s, minS: dd.reduce((a, x) => x.s < a ? x.s : a, dd[0].s),
+                        dur: M.durationmin || [], ev: M.events || new Array(n).fill(1),
+                        un: cat.map(v => /^un/i.test(String(v).trim())), ver: pk.v, tk,
+                        years: [...new Set(dd.map(x => x.y))].sort((a, b) => a - b)
+                    };
+                    HIST = buildHist();
+                    F = newF(); F.year.add(last.y);          /* default: latest year, Month = All */
+                };
+                const dim = (y, mo) => new Date(y, mo + 1, 0).getDate();
+                const mDays = mi => { if (mi < P.mi0 || mi > P.miN) return 0; if (mi === P.miN) return P.lastD; return dim(Math.floor(mi / 12), mi % 12) };
+                const dIn = mi => { const n = mDays(mi); if (!RG || !n) return n; let lo = 1, hi = n; if (mi === RG.a.mi) lo = RG.a.d; if (mi === RG.z.mi) hi = Math.min(hi, RG.z.d); return Math.max(0, hi - lo + 1) };
+                const span = (a, b) => { const r = []; for (let m = a; m <= b; m++) r.push(m); return r };
+                function setRG() {
+                    if (!F.from && !F.to) { RG = null; return }
+                    const pd = s => ({ s, mi: parseInt(s.slice(0, 4), 10) * 12 + parseInt(s.slice(5, 7), 10) - 1, d: parseInt(s.slice(8, 10), 10) });
+                    RG = { a: pd(F.from || P.minS.slice(0, 10)), z: pd(F.to || P.lastS.slice(0, 10)) }
+                }
+                const inMo = mi => (!F.year.size || F.year.has(Math.floor(mi / 12))) && (!F.month.size || F.month.has(mi % 12 + 1));
+                const scopeMonths = () => RG ? span(RG.a.mi, RG.z.mi).filter(m => m >= P.mi0 && m <= P.miN) : span(P.mi0, P.miN).filter(inMo);
+
+                const nb = () => ({ dur: 0, ev: 0, pl: 0, un: 0, mc: new Set(), k: new Map(), rs: new Map(), bay: new Map() });
+                const add = (b, m, du, e, r, d, by, u) => {
+                    b.dur += du; b.ev += e; u ? (b.un += du) : (b.pl += du); b.mc.add(m);
+                    const k = m + "|" + r + "|" + d; b.k.set(k, (b.k.get(k) || 0) + e);
+                    b.rs.set(r, (b.rs.get(r) || 0) + du); b.bay.set(by, (b.bay.get(by) || 0) + du)
+                };
+                function build() {
+                    const { C, n, dd, dur, ev, un } = P, bk = new Map(), dk = new Map(), mall = new Set();
+                    const cm = C.mcno, cb = C.bayname, cs = C.shift, ct = C.mctype, cr = C.reason, cd = C.detailsoccurrence, cc = C.category, ctl = P.tk ? C[P.tk] : null;
+                    for (let i = 0; i < n; i++) {
+                        if (F.mct.size && ct && !F.mct.has(ct[i])) continue; if (F.mc.size && cm && !F.mc.has(cm[i])) continue;
+                        if (F.bay.size && cb && !F.bay.has(cb[i])) continue; if (F.shift.size && cs && !F.shift.has(cs[i])) continue;
+                        if (F.tool.size && ctl && !F.tool.has(ctl[i])) continue; if (F.cat.size && cc && !F.cat.has(cc[i])) continue;
+                        const x = dd[C.date[i]], sd = x.s.slice(0, 10); if (RG && (sd < RG.a.s || sd > RG.z.s)) continue;
+                        const m = cm ? cm[i] : 0, du = dur[i] || 0, e = ev[i] || 0, r = cr ? cr[i] : 0, d = cd ? cd[i] : 0, by = cb ? cb[i] : 0, u = !!(cc && un[cc[i]]);
+                        mall.add(m);
+                        let b = bk.get(x.mi); if (!b) { b = nb(); bk.set(x.mi, b) } add(b, m, du, e, r, d, by, u);
+                        let q = dk.get(sd); if (!q) { q = nb(); dk.set(sd, q) } add(q, m, du, e, r, d, by, u)
+                    }
+                    B = bk; DB = dk; MALL = Math.max(1, mall.size)
+                }
+                function merge(list) {
+                    const p = { dur: 0, ev: 0, pl: 0, un: 0, mc: new Set(), k: new Map(), rs: new Map(), bay: new Map(), days: 0, has: false };
+                    list.forEach(mi => {
+                        p.days += dIn(mi); const b = B.get(mi); if (!b) return; p.has = true; p.dur += b.dur; p.ev += b.ev; p.pl += b.pl; p.un += b.un; b.mc.forEach(x => p.mc.add(x));
+                        b.k.forEach((v, k) => p.k.set(k, (p.k.get(k) || 0) + v)); b.rs.forEach((v, k) => p.rs.set(k, (p.rs.get(k) || 0) + v)); b.bay.forEach((v, k) => p.bay.set(k, (p.bay.get(k) || 0) + v))
+                    });
+                    return p
+                }
+                const dayP = s => { const b = DB.get(s); return b ? Object.assign({}, b, { days: 1, has: true }) : Object.assign(nb(), { days: 1, has: false }) };
+                /* OT = 24h × days × machines · MTBF = OT÷Failures · MTTR = Repair hrs÷Failures · Recurrence = Repeat÷Failures · Eff = (OT−Downtime)÷OT */
+                function kpi(p) {
+                    const OT = 24 * p.days * MALL, h = p.dur / 60; let rep = 0; p.k.forEach(c => { if (c > 1) rep += c - 1 });
+                    return {
+                        fail: p.ev, down: h, pl: p.pl / 60, un: p.un / 60, mach: p.mc.size, rep, OT,
+                        mtbf: p.ev ? OT / p.ev : null, mttr: p.ev ? h / p.ev : null, rec: p.ev ? rep / p.ev * 100 : null, eff: OT ? (OT - h) / OT * 100 : null, avg: p.ev ? p.dur / p.ev : null
+                    }
+                }
+                /* chart series: single month => date-wise, otherwise 12 months (future = blank, running month = MTD) */
+                function series(sm) {
+                    const lastD = P.lastS.slice(0, 10), minD = P.minS.slice(0, 10), pad = n => String(n).padStart(2, "0");
+                    if (sm.length === 1) {
+                        const m = sm[0], y = Math.floor(m / 12), mo = m % 12, N = dim(y, mo), items = [];
+                        for (let d = 1; d <= N; d++) {
+                            const s = y + "-" + pad(mo + 1) + "-" + pad(d), ok = s <= lastD && s >= minD && (!RG || (s >= RG.a.s && s <= RG.z.s));
+                            items.push({ lab: String(d), tip: d + " " + MS[mo] + " " + y, p: ok ? dayP(s) : null })
+                        }
+                        return { daily: true, sub: MS[mo] + " " + y, items }
+                    }
+                    const ys = [...new Set(sm.map(m => Math.floor(m / 12)))], one = ys.length === 1, set = new Set(sm), e = sm.length ? Math.max(...sm) : P.miN;
+                    const win = one ? span(ys[0] * 12, ys[0] * 12 + 11) : span(e - 11, e);
+                    return {
+                        daily: false, sub: one ? String(ys[0]) : "Last 12 months", items: win.map(m => {
+                            const y = Math.floor(m / 12), mtd = m === P.miN && P.lastD < dim(y, m % 12);
+                            return { lab: MS[m % 12] + (one ? "" : "-" + String(y).slice(2)), tip: MS[m % 12] + " " + y + (mtd ? " (MTD)" : ""), p: set.has(m) ? merge([m]) : null }
+                        })
+                    }
+                }
+                /* ---------- helpers ---------- */
+                const nice = v => { if (v <= 0) return 1; const e = Math.pow(10, Math.floor(Math.log10(v))), f = v / e; return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * e };
+                const dl = (c, p, goodUp) => { if (c == null || p == null || !p) return ""; const d = (c - p) / Math.abs(p) * 100, up = d >= 0, ok = goodUp ? up : !up; return `<em class="${ok ? "good" : "bad"}">${up ? "▲" : "▼"}${up ? "+" : ""}${d.toFixed(1)}%</em>` };
+                const T = s => `data-t="${esc(s)}"`;
+                /* ---------- charts ---------- */
+                function ch1(S) {
+                    const it = S.items, N = it.length, dy = S.daily, W = 900, H = 300, l = 52, r = 52, t = 34, b = 42, w = W - l - r, h = H - t - b;
+                    const K = it.map(x => x.p ? kpi(x.p) : null);
+                    const mx = nice(Math.max(1, ...K.map(k => (k && k.mtbf) || 0))), bw = w / N, xc = i => l + bw * i + bw / 2;
+                    let g = "", bars = "", lab = "", hit = "";
+                    for (let i = 0; i <= 4; i++) { const y = t + h - h * i / 4; g += `<line x1="${l}" x2="${W - r}" y1="${y}" y2="${y}" stroke="#d3def2"/><text x="${l - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="#5b6b8c">${f1(mx * i / 4)}</text><text x="${W - r + 8}" y="${y + 4}" font-size="11" fill="#5b6b8c">${25 * i}%</text>` }
+                    const pt = key => K.map((k, i) => k && k[key] != null ? [xc(i), t + h - h * Math.max(0, Math.min(100, k[key])) / 100, k[key]] : null);
+                    const eff = pt("eff"), rec = pt("rec");
+                    const path = a => { let d = "", pen = false; a.forEach(p => { if (!p) { pen = false; return } d += (pen ? "L" : "M") + p[0] + " " + p[1]; pen = true }); return d };
+                    const dots = (a, c) => a.map(p => p ? `<circle cx="${p[0]}" cy="${p[1]}" r="${dy ? 2.4 : 4}" fill="${c}" stroke="#fff" stroke-width="1"/>` : "").join("");
+                    it.forEach((x, i) => {
+                        const k = K[i], cx = xc(i);
+                        g += `<text x="${cx}" y="${H - 14}" text-anchor="middle" font-size="${dy ? 10 : 12}" fill="#0f2a5a">${x.lab}</text>`;
+                        if (!k) return;
+                        const occ = [];                                   /* label baselines already used in this column */
+                        if (!dy && eff[i]) { occ.push(eff[i][1] - 9); lab += `<text x="${cx}" y="${eff[i][1] - 9}" text-anchor="middle" font-size="11" font-weight="700" fill="#0f2a5a">${f1(k.eff)}%</text>` }
+                        if (!dy && k.mttr != null) {
+                            occ.push(t + h - 8); const tx = f1(k.mttr), bwid = Math.max(28, tx.length * 7 + 10);
+                            lab += `<rect x="${cx - bwid / 2}" y="${t + h - 20}" width="${bwid}" height="16" rx="4" fill="#16c060"/><text x="${cx}" y="${t + h - 8}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff">${tx}</text>`
+                        }
+                        if (k.mtbf) {
+                            const bh = h * k.mtbf / mx, bwd = bw * (dy ? .6 : .5);
+                            bars += `<rect x="${cx - bwd / 2}" y="${t + h - bh}" width="${bwd}" height="${bh}" rx="${dy ? 2 : 5}" fill="url(#gb)"/>`;
+                            if (!dy) { let y = t + h - bh - 6; while (occ.some(o => Math.abs(o - y) < 15) && y > 14) y -= 15; lab += `<text x="${cx}" y="${y}" text-anchor="middle" font-size="12" font-weight="700" fill="#0f2a5a">${f1(k.mtbf)}</text>` }
+                        }
+                        hit += `<rect x="${l + bw * i}" y="${t}" width="${bw}" height="${h}" fill="transparent" ${T(`${x.tip}<br>MTBF ${f1(k.mtbf)} hrs<br>MTTR ${f1(k.mttr)} hrs<br>Recurrence ${pc(k.rec)}<br>Efficiency ${pc(k.eff)}<br>Failures ${k.fail}`)}/>`
+                    });
+                    const ln = (a, c, dash) => `<path d="${path(a)}" fill="none" stroke="${c}" stroke-width="2.4" ${dash ? 'stroke-dasharray="6 4"' : ""}/>` + dots(a, c);
+                    return `<svg viewBox="0 0 ${W} ${H}"><defs><linearGradient id="gb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#35b4f0"/><stop offset="1" stop-color="#0b4fd0"/></linearGradient></defs>${g}${bars}${ln(rec, "#ff9a2e", true)}${ln(eff, "#a77bff", false)}${lab}${hit}</svg>`
+                }
+                function ch2(S) {
+                    const it = S.items, N = it.length, dy = S.daily, W = 640, l = 46, r = 40, t = 20, h = 200, w = W - l - r, bw = w / N, xc = i => l + bw * i + bw / 2;
+                    const K = it.map(x => x.p ? { d: x.p.dur / 60, e: x.p.ev } : null);
+                    const dv = K.map(k => k ? f1(k.d) : null), evs = K.map(k => k ? k.e.toLocaleString("en-US") : null);
+                    const maxL = Math.max(1, ...dv.concat(evs).map(v => v ? v.length : 0));
+                    const rot = maxL * 6.6 > bw - 3, sb = rot ? Math.max(30, maxL * 6 + 8) : 18, H = t + h + 22 + 2 * sb + 4;
+                    const mx = nice(Math.max(1, ...K.map(k => k ? k.d : 0))), me = nice(Math.max(1, ...K.map(k => k ? k.e : 0)));
+                    const xl = t + h + 14, r1 = xl + 6, r2 = r1 + sb, by = top => rot ? top + sb - 2 : top + 13;
+                    const tx = (v, i, top, c) => rot
+                        ? `<text transform="translate(${xc(i) + 4} ${by(top)}) rotate(-90)" font-size="10" font-weight="700" fill="${c}">${v}</text>`
+                        : `<text x="${xc(i)}" y="${by(top)}" text-anchor="middle" font-size="11.5" font-weight="700" fill="${c}">${v}</text>`;
+                    let s = "", bars = "", hit = "";
+                    for (let i = 0; i <= 3; i++) { const y = t + h - h * i / 3; s += `<line x1="${l}" x2="${W - r}" y1="${y}" y2="${y}" stroke="#d3def2"/><text x="${l - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="#5b6b8c">${f1(mx * i / 3)}</text><text x="${W - r + 8}" y="${y + 4}" font-size="11" fill="#5b6b8c">${f1(me * i / 3)}</text>` }
+                    s += `<text x="${l - 6}" y="${by(r1)}" text-anchor="end" font-size="10" font-weight="700" fill="#0b4fd0">hrs</text><text x="${l - 6}" y="${by(r2)}" text-anchor="end" font-size="10" font-weight="700" fill="#e0700c">evt</text>`;
+                    const pts = K.map((k, i) => k ? [xc(i), t + h - h * k.e / me] : null);
+                    K.forEach((k, i) => {
+                        s += `<text x="${xc(i)}" y="${xl}" text-anchor="middle" font-size="${dy ? 10 : 12}" fill="#0f2a5a">${it[i].lab}</text>`;
+                        if (!k) return;
+                        const bh = h * k.d / mx, bwd = bw * .6;
+                        bars += `<rect x="${xc(i) - bwd / 2}" y="${t + h - bh}" width="${bwd}" height="${bh}" rx="${dy ? 2 : 5}" fill="url(#gb)"/>`;
+                        s += tx(dv[i], i, r1, "#0b4fd0") + tx(evs[i], i, r2, "#e0700c");
+                        hit += `<rect x="${l + bw * i}" y="${t}" width="${bw}" height="${h}" fill="transparent" ${T(`${it[i].tip}<br>Downtime ${f1(k.d)} hrs<br>Events ${k.e}`)}/>`
+                    });
+                    let d = "", pen = false; pts.forEach(p => { if (!p) { pen = false; return } d += (pen ? "L" : "M") + p[0] + " " + p[1]; pen = true });
+                    const dots = pts.map(p => p ? `<circle cx="${p[0]}" cy="${p[1]}" r="${dy ? 2.4 : 4}" fill="#ff8a1f" stroke="#fff" stroke-width="1.2"/>` : "").join("");
+                    return `<svg viewBox="0 0 ${W} ${H}">${s}${bars}<path d="${d}" fill="none" stroke="#ff9a2e" stroke-width="2.6"/>${dots}${hit}</svg>`
+                }
+                function donut(c) {
+                    const tot = c.pl + c.un; if (!tot) return `<div class="nd2">No downtime</div>`; const R = 62, cf = 2 * Math.PI * R, a = c.pl / tot * cf;
+                    return `<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center"><svg viewBox="0 0 180 180" style="width:170px"><circle cx="90" cy="90" r="${R}" fill="none" stroke="#ff8a1f" stroke-width="26" ${T(`Unplanned ${f1(c.un)} hrs (${pc(c.un / tot * 100)})`)}/><circle cx="90" cy="90" r="${R}" fill="none" stroke="#1f8bff" stroke-width="26" stroke-dasharray="${a} ${cf}" transform="rotate(-90 90 90)" ${T(`Planned ${f1(c.pl)} hrs (${pc(c.pl / tot * 100)})`)}/><text x="90" y="88" text-anchor="middle" font-size="24" font-weight="800" fill="#0f2a5a">${f1(tot)} hrs</text><text x="90" y="108" text-anchor="middle" font-size="13" fill="#6d7c99">Total</text></svg>
+ <div style="font-size:13px;line-height:1.9"><div><i style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#1f8bff;margin-right:6px"></i>Planned<br><b>${f1(c.pl)} hrs (${pc(c.pl / tot * 100)})</b></div><div><i style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#ff8a1f;margin-right:6px"></i>Unplanned<br><b>${f1(c.un)} hrs (${pc(c.un / tot * 100)})</b></div></div></div>`
+                }
+                function reasons(p) {
+                    const tot = p.dur / 60, a = [...p.rs].map(([k, v]) => [pre(P.D.reason ? P.D.reason[k] : "Others") || "Others", v / 60]).sort((x, y) => y[1] - x[1]); if (!tot || !a.length) return `<div class="nd2">No data</div>`;
+                    let top = a.slice(0, 5); const o = a.slice(5).reduce((s, x) => s + x[1], 0); if (o > 0) top.push(["Others", o]);
+                    const cols = ["#1f8bff", "#22d36b", "#ff9a2e", "#a77bff", "#ff6b73", "#4cd2ff"], W = 560, rh = 38, H = top.length * rh + 10, mx = Math.max(...top.map(x => x[1]));
+                    return `<svg viewBox="0 0 ${W} ${H}">` + top.map((x, i) => { const y = i * rh + 6, bw = Math.max(3, (W - 290) * x[1] / mx); return `<text x="0" y="${y + 20}" font-size="12.5" fill="#0f2a5a">${esc(x[0].length > 22 ? x[0].slice(0, 21) + "…" : x[0])}</text><rect x="165" y="${y + 4}" width="${bw}" height="22" rx="4" fill="${cols[i % 6]}" ${T(`${esc(x[0])}<br>${f1(x[1])} hrs (${pc(x[1] / tot * 100)})`)}/><text x="${165 + bw + 8}" y="${y + 20}" font-size="12.5" fill="#0f2a5a">${f1(x[1])} hrs (${pc(x[1] / tot * 100)})</text>` }).join("") + `</svg>`
+                }
+                function bays(p) {
+                    const a = [...p.bay].map(([k, v]) => [P.D.bayname ? P.D.bayname[k] : "–", v / 60]).sort((x, y) => y[1] - x[1]).slice(0, 8); if (!a.length) return `<div class="nd2">No data</div>`;
+                    const W = 520, H = 250, l = 30, t = 30, b = 34, h = H - t - b, w = W - l - 10, mx = nice(Math.max(...a.map(x => x[1]))), bw = w / a.length; let s = "";
+                    for (let i = 0; i <= 3; i++) { const y = t + h - h * i / 3; s += `<line x1="${l}" x2="${W - 10}" y1="${y}" y2="${y}" stroke="#d3def2"/><text x="${l - 6}" y="${y + 4}" text-anchor="end" font-size="11" fill="#5b6b8c">${f1(mx * i / 3)}</text>` }
+                    a.forEach((x, i) => { const bh = h * x[1] / mx, cx = l + bw * i + bw / 2; s += `<rect x="${cx - bw * .3}" y="${t + h - bh}" width="${bw * .6}" height="${bh}" rx="5" fill="url(#gb)" ${T(`${esc(x[0])}<br>${f1(x[1])} hrs`)}/><text x="${cx}" y="${t + h - bh - 6}" text-anchor="middle" font-size="12" font-weight="700" fill="#0f2a5a">${f1(x[1])} hrs</text><text x="${cx}" y="${H - 12}" text-anchor="middle" font-size="12" fill="#0f2a5a">${esc(x[0])}</text>` });
+                    return `<svg viewBox="0 0 ${W} ${H}">${s}</svg>`
+                }
+                /* ---------- Bay–Machine Heatmap (traffic light) ---------- */
+                /* Green = no breakdown · Yellow = 1–HM_RED min · Red = > HM_RED min (per machine, for the selected period) */
+                const HM_RED = 60, HM_UNPLANNED_ONLY = false;
+                const ymd = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+                const dlab = s => parseInt(s.slice(8, 10), 10) + " " + MS[parseInt(s.slice(5, 7), 10) - 1] + " " + s.slice(0, 4);
+                function heat() {
+                    const el = $("#hm"); if (!el) return;
+                    const { C, n, dd, dur, ev, un, D } = P, cm = C.mcno, cr = C.reason, RL = D.reason || [];
+                    if (!cm) { el.innerHTML = ""; return }
+                    const lastS = P.lastS.slice(0, 10); const [ly, lm, ld] = lastS.split("-").map(Number); const yo = new Date(ly, lm - 1, ld); const yS = lastS;
+                    const ys = [...new Set([...P.years, yo.getFullYear()])].sort((a, b) => a - b);
+                    if (!HM) HM = { y: yo.getFullYear(), m: "yd" };
+                    const yd = HM.m === "yd", all = HM.m === "all";
+                    const test = x => yd ? x.s.slice(0, 10) === yS : (x.y === HM.y && (all || x.mo === HM.m));
+                    const label = yd ? "Latest · " + dlab(yS) : all ? "Year " + HM.y : MS[HM.m - 1] + " " + HM.y;
+                    const cb = C.bayname, cs = C.shift, ct = C.mctype, cc = C.category, ctl = P.tk ? C[P.tk] : null;
+                    const uni = new Map(), agg = new Map(), mdet = new Map(); let rows = 0; HMD = new Map();
+                    for (let i = 0; i < n; i++) {
+                        if (F.mct.size && ct && !F.mct.has(ct[i])) continue; if (F.mc.size && !F.mc.has(cm[i])) continue;
+                        if (F.bay.size && cb && !F.bay.has(cb[i])) continue;
+                        const m = cm[i]; if (!uni.has(m)) uni.set(m, cb ? cb[i] : 0);
+                        if (F.shift.size && cs && !F.shift.has(cs[i])) continue; if (F.tool.size && ctl && !F.tool.has(ctl[i])) continue;
+                        if (F.cat.size && cc && !F.cat.has(cc[i])) continue; if (HM_UNPLANNED_ONLY && cc && !un[cc[i]]) continue;
+                        if (!test(dd[C.date[i]])) continue;
+                        rows++; let a = agg.get(m); if (!a) { a = { d: 0, e: 0 }; agg.set(m, a) } a.d += dur[i] || 0; a.e += ev[i] || 0; if (dur[i]) { let md = mdet.get(m); if (!md) { md = { rs: new Map(), pl: 0, un: 0 }; mdet.set(m, md) } const rl = cr && RL.length ? String(RL[cr[i]] ?? "Other") : "Other"; md.rs.set(rl, (md.rs.get(rl) || 0) + dur[i]); if (cc && un[cc[i]]) md.un += dur[i]; else md.pl += dur[i] }
+                    }
+                    const bays = new Map(); uni.forEach((b, m) => { if (!bays.has(b)) bays.set(b, []); bays.get(b).push(m) });
+                    const mn = m => String(D.mcno[m]), bn = b => cb && D.bayname ? String(D.bayname[b]) : "All";
+                    const bl = [...bays].sort((a, b) => nat(bn(a[0]), bn(b[0])));
+                    const opt = (v, t, s) => `<option value="${v}"${s ? " selected" : ""}>${t}</option>`;
+                    const cal = `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M7 14h2M11 14h2M15 14h2M7 17.5h2M11 17.5h2"/></svg>`;
+                    const head = `<div class="hm-h"><div class="hm-t"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M4 20V13M10 20V8M16 20v-5M21 20V4M3 21h19"/></svg><div><h2>Bay–Machine Performance <b>Heatmap</b></h2><small>${label}</small></div></div>` +
+                        `<div class="hm-p"><label class="hm-sel">${cal}<div><span>Year</span><select id="hmy">${ys.map(y => opt(y, y, y === HM.y)).join("")}</select></div></label>` +
+                        `<label class="hm-sel">${cal}<div><span>Month</span><select id="hmm">${opt("yd", "Latest (" + dlab(yS) + ")", yd) + opt("all", "All Months", all) + MS.map((m, i) => opt(i + 1, m, HM.m === i + 1)).join("")}</select></div></label></div></div>`;
+                    const legend = `<div class="hm-lg"><span class="hm-dt"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.1L3 17.7 6.3 21l6.3-6.3a4 4 0 0 0 5.1-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg>DT = Breakdown · No DT = No Breakdown</span>` +
+                        `<span><i style="background:#22c55e"></i>No Breakdown</span><span><i style="background:#fbbf24"></i>Breakdown (1 – ${HM_RED} Min)</span><span><i style="background:#ef4444"></i>Breakdown (&gt; ${HM_RED} Min)</span><span class="hm-n">DT || No DT (Qty)</span></div>`;
+                    if (!bl.length) { el.innerHTML = `<div class="hm">${head}${legend}<div class="hm-e">No machine data for the selected filters.</div></div>`; return hmWire(el, yo) }
+                    const cols = Math.max(...bl.map(x => x[1].length)); let tm = 0, nd = 0, tot = 0;
+                    const body = bl.map(([b, ms]) => {
+                        ms.sort((a, c) => nat(mn(a), mn(c))); let dt = 0;
+                        const cells = ms.map(m => {
+                            const a = agg.get(m), d = a ? a.d : 0, e = a ? a.e : 0, k = d > HM_RED ? "r" : d > 0 ? "y" : "g";
+                            if (d > 0) dt++; tot += d;
+                            const md0 = mdet.get(m) || { rs: new Map(), pl: 0, un: 0 }; HMD.set(String(m), { name: mn(m), bay: bn(b), total: d, ev: e, rs: md0.rs, pl: md0.pl, un: md0.un });
+                            return `<div class="hm-c ${k}" data-m="${esc(m)}" title="Click for details">${esc(mn(m))}</div>`
+                        }).join("");
+                        nd += dt; tm += ms.length;
+                        return `<div class="hm-row"><div class="hm-bay">${esc(bn(b))}</div><div class="hm-cs" style="grid-template-columns:repeat(${cols},minmax(0,1fr))">${cells}</div><div class="hm-q ${dt ? "r" : "g"}">${dt} || ${ms.length - dt}</div></div>`
+                    }).join("");
+                    const note = yd && yS > lastS ? `⚠ Data uploaded only up to ${dlab(lastS)} — yesterday's data is not uploaded yet.` : (!rows ? "No breakdown records found for this period." : "");
+                    const pp = v => tm ? (v / tm * 100).toFixed(2) + "%" : "–", pb = tm / bl.length;
+                    const ic = (p, c) => `<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+                    const kp = (cl, icon, l, v, s) => `<div class="hm-kp ${cl}">${icon}<div><div class="l">${l}</div><div class="v">${v}</div><div class="s">${s}</div></div></div>`;
+                    const cards = `<div class="hm-k">` +
+                        kp("hm-k1", ic('<path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-5h6v5M9 11h2M13 11h2"/>', "#fff"), "Total Bays", bl.length, "") +
+                        kp("hm-k2", ic('<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>', "#0f2a5a"), "Total Machines", tm, `(• ${Number.isInteger(pb) ? pb : "avg " + pb.toFixed(1)} per Bay)`) +
+                        kp("hm-k3", ic('<circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/>', "#0e8a3e"), "No Breakdown", tm - nd, `(${pp(tm - nd)})`) +
+                        kp("hm-k4", ic('<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/>', "#c4262e"), "With Breakdown", nd, `(${pp(nd)})`) +
+                        kp("hm-k5", ic('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>', "#fff"), "Total Breakdown Time", Math.round(tot).toLocaleString("en-US") + " Min", `(${(tot / 60).toFixed(2)} Hrs)`) + `</div>`;
+                    el.innerHTML = `<div class="hm">${head}${legend}${note ? `<div class="hm-note">${note}</div>` : ""}<div class="hm-w"><div class="hm-in" style="min-width:${cols * 38 + 210}px">${body}</div></div>${cards}</div>`;
+                    hmWire(el, yo)
+                }
+                const TP_RED = 100, TP_COL = ["#2f6fd6", "#22a55b", "#f08a24", "#8b5cf6", "#14b8c6", "#e0b24a", "#ef4444", "#64748b"];
+                let TT2 = null;
+                const tfmt = v => v >= 60 ? (v / 60).toFixed(2) + " hrs (" + f1(v) + " min)" : f1(v) + " min";
+                function ttHTML(key) {
+                    const it = HIST.get(String(key)); if (!it) return "";
+                    const tot = it.pl + it.un;
+                    const years = [...it.years.keys()].sort((a, b) => a - b);
+                    const cols = years.map(y => {
+                        const v = it.years.get(y), t = v.pl + v.un;
+                        const pp = t ? v.pl / t * 100 : 0, pu = t ? v.un / t * 100 : 0;
+                        return `<div class="yc" data-y="${y}" title="Hover for month wise"><div class="yc-col">${seg(pp, "#2f6fd6", "pl")}${seg(pu, "#f08a24", "un")}</div><span class="yc-n">${y}</span><span class="yc-h ${t > TP_RED ? "tp-hi" : ""}">${tfmt(t)}</span></div>`;
+                    }).join("");
+                    return `<div class="tp-h"><b>${esc(it.name)}</b><span>${esc(it.bay)}</span><button class="tt-x" title="Close">×</button></div>` +
+                        `<div class="tc-top"><span class="tc-pill">${tfmt(tot)} | 100.0%</span></div>` +
+                        `<div class="yc-row">${cols}</div>` +
+                        `<div class="tc-cc"><span><i style="background:#2f6fd6"></i>Planned</span><span><i style="background:#f08a24"></i>Unplanned</span></div>`;
+                }
+                function seg(p, c, k) { return `<div class="tc-seg" data-k="${k}" style="flex-basis:${p}%;background-color:${c}">${p >= 6 ? (+p.toFixed(1)) + "%" : ""}</div>` }
+                function placeTT(x, y) {
+                    const w = TT2.offsetWidth, h = TT2.offsetHeight;
+                    let L = x + 16, T = y + 16;
+                    if (L + w > innerWidth - 8) L = x - w - 16;
+                    if (T + h > innerHeight - 8) T = y - h - 16;
+                    TT2.style.left = Math.max(8, L) + "px";
+                    TT2.style.top = Math.max(8, T) + "px";
+                }
+                let SUB2 = null, CUR = null, hideT = null, PIN = false;
+                const MN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                const hrsTxt = v => v >= 60 ? (v / 60).toFixed(1) + "h" : Math.round(v) + "m";
+                function monHTML(it, y) {
+                    const v = it.years.get(y); if (!v) return "";
+                    const cols = MN.map((nm, i) => {
+                        const m = v.mon[i], t = m.pl + m.un;
+                        if (!t) return `<div class="mc"><div class="mc-col"></div><span class="mc-n">${nm}</span><span class="mc-h">–</span></div>`;
+                        const pp = m.pl / t * 100, pu = m.un / t * 100;
+                        return `<div class="mc" data-mi="${i}" title="Click for day wise"><div class="mc-col">${seg(pp, "#2f6fd6", "pl")}${seg(pu, "#f08a24", "un")}</div><span class="mc-n">${nm}</span><span class="mc-h ${t > TP_RED ? "tp-hi" : ""}">${hrsTxt(t)}</span></div>`;
+                    }).join("");
+                    return `<div class="tp-h"><b>Month wise</b><span>${y}</span><button class="tt-x" title="Close">×</button></div><div class="mc-row">${cols}</div><div class="tc-cc"><span><i style="background:#2f6fd6"></i>Planned</span><span><i style="background:#f08a24"></i>Unplanned</span></div>`;
+                }
+                function reasonHTML(it, y, i, k, type) {
+                    const v = it.years.get(y); if (!v) return "";
+                    const dy = v.day[i][k];
+                    let mp = new Map();
+                    if (dy && dy.rs) {
+                        if (type === "pl") mp = dy.rs.pl;
+                        else if (type === "un") mp = dy.rs.un;
+                        else[dy.rs.pl, dy.rs.un].forEach(q => q.forEach((t, r) => mp.set(r, (mp.get(r) || 0) + t)));
+                    }
+                    const rs = [...mp].sort((p, q) => q[1] - p[1]);
+                    const tot = rs.reduce((s, r) => s + r[1], 0);
+                    const label = type === "pl" ? "Planned" : type === "un" ? "Unplanned" : "All";
+                    const rows = rs.length ? rs.map(([r, t], idx) => `<div class="rr" data-r="${esc(r)}"><span class="rr-n" title="${esc(r)}">${esc(r)}</span><div class="rr-bar"><div style="width:${tot ? t / tot * 100 : 0}%;background:${TP_COL[idx % TP_COL.length]}"></div></div><b class="${t > TP_RED ? "tp-hi" : ""}">${tfmt(t)}</b><em>${+(tot ? t / tot * 100 : 0).toFixed(1)}%</em></div>`).join("") : `<div class="tp-e">No breakdown on this day</div>`;
+                    return `<div class="tp-h"><button class="tt-back" data-to="day" title="Back">‹</button><b>Reason wise · ${k + 1} ${MN[i]} ${y}</b><span>${label}</span><button class="tt-x" title="Close">×</button></div><div class="rr-list">${rows}</div>`;
+                }
+                function detailsHTML(it, y, i, k, type, reason) {
+                    const v = it.years.get(y); if (!v) return "";
+                    const dy = v.day[i][k];
+                    const srcs = !dy || !dy.dt ? [] : type === "pl" ? [dy.dt.pl] : type === "un" ? [dy.dt.un] : [dy.dt.pl, dy.dt.un];
+                    const pre = reason + "\u0001", mp = new Map();
+                    srcs.forEach(q => q.forEach((t, key) => { if (key.startsWith(pre)) { const d = key.slice(pre.length) || "(blank)"; mp.set(d, (mp.get(d) || 0) + t) } }));
+                    const rs = [...mp].sort((p, q) => q[1] - p[1]);
+                    const tot = rs.reduce((s, r) => s + r[1], 0);
+                    const label = type === "pl" ? "Planned" : type === "un" ? "Unplanned" : "All";
+                    const rows = rs.length ? rs.map(([d, t], idx) => `<div class="rr"><span class="rr-n" title="${esc(d)}">${esc(d)}</span><div class="rr-bar"><div style="width:${tot ? t / tot * 100 : 0}%;background:${TP_COL[idx % TP_COL.length]}"></div></div><b class="${t > TP_RED ? "tp-hi" : ""}">${tfmt(t)}</b><em>${+(tot ? t / tot * 100 : 0).toFixed(1)}%</em></div>`).join("") : `<div class="tp-e">No details</div>`;
+                    return `<div class="tp-h"><button class="tt-back" data-to="reason" title="Back">‹</button><b>${esc(reason)}</b><span>${label} · ${k + 1} ${MN[i]}</span><button class="tt-x" title="Close">×</button></div><div class="rr-list">${rows}</div>`;
+                }
+                function dayHTML(it, y, i) {
+                    const v = it.years.get(y); if (!v) return "";
+                    const n = new Date(y, i + 1, 0).getDate();
+                    const cols = Array.from({ length: n }, (_, k) => {
+                        const m = v.day[i][k], t = m.pl + m.un, d = k + 1;
+                        if (!t) return `<div class="mc"><div class="mc-col"></div><span class="mc-n">${d}</span><span class="mc-h">–</span></div>`;
+                        const pp = m.pl / t * 100, pu = m.un / t * 100;
+                        return `<div class="mc" data-di="${k}"><div class="mc-col" title="${d} ${MN[i]}: ${tfmt(t)}">${seg(pp, "#2f6fd6", "pl")}${seg(pu, "#f08a24", "un")}</div><span class="mc-n">${d}</span><span class="mc-h ${t > TP_RED ? "tp-hi" : ""}">${hrsTxt(t)}</span></div>`;
+                    }).join("");
+                    return `<div class="tp-h"><button class="tt-back" data-to="month" title="Back">‹</button><b>Day wise · ${MN[i]} ${y}</b><span></span><button class="tt-x" title="Close">×</button></div><div class="mc-row dy">${cols}</div><div class="tc-cc"><span><i style="background:#2f6fd6"></i>Planned</span><span><i style="background:#f08a24"></i>Unplanned</span></div>`;
+                }
+                function placeSub() {
+                    if (SUB2.dataset.moved) return;
+                    const r = TT2.getBoundingClientRect(), w = SUB2.offsetWidth, h = SUB2.offsetHeight;
+                    let L = r.right + 10;
+                    if (L + w > innerWidth - 8) L = r.left - w - 10;
+                    SUB2.style.left = Math.max(8, L) + "px";
+                    SUB2.style.top = Math.max(8, Math.min(r.top, innerHeight - h - 8)) + "px";
+                }
+                function dragify(box) {
+                    box.addEventListener("mousedown", e => {
+                        const h = e.target.closest && e.target.closest(".tp-h");
+                        if (!h || e.target.closest(".tt-x, .tt-back")) return;
+                        e.preventDefault();
+                        const r = box.getBoundingClientRect(), ox = e.clientX - r.left, oy = e.clientY - r.top;
+                        const mv = ev => {
+                            box.style.left = Math.max(0, Math.min(innerWidth - box.offsetWidth, ev.clientX - ox)) + "px";
+                            box.style.top = Math.max(0, Math.min(innerHeight - box.offsetHeight, ev.clientY - oy)) + "px";
+                        };
+                        const up = () => {
+                            document.removeEventListener("mousemove", mv); document.removeEventListener("mouseup", up);
+                            PIN = true; if (box === SUB2) box.dataset.moved = "1";
+                        };
+                        document.addEventListener("mousemove", mv); document.addEventListener("mouseup", up);
+                    });
+                    box.addEventListener("click", e => {
+                        if (box === SUB2 && e.target.closest) {
+                            const it = HIST.get(String(CUR)), y = +SUB2.dataset.y;
+                            const back = e.target.closest(".tt-back"), mc = e.target.closest(".mc[data-mi]"), dc = e.target.closest(".mc[data-di]");
+                            if (it && back) {
+                                if (back.dataset.to === "reason") { SUB2.innerHTML = reasonHTML(it, y, +SUB2.dataset.mi, +SUB2.dataset.di, SUB2.dataset.type); setView("rsn"); placeSub(); return }
+                                if (back.dataset.to === "day") { SUB2.innerHTML = dayHTML(it, y, +SUB2.dataset.mi); setView("dayw"); placeSub(); return }
+                                SUB2.innerHTML = monHTML(it, y); setView(""); placeSub(); return;
+                            }
+                            if (it && mc) { SUB2.dataset.mi = mc.dataset.mi; SUB2.innerHTML = dayHTML(it, y, +mc.dataset.mi); setView("dayw"); placeSub(); return }
+                            if (it && dc) { const sg = e.target.closest(".tc-seg[data-k]"), type = sg ? sg.dataset.k : "all"; SUB2.dataset.di = dc.dataset.di; SUB2.dataset.type = type; SUB2.innerHTML = reasonHTML(it, y, +SUB2.dataset.mi, +dc.dataset.di, type); setView("rsn"); placeSub(); return }
+                            const rr = e.target.closest(".rr[data-r]");
+                            if (it && rr) { SUB2.innerHTML = detailsHTML(it, y, +SUB2.dataset.mi, +SUB2.dataset.di, SUB2.dataset.type, rr.dataset.r); setView("rsn"); placeSub(); return }
+                        }
+                        if (!(e.target.closest && e.target.closest(".tt-x"))) return;
+                        if (box === SUB2) { SUB2.style.display = "none"; SUB2.dataset.moved = ""; SUB2.dataset.y = ""; return }
+                        PIN = false; TT2.style.display = "none"; SUB2.style.display = "none"; SUB2.dataset.moved = ""; SUB2.dataset.y = "";
+                    });
+                }
+                function setView(c) { SUB2.classList.remove("dayw", "rsn"); if (c) SUB2.classList.add(c) }
+                function clearHide() { clearTimeout(hideT) }
+                function scheduleHide() { if (PIN) return; clearTimeout(hideT); hideT = setTimeout(() => { TT2.style.display = "none"; SUB2.style.display = "none" }, 150) }
+                function hmWire(el, yo) {
+                    if (!TT2) {
+                        TT2 = document.createElement("div"); TT2.id = "hmtt"; document.body.appendChild(TT2);
+                        SUB2 = document.createElement("div"); SUB2.id = "hmtt2"; document.body.appendChild(SUB2);
+                        dragify(TT2); dragify(SUB2);
+                        TT2.onmouseenter = clearHide; TT2.onmouseleave = scheduleHide;
+                        SUB2.onmouseenter = clearHide; SUB2.onmouseleave = scheduleHide;
+                        TT2.onmouseover = e => {
+                            const yc = e.target.closest && e.target.closest(".yc");
+                            if (!yc || !CUR) return;
+                            clearHide();
+                            const it = HIST.get(String(CUR)); if (!it) return;
+                            const y = +yc.dataset.y;
+                            if (SUB2.style.display === "block" && SUB2.dataset.y == y) return;
+                            SUB2.dataset.y = y;
+                            SUB2.innerHTML = monHTML(it, y); setView(""); SUB2.style.display = "block"; placeSub();
+                        };
+                    }
+                    el.onmouseover = e => {
+                        clearHide(); if (PIN) return;
+                        const c = e.target.closest && e.target.closest(".hm-c");
+                        if (!c) return;
+                        const changed = c.dataset.m !== CUR || TT2.style.display !== "block";
+                        CUR = c.dataset.m;
+                        TT2.innerHTML = ttHTML(CUR); TT2.style.display = "block"; SUB2.style.display = "none";
+                        if (changed) placeTT(e.clientX, e.clientY);
+                    };
+                    el.onmouseleave = scheduleHide;
+                    const y = el.querySelector("#hmy"), m = el.querySelector("#hmm");
+                    y.onchange = e => { HM.y = +e.target.value; if (HM.m === "yd") HM.m = "all"; heat() };
+                    m.onchange = e => { const v = e.target.value; HM.m = (v === "yd" || v === "all") ? v : +v; if (v === "yd") HM.y = yo.getFullYear(); heat() }
+                }
+                /* ---------- render ---------- */
+                function filters() {
+                    const D = P.D, L = (k, f) => (D[k] || []).map((v, i) => [i, f ? f(v) : v]).sort((a, b) => nat(a[1], b[1]));
+                    const MSL = {
+                        year: ["Year", P.years.map(y => [y, String(y)])], month: ["Month", MS.map((m, i) => [i + 1, m])],
+                        mct: ["MC Type", L("mctype")], mc: ["Machine", L("mcno")], tool: ["Tool No", P.tk ? L(P.tk) : []],
+                        bay: ["Bay", L("bayname")], shift: ["Shift", L("shift", pre)], cat: ["Category", L("category", pre)]
+                    };
+                    const msh = k => `<div class="ms" data-k="${k}"><button type="button"><span>${MSL[k][0]}</span><b>All</b><i>▾</i></button><div class="mp"><input class="mq" type="text" placeholder="Search..." autocomplete="off"><div class="mo">${MSL[k][1].map(([v, x]) => `<label data-s="${esc(String(x).toLowerCase())}"><input type="checkbox" value="${v}">${esc(x)}</label>`).join("")}</div><div class="ma"><button type="button" data-a="all">Select all</button><button type="button" data-a="clr">Clear</button></div></div></div>`;
+                    $("#fr").innerHTML = msh("year") + msh("month") + `<label>From<input type="date" id="ff"></label><label>To<input type="date" id="ft"></label>` +
+                        msh("mct") + msh("mc") + (P.tk ? msh("tool") : "") + msh("bay") + msh("shift") + msh("cat") + `<button class="rf" id="rf" type="button">⟳ Reset</button>`;
+                    const closeAll = () => document.querySelectorAll("#fr .ms.open").forEach(x => x.classList.remove("open"));
+                    const lab = k => { const s = F[k], n = MSL[k][1].length, nm = MSL[k][1].filter(x => s.has(x[0])); $(`#fr .ms[data-k="${k}"] b`).textContent = (!s.size || s.size >= n) ? "All" : s.size == 1 ? nm[0][1] : s.size + " selected" };
+                    const sync = () => {
+                        $("#ff").value = F.from; $("#ft").value = F.to;
+                        document.querySelectorAll("#fr .ms").forEach(m => { const k = m.dataset.k; m.querySelectorAll(".mo input").forEach(c => c.checked = F[k].has(+c.value)); lab(k) })
+                    };
+                    const find = (m, v) => { v = v.trim().toLowerCase(); m.querySelectorAll(".mo label").forEach(l => l.style.display = l.dataset.s.includes(v) ? "" : "none") };
+                    $("#ff").onchange = e => { F.from = e.target.value; if (F.from && F.to && F.to < F.from) F.to = F.from; sync(); render() };
+                    $("#ft").onchange = e => { F.to = e.target.value; if (F.from && F.to && F.to < F.from) F.from = F.to; sync(); render() };
+                    document.querySelectorAll("#fr .ms").forEach(m => {
+                        const k = m.dataset.k, q = m.querySelector(".mq"), dt = () => { if (k === "year" || k === "month") F.from = F.to = "" };
+                        m.querySelector(":scope>button").onclick = e => { e.stopPropagation(); const o = m.classList.contains("open"); closeAll(); if (!o) { m.classList.add("open"); q.value = ""; find(m, ""); q.focus() } };
+                        m.querySelector(".mp").onclick = e => e.stopPropagation();
+                        q.oninput = () => find(m, q.value);
+                        m.querySelectorAll(".mo input").forEach(c => c.onchange = () => { c.checked ? F[k].add(+c.value) : F[k].delete(+c.value); dt(); sync(); render() });
+                        m.querySelector('[data-a="all"]').onclick = () => { MSL[k][1].forEach(x => F[k].add(x[0])); dt(); sync(); render() };
+                        m.querySelector('[data-a="clr"]').onclick = () => { F[k].clear(); dt(); sync(); render() }
+                    });
+                    $("#rf").onclick = () => { F.from = F.to = "";["year", "month", "mct", "mc", "bay", "shift", "tool", "cat"].forEach(k => F[k].clear()); sync(); render() };
+                    if (!window.__dtc) { window.__dtc = 1; document.addEventListener("click", closeAll) }
+                    sync()
+                }
+                function render() {
+                    setRG(); build();
+                    const sm = scopeMonths(), cur = merge(sm), S = series(sm), any = S.items.some(x => x.p);
+                    let prev = null, pl = "Last Month";
+                    if (!RG) {
+                        if (sm.length === 1) { if (sm[0] - 1 >= P.mi0) prev = merge([sm[0] - 1]) }
+                        else if (F.year.size === 1 && (!F.month.size || F.month.size === 12)) { const y = [...F.year][0]; pl = "Last Year"; if (y * 12 - 1 >= P.mi0) prev = merge(span((y - 1) * 12, y * 12 - 1)) }
+                    }
+                    const c = kpi(cur), p = prev && prev.has ? kpi(prev) : null, tot = c.pl + c.un;
+                    const card = (cls, t, sub, v, u, d, s) => `<div class="kp ${cls}"><div class="t">${t}${sub ? `<small>${sub}</small>` : ""}</div><div class="v">${v}<i>${u}</i>${d || ""}</div><div class="s">${s || ""}</div></div>`, pv = (k, f) => p && p[k] != null ? ` (${f(p[k])})` : "";
+                    const sfx = `<span style="font-weight:600;font-size:12px;color:#6d7c99;margin-left:8px">${S.sub}</span>`, kind = S.daily ? "Daily" : "Monthly";
+                    $("#dash").innerHTML =
+                        `<div class="kg">` +
+                        card("k1", "MTBF", "Mean Time Between Failure", f1(c.mtbf), "hrs", dl(c.mtbf, p && p.mtbf, true), p ? `vs. ${pl}${pv("mtbf", v => f1(v) + " hrs")}` : "") +
+                        card("k2", "MTTR", "Mean Time To Repair", f1(c.mttr), "hrs", dl(c.mttr, p && p.mttr, false), p ? `vs. ${pl}${pv("mttr", v => f1(v) + " hrs")}` : "") +
+                        card("k3", "Recurrence Rate", "", pc(c.rec).replace("%", ""), "%", dl(c.rec, p && p.rec, false), `Repeat ${c.rep} / Failures ${c.fail}`) +
+                        card("k4", "Maintenance Efficiency", "", pc(c.eff).replace("%", ""), "%", dl(c.eff, p && p.eff, true), p ? `vs. ${pl}${pv("eff", v => pc(v))}` : "") +
+                        card("k5", "Total Downtime", "", f1(c.down), "hrs", dl(c.down, p && p.down, false), p ? `vs. ${pl}${pv("down", v => f1(v) + " hrs")}` : "") +
+                        card("k6", "Planned vs Unplanned", "", tot ? f1(c.pl / tot * 100) + " : " + f1(c.un / tot * 100) : "–", "%", "", `Planned ${f1(c.pl)} hrs · Unplanned ${f1(c.un)} hrs`) +
+                        card("k7", "Avg Duration / Event", "", f1(c.avg), "min", dl(c.avg, p && p.avg, false), `Failures ${c.fail.toLocaleString()}`) +
+                        card("k8", "Affected Machines", "", c.mach, "", "", `of ${MALL} in scope`) + `</div><div id="hm"></div>
+ <div class="pg g2"><div class="pn"><h3>${kind} KPI Trend${sfx}</h3><div class="lg2"><span><i style="background:#1f8bff"></i>MTBF (hrs)</span><span><i style="background:#22d36b"></i>MTTR (hrs)</span><span><i style="background:#ff9a2e"></i>Recurrence Rate (%)</span><span><i style="background:#a77bff"></i>Maintenance Efficiency (%)</span></div>${any ? ch1(S) : '<div class="nd2">No data</div>'}</div>
+ <div class="pn"><h3>${kind} Trend${sfx}</h3><div class="lg2"><span><i style="background:#1f8bff"></i>Downtime (hrs)</span><span><i style="background:#ff9a2e"></i>Events</span></div>${any ? ch2(S) : '<div class="nd2">No data</div>'}</div></div>
+ <div class="pg g3"><div class="pn"><h3>Downtime Breakdown</h3>${donut(c)}</div><div class="pn"><h3>Downtime By Reason</h3>${reasons(cur)}</div><div class="pn"><h3>Downtime By Bay</h3>${bays(cur)}</div></div>
+ <details class="fm"><summary>How it is calculated</summary><div>Operating Time = 24 hrs × days in period × machines in scope · <b>MTBF</b> = Operating Time ÷ Total Failures · <b>MTTR</b> = Total Repair Time ÷ Total Failures · <b>Recurrence</b> = Repeat Failures ÷ Total Failures (same M/C + Reason + Detail again in the period) · <b>Efficiency</b> = (Operating Time − Downtime) ÷ Operating Time × 100 · No failure → MTBF / MTTR shown as “–”.</div></details>`;
+                    try { heat() } catch (e) { console.error("heatmap", e); const h = $("#hm"); if (h) h.innerHTML = "" }
+                }
+                window.DT_render = function () { filters(); render(); $("#lu").textContent = P.ver ? new Date(P.ver).toLocaleString("en-GB", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "—" };
+                window.DT_empty = function (msg) { $("#dash").innerHTML = `<div class="pn"><div class="nd2" style="font-size:15px">${msg}</div></div>` };
+                window.DT_skel = function () { $("#dash").innerHTML = `<div class="kg">${Array.from({ length: 8 }, (_, i) => `<div class="kp k${i + 1} sk"><div class="t">Loading…</div><div class="v">—</div></div>`).join("")}</div>` };
+                /* tooltip */
+                const tt = $("#tt"); document.addEventListener("mousemove", e => { const el = e.target.closest && e.target.closest("[data-t]"); if (!el) { tt.style.display = "none"; return } tt.innerHTML = el.getAttribute("data-t"); tt.style.display = "block"; tt.style.left = Math.min(e.clientX + 14, innerWidth - 190) + "px"; tt.style.top = (e.clientY + 14) + "px" });
+            })();
+
+        </script>
+        <script>
+
+            const $ = s => document.querySelector(s), out = () => ERP.signOut();
+            (async () => {
+                DT_skel();
+                const cached = (() => { try { return localStorage.getItem("dt_sub") } catch (e) { return null } })();
+                let early = cached ? ERP.packed(cached, "downtime").catch(() => null) : null;   /* ডেটা fetch auth-এর সাথে একসাথে শুরু → দ্রুত খোলে */
+                const [ME, mods] = await Promise.all([ERP.require(), ERP.tree()]); if (!ME) return;
+                const nm = ME.name || ME.login_id; $("#un").textContent = nm; $("#av").textContent = nm.slice(0, 2).toUpperCase();
+                const hr = new Date().getHours(); $("#gr").textContent = `Good ${hr < 12 ? "morning" : hr < 17 ? "afternoon" : "evening"}, ${nm.split(" ")[0]}. Here is your operation at a glance.`;
+                if (ME.role === "admin") $("#adm").style.display = "block";
+                $("#ub").onclick = e => { e.stopPropagation(); const m = $("#mn"); m.style.display = m.style.display === "block" ? "none" : "block" }; document.onclick = () => $("#mn").style.display = "none";
+                if (ERP.mode === "audit" && ME.role === "admin") $("#mb").style.display = "inline-block";
+                const M = mods.find(x => /production/i.test(String(x.name)));
+                if (!M || !(ERP.can(ME, M.id) || M.subs.some(s => ERP.can(ME, s.id, "v", M.id)))) { location.replace("portal.html"); return }
+                const SUB = M.subs.find(s => ERP.packKey(s.name) === "downtime") || null;
+                if (!SUB || !ERP.can(ME, SUB.id, "v", M.id)) { DT_empty("Downtime Analysis is not available for your account in this mode."); return }
+                try { localStorage.setItem("dt_sub", SUB.id) } catch (e) { }
+                ERP.sideBanner([M.id, ...M.subs.map(s => s.id)], [[SUB.id, "downtime"]]);
+                const load = async () => {
+                    let pk = (cached === SUB.id && early) ? await early : null; early = null;
+                    if (!pk) pk = await ERP.packed(SUB.id, "downtime");
+                    if (!pk || !pk.m || !pk.c || !pk.c.date || !pk.c.date.length) { DT_empty("No Downtime data yet — Admin → Data Manager → Production &amp; Planning → Downtime Analysis থেকে Breakdown Excel আপলোড করুন।"); return }
+                    DT_prep(pk); DT_render()
+                };
+                window.DT_reload = () => { DT_skel(); load().catch(e => { console.error(e); DT_empty("Data load failed — আবার Refresh করুন।") }) };
+                await load()
+            })().catch(e => { console.error(e); DT_empty("Data load failed — আবার Refresh করুন।") });
+
+        </script>
+</body>
+
+</html>
