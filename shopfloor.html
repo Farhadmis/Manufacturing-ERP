@@ -4028,7 +4028,7 @@
             <div class="nv" data-p="prod" onclick="show('prod')"><svg viewBox="0 0 24 24">
                     <path d="M5 20V11M11 20V5M17 20v-6M3 20h18" />
                 </svg><span>Production Performance</span></div>
-            <div class="nv" data-p="down" onclick="show('down')"><svg viewBox="0 0 24 24">
+            <div class="nv" data-p="down" onclick="location.href='downtime.html'"><svg viewBox="0 0 24 24">
                     <path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2" />
                 </svg><span>Downtime Analysis</span></div>
             <div class="nv" data-p="man" onclick="show('man')"><svg viewBox="0 0 24 24">
@@ -5494,7 +5494,7 @@ ${sel(".ft")}{padding:7px 12px;font-size:11.5px;font-weight:600;color:#6d7c99;ba
             if (!M || !(ERP.can(ME, M.id) || M.subs.some(s => ERP.can(ME, s.id, "v", M.id)))) { location.replace("portal.html"); return }
             SUB = M.subs.find(s => ERP.packKey(s.name) === "shopfloor") || null;
             ERP.sideBanner([M.id, ...M.subs.map(s => s.id)], SUB ? [[SUB.id, "shopfloor"]] : []);
-            const h = location.hash.slice(1); show(PG[h] ? h : "oee")
+            const h = location.hash.slice(1); if (h === "down") { location.replace("downtime.html"); return } show(PG[h] ? h : "oee")
         })().catch(e => console.error(e));
     </script>
     <script id="oee-v1-js">
