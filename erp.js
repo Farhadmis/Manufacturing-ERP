@@ -222,11 +222,12 @@ const ERP = {
     },
 
     /* ===== Production & Planning · 3 sub-module (প্রতিটার আলাদা Upload — Admin → Data Manager) ===== */
-    downtime: {
+    downtime: {   /* Breakdown.xlsx (event-wise): Date, Shift, Bay Name, M/C No., Tool No, Stop/Start Date/Time, Duration(Min), Category, Reason, Details Occurrence, MC Type */
       match: /downtime/i,
-      dims: ["date", "bayname", "shifttime", "mcno", "group", "modelname"],
-      upper: ["bayname", "shifttime", "mcno", "group", "modelname"],
-      meas: PP_DOWN_M, need: ["date", "shiftlengthmin"], fix: ppFixDown
+      dims: ["date", "shift", "bayname", "mcno", "toolno", "category", "reason", "detailsoccurrence", "mctype"],
+      upper: ["shift", "bayname", "mcno", "toolno", "category", "reason", "detailsoccurrence", "mctype"],
+      meas: ["durationmin", "events"], need: ["date", "durationmin"],
+      fix(v) { v[1] = 1; }          /* প্রতিটি Excel row = ১টি failure/event */
     },
     machine: {
       match: /machine\s*overview/i,
