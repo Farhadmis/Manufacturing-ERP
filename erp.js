@@ -39,6 +39,13 @@ function ppFixMan(vals) {                                // manhours = Manpower 
   const I = k => PP_MAN_M.indexOf(k);
   vals[I("manhours")] = vals[I("manpower")] * vals[I("shiftlengthmin")] / 60;
 }
+/* Manpower Performance (Excel: Date, Criteria, Shift Time, M/C NO., Model Name, Casual/Permanent-Manpower, Tool, process columns…, Total, Unit Name, MC Type, Bay Name) */
+const PP_MANP_PROC = ["machine", "flashcutting", "automation", "manualhooking", "manualclip", "semiautoclip", "printing", "tubetissuefitting", "hangercleancheck", "notchfitting", "underlegfitting", "foamfitting", "packing"];
+const PP_MANP_M = ["casualmanpower", "permanentmanpower", "total", ...PP_MANP_PROC];
+function ppFixManP(vals, raw) {                          // Total ঘর ফাঁকা থাকলে = Casual + Permanent
+  const I = k => PP_MANP_M.indexOf(k);
+  if (raw[I("total")] === "") vals[I("total")] = vals[I("casualmanpower")] + vals[I("permanentmanpower")];
+}
 const PP_SCRAP = ["scrapshortmold", "scrapcolorchange", "scrapflowmark", "scrapotherscrap", "scrapoilgrease", "scrapexcessflash", "scrapmoldclean", "scrapstartup", "scrapburnpinmark", "scrapwatermark"];
 const PP_SHOP_M = ["plannedproduction", "finishproduct", "wip", "scrappcs", "goodproduction", "totalproduction", "totalscrapqty", "lostcavity",
   "materialconsumptioninkg", "materialrecycled", "totalmaterialusedgm", "shiftlengthmin", "productiondurationmin", "manpower", "manhours",
@@ -98,7 +105,7 @@ const ERP = {
     if (!raw && this.mode === "audit") {   /* Audit: only ticked modules/sub-modules. Tick a module = all its subs; tick only some subs = just those */
       const on = new Set(this.auditIds || []);
       T = T.filter(m => on.has(m.id) || m.subs.some(s => on.has(s.id)))
-           .map(m => ({ ...m, subs: m.subs.filter(s => on.has(s.id) || (on.has(m.id) && !m.subs.some(x => on.has(x.id)))) }));
+        .map(m => ({ ...m, subs: m.subs.filter(s => on.has(s.id) || (on.has(m.id) && !m.subs.some(x => on.has(x.id)))) }));
     }
     return T;
   },
@@ -229,9 +236,9 @@ const ERP = {
     },
     manpower: {
       match: /manpower/i,
-      dims: ["date", "bayname", "shifttime", "mcno", "group", "productcategory"],
-      upper: ["bayname", "shifttime", "mcno", "group"],
-      meas: PP_MAN_M, need: ["date", "manpower"], fix: ppFixMan
+      dims: ["date", "bayname", "criteria", "shifttime", "mcno", "modelname", "tool", "unitname", "mctype"],
+      upper: ["bayname", "criteria", "shifttime", "mcno", "modelname", "unitname", "mctype"],
+      meas: PP_MANP_M, need: ["date", "casualmanpower", "permanentmanpower"], fix: ppFixManP
     },
     /* Production-Shopfloor · পুরো Production.xlsx (সব column) */
     shopfloor: {
