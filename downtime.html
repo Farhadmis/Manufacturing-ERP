@@ -1809,19 +1809,22 @@
                         white-space: nowrap
                     }
 
+                    .fr {
+                        position: sticky;
+                        top: 0;
+                        z-index: 40;
+                        background: #f1f5fb;
+                        padding-top: 6px;
+                        padding-bottom: 6px
+                    }
+
                     #hmtt .tp-e {
                         color: #0e8a3e;
                         font-weight: 600;
                         padding: 4px 0
                     }
                 </style>
-                <div class="dh">
-                    <div>
-                        <h1>Maintenance Performance <span class="mb" id="mb" style="display:none">AUDIT MODE</span></h1>
-                        <p>Maximize Uptime • Minimize Downtime • Drive Operational Excellence</p>
-                    </div>
-                    <div class="lu">Last Updated<b id="lu">—</b></div>
-                </div>
+                <span class="mb" id="mb" style="display:none"></span><b id="lu" style="display:none">—</b>
                 <div class="fr" id="fr"></div>
                 <div id="dash"></div>
                 <div id="tt"></div>
