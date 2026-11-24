@@ -2050,10 +2050,10 @@
                     if (!cm) { el.innerHTML = ""; return }
                     const lastS = P.lastS.slice(0, 10); const [ly, lm, ld] = lastS.split("-").map(Number); const yo = new Date(ly, lm - 1, ld); const yS = lastS;
                     const ys = [...new Set([...P.years, yo.getFullYear()])].sort((a, b) => a - b);
-                    if (!HM) HM = { y: yo.getFullYear(), m: "yd" };
+                    if (!HM) HM = { y: yo.getFullYear(), m: "yd", cat: "all" };
                     const yd = HM.m === "yd", all = HM.m === "all";
                     const test = x => yd ? x.s.slice(0, 10) === yS : (x.y === HM.y && (all || x.mo === HM.m));
-                    const label = yd ? "Latest · " + dlab(yS) : all ? "Year " + HM.y : MS[HM.m - 1] + " " + HM.y;
+                    const label = (yd ? "Latest · " + dlab(yS) : all ? "Year " + HM.y : MS[HM.m - 1] + " " + HM.y) + (HM.cat === "pl" ? " · Planned" : HM.cat === "un" ? " · Unplanned" : "");
                     const cb = C.bayname, cs = C.shift, ct = C.mctype, cc = C.category, ctl = P.tk ? C[P.tk] : null;
                     const uni = new Map(), agg = new Map(), mdet = new Map(); let rows = 0; HMD = new Map();
                     for (let i = 0; i < n; i++) {
@@ -2061,7 +2061,7 @@
                         if (F.bay.size && cb && !F.bay.has(cb[i])) continue;
                         const m = cm[i]; if (!uni.has(m)) uni.set(m, cb ? cb[i] : 0);
                         if (F.shift.size && cs && !F.shift.has(cs[i])) continue; if (F.tool.size && ctl && !F.tool.has(ctl[i])) continue;
-                        if (F.cat.size && cc && !F.cat.has(cc[i])) continue; if (HM_UNPLANNED_ONLY && cc && !un[cc[i]]) continue;
+                        if (F.cat.size && cc && !F.cat.has(cc[i])) continue; if (HM_UNPLANNED_ONLY && cc && !un[cc[i]]) continue; if (HM.cat === "pl" && cc && un[cc[i]]) continue; if (HM.cat === "un" && cc && !un[cc[i]]) continue;
                         if (!test(dd[C.date[i]])) continue;
                         rows++; let a = agg.get(m); if (!a) { a = { d: 0, e: 0 }; agg.set(m, a) } a.d += dur[i] || 0; a.e += ev[i] || 0; if (dur[i]) { let md = mdet.get(m); if (!md) { md = { rs: new Map(), pl: 0, un: 0 }; mdet.set(m, md) } const rl = cr && RL.length ? String(RL[cr[i]] ?? "Other") : "Other"; md.rs.set(rl, (md.rs.get(rl) || 0) + dur[i]); if (cc && un[cc[i]]) md.un += dur[i]; else md.pl += dur[i] }
                     }
@@ -2071,7 +2071,8 @@
                     const opt = (v, t, s) => `<option value="${v}"${s ? " selected" : ""}>${t}</option>`;
                     const cal = `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M7 14h2M11 14h2M15 14h2M7 17.5h2M11 17.5h2"/></svg>`;
                     const head = `<div class="hm-h"><div class="hm-t"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M4 20V13M10 20V8M16 20v-5M21 20V4M3 21h19"/></svg><div><h2>Bay–Machine Performance <b>Heatmap</b></h2><small>${label}</small></div></div>` +
-                        `<div class="hm-p"><label class="hm-sel">${cal}<div><span>Year</span><select id="hmy">${ys.map(y => opt(y, y, y === HM.y)).join("")}</select></div></label>` +
+                        `<div class="hm-p"><label class="hm-sel">${cal}<div><span>Category</span><select id="hmc">${opt("all", "All", HM.cat === "all") + opt("pl", "Planned", HM.cat === "pl") + opt("un", "Unplanned", HM.cat === "un")}</select></div></label>` +
+                        `<label class="hm-sel">${cal}<div><span>Year</span><select id="hmy">${ys.map(y => opt(y, y, y === HM.y)).join("")}</select></div></label>` +
                         `<label class="hm-sel">${cal}<div><span>Month</span><select id="hmm">${opt("yd", "Latest (" + dlab(yS) + ")", yd) + opt("all", "All Months", all) + MS.map((m, i) => opt(i + 1, m, HM.m === i + 1)).join("")}</select></div></label></div></div>`;
                     const legend = `<div class="hm-lg"><span class="hm-dt"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.1L3 17.7 6.3 21l6.3-6.3a4 4 0 0 0 5.1-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg>DT = Breakdown · No DT = No Breakdown</span>` +
                         `<span><i style="background:#22c55e"></i>No Breakdown</span><span><i style="background:#fbbf24"></i>Breakdown (1 – ${HM_RED} Min)</span><span><i style="background:#ef4444"></i>Breakdown (&gt; ${HM_RED} Min)</span><span class="hm-n">DT || No DT (Qty)</span></div>`;
@@ -2253,6 +2254,7 @@
                     };
                     el.onmouseleave = scheduleHide;
                     const y = el.querySelector("#hmy"), m = el.querySelector("#hmm");
+                    el.querySelector("#hmc").onchange = e => { HM.cat = e.target.value; heat() };
                     y.onchange = e => { HM.y = +e.target.value; if (HM.m === "yd") HM.m = "all"; heat() };
                     m.onchange = e => { const v = e.target.value; HM.m = (v === "yd" || v === "all") ? v : +v; if (v === "yd") HM.y = yo.getFullYear(); heat() }
                 }
