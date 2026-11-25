@@ -2257,6 +2257,15 @@
                         dragify(TT2); dragify(SUB2);
                         TT2.onmouseenter = clearHide; TT2.onmouseleave = scheduleHide;
                         SUB2.onmouseenter = clearHide; SUB2.onmouseleave = scheduleHide;
+                        /* click anywhere outside the tooltips (and outside heatmap cells) closes both */
+                        document.addEventListener("click", e => {
+                            const t = e.target;
+                            if (!t || !t.closest) return;
+                            if (t.closest("#hmtt") || t.closest("#hmtt2") || t.closest(".hm-c")) return;
+                            clearTimeout(hideT); PIN = false;
+                            TT2.style.display = "none"; SUB2.style.display = "none";
+                            SUB2.dataset.moved = ""; SUB2.dataset.y = "";
+                        }, true);
                         TT2.onmouseover = e => {
                             const yc = e.target.closest && e.target.closest(".yc");
                             if (!yc || !CUR) return;
