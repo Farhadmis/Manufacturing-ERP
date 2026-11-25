@@ -68,14 +68,16 @@ const ERP = {
   spath(path, m) { m = m || this._force || this.mode; return m === "audit" && !path.startsWith("a_") ? "a_" + path : path; },
   modeReady() {
     return this._mr || (this._mr = (async () => {
+      try { const c = JSON.parse(sessionStorage.getItem("erp:mode") || "null"); if (c && Date.now() - c.at < 60000) { this.mode = c.mode; this.auditIds = c.auditIds; return } } catch (x) { }
       try {
         const { data } = await sb.from("app_settings").select("key,value");
         (data || []).forEach(r => { if (r.key === "mode") this.mode = r.value && r.value.active === "audit" ? "audit" : "office"; if (r.key === "audit_modules") this.auditIds = (r.value && r.value.ids) || []; });
+        try { sessionStorage.setItem("erp:mode", JSON.stringify({ at: Date.now(), mode: this.mode, auditIds: this.auditIds })) } catch (x) { }
       } catch (e) { console.error("mode load failed → office", e); }
     })());
   },
-  async setMode(m) { const { error } = await sb.from("app_settings").upsert({ key: "mode", value: { active: m }, updated_at: new Date().toISOString() }); if (error) throw error; this.mode = m; },
-  async setAuditIds(ids) { const { error } = await sb.from("app_settings").upsert({ key: "audit_modules", value: { ids }, updated_at: new Date().toISOString() }); if (error) throw error; this.auditIds = ids; },
+  async setMode(m) { const { error } = await sb.from("app_settings").upsert({ key: "mode", value: { active: m }, updated_at: new Date().toISOString() }); if (error) throw error; this.mode = m; try { sessionStorage.removeItem("erp:mode") } catch (x) { } },
+  async setAuditIds(ids) { const { error } = await sb.from("app_settings").upsert({ key: "audit_modules", value: { ids }, updated_at: new Date().toISOString() }); if (error) throw error; this.auditIds = ids; try { sessionStorage.removeItem("erp:mode") } catch (x) { } },
   sb,
   email: id => { id = String(id).trim().toLowerCase(); return id.includes("@") ? id : id + "@mainetti.app"; },
   /* session + profile guard. ERP.require() → profile | null (redirects when not allowed) */
@@ -87,7 +89,7 @@ const ERP = {
     if (adminOnly && p.role !== "admin") { location.replace("portal.html"); return null; }
     return p;
   },
-  async signOut() { await sb.auth.signOut(); location.replace("index.html"); },
+  async signOut() { try { sessionStorage.removeItem("erp:tree") } catch (x) { } await sb.auth.signOut(); location.replace("index.html"); },
   /* permission: admin = all; else own flag; sub-module view also inherits parent module view */
   can(p, id, k = "v", parentId) {
     if (!p) return false; if (p.role === "admin") return true;
@@ -97,11 +99,18 @@ const ERP = {
   /* modules with their sub-modules: [{id,name,sort,subs:[{id,name,sort}]}] */
   async tree(raw) {
     await this.modeReady();
-    const [a, b] = await Promise.all([
-      sb.from("modules").select("*").order("sort").order("id"),
-      sb.from("submodules").select("*").order("sort").order("id")]);
-    if (a.error) throw a.error; if (b.error) throw b.error;
-    let T = a.data.map(m => ({ ...m, subs: b.data.filter(s => s.module_id === m.id) }));
+    /* মডিউলের তালিকা (সবার জন্য একই) ৫ মিনিট browser session-এ রাখে — প্রতি page-এ Supabase query এড়াতে */
+    let rawT = null;
+    if (!raw) try { const c = JSON.parse(sessionStorage.getItem("erp:tree") || "null"); if (c && Date.now() - c.at < 300000) rawT = c.T } catch (x) { }   /* raw (Admin) সবসময় নতুন তালিকা আনে */
+    if (!rawT) {
+      const [a, b] = await Promise.all([
+        sb.from("modules").select("*").order("sort").order("id"),
+        sb.from("submodules").select("*").order("sort").order("id")]);
+      if (a.error) throw a.error; if (b.error) throw b.error;
+      rawT = a.data.map(m => ({ ...m, subs: b.data.filter(s => s.module_id === m.id) }));
+      try { sessionStorage.setItem("erp:tree", JSON.stringify({ at: Date.now(), T: rawT })) } catch (x) { }
+    }
+    let T = JSON.parse(JSON.stringify(rawT));
     if (!raw && this.mode === "audit") {   /* Audit: only ticked modules/sub-modules. Tick a module = all its subs; tick only some subs = just those */
       const on = new Set(this.auditIds || []);
       T = T.filter(m => on.has(m.id) || m.subs.some(s => on.has(s.id)))
@@ -165,17 +174,22 @@ const ERP = {
     await this.modeReady();
     const base = id + "/" + name, ck = "packed:" + this.spath(base);
     const metaP = this._fetchStorage(base + "_meta.json").then(r => r.json()).catch(() => null);
+    /* নতুন ডেটা নামানো + IndexedDB-তে রাখা (পুরনো cache বদলায়) */
+    const load = async () => {
+      const r = await this._fetchStorage(base + ".json.gz");
+      const obj = await new Response(r.body.pipeThrough(new DecompressionStream("gzip"))).json();
+      await this._put(ck, obj);
+      return obj;
+    };
     const hit = await this._get(ck);
-    let meta;
     if (hit) {
-      meta = await Promise.race([metaP, new Promise(r => setTimeout(() => r(undefined), 2500))]);
-      if (meta === undefined || (meta && hit.v === meta.v)) return hit;
-    } else meta = await metaP;
+      /* cache থাকলে সাথে সাথে তা-ই দেখায়; নতুন ডেটা থাকলে পিছনে নামিয়ে রাখে (পরের বার নতুন দেখাবে) */
+      metaP.then(m => { if (m && m.v !== hit.v) load().catch(() => { }) }).catch(() => { });
+      return hit;
+    }
+    const meta = await metaP;
     if (!meta) return null;
-    const r = await this._fetchStorage(base + ".json.gz");
-    const obj = await new Response(r.body.pipeThrough(new DecompressionStream("gzip"))).json();
-    await this._put(ck, obj);
-    return obj;
+    return load();
   },
   /* Portal খোলার পর ব্যাকগ্রাউন্ডে অনুমতি-পাওয়া module-গুলোর ডেটা cache-এ আনে, ক্লিক করলে সাথে সাথে দেখায় */
   prefetch(p, tree) {
@@ -244,6 +258,17 @@ const ERP = {
     /* Production-Shopfloor · পুরো Production.xlsx (সব column) */
     shopfloor: {
       match: /shop\s*-?\s*floor|shopfoor/i,
+      dims: ["date", "bayname", "shifttime", "mcno", "modelname", "colorname", "toolno", "group", "productcategory", "materialtype",
+        "standardcavity", "runningcavity", "standardcycle", "runningcycle", "productshotweight", "perpcsweight", "runnerweight",
+        "masterbatch", "rubber", "materials", "mctype"],
+      upper: ["bayname", "shifttime", "mcno", "modelname", "colorname", "toolno", "group", "mctype"],
+      meas: PP_SHOP_M, need: ["date", "mcno"], fix: ppFixShop
+    },
+    /* OEE Performance Overview · Shopfloor-এর একই কলাম ও ফর্মুলা; শুধু আলাদা sub-module-এর ডেটা */
+    oee: {
+      match: /\boee\b/i,
+      /* OEE Excel-এর "Manhours" column আসলে Manpower (headcount): Manhours = Manpower × Shift ÷ 60 (PPPH মিলিয়ে যাচাই করা) */
+      alias: { manpower: "manhours" },
       dims: ["date", "bayname", "shifttime", "mcno", "modelname", "colorname", "toolno", "group", "productcategory", "materialtype",
         "standardcavity", "runningcavity", "standardcycle", "runningcycle", "productshotweight", "perpcsweight", "runnerweight",
         "masterbatch", "rubber", "materials", "mctype"],
