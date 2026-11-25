@@ -8246,6 +8246,17 @@ ${sel(".ft")}{padding:7px 12px;font-size:11.5px;font-weight:600;color:#6d7c99;ba
             window.show = function (p) { var r = _show.apply(this, arguments); if (p === "man") showMan().catch(function (e) { console.error(e) }); return r };
         })();
     </script>
+    <script id="router-js">
+        /* shopfloor.html = hub. OEE → shopfloor-oee.html, Production → shopfloor-production.html.
+           Manpower / Material / Machine Overview এই ফাইলেই থাকে, তাই এই ফাইলটি মুছবেন না। */
+        (function () {
+            const TO = { oee: "shopfloor-oee.html", prod: "shopfloor-production.html" };
+            const go = p => { if (TO[p]) { location.replace(TO[p] + location.search); return true } return false };
+            const boot = () => { if (go(location.hash.slice(1))) return; const orig = window.show;
+                if (typeof orig === "function") window.show = function (p) { return go(p) ? undefined : orig.apply(this, arguments) } };
+            if (document.readyState === "loading") addEventListener("DOMContentLoaded", boot); else boot();
+        })();
+    </script>
 </body>
 
 </html>
