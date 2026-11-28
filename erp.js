@@ -277,6 +277,19 @@ const ERP = {
     }
   }
 };
+
+/* ===== Production & Planning › "Planning" sub-module-এর ৬টি আলাদা section (প্রতিটার আলাদা Upload) =====
+   ডেটা জমা হয়: <PlanningSubId>/plan_<key>.json.gz  (Audit mode-এ a_ prefix — ERP.spath নিজেই দেয়, তাই Office/Audit মিশে না)
+   এগুলো ERP.PACK-এ নেই, তাই অন্য কোনো module/page-এর regex বা ডেটার সাথে সংঘর্ষ হয় না। */
+ERP.PLAN = [
+  { k: "pi", name: "Priority Intelligence", file: "plan_pi", sub: "Order & delivery priority insights" },
+  { k: "cal", name: "Annual Planning Calendar", file: "plan_cal", sub: "Year-round production calendar" },
+  { k: "man", name: "Manpower Planning", file: "plan_man", sub: "Manpower requirement & allocation plan" },
+  { k: "mat", name: "Material Planning", file: "plan_mat", sub: "Material requirement & availability" },
+  { k: "cap", name: "Capacity(MC & Mold) Details", file: "plan_cap", sub: "Machine and mold capacity details" },
+  { k: "sch", name: "Automated Production Schedule", file: "plan_sch", sub: "Auto-generated production schedule" }
+];
+ERP.isPlanSub = s => !!s && /^planning$/i.test(String(s.name).trim());
 ERP.packKey = n => Object.keys(ERP.PACK).find(k => ERP.PACK[k].match.test(String(n).trim()));
 
 
