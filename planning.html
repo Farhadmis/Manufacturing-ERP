@@ -1,0 +1,3681 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Mainetti · Planning</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0f2a5a;
+            --red: #a61935;
+            --mute: #6d7c99;
+            --line: #dbe4f2;
+            --gold: #e0b24a
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, sans-serif;
+            color: var(--navy);
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #f1f5fb;
+            font-size: 13px
+        }
+
+        /* ===== header ===== */
+        header {
+            flex: none;
+            position: relative;
+            z-index: 60;
+            display: flex;
+            align-items: stretch;
+            height: clamp(66px, 9vh, 88px);
+            background: linear-gradient(90deg, #f8fbff, #e8f0fc);
+            box-shadow: 0 4px 18px rgba(16, 44, 92, .12)
+        }
+
+        .hl {
+            display: flex;
+            align-items: center;
+            gap: clamp(12px, 1.5vw, 24px);
+            padding: 0 clamp(14px, 1.8vw, 30px);
+            position: relative;
+            z-index: 2;
+            flex: none
+        }
+
+        .hl img {
+            height: clamp(40px, 6.2vh, 58px);
+            display: block
+        }
+
+        .logo {
+            font-weight: 800;
+            letter-spacing: .06em;
+            font-size: 20px;
+            line-height: 1;
+            color: var(--navy)
+        }
+
+        .logo small {
+            display: block;
+            font-size: 9px;
+            letter-spacing: .2em;
+            margin-top: 3px;
+            color: #12408f
+        }
+
+        .sep {
+            width: 1px;
+            height: 46px;
+            background: #9fb3d3;
+            flex: none
+        }
+
+        .tag {
+            font-style: italic;
+            font-weight: 600;
+            color: #12408f;
+            font-size: clamp(12px, 1.15vw, 18px);
+            white-space: nowrap
+        }
+
+        .tag i {
+            font-style: normal;
+            margin: 0 .7em;
+            opacity: .55
+        }
+
+        .gr {
+            font-size: 11.5px;
+            color: var(--mute);
+            margin-top: 3px;
+            white-space: nowrap
+        }
+
+        .hp {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+            overflow: hidden
+        }
+
+        .hp::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url(assets/header-photo.jpg) right center/cover no-repeat;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 40%);
+            mask-image: linear-gradient(90deg, transparent, #000 40%)
+        }
+
+        .hr {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: clamp(10px, 1.2vw, 18px);
+            padding: 0 clamp(14px, 1.6vw, 26px) 0 clamp(54px, 5vw, 84px);
+            color: #fff;
+            flex: none
+        }
+
+        .hr::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(100deg, #0a2a70, #0b3d94);
+            clip-path: polygon(44px 0, 100% 0, 100% 100%, 0 100%);
+            z-index: -1
+        }
+
+        .hr svg.fy {
+            width: clamp(30px, 2.6vw, 42px);
+            height: clamp(30px, 2.6vw, 42px);
+            flex: none
+        }
+
+        .ht b {
+            display: block;
+            font-size: clamp(15px, 1.5vw, 23px);
+            font-weight: 800;
+            white-space: nowrap
+        }
+
+        .ht span {
+            display: block;
+            font-size: clamp(9.5px, .8vw, 12px);
+            opacity: .92;
+            margin-top: 2px;
+            white-space: nowrap
+        }
+
+        .user {
+            position: relative
+        }
+
+        .ub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, .14);
+            border: 1px solid rgba(255, 255, 255, .4);
+            color: #fff;
+            border-radius: 999px;
+            padding: 4px 14px 4px 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit
+        }
+
+        .av {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #fff;
+            color: #0b3d94;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: 12px
+        }
+
+        .menu {
+            position: absolute;
+            right: 0;
+            top: 46px;
+            background: #fff;
+            color: var(--navy);
+            border-radius: 12px;
+            box-shadow: 0 14px 34px rgba(16, 44, 92, .25);
+            min-width: 170px;
+            display: none;
+            overflow: hidden;
+            z-index: 30
+        }
+
+        .menu div {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-weight: 600
+        }
+
+        .menu div:hover {
+            background: #f1f5fc
+        }
+
+        /* ===== layout ===== */
+        .bk {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid #9fb3d3;
+            background: #fff;
+            color: var(--navy);
+            font-size: 18px;
+            cursor: pointer;
+            flex: none
+        }
+
+        .lay {
+            flex: 1;
+            min-height: 0;
+            display: flex
+        }
+
+        aside {
+            flex: none;
+            width: 250px;
+            background: #fff;
+            border-right: 1px solid var(--line);
+            padding: 10px 0;
+            transition: .2s;
+            overflow: hidden
+        }
+
+        aside.col {
+            width: 62px
+        }
+
+        .nv {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #3a4d73;
+            border-left: 3px solid transparent
+        }
+
+        .nv span {
+            line-height: 1.25
+        }
+
+        aside.col .nv span {
+            white-space: nowrap
+        }
+
+        .nv svg {
+            width: 20px;
+            height: 20px;
+            flex: none;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.9;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .nv:hover {
+            background: #f5f8fd
+        }
+
+        .nv.on {
+            color: var(--red);
+            background: #fdeff2;
+            border-left-color: var(--red)
+        }
+
+        .nv.t {
+            color: var(--mute);
+            margin-bottom: 6px
+        }
+
+        main {
+            flex: 1;
+            min-width: 0;
+            overflow: auto;
+            padding: 0 22px 30px
+        }
+
+        .ttl {
+            font-size: 20px;
+            font-weight: 800;
+            margin: 18px 0 2px
+        }
+
+        .sub {
+            color: var(--mute);
+            margin: 0 0 14px
+        }
+
+        .empty {
+            background: #fff;
+            border-radius: 16px;
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--mute)
+        }
+
+        .empty b {
+            display: block;
+            color: var(--navy);
+            font-size: 17px;
+            margin-bottom: 6px
+        }
+
+        @media(max-width:900px) {
+            body {
+                height: 100dvh;
+                overflow: hidden
+            }
+
+            aside {
+                width: 62px
+            }
+
+            .nv span {
+                display: none
+            }
+
+            .hl {
+                padding: 8px 12px
+            }
+        }
+
+
+        .ld {
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--mute);
+            font-weight: 600
+        }
+
+        /* ===== Planning data table ===== */
+        .tb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 0 0 10px
+        }
+
+        .tb input {
+            font: inherit;
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            min-width: 220px;
+            background: #fff;
+            color: var(--navy)
+        }
+
+        .tb .in {
+            color: var(--mute);
+            font-weight: 600
+        }
+
+        .tb .sp {
+            flex: 1
+        }
+
+        .tb button {
+            font: inherit;
+            font-weight: 700;
+            border: 1px solid var(--line);
+            background: #fff;
+            color: var(--navy);
+            border-radius: 10px;
+            padding: 7px 12px;
+            cursor: pointer
+        }
+
+        .tb button:disabled {
+            opacity: .4;
+            cursor: default
+        }
+
+        .tw {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(16, 44, 92, .08);
+            overflow: auto;
+            max-height: calc(100vh - 250px)
+        }
+
+        .tw table {
+            border-collapse: collapse;
+            width: 100%
+        }
+
+        .tw th {
+            position: sticky;
+            top: 0;
+            background: #0f2a5a;
+            color: #fff;
+            text-align: left;
+            padding: 10px 12px;
+            white-space: nowrap;
+            cursor: pointer;
+            font-weight: 700
+        }
+
+        .tw td {
+            padding: 8px 12px;
+            border-top: 1px solid #edf2fa;
+            white-space: nowrap
+        }
+
+        .tw td.n {
+            text-align: right;
+            font-variant-numeric: tabular-nums
+        }
+
+        .tw tr:hover td {
+            background: #f5f8fd
+        }
+
+        /* ===== Capacity(MC & Mold) Details ===== */
+        .cph {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 0 0 12px
+        }
+
+        .cpt {
+            display: inline-flex;
+            align-self: flex-start;
+            background: #dfe8f7;
+            border-radius: 12px;
+            padding: 4px;
+            gap: 4px
+        }
+
+        .cpt button {
+            font: inherit;
+            font-weight: 800;
+            letter-spacing: .3px;
+            border: 0;
+            background: transparent;
+            color: var(--navy);
+            padding: 9px 22px;
+            border-radius: 9px;
+            cursor: pointer
+        }
+
+        .cpt button.on {
+            background: linear-gradient(180deg, #123b86, #0b2554);
+            color: #fff;
+            box-shadow: 0 3px 10px rgba(11, 37, 84, .35)
+        }
+
+        .cf {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center
+        }
+
+        .cf select {
+            font: inherit;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(180deg, #0f2f6b, #081b44);
+            border: 1px solid #1d4590;
+            border-radius: 999px;
+            padding: 10px 16px;
+            min-width: 128px;
+            max-width: 190px;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(11, 37, 84, .25)
+        }
+
+        .cf select.act {
+            border-color: #62b4ff;
+            box-shadow: 0 0 0 2px rgba(98, 180, 255, .45)
+        }
+
+        .cf select option {
+            color: #0f2a5a;
+            background: #fff
+        }
+
+        .cf .cs {
+            flex: 1;
+            min-width: 200px;
+            max-width: 340px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(180deg, #0f2f6b, #081b44);
+            border: 1px solid #1d4590;
+            border-radius: 999px;
+            padding: 0 16px;
+            box-shadow: 0 3px 10px rgba(11, 37, 84, .25)
+        }
+
+        .cf .cs svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: #cfe0ff;
+            stroke-width: 2;
+            stroke-linecap: round;
+            flex: none
+        }
+
+        .cf .cs input {
+            flex: 1;
+            min-width: 0;
+            font: inherit;
+            color: #fff;
+            background: transparent;
+            border: 0;
+            outline: 0;
+            padding: 10px 0
+        }
+
+        .cf .cs input::placeholder {
+            color: #9db4de
+        }
+
+        .cf .cx {
+            font: inherit;
+            font-weight: 800;
+            color: #fff;
+            background: linear-gradient(180deg, #2f8bff, #1456d6);
+            border: 0;
+            border-radius: 12px;
+            padding: 10px 20px;
+            cursor: pointer;
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(20, 86, 214, .4)
+        }
+
+        .cf .cx svg {
+            width: 17px;
+            height: 17px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .cf .cr {
+            font: inherit;
+            font-weight: 700;
+            color: var(--navy);
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 9px 14px;
+            cursor: pointer
+        }
+
+        .cm {
+            display: flex;
+            gap: 14px;
+            color: var(--mute);
+            font-weight: 600
+        }
+
+        .tw.cp {
+            max-height: calc(100vh - 290px)
+        }
+
+        .tw.cp table {
+            border-collapse: separate;
+            border-spacing: 0
+        }
+
+        .tw.cp th {
+            background: linear-gradient(180deg, #0d2c66, #071a43);
+            text-align: center;
+            line-height: 1.25;
+            white-space: normal;
+            border-right: 1px solid rgba(255, 255, 255, .12);
+            z-index: 3
+        }
+
+        .tw.cp td {
+            text-align: center;
+            font-weight: 600;
+            padding: 7px 10px
+        }
+
+        .tw.cp tbody tr:nth-child(even) td {
+            background: #f6f9ff
+        }
+
+        .tw.cp tbody tr:hover td {
+            background: #e8f1ff
+        }
+
+        .tw.cp td.mu {
+            color: var(--mute)
+        }
+
+        .tw.cp td.rn {
+            color: var(--mute);
+            font-weight: 700
+        }
+
+        .tw.cp td.nm {
+            text-align: left
+        }
+
+        .by {
+            display: block;
+            min-width: 128px;
+            padding: 3px 12px;
+            border-radius: 7px;
+            background: linear-gradient(180deg, #c4f4bd, #9fe596);
+            border: 1px solid #6fcf6f;
+            color: #14591d;
+            font-weight: 800;
+            letter-spacing: .2px
+        }
+
+        .mcl {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            min-width: 360px;
+            max-width: 520px;
+            justify-content: flex-start
+        }
+
+        .mcc {
+            background: linear-gradient(180deg, #d6ecff, #b7dbff);
+            border: 1px solid #7fb6ee;
+            color: #0f3a7a;
+            padding: 3px 9px;
+            border-radius: 7px;
+            font-weight: 800;
+            font-size: 12px;
+            cursor: pointer;
+            user-select: none
+        }
+
+        .mcc:hover {
+            background: #9fcdfa
+        }
+
+        .mcc.on {
+            background: #0f2a5a;
+            border-color: #0f2a5a;
+            color: #fff
+        }
+
+        .sts {
+            display: inline-block;
+            padding: 3px 14px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 12px;
+            background: #d8f7d4;
+            color: #14591d;
+            border: 1px solid #8fdc88
+        }
+
+        .sts.x {
+            background: #ffe3e3;
+            color: #9b1c1c;
+            border-color: #f2a3a3
+        }
+
+        /* ===== Priority Intelligence table ===== */
+        .tw.pi td {
+            vertical-align: top
+        }
+
+        .tw.pi th {
+            font-size: 12.5px
+        }
+
+        .tw.pi td.c {
+            text-align: center
+        }
+
+        .tw.pi .nd {
+            color: #9aa8bf
+        }
+
+        .chip {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-size: 11.5px;
+            font-weight: 700;
+            line-height: 1.4
+        }
+
+        .chip.crit {
+            background: #fee2e2;
+            color: #b91c1c
+        }
+
+        .chip.high {
+            background: #ffedd5;
+            color: #c2410c
+        }
+
+        .chip.med {
+            background: #fef3c7;
+            color: #a16207
+        }
+
+        .chip.low {
+            background: #dcfce7;
+            color: #15803d
+        }
+
+        .chip.ovd {
+            background: #fee2e2;
+            color: #b91c1c
+        }
+
+        .chip.ok {
+            background: #dcfce7;
+            color: #15803d
+        }
+
+        .chip.ns {
+            background: #e8edf6;
+            color: #51617f
+        }
+
+        .chip.pen {
+            background: #fef3c7;
+            color: #a16207
+        }
+
+        .dl {
+            padding: 2px 0;
+            line-height: 1.35
+        }
+
+        .dl+.dl {
+            border-top: 1px dashed #e3eaf6
+        }
+
+        .sr small {
+            display: block;
+            color: var(--mute);
+            font-size: 11.5px
+        }
+
+        .pbar {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-variant-numeric: tabular-nums
+        }
+
+        .pbar i {
+            position: relative;
+            display: block;
+            width: 56px;
+            height: 7px;
+            border-radius: 4px;
+            background: #e3eaf6;
+            overflow: hidden
+        }
+
+        .pbar i b {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            background: #1f9d55
+        }
+
+        .tw.pi td.neg {
+            color: #b91c1c;
+            font-weight: 700
+        }
+
+        .pin {
+            margin: 10px 2px 0;
+            font-size: 12.5px;
+            color: var(--mute);
+            line-height: 1.7
+        }
+
+        .pin b {
+            color: var(--navy)
+        }
+
+        .tb select {
+            font: inherit;
+            font-weight: 600;
+            padding: 8px 10px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: #fff;
+            color: var(--navy)
+        }
+
+        /* ===== Priority Intelligence dashboard (KPI row · filter pills · table header) ===== */
+        .pk {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(240px, 1.15fr);
+            gap: 12px;
+            margin: 0 0 12px
+        }
+
+        .kc {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            min-height: 80px;
+            border-radius: 16px;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .28);
+            box-shadow: 0 6px 16px rgba(16, 44, 92, .2), inset 0 1px 0 rgba(255, 255, 255, .38)
+        }
+
+        .kc svg {
+            width: 40px;
+            height: 40px;
+            flex: none;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .kc small {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            opacity: .96
+        }
+
+        .kc strong {
+            display: block;
+            font-size: clamp(20px, 1.9vw, 28px);
+            font-weight: 800;
+            line-height: 1.15;
+            white-space: nowrap
+        }
+
+        .kc strong u {
+            text-decoration: none;
+            font-size: .55em;
+            font-weight: 700;
+            margin-left: 3px
+        }
+
+        .kc.g {
+            background: linear-gradient(135deg, #1bb86f, #0a6b3c)
+        }
+
+        .kc.v {
+            background: linear-gradient(135deg, #7c3aed, #3b1a8f)
+        }
+
+        .kc.o {
+            background: linear-gradient(135deg, #fbab1c, #c2610a)
+        }
+
+        .kc.t {
+            background: linear-gradient(135deg, #17c3e0, #0b6a8c)
+        }
+
+        .pie {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 16px;
+            border-radius: 16px;
+            color: #fff;
+            background: linear-gradient(135deg, #10285a, #071a40);
+            border: 1px solid rgba(255, 255, 255, .18);
+            box-shadow: 0 6px 16px rgba(16, 44, 92, .25), inset 0 1px 0 rgba(255, 255, 255, .2)
+        }
+
+        .pie .pc {
+            width: 78px;
+            height: 78px;
+            border-radius: 50%;
+            flex: none;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, .25)
+        }
+
+        .pie .pl {
+            flex: 1;
+            min-width: 0
+        }
+
+        .pie b {
+            display: block;
+            font-size: 15px;
+            margin-bottom: 3px
+        }
+
+        .pie .lg {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 12.5px;
+            line-height: 1.6;
+            white-space: nowrap
+        }
+
+        .pie .lg i {
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            flex: none
+        }
+
+        .pie .lg span {
+            flex: 1;
+            font-weight: 600
+        }
+
+        .pie .lg em {
+            font-style: normal;
+            font-weight: 800
+        }
+
+        .pfb {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin: 0 0 10px;
+            padding: 8px;
+            border-radius: 18px;
+            background: linear-gradient(180deg, #e6eefb, #d5e2f6)
+        }
+
+        .pfb select,
+        .pfb .fs {
+            height: 42px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, .3);
+            background-color: #0f2a5a;
+            background-image: linear-gradient(180deg, #164490, #0a2158);
+            color: #fff;
+            font: inherit;
+            font-weight: 700;
+            box-shadow: 0 3px 8px rgba(10, 33, 88, .3), inset 0 1px 0 rgba(255, 255, 255, .3)
+        }
+
+        .pfb select {
+            -webkit-appearance: none;
+            appearance: none;
+            min-width: 118px;
+            max-width: 200px;
+            padding: 0 38px 0 18px;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"), linear-gradient(180deg, #164490, #0a2158);
+            background-repeat: no-repeat, no-repeat;
+            background-position: right 14px center, 0 0;
+            background-size: 14px, 100% 100%
+        }
+
+        .pfb select option {
+            background: #fff;
+            color: #0f2a5a;
+            font-weight: 600
+        }
+
+        .pfb .fs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 14px;
+            flex: 1;
+            min-width: 100px;
+            max-width: 300px;
+            margin-left: auto
+        }
+
+        .pfb .fs svg {
+            width: 18px;
+            height: 18px;
+            flex: none;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 2.4;
+            stroke-linecap: round
+        }
+
+        .pfb .fs input {
+            all: unset;
+            flex: 1;
+            min-width: 0;
+            color: #fff;
+            font-weight: 600
+        }
+
+        .pfb .fs input::placeholder {
+            color: #cfe0ff
+        }
+
+        .tw.pi {
+            border-radius: 16px;
+            max-height: calc(100vh - 340px);
+            min-height: 260px
+        }
+
+        .tw.pi th {
+            background: linear-gradient(180deg, #14418f, #0a2158);
+            text-align: center;
+            white-space: normal;
+            line-height: 1.25;
+            padding: 13px 8px;
+            vertical-align: middle;
+            border-left: 1px solid rgba(255, 255, 255, .1);
+            text-shadow: 0 1px 1px rgba(0, 0, 0, .25)
+        }
+
+        .tw.pi th:first-child {
+            border-left: 0;
+            cursor: default
+        }
+
+        .tw.pi td.n,
+        .tw.pi td.rn {
+            text-align: center
+        }
+
+        .tw.pi td.rn {
+            color: var(--mute);
+            font-weight: 700
+        }
+
+        /* # থেকে Priority পর্যন্ত column freeze */
+        .tw.pi table {
+            border-collapse: separate;
+            border-spacing: 0
+        }
+
+        .tw.pi th.fz,
+        .tw.pi td.fz {
+            position: sticky;
+            z-index: 2
+        }
+
+        .tw.pi td.fz {
+            background: #fff
+        }
+
+        .tw.pi tr:hover td.fz {
+            background: #f5f8fd
+        }
+
+        .tw.pi th {
+            z-index: 3
+        }
+
+        .tw.pi th.fz {
+            z-index: 4
+        }
+
+        #pitip {
+            display: none;
+            position: fixed;
+            z-index: 500;
+            width: 800px;
+            max-width: calc(100vw - 16px);
+            border-radius: 22px;
+            overflow: hidden;
+            background: linear-gradient(180deg, #0b2a73, #0a47c4);
+            box-shadow: 0 22px 54px rgba(10, 33, 88, .45), 0 0 0 1px rgba(255, 255, 255, .25);
+            pointer-events: none;
+            color: var(--navy)
+        }
+
+        #pitip .tph {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 20px 26px;
+            color: #fff;
+            background: radial-gradient(120% 160% at 85% -40%, #3b8bff55, transparent 60%), linear-gradient(100deg, #082064, #0b3a9e 60%, #1160e0)
+        }
+
+        #pitip .tph svg {
+            width: 46px;
+            height: 46px;
+            flex: none
+        }
+
+        #pitip .tpt {
+            flex: 1;
+            min-width: 0
+        }
+
+        #pitip .tpt b {
+            display: block;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: .1px;
+            line-height: 1.15
+        }
+
+        #pitip .tpt span {
+            display: block;
+            margin-top: 2px;
+            font-size: 14.5px;
+            font-weight: 600;
+            opacity: .92
+        }
+
+        #pitip .tpp {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 16px;
+            border-radius: 999px;
+            border: 1.5px solid rgba(160, 205, 255, .8);
+            background: linear-gradient(180deg, rgba(60, 130, 255, .55), rgba(10, 60, 170, .55));
+            font-weight: 800;
+            font-size: 15px;
+            white-space: nowrap;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35)
+        }
+
+        #pitip .tpp i {
+            font-style: normal;
+            color: #5ab0ff
+        }
+
+        #pitip .tpb {
+            position: relative;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            margin-top: -14px;
+            padding: 16px 16px 12px;
+            border-radius: 22px 22px 0 0;
+            background: linear-gradient(180deg, #f7faff, #e3eefd)
+        }
+
+        #pitip .tpc {
+            flex: 1;
+            min-width: 420px
+        }
+
+        #pitip .pn {
+            padding: 26px 8px;
+            color: var(--mute);
+            font-weight: 700;
+            font-size: 14px
+        }
+
+        .ptb {
+            position: relative
+        }
+
+        .ptb .gl {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 132px;
+            right: 14px;
+            pointer-events: none
+        }
+
+        .ptb .gl i {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: #d3e0f5
+        }
+
+        .ptr {
+            position: relative;
+            display: grid;
+            grid-template-columns: 132px 1fr;
+            align-items: center;
+            height: 31px
+        }
+
+        .ptr .lb {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: 118px;
+            padding: 2px 8px 2px 3px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .85);
+            box-shadow: 0 1px 3px rgba(16, 44, 92, .12);
+            font-weight: 800;
+            font-size: 13px;
+            white-space: nowrap;
+            border: 1.5px solid transparent
+        }
+
+        .ptr .lb u {
+            text-decoration: none;
+            display: inline-grid;
+            place-items: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(180deg, #1a6bff, #0b2f9a);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 800;
+            flex: none
+        }
+
+        .ptr .tk {
+            position: relative;
+            height: 26px;
+            margin-right: 14px
+        }
+
+        .ptr .wb {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            border-radius: 0 999px 999px 0;
+            background: linear-gradient(90deg, #2aa3ff, #0a3fbd);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            color: #fff;
+            font-size: 12.5px;
+            font-weight: 800;
+            white-space: nowrap;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35)
+        }
+
+        .ptr .wo {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            font-size: 12.5px;
+            font-weight: 800;
+            white-space: nowrap;
+            color: #0a2a73
+        }
+
+        .ptr.z .lb u {
+            background: #8aa0c8
+        }
+
+        .ptr.z .lb {
+            opacity: .7
+        }
+
+        .ptr.off .wb {
+            opacity: .38;
+            filter: saturate(.6)
+        }
+
+        .ptr.off .wo {
+            opacity: .6
+        }
+
+        .ptr.off .lb {
+            opacity: .6
+        }
+
+        .ptr.on .lb {
+            background: linear-gradient(90deg, #cde3ff, #eaf3ff);
+            border-color: #3b8bff;
+            box-shadow: 0 0 0 2px rgba(59, 139, 255, .25)
+        }
+
+        .ptr.on .wb {
+            box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(30, 111, 255, .55)
+        }
+
+        .pax {
+            position: relative;
+            height: 22px;
+            margin: 2px 14px 0 132px;
+            border-top: 2px solid #0a2a73;
+            color: #0a2a73;
+            font-size: 12px;
+            font-weight: 700
+        }
+
+        .pax i {
+            position: absolute;
+            top: 4px;
+            transform: translateX(-50%);
+            font-style: normal
+        }
+
+        .pax i:first-child {
+            transform: translateX(-30%)
+        }
+
+        #pitip .tpd {
+            width: 250px;
+            flex: none;
+            margin-top: 38px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #fff;
+            border: 2px solid #0a2a73;
+            box-shadow: 0 12px 26px rgba(16, 44, 92, .28)
+        }
+
+        #pitip .tpd .dh {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: linear-gradient(180deg, #0d2b6e, #071a45);
+            color: #fff;
+            font-weight: 800;
+            font-size: 16px
+        }
+
+        #pitip .tpd .dh u {
+            text-decoration: none;
+            display: inline-grid;
+            place-items: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(180deg, #2a8bff, #0a4fe0);
+            font-size: 14px;
+            flex: none
+        }
+
+        #pitip .tpd .dh em {
+            margin-left: auto;
+            font-style: normal
+        }
+
+        #pitip .tpd .db {
+            padding: 10px 14px 6px
+        }
+
+        #pitip .kv {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            margin: 5px 0;
+            font-size: 13px;
+            color: #0a2a73
+        }
+
+        #pitip .kv b {
+            font-weight: 800;
+            text-align: right
+        }
+
+        #pitip .pg {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 8px 0 10px
+        }
+
+        #pitip .pg i {
+            position: relative;
+            flex: 1;
+            height: 12px;
+            border-radius: 99px;
+            background: #a9bde0;
+            overflow: hidden
+        }
+
+        #pitip .pg i b {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            border-radius: 99px;
+            background: linear-gradient(90deg, #10c0ff, #1166ff)
+        }
+
+        #pitip .pg em {
+            font-style: normal;
+            background: #0f3fbf;
+            color: #fff;
+            border-radius: 6px;
+            padding: 1px 7px;
+            font-size: 11.5px;
+            font-weight: 800
+        }
+
+        #pitip .dv {
+            border-top: 1px solid #dbe5f6;
+            margin: 6px 0 4px
+        }
+
+        #pitip .kv.ic {
+            justify-content: flex-start;
+            gap: 8px
+        }
+
+        #pitip .kv.ic span {
+            width: 78px;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        #pitip .kv.ic b {
+            text-align: left
+        }
+
+        #pitip .hb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+            padding: 10px 12px;
+            background: linear-gradient(180deg, #d8ecff, #bcdcff);
+            color: #0a2a73;
+            font-weight: 800;
+            font-size: 13px;
+            line-height: 1.25
+        }
+
+        #pitip .hb i {
+            font-style: normal;
+            font-size: 26px
+        }
+
+        #pitip .hb small {
+            display: block;
+            font-weight: 600;
+            font-size: 12.5px
+        }
+
+        @media (max-width: 860px) {
+            #pitip .tpb {
+                flex-wrap: wrap
+            }
+
+            #pitip .tpc {
+                min-width: 0
+            }
+
+            #pitip .tpd {
+                margin-top: 0;
+                width: 100%
+            }
+        }
+
+        .chip[data-r] {
+            cursor: help
+        }
+
+        .dd {
+            position: relative
+        }
+
+        .pfb .ddb {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            height: 42px;
+            min-width: 0;
+            padding: 0 12px 0 15px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, .3);
+            background: linear-gradient(180deg, #164490, #0a2158);
+            color: #fff;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: 0 3px 8px rgba(10, 33, 88, .3), inset 0 1px 0 rgba(255, 255, 255, .3)
+        }
+
+        .pfb .ddb svg {
+            width: 14px;
+            height: 14px;
+            flex: none;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .pfb .ddb em {
+            font-style: normal;
+            background: #fff;
+            color: #0f2a5a;
+            border-radius: 999px;
+            padding: 0 7px;
+            font-size: 11.5px;
+            line-height: 18px;
+            margin-left: -2px
+        }
+
+        .pfb .rs {
+            height: 42px;
+            padding: 0 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, .3);
+            background: linear-gradient(180deg, #164490, #0a2158);
+            color: #fff;
+            font-weight: 800;
+            box-shadow: 0 3px 8px rgba(10, 33, 88, .3), inset 0 1px 0 rgba(255, 255, 255, .3)
+        }
+
+        .ddp {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            z-index: 100;
+            width: 250px;
+            padding: 10px;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            box-shadow: 0 14px 34px rgba(16, 44, 92, .28)
+        }
+
+        .dd.open .ddp {
+            display: block
+        }
+
+        .ddp .dds {
+            width: 100%;
+            height: 36px;
+            padding: 0 12px;
+            border: 1px solid #cfe0ff;
+            border-radius: 10px;
+            font: inherit;
+            color: var(--navy);
+            outline: none;
+            background: #fff
+        }
+
+        .ddp .dds:focus {
+            border-color: #164490
+        }
+
+        .ddl {
+            max-height: 230px;
+            overflow: auto;
+            margin: 8px 0
+        }
+
+        .ddi {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--navy);
+            font-weight: 600;
+            white-space: nowrap
+        }
+
+        .ddi:hover {
+            background: #f0f5fd
+        }
+
+        .ddi input {
+            width: 16px;
+            height: 16px;
+            flex: none;
+            accent-color: #0f2a5a;
+            cursor: pointer
+        }
+
+        .ddl .ddn {
+            padding: 10px 6px;
+            color: var(--mute)
+        }
+
+        .ddf {
+            display: flex;
+            gap: 8px
+        }
+
+        .pfb .ddf button {
+            flex: 1;
+            height: 36px;
+            padding: 0;
+            border-radius: 10px;
+            border: 1px solid #cfe0ff;
+            background: #fff;
+            color: var(--navy);
+            font-weight: 800
+        }
+
+        .pfb .ddf button:hover {
+            background: #eef4fd
+        }
+
+        .pfb .in {
+            color: var(--mute);
+            font-weight: 600;
+            white-space: nowrap;
+            font-size: 12.5px
+        }
+
+        .pfb button {
+            font: inherit;
+            font-weight: 700;
+            height: 36px;
+            border: 1px solid var(--line);
+            background: #fff;
+            color: var(--navy);
+            border-radius: 12px;
+            padding: 0 12px;
+            cursor: pointer;
+            white-space: nowrap
+        }
+
+        .pfb button:disabled {
+            opacity: .4;
+            cursor: default
+        }
+
+        .tw.pi th.fl,
+        .tw.pi td.fl {
+            box-shadow: 3px 0 5px -1px rgba(16, 44, 92, .22)
+        }
+
+        @media (max-width: 1150px) {
+            .pk {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+
+            .pie {
+                grid-column: 1 / -1
+            }
+        }
+
+        /* ===== Annual Planning Calendar (dark dashboard, single screen) ===== */
+        main.calm {
+            padding: 10px 14px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column
+        }
+
+        main.calm #pgc {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column
+        }
+
+        .yc {
+            --p: #22c55e;
+            --c: #f97316;
+            --m: #ef4444;
+            --h: #3b82f6;
+            --u: #a855f7;
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(6px, 1.1vh, 12px);
+            container-type: inline-size;
+            color: #eaf1ff;
+            border-radius: 18px;
+            padding: clamp(8px, 1.4vh, 16px);
+            border: 1px solid #16337a;
+            background: radial-gradient(1200px 400px at 85% -10%, #12409a 0%, rgba(18, 64, 154, 0) 60%), linear-gradient(180deg, #040c24, #07173f 60%, #050f2c);
+            box-shadow: 0 10px 30px rgba(5, 15, 50, .35)
+        }
+
+        .yc-top {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: none
+        }
+
+        .yc-ic {
+            width: clamp(34px, 5.4vh, 48px);
+            height: clamp(34px, 5.4vh, 48px);
+            flex: none;
+            color: #38bdf8
+        }
+
+        .yc-sep {
+            width: 1px;
+            height: clamp(32px, 5vh, 46px);
+            background: #2a4a8f;
+            flex: none
+        }
+
+        .yc-t b {
+            display: block;
+            font-size: clamp(20px, 3.4vh, 30px);
+            font-weight: 800;
+            line-height: 1.1;
+            color: #fff
+        }
+
+        .yc-t span {
+            display: block;
+            font-size: clamp(11px, 1.6vh, 14px);
+            color: #c9d8f5;
+            margin-top: 2px
+        }
+
+        .yc-yr {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: clamp(6px, 1vh, 10px) 14px;
+            border: 1px solid #2f5fc4;
+            border-radius: 14px;
+            background: rgba(10, 30, 80, .7);
+            cursor: pointer
+        }
+
+        .yc-yr svg {
+            width: 22px;
+            height: 22px;
+            flex: none;
+            color: #cfe0ff
+        }
+
+        .yc-yr select {
+            appearance: none;
+            -webkit-appearance: none;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            color: #fff;
+            font: 700 clamp(16px, 2.4vh, 20px) Inter, system-ui, sans-serif;
+            padding-right: 22px;
+            cursor: pointer
+        }
+
+        .yc-yr select option {
+            background: #0b1a44;
+            color: #fff
+        }
+
+        .yc-yr .chv {
+            position: absolute;
+            right: 12px;
+            width: 16px;
+            height: 16px;
+            pointer-events: none
+        }
+
+        .yc-sp {
+            flex: 1
+        }
+
+        .yc-tag {
+            font-style: italic;
+            color: #cfe0ff;
+            font-size: clamp(12px, 1.8vh, 16px);
+            white-space: nowrap
+        }
+
+        .yc-tag i {
+            font-style: normal;
+            margin: 0 .6em;
+            opacity: .7
+        }
+
+        .yc-ill {
+            height: clamp(46px, 7.4vh, 72px);
+            aspect-ratio: 120/84;
+            flex: none
+        }
+
+        .yc-ill svg {
+            width: 100%;
+            height: 100%
+        }
+
+        /* stat cards */
+        .yc-st {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: clamp(8px, 1vw, 16px);
+            flex: none
+        }
+
+        .yc-card {
+            display: flex;
+            align-items: center;
+            gap: clamp(10px, 1.2vw, 18px);
+            padding: clamp(6px, 1.2vh, 12px) clamp(12px, 1.4vw, 20px);
+            border-radius: 16px;
+            border: 1px solid var(--bc);
+            color: #fff;
+            background: linear-gradient(135deg, var(--c1), var(--c2));
+            box-shadow: 0 0 18px var(--gl), inset 0 1px 0 rgba(255, 255, 255, .18)
+        }
+
+        .yc-card .ci {
+            width: clamp(30px, 5vh, 46px);
+            height: clamp(30px, 5vh, 46px);
+            flex: none;
+            color: var(--ic)
+        }
+
+        .yc-card .ci svg {
+            width: 100%;
+            height: 100%
+        }
+
+        .yc-card .cl {
+            width: 1px;
+            align-self: stretch;
+            background: rgba(255, 255, 255, .28);
+            margin: 2px 0
+        }
+
+        .yc-card small {
+            display: block;
+            font-weight: 600;
+            font-size: clamp(11px, 1.7vh, 15px);
+            color: #e7efff
+        }
+
+        .yc-card strong {
+            display: block;
+            font-size: clamp(22px, 4.2vh, 38px);
+            font-weight: 800;
+            line-height: 1.05
+        }
+
+        .yc-card.b {
+            --bc: #2f7bff;
+            --c1: #0d3a9c;
+            --c2: #0a2a70;
+            --gl: rgba(47, 123, 255, .35);
+            --ic: #93c5fd
+        }
+
+        .yc-card.g {
+            --bc: #22d37a;
+            --c1: #0f8a4a;
+            --c2: #0a4d33;
+            --gl: rgba(34, 211, 122, .3);
+            --ic: #86efac
+        }
+
+        .yc-card.o {
+            --bc: #f59e0b;
+            --c1: #a8540c;
+            --c2: #6b3208;
+            --gl: rgba(245, 158, 11, .3);
+            --ic: #fdba74
+        }
+
+        .yc-card.v {
+            --bc: #a855f7;
+            --c1: #7c2fd6;
+            --c2: #3b1a8a;
+            --gl: rgba(168, 85, 247, .35);
+            --ic: #d8b4fe
+        }
+
+        /* legend bar */
+        .yc-lg {
+            display: flex;
+            align-items: center;
+            gap: clamp(16px, 2.6vw, 42px);
+            flex: none;
+            padding: clamp(5px, .9vh, 9px) 18px;
+            border: 1px solid #1d5fd0;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(6, 20, 60, .95), rgba(8, 30, 80, .7));
+            box-shadow: 0 0 14px rgba(30, 100, 220, .25), inset 0 0 12px rgba(30, 100, 220, .15);
+            font-weight: 500;
+            color: #fff;
+            font-size: clamp(11px, 1.7vh, 15px)
+        }
+
+        .yc-lg span {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .yc-lg i {
+            width: clamp(16px, 2.6vh, 24px);
+            height: clamp(16px, 2.6vh, 24px);
+            border-radius: 50%;
+            display: block;
+            background: radial-gradient(circle at 35% 30%, #fff8 0, transparent 40%), var(--k);
+            box-shadow: 0 0 8px var(--k)
+        }
+
+        /* month cards */
+        .yc-gr {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-template-rows: repeat(3, minmax(0, 1fr));
+            gap: clamp(6px, 1vh, 10px)
+        }
+
+        .yc-mo {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            padding: clamp(4px, .8vh, 8px) 8px clamp(3px, .6vh, 6px);
+            border-radius: 12px;
+            border: 1px solid color-mix(in srgb, var(--mc) 70%, #0b1a44);
+            background: linear-gradient(160deg, color-mix(in srgb, var(--mc) 26%, #061236), #050f2c 72%)
+        }
+
+        .yc-mh {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: none
+        }
+
+        .yc-mh em {
+            font-style: normal;
+            font-size: clamp(14px, 2.3vh, 21px);
+            line-height: 1
+        }
+
+        .yc-mh b {
+            font-size: clamp(13px, 2vh, 17px);
+            font-weight: 700;
+            color: #fff
+        }
+
+        .yc-mh u {
+            margin-left: auto;
+            text-decoration: none;
+            background: #1e40af;
+            color: #fff;
+            font-weight: 600;
+            font-size: clamp(10px, 1.5vh, 12px);
+            padding: 2px 10px;
+            border-radius: 999px
+        }
+
+        .yc-dg {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            grid-template-rows: auto repeat(6, minmax(0, 1fr));
+            gap: 1px 2px;
+            margin-top: clamp(2px, .5vh, 5px)
+        }
+
+        .yc-dg>* {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(9px, 1.5vh, 13px);
+            font-weight: 600;
+            color: #e8f0ff;
+            border-radius: 5px;
+            min-height: 0
+        }
+
+        .yc-dg .w {
+            font-size: clamp(8px, 1.3vh, 11px);
+            color: #b6c8ee;
+            background: rgba(255, 255, 255, .05);
+            padding: 1px 0;
+            font-weight: 700
+        }
+
+        .yc-dg .t {
+            outline: 1.5px solid #38bdf8;
+            outline-offset: -1.5px
+        }
+
+        .yc-dg .prod {
+            background: #16a34a;
+            color: #fff
+        }
+
+        .yc-dg .chg {
+            background: #ea7a0c;
+            color: #fff
+        }
+
+        .yc-dg .mnt {
+            background: #e11d2e;
+            color: #fff
+        }
+
+        .yc-dg .hol {
+            background: #0ea5e9;
+            color: #fff
+        }
+
+        .yc-dg .unp {
+            background: #9333ea;
+            color: #fff
+        }
+
+        /* planning controls */
+        .yc-ct {
+            display: flex;
+            align-items: center;
+            gap: clamp(8px, 1vw, 16px);
+            flex: none;
+            padding: clamp(6px, 1vh, 10px) 14px;
+            border: 1px solid #1f4aa8;
+            border-radius: 16px;
+            background: rgba(8, 26, 72, .7)
+        }
+
+        .yc-ch {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: none
+        }
+
+        .yc-ch svg {
+            width: clamp(22px, 3.4vh, 30px);
+            height: clamp(22px, 3.4vh, 30px);
+            color: #5b9bff
+        }
+
+        .yc-ch b {
+            display: block;
+            font-size: clamp(13px, 2vh, 17px);
+            font-weight: 700;
+            color: #fff
+        }
+
+        .yc-ch small {
+            display: block;
+            font-size: clamp(10px, 1.5vh, 12px);
+            color: #a9c0ee
+        }
+
+        .yc-vs {
+            width: 1px;
+            align-self: stretch;
+            background: #2a4a8f;
+            flex: none
+        }
+
+        .yc-btn {
+            flex: 1 1 0;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: clamp(5px, .9vh, 9px) 14px;
+            border-radius: 16px;
+            border: 1px solid transparent;
+            color: #fff;
+            font-family: Inter, system-ui, sans-serif;
+            cursor: pointer;
+            text-align: left;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2)
+        }
+
+        .yc-btn .bi {
+            width: clamp(28px, 4.4vh, 40px);
+            height: clamp(28px, 4.4vh, 40px);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, .14);
+            display: grid;
+            place-items: center;
+            flex: none
+        }
+
+        .yc-btn .bi svg {
+            width: 60%;
+            height: 60%;
+            color: #fff
+        }
+
+        .yc-btn b {
+            display: block;
+            font-size: clamp(12px, 1.9vh, 16px);
+            font-weight: 700;
+            white-space: nowrap
+        }
+
+        .yc-btn small {
+            display: block;
+            font-size: clamp(10px, 1.5vh, 12px);
+            font-weight: 500;
+            opacity: .92;
+            white-space: nowrap
+        }
+
+        .yc-btn.b {
+            background: linear-gradient(90deg, #0b3d94, #0a2a70);
+            border-color: #2f6fe0
+        }
+
+        .yc-btn.g {
+            background: linear-gradient(90deg, #0f7a3a, #0b4d2c);
+            border-color: #22c55e
+        }
+
+        .yc-btn.o {
+            background: linear-gradient(90deg, #d9560c, #8a3200);
+            border-color: #f97316
+        }
+
+        .yc-btn.v {
+            background: linear-gradient(90deg, #7c2fd6, #4b1fa0);
+            border-color: #a855f7
+        }
+
+        .yc-btn.r {
+            flex: 0 1 clamp(170px, 16vw, 240px);
+            background: linear-gradient(90deg, #1d6bff, #0b3fb0);
+            border-color: #5aa0ff
+        }
+
+        .yc-btn:hover {
+            filter: brightness(1.15)
+        }
+
+        .yc-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 28px;
+            transform: translateX(-50%);
+            background: #0f2a5a;
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+            z-index: 200
+        }
+
+        @container (max-width:1180px) {
+
+            .yc-btn small,
+            .yc-ch small {
+                display: none
+            }
+
+            .yc-tag {
+                display: none
+            }
+
+            .yc-ch svg {
+                display: none
+            }
+
+            .yc-ch b {
+                font-size: 13px;
+                white-space: nowrap
+            }
+
+            .yc-btn {
+                gap: 6px;
+                padding: 6px 8px;
+                justify-content: center
+            }
+
+            .yc-btn .bi {
+                width: 24px;
+                height: 24px
+            }
+
+            .yc-btn b {
+                font-size: 12px;
+                overflow: hidden;
+                text-overflow: ellipsis
+            }
+
+            .yc-btn.r {
+                flex: 0 1 130px
+            }
+
+            .yc-ct {
+                gap: 8px
+            }
+        }
+
+        @container (max-width:1000px) {
+            .yc-btn .bi {
+                display: none
+            }
+        }
+
+        @container (max-width:900px) {
+            .yc-ill {
+                display: none
+            }
+
+            .yc-ct {
+                flex-wrap: wrap
+            }
+        }
+
+        /* small screens: allow scrolling instead of squeezing */
+        @media (max-width:1000px),
+        (max-height:600px) {
+            main.calm {
+                overflow: auto;
+                display: block
+            }
+
+            main.calm #pgc {
+                display: block
+            }
+
+            .yc {
+                display: flex
+            }
+
+            .yc-st {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+
+            .yc-gr {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-rows: none;
+                grid-auto-rows: 230px
+            }
+
+            .yc-lg {
+                flex-wrap: wrap;
+                border-radius: 18px
+            }
+
+            .yc-ct {
+                flex-wrap: wrap
+            }
+        }
+
+        /* ===== Machine Plan · stale tag ===== */
+        .yc-stale {
+            display: inline-block;
+            margin-top: 4px;
+            padding: 2px 10px;
+            border-radius: 999px;
+            background: #f59e0b;
+            color: #1b1200;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 12px
+        }
+
+        /* ===== Automated Production Schedule ===== */
+        .sc {
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .sc-h {
+            padding: 14px 16px;
+            border-radius: 16px;
+            text-align: center;
+            color: #fff;
+            background: linear-gradient(100deg, #0a2a70, #0b3d94)
+        }
+
+        .sc-h b {
+            display: block;
+            font-size: 24px;
+            font-weight: 800
+        }
+
+        .sc-h span {
+            font-size: 13px;
+            opacity: .92
+        }
+
+        .sc-w {
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            background: #fef3c7;
+            color: #92400e
+        }
+
+        .sc-w.dr {
+            background: #e0ecff;
+            color: #0a2a73
+        }
+
+        .sc-f {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 16px;
+            background: linear-gradient(180deg, #e6eefb, #d5e2f6)
+        }
+
+        .sc-f label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 800;
+            color: var(--navy)
+        }
+
+        .sc-f input {
+            font: inherit;
+            font-weight: 700;
+            padding: 7px 10px;
+            border: 1px solid #b9cdee;
+            border-radius: 10px;
+            background: #fff;
+            color: var(--navy)
+        }
+
+        .sc-bays {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-left: auto
+        }
+
+        .sc-bays button {
+            font: inherit;
+            font-weight: 800;
+            padding: 8px 18px;
+            border-radius: 999px;
+            border: 1px solid #b9cdee;
+            background: #fff;
+            color: var(--navy);
+            cursor: pointer
+        }
+
+        .sc-bays button.on {
+            background: linear-gradient(180deg, #1a63ff, #0a3fbd);
+            color: #fff;
+            border-color: #0a3fbd
+        }
+
+        .tw.sc-t {
+            max-height: calc(100vh - 340px);
+            min-height: 240px;
+            border-radius: 16px
+        }
+
+        .tw.sc-t th {
+            background: linear-gradient(180deg, #14418f, #0a2158);
+            text-align: center;
+            white-space: normal;
+            line-height: 1.25;
+            cursor: default;
+            border-left: 1px solid rgba(255, 255, 255, .1)
+        }
+
+        .tw.sc-t td {
+            text-align: center;
+            font-weight: 600;
+            padding: 4px 6px
+        }
+
+        .tw.sc-t td.rn {
+            color: var(--mute);
+            font-weight: 800
+        }
+
+        .tw.sc-t td.mu {
+            color: var(--mute)
+        }
+
+        .tw.sc-t td.rm {
+            min-width: 190px
+        }
+
+        .ei {
+            font: inherit;
+            font-weight: 600;
+            color: var(--navy);
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            padding: 4px 6px;
+            text-align: center;
+            width: 100%;
+            min-width: 70px
+        }
+
+        .ei:hover {
+            border-color: var(--line);
+            background: #fff
+        }
+
+        .ei:focus {
+            outline: 0;
+            border-color: #2f7bff;
+            background: #fff
+        }
+
+        input.ei[type=datetime-local] {
+            min-width: 160px
+        }
+
+        input.ei[type=number] {
+            min-width: 90px
+        }
+
+        select.ei.pr0 {
+            color: #b91c1c
+        }
+
+        select.ei.pr1 {
+            color: #c2410c
+        }
+
+        select.ei.pr2 {
+            color: #a16207
+        }
+
+        select.ei.pr3 {
+            color: #15803d
+        }
+
+        .sc-ft {
+            display: flex;
+            gap: 26px;
+            flex-wrap: wrap;
+            padding: 10px 16px;
+            border-radius: 14px;
+            background: #e6eefb;
+            font-weight: 800;
+            color: var(--navy)
+        }
+
+        .sc-ac {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap
+        }
+
+        .sc-ac button {
+            font: inherit;
+            font-weight: 800;
+            font-size: 15px;
+            color: #fff;
+            border: 0;
+            border-radius: 14px;
+            padding: 12px 28px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .25)
+        }
+
+        .sc-ac .g {
+            background: linear-gradient(180deg, #22c55e, #0f7a3a)
+        }
+
+        .sc-ac .b {
+            background: linear-gradient(180deg, #2f8bff, #1456d6)
+        }
+
+        .sc-ac .o {
+            background: linear-gradient(180deg, #fb923c, #c2410c)
+        }
+
+        .sc-ac .v {
+            background: linear-gradient(180deg, #a855f7, #6d28d9)
+        }
+
+        /* ===== Preview popup ===== */
+        .sc-h {
+            position: relative
+        }
+
+        .pm-x {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, .5);
+            background: rgba(255, 255, 255, .15);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer
+        }
+
+        .pm-x:hover {
+            background: rgba(255, 255, 255, .3)
+        }
+
+        #pmo {
+            position: fixed;
+            inset: 0;
+            z-index: 400;
+            display: grid;
+            place-items: center;
+            background: rgba(5, 15, 50, .6);
+            backdrop-filter: blur(3px);
+            padding: 2vh 2vw
+        }
+
+        .pmb {
+            width: min(1560px, 96vw);
+            max-height: 96vh;
+            overflow: auto;
+            padding: 10px;
+            border-radius: 24px;
+            background: linear-gradient(180deg, #0b2a73, #0a47c4);
+            box-shadow: 0 22px 54px rgba(10, 33, 88, .5), 0 0 0 1px rgba(255, 255, 255, .25)
+        }
+
+        .pmi {
+            padding: 12px;
+            border-radius: 18px;
+            background: linear-gradient(180deg, #f7faff, #e3eefd)
+        }
+
+        .pmb .tw.sc-t {
+            max-height: calc(96vh - 330px)
+        }
+
+        .sc-lnk {
+            font: inherit;
+            font-weight: 800;
+            color: #fff;
+            background: #1456d6;
+            border: 0;
+            border-radius: 10px;
+            padding: 6px 14px;
+            cursor: pointer
+        }
+
+        /* ===== Automated Production Schedule · Machine তালিকা + Gantt ===== */
+        .sc-f .gq {
+            margin-left: 6px
+        }
+
+        .sc-f .gq input {
+            min-width: 230px;
+            font-weight: 600
+        }
+
+        .gz {
+            display: flex;
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(16, 44, 92, .12);
+            overflow: hidden;
+            height: calc(100vh - 345px);
+            min-height: 320px
+        }
+
+        .gzl {
+            flex: 0 0 58%;
+            min-width: 0;
+            overflow: scroll;
+            border-right: 4px solid #0a2158
+        }
+
+        .gzr {
+            flex: 1;
+            min-width: 0;
+            overflow: scroll;
+            position: relative
+        }
+
+        .gzl table {
+            border-collapse: separate;
+            border-spacing: 0;
+            table-layout: fixed;
+            width: 1330px
+        }
+
+        .gzl th {
+            position: sticky;
+            top: 0;
+            z-index: 3;
+            height: 70px;
+            padding: 4px;
+            background: linear-gradient(180deg, #14418f, #0a2158);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.25;
+            text-align: center;
+            border-left: 1px solid rgba(255, 255, 255, .12)
+        }
+
+        .gzl td {
+            height: 34px;
+            padding: 0 4px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 12.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            border-bottom: 1px solid #e3ebf8;
+            border-right: 1px solid #eef3fb;
+            background: #fff
+        }
+
+        .gzl tr.gp td {
+            background: #e8effb;
+            font-weight: 800
+        }
+
+        .gzl td.mu {
+            color: var(--mute)
+        }
+
+        .gzl td.gname {
+            text-align: left;
+            font-size: 14px;
+            color: #0a2a73
+        }
+
+        .gzl td.gm {
+            text-align: left
+        }
+
+        .gzl td.rm div {
+            display: flex;
+            align-items: center;
+            gap: 4px
+        }
+
+        .gzl .ei {
+            min-width: 0;
+            font-size: 12.5px;
+            height: 26px;
+            padding: 2px 4px
+        }
+
+        .gzl input.ei[type=datetime-local] {
+            font-size: 11.5px;
+            min-width: 0
+        }
+
+        .gn {
+            display: inline-block;
+            width: 30px;
+            color: var(--mute);
+            font-weight: 800;
+            font-size: 12px
+        }
+
+        .gm .ei {
+            width: calc(100% - 32px)
+        }
+
+        .gt,
+        .gc {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 0;
+            background: linear-gradient(180deg, #1a63ff, #0a3fbd);
+            color: #fff;
+            font-weight: 800;
+            line-height: 1;
+            cursor: pointer
+        }
+
+        .gc {
+            background: #9db4de
+        }
+
+        .gc.on {
+            background: linear-gradient(180deg, #fb923c, #c2410c)
+        }
+
+        .gh {
+            position: sticky;
+            top: 0;
+            z-index: 3;
+            height: 70px;
+            background: #0a2158;
+            color: #fff
+        }
+
+        .gh .wk,
+        .gh .dy,
+        .gh .dw {
+            display: flex
+        }
+
+        .gh .wk {
+            height: 30px
+        }
+
+        .gh .dy {
+            height: 20px
+        }
+
+        .gh .dw {
+            height: 20px
+        }
+
+        .gh .wk div {
+            flex: none;
+            text-align: center;
+            font-size: 10.5px;
+            font-weight: 800;
+            line-height: 1.1;
+            padding-top: 3px;
+            border-left: 1px solid rgba(255, 255, 255, .25);
+            overflow: hidden;
+            white-space: nowrap
+        }
+
+        .gh .dy div {
+            flex: none;
+            width: 24px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 20px;
+            border-left: 1px solid rgba(255, 255, 255, .12)
+        }
+
+        .gh .dw div {
+            flex: none;
+            width: 24px;
+            text-align: center;
+            font-size: 10px;
+            font-weight: 800;
+            line-height: 20px;
+            color: #fff;
+            background: #6f93cf;
+            border-left: 1px solid #0a2158
+        }
+
+        .gh .dw div.f {
+            background: #e11d48
+        }
+
+        .gh .dw div.h {
+            background: #2563eb
+        }
+
+        .gb {
+            position: relative;
+            background-image: linear-gradient(to right, #dbe6f7 1px, transparent 1px), linear-gradient(to bottom, #e3ebf8 1px, transparent 1px);
+            background-size: 24px 100%, 100% 34px
+        }
+
+        .gx {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            background: rgba(225, 29, 72, .09)
+        }
+
+        .gx.h {
+            background: rgba(37, 99, 235, .13)
+        }
+
+        .gtd {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #ef4444;
+            z-index: 2
+        }
+
+        .gbar {
+            position: absolute;
+            height: 18px;
+            border-radius: 9px;
+            padding: 0 8px;
+            overflow: hidden;
+            white-space: nowrap;
+            line-height: 18px;
+            font-size: 10.5px;
+            font-weight: 800;
+            color: #fff;
+            background: linear-gradient(180deg, #34d058, #12923a);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .4);
+            z-index: 1
+        }
+
+        .gbar.late {
+            background: linear-gradient(180deg, #f87171, #b91c1c)
+        }
+
+        .gbar.grp {
+            height: 10px;
+            line-height: 10px;
+            background: linear-gradient(180deg, #7fb3ff, #3b82f6);
+            opacity: .6
+        }
+
+        select.ei {
+            min-width: 112px
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="hl"><button class="bk" onclick="location.href='production.html'" title="Back">←</button>
+            <img src="assets/logo.png" style="cursor:pointer" onclick="location.href='portal.html'"
+                alt="Mainetti Bangladesh"
+                onerror="this.outerHTML='<div class=&quot;logo&quot;>MAINETTI<small>BANGLADESH PVT. LTD.</small></div>'">
+            <div class="sep"></div>
+            <div>
+                <div class="tag">Drive Efficiency<i>/</i>Ensure Quality<i>/</i>Grow Together</div>
+                <div class="gr" id="gr"></div>
+            </div>
+        </div>
+        <div class="hp"></div>
+        <div class="hr"><svg class="fy" viewBox="0 0 24 24">
+                <path fill="#fff" d="M2 21V10l6 3.6V10l6 3.6V4h3.4v9.6H22V21z" />
+                <path fill="rgba(11,61,148,.55)" d="M5 17h2.2v2.2H5zM10 17h2.2v2.2H10zM15 17h2.2v2.2H15z" />
+                <path fill="#fff" opacity=".7" d="M16.2 1.5h2.6v2h-2.6z" />
+            </svg>
+            <div class="ht"><b>Planning</b><span>Planning &amp; bay overview</span></div>
+            <div class="user"><button class="ub" id="ub"><span class="av" id="av"></span><span id="un"></span>
+                    ▾</button>
+                <div class="menu" id="mn">
+                    <div onclick="location.href='portal.html'">Portal</div>
+                    <div onclick="location.href='production.html'">Production &amp; Planning</div>
+                    <div id="adm" style="display:none" onclick="location.href='admin.html'">Admin Console</div>
+                    <div onclick="out()">Sign out</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="lay">
+        <aside id="sd">
+            <div class="nv t" onclick="$('#sd').classList.toggle('col')"><svg viewBox="0 0 24 24">
+                    <path d="M4 6h16M4 12h16M4 18h16" />
+                </svg><span>Menu</span></div>
+            <div class="nv on" data-p="pi" onclick="show('pi')"><svg viewBox="0 0 24 24">
+                    <path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.5 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z" />
+                </svg><span>Priority Intelligence</span></div>
+            <div class="nv" data-p="cal" onclick="show('cal')"><svg viewBox="0 0 24 24">
+                    <rect x="3" y="5" width="18" height="16" rx="2" />
+                    <path d="M8 3v4M16 3v4M3 10h18M8 14h2M12 14h2M16 14h2M8 17h2M12 17h2" />
+                </svg><span>Annual Planning Calendar</span></div>
+            <div class="nv" data-p="man" onclick="show('man')"><svg viewBox="0 0 24 24">
+                    <path
+                        d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M17 11a2.5 2.5 0 1 0 0-5M17 14c2.5 0 4 2 4 5" />
+                </svg><span>Manpower Planning</span></div>
+            <div class="nv" data-p="mat" onclick="show('mat')"><svg viewBox="0 0 24 24">
+                    <path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5" />
+                </svg><span>Material Planning</span></div>
+            <div class="nv" data-p="cap" onclick="show('cap')"><svg viewBox="0 0 24 24">
+                    <path d="M3 5h18v11H3zM8 20h8M12 16v4" />
+                </svg><span>Capacity(MC &amp; Mold) Details</span></div>
+            <div class="nv" data-p="sch" onclick="show('sch')"><svg viewBox="0 0 24 24">
+                    <path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2" />
+                </svg><span>Automated Production Schedule</span></div>
+        </aside>
+        <main>
+            <h1 class="ttl" id="pt"></h1>
+            <p class="sub" id="ps"></p>
+            <div id="pgc"></div>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="erp.js"></script>
+    <script src="plan_calendar.js"></script>
+    <script>
+        /* Planning পেজ · ডেটা আসে Admin → Data Manager → Production & Planning → ↳ Planning → › (৬টি section, প্রতিটার আলাদা Upload)
+           ডেটা ERP.packed() দিয়ে আসে, তাই Office/Audit dual-mode নিজে থেকেই আলাদা থাকে (একটি আরেকটিতে মেশে না)। */
+        const $ = s => document.querySelector(s), out = () => ERP.signOut();
+        const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+        const SEC = {}; ERP.PLAN.forEach(x => SEC[x.k] = x);
+        const PAGE = 100, CACHE = {}, ST = {};
+        let PS = null, CUR = "";
+        const msg = (t, d) => `<div class="empty"><b>${t}</b>${d}</div>`;
+        const cellH = v => typeof v === "number" ? `<td class="n">${Number.isInteger(v) ? v.toLocaleString("en-US") : v.toLocaleString("en-US", { maximumFractionDigits: 2 })}</td>` : `<td>${esc(v)}</td>`;
+
+        function draw(k, d) {
+            const st = ST[k] || (ST[k] = { q: "", pg: 0, sc: -1, sd: 1 });
+            if (!d._s) d._s = d.rows.map(r => r.join("\u0001").toLowerCase());
+            const q = st.q.trim().toLowerCase();
+            let ix = d.rows.map((_, i) => i); if (q) ix = ix.filter(i => d._s[i].includes(q));
+            if (st.sc >= 0) ix.sort((a, b) => { const x = d.rows[a][st.sc], y = d.rows[b][st.sc]; return (typeof x === "number" && typeof y === "number" ? x - y : String(x).localeCompare(String(y), undefined, { numeric: true })) * st.sd });
+            const pages = Math.max(1, Math.ceil(ix.length / PAGE)); st.pg = Math.min(st.pg, pages - 1);
+            const from = st.pg * PAGE, part = ix.slice(from, from + PAGE);
+            $("#tw").innerHTML = `<table><thead><tr>${d.cols.map((c, j) => `<th data-c="${j}">${esc(c)}${st.sc === j ? (st.sd > 0 ? " ▲" : " ▼") : ""}</th>`).join("")}</tr></thead><tbody>${part.map(i => "<tr>" + d.rows[i].map(cellH).join("") + "</tr>").join("")}</tbody></table>`;
+            $("#in").textContent = ix.length ? `${(from + 1).toLocaleString()}–${(from + part.length).toLocaleString()} of ${ix.length.toLocaleString()} rows` : "No matching rows";
+            $("#pv").disabled = st.pg === 0; $("#nx").disabled = st.pg >= pages - 1;
+            $("#tw").querySelectorAll("th").forEach(h => h.onclick = () => { const c = +h.dataset.c; st.sd = st.sc === c ? -st.sd : 1; st.sc = c; st.pg = 0; draw(k, d) })
+        }
+        /* ===== Capacity(MC & Mold) Details · দুটি tab: MODEL & TOOL | MACHINE (Admin → Planning › Capacity Excel-এর দুটি sheet) ===== */
+        const CP_SH = { model: /model\s*(&|and)?\s*tool/i, mc: /^\s*machines?\s*$/i };
+        const CP_FL = [["buyer", "All Buyer"], ["model", "All Model"], ["color", "All Color"], ["pri", "All Priority"], ["mc", "All MC"], ["status", "All Status"], ["bay", "All Bay"]];
+        const cpV = v => v == null ? "" : v;
+        const cpS = v => { const t = String(cpV(v)).replace(/\.0+$/, "").trim(); return t };
+        const cpD = v => { const t = cpS(v); return t === "" || t === "0" ? "-" : esc(t) };
+        const cpN = (v, r) => { const x = piNum(v); return x == null ? "-" : (r ? Math.round(x) : x).toLocaleString("en-US", { maximumFractionDigits: 2 }) };
+        function cpBuild(d, pd) {
+            const sm = piSheet(d, CP_SH.model) || (d.cols && d.rows ? { cols: d.cols, rows: d.rows } : null), sc = piSheet(d, CP_SH.mc);
+            const C = { models: [], mcs: [], mm: new Map(), hasMC: !!sc, hasPri: false };
+            if (sm) {
+                const g = n => piCol(sm.cols, n), x = {
+                    sn: g(["sn", "sl", "serial"]), art: g(["art", "artno"]), model: g(["modelname", "model", "modelno"]), color: g(["color", "colorname"]), tool: g(["tool", "toolno"]),
+                    cavi: g(["cavity", "cavi", "cavities"]), md: g(["molddemand", "moldsdemand"]), ct: g(["cycletime", "ct"]), buyer: g(["buyer"]), ad: g(["avgdailyoutput", "averagedailyoutput"]),
+                    bg: g(["budget"]), ton: g(["tonnage", "tonna", "tonne"]), tg: g(["tonnagegroup", "tonnagegrow"]), mcs: g(["compatiblemcs", "compatiblemc", "compatiblemachines"])
+                };
+                const v = (r, i) => i < 0 ? "" : cpV(r[i]);
+                sm.rows.forEach(r => {
+                    const m = { sn: v(r, x.sn), art: v(r, x.art), model: cpS(v(r, x.model)), color: cpS(v(r, x.color)), tool: v(r, x.tool), cavi: v(r, x.cavi), md: v(r, x.md), ct: v(r, x.ct), buyer: cpS(v(r, x.buyer)), ad: v(r, x.ad), bg: v(r, x.bg), ton: v(r, x.ton), tg: cpS(v(r, x.tg)), mcs: cpS(v(r, x.mcs)).split(/[|,;]/).map(s => s.trim()).filter(Boolean), pri: -1 };
+                    if (!m.model && !m.art) return;
+                    m.s = [m.sn, m.art, m.model, m.color, m.tool, m.cavi, m.md, m.ct, m.buyer, m.ad, m.bg, m.ton, m.tg, m.mcs.join(" ")].join(" ").toLowerCase(); C.models.push(m)
+                })
+            }
+            if (sc) {
+                const g = n => piCol(sc.cols, n), x = { mc: g(["mcno", "mc", "machineno", "machine"]), ton: g(["tonnage", "tonna"]), tg: g(["tonnagegroup", "tonnagegrow"]), loc: g(["location", "bay", "bayname"]), type: g(["mctype", "type"]), tie: g(["tiebardis", "tiebardistance", "tiebar"]), st: g(["mcstatus", "status"]), hr: g(["dailyhours", "workinghours", "hoursperday", "runninghours", "hours"]) };
+                const v = (r, i) => i < 0 ? "" : cpV(r[i]);
+                sc.rows.forEach(r => {
+                    const m = { mc: cpS(v(r, x.mc)), ton: v(r, x.ton), tg: cpS(v(r, x.tg)), loc: cpS(v(r, x.loc)), type: cpS(v(r, x.type)), tie: cpS(v(r, x.tie)), status: cpS(v(r, x.st)), hr: piNum(v(r, x.hr)) };
+                    if (!m.mc) return; m.s = [m.mc, m.ton, m.tg, m.loc, m.type, m.tie, m.status].join(" ").toLowerCase(); C.mcs.push(m); C.mm.set(m.mc, m)
+                })
+            }
+            /* Priority (Priority Intelligence-এর হিসাব থেকে, Model+Color ধরে; না থাকলে Priority filter কাজ করবে না) */
+            if (pd) {
+                try {
+                    const P = piBuild(pd, d, null), best = new Map();
+                    P.rows.forEach(r => { [piKey(r.model, r.color), piKey(r.model)].forEach(k => { if (!best.has(k) || r.p < best.get(k)) best.set(k, r.p) }) });
+                    C.models.forEach(m => { const p = best.has(piKey(m.model, m.color)) ? best.get(piKey(m.model, m.color)) : best.get(piKey(m.model)); if (p != null) { m.pri = p; C.hasPri = true } })
+                } catch (e) { console.error(e) }
+            }
+            const u = f => [...new Set(f)].filter(Boolean).sort((a, b) => String(a).localeCompare(String(b), undefined, { numeric: true }));
+            C.opt = { buyer: u(C.models.map(m => m.buyer)), model: u(C.models.map(m => m.model)), color: u(C.models.map(m => m.color)), mc: u(C.mcs.length ? C.mcs.map(m => m.mc) : C.models.flatMap(m => m.mcs)), status: u(C.mcs.map(m => m.status)), bay: u(C.mcs.map(m => m.loc)) };
+            return C
+        }
+        /* Model row filter · MC / Status / Bay মেলে Compatible MCs-এর যেকোনো একটির সাথে */
+        function cpModelOk(C, m, f, q) {
+            return (!f.buyer || m.buyer === f.buyer) && (!f.model || m.model === f.model) && (!f.color || m.color === f.color) && (f.pri === "" || String(m.pri) === f.pri)
+                && (!f.mc || m.mcs.includes(f.mc)) && (!f.status || m.mcs.some(x => (C.mm.get(x) || {}).status === f.status)) && (!f.bay || m.mcs.some(x => (C.mm.get(x) || {}).loc === f.bay)) && (!q || m.s.includes(q))
+        }
+        /* Machine row filter · Buyer / Model / Color / Priority মেলে সেই Model-এর Compatible MCs দিয়ে */
+        function cpMcAllow(C, f) {
+            if (!(f.buyer || f.model || f.color || f.pri !== "")) return null;
+            const a = new Set(), g = { buyer: f.buyer, model: f.model, color: f.color, pri: f.pri, mc: "", status: "", bay: "" };
+            C.models.forEach(m => { if (cpModelOk(C, m, g, "")) m.mcs.forEach(x => a.add(x)) }); return a
+        }
+        const CP_MC = [
+            { h: "MC No", v: r => r.mc, c: r => `<td><b>${esc(r.mc)}</b></td>`, x: r => r.mc },
+            { h: "Tonnage", v: r => piNum(r.ton) ?? 0, c: r => `<td>${cpN(r.ton)}</td>`, x: r => piNum(r.ton) ?? "" },
+            { h: "Tonnage Group", v: r => r.tg, c: r => `<td>${cpD(r.tg)}</td>`, x: r => r.tg },
+            { h: "Location", v: r => r.loc, c: r => `<td>${cpD(r.loc)}</td>`, x: r => r.loc },
+            { h: "MC Type", v: r => r.type, c: r => `<td>${cpD(r.type)}</td>`, x: r => r.type },
+            { h: "TieBarDis", v: r => r.tie, c: r => `<td>${cpD(r.tie)}</td>`, x: r => r.tie === "0" ? "" : r.tie },
+            { h: "MC Status", v: r => r.status, c: r => `<td><span class="sts${/^active$/i.test(r.status) ? "" : " x"}">${cpD(r.status)}</span></td>`, x: r => r.status }
+        ];
+        function cpModelCols(S) {
+            return [
+                { h: "S/L", ns: 1, c: (r, n) => `<td class="rn">${n}</td>`, x: (r, n) => n },
+                { h: "ART#", span: 2, v: r => piNum(r.art) ?? 0, c: r => `<td class="mu">${cpD(r.sn)}</td><td>${cpD(r.art)}</td>`, x: r => r.art },
+                { h: "Model Name", v: r => r.model, c: r => `<td>${esc(r.model)}</td>`, x: r => r.model },
+                { h: "Color", v: r => r.color, c: r => `<td>${cpD(r.color)}</td>`, x: r => r.color },
+                { h: "Tool", v: r => piNum(r.tool) ?? 0, c: r => `<td>${cpD(r.tool)}</td>`, x: r => r.tool },
+                { h: "Cavi", v: r => piNum(r.cavi) ?? 0, c: r => `<td>${cpD(r.cavi)}</td>`, x: r => r.cavi },
+                { h: "Mold<br>Demand", v: r => piNum(r.md) ?? 0, c: r => `<td>${cpD(r.md)}</td>`, x: r => r.md, xh: "Mold Demand" },
+                { h: "Cycle<br>Time", v: r => piNum(r.ct) ?? 0, c: r => `<td>${cpD(r.ct)}</td>`, x: r => r.ct, xh: "Cycle Time" },
+                { h: "Buyer", v: r => r.buyer, c: r => `<td>${r.buyer ? `<span class="by">${esc(r.buyer)}</span>` : "-"}</td>`, x: r => r.buyer },
+                { h: "Avg. Daily<br>Output", v: r => piNum(r.ad) ?? 0, c: r => `<td>${cpN(r.ad, 1)}</td>`, x: r => piNum(r.ad) == null ? "" : Math.round(piNum(r.ad)), xh: "Avg. Daily Output" },
+                { h: "Budget", v: r => piNum(r.bg) ?? 0, c: r => `<td>${cpN(r.bg, 1)}</td>`, x: r => piNum(r.bg) == null ? "" : Math.round(piNum(r.bg)) },
+                { h: "Tonna", v: r => piNum(r.ton) ?? 0, c: r => `<td>${cpD(r.ton)}</td>`, x: r => r.ton },
+                { h: "Tonnage<br>Grow", v: r => r.tg, c: r => `<td>${cpD(r.tg)}</td>`, x: r => r.tg, xh: "Tonnage Grow" },
+                { h: "Compatible MCs", ns: 1, c: r => `<td><div class="mcl">${r.mcs.map(x => `<span class="mcc${S.f.mc === x ? " on" : ""}" data-mc="${esc(x)}" title="Click to filter this MC">${esc(x)}</span>`).join("")}</div></td>`, x: r => r.mcs.join(" | ") }
+            ]
+        }
+        function cpRows(C, S) {
+            const q = S.q.trim().toLowerCase(), f = S.f; let rows;
+            if (S.tab === "model") rows = C.models.filter(m => cpModelOk(C, m, f, q));
+            else { const al = cpMcAllow(C, f); rows = C.mcs.filter(r => (!al || al.has(r.mc)) && (!f.mc || r.mc === f.mc) && (!f.status || r.status === f.status) && (!f.bay || r.loc === f.bay) && (!q || r.s.includes(q))) }
+            const cols = S.tab === "model" ? cpModelCols(S) : CP_MC;
+            if (S.sc >= 0 && cols[S.sc] && cols[S.sc].v) { const fn = cols[S.sc].v; rows = rows.slice().sort((a, b) => { const x = fn(a), y = fn(b); return (typeof x === "number" && typeof y === "number" ? x - y : String(x).localeCompare(String(y), undefined, { numeric: true })) * S.sd }) }
+            return { rows, cols }
+        }
+        function cpDraw() {
+            const C = CACHE.capC, S = ST.cap, { rows, cols } = cpRows(C, S), box = $("#tw");
+            if (S.tab === "mc" && !C.hasMC) { box.innerHTML = msg("MACHINE sheet not found", "Re-upload the Excel (with both sheets: MODEL &amp; TOOL and MACHINE) in Admin Console → Data Manager → Production &amp; Planning → Planning → Capacity(MC &amp; Mold) Details."); $("#in").textContent = ""; return }
+            box.innerHTML = `<table><thead><tr>${cols.map((c, j) => `<th${c.span ? ` colspan="${c.span}"` : ""}${c.ns ? "" : ` data-c="${j}" style="cursor:pointer"`}>${c.h}${S.sc === j ? (S.sd > 0 ? " ▲" : " ▼") : ""}</th>`).join("")}</tr></thead><tbody>${rows.map((r, i) => "<tr>" + cols.map(c => c.c(r, i + 1)).join("") + "</tr>").join("") || `<tr><td colspan="30" style="padding:30px;color:var(--mute)">No matching rows</td></tr>`}</tbody></table>`;
+            $("#in").textContent = `${rows.length.toLocaleString()} ${S.tab === "model" ? "models / tools" : "machines"}`;
+            box.querySelectorAll("th[data-c]").forEach(h => h.onclick = () => { const c = +h.dataset.c; S.sd = S.sc === c ? -S.sd : 1; S.sc = c; cpDraw() });
+            box.querySelectorAll(".mcc").forEach(e => e.onclick = () => { S.f.mc = S.f.mc === e.dataset.mc ? "" : e.dataset.mc; cpSync(); cpDraw() });
+            document.querySelectorAll(".cf select").forEach(s => s.classList.toggle("act", !!s.value))
+        }
+        function cpSync() { document.querySelectorAll(".cf select").forEach(s => { s.value = ST.cap.f[s.dataset.k]; s.classList.toggle("act", !!s.value) }) }
+        function cpExport() {
+            const C = CACHE.capC, S = ST.cap, { rows, cols } = cpRows(C, S), ec = cols.flatMap(c => c.span === 2 ? [{ xh: "S/N", x: r => r.sn }, { xh: "Art#", x: r => r.art }] : [c]);
+            const aoa = [ec.map(c => c.xh || String(c.h).replace(/<br>/g, " "))].concat(rows.map((r, i) => ec.map(c => cpV(c.x(r, i + 1))))), nm = S.tab === "model" ? "MODEL & TOOL" : "MACHINE", fn = "Capacity_" + (S.tab === "model" ? "Model_Tool" : "Machine") + ".xlsx";
+            if (window.XLSX) { const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoa), nm); XLSX.writeFile(wb, fn); return }
+            const csv = aoa.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\r\n"), a = document.createElement("a");
+            a.href = URL.createObjectURL(new Blob(["\ufeff" + csv], { type: "text/csv" })); a.download = fn.replace(".xlsx", ".csv"); a.click()
+        }
+        async function showCap() {
+            const c = $("#pgc");
+            if (!PS) { c.innerHTML = msg("Planning data source not found", "Create the “Planning” sub-module under Production &amp; Planning in Admin Console."); return }
+            let d = CACHE.cap;
+            if (d === undefined) {
+                c.innerHTML = `<div class="ld">Loading data…</div>`;
+                try { d = (await ERP.packed(PS.id, SEC.cap.file)) || null } catch (e) { console.error(e); d = false }
+                CACHE.cap = d; if (CUR !== "cap") return
+            }
+            if (d === false) { c.innerHTML = msg("Could not load data", "Check your connection or your access to Planning, then reload."); return }
+            if (!d || !d.rows) { c.innerHTML = msg("No data connected yet", `Upload the Excel in Admin Console → Data Manager → Production &amp; Planning → Planning → ${esc(SEC.cap.name)}.`); return }
+            if (CACHE.capC === undefined || CACHE.capC.v !== d.v) {
+                let pd = CACHE.pi;
+                if (pd === undefined) { try { pd = (await ERP.packed(PS.id, SEC.pi.file)) || null; CACHE.pi = pd } catch (e) { pd = null } if (CUR !== "cap") return }
+                CACHE.capC = cpBuild(d, pd || null); CACHE.capC.v = d.v
+            }
+            const C = CACHE.capC;
+            if (!C.models.length && !C.mcs.length) { c.innerHTML = msg("No usable sheet found", "The Excel needs two sheets named <b>MODEL &amp; TOOL</b> and <b>MACHINE</b>."); return }
+            const S = ST.cap || (ST.cap = { tab: "model", q: "", sc: -1, sd: 1, f: { buyer: "", model: "", color: "", pri: "", mc: "", status: "", bay: "" } });
+            const opts = k => k === "pri" ? (C.hasPri ? PI_PR.map((p, i) => [String(i), p[1]]) : []) : C.opt[k].map(x => [x, x]);
+            c.innerHTML = `<div class="cph"><div class="cpt"><button data-t="model">MODEL &amp; TOOL</button><button data-t="mc">MACHINE</button></div>
+            <div class="cf">${CP_FL.map(([k, lb]) => `<select data-k="${k}"><option value="">${lb}</option>${opts(k).map(o => `<option value="${esc(o[0])}">${esc(o[1])}</option>`).join("")}</select>`).join("")}
+            <label class="cs"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="cq" type="text" placeholder="Search…"></label>
+            <button class="cr" id="cr">Reset</button>
+            <button class="cx" id="cx"><svg viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M4 19h16"/></svg>Export</button></div>
+            <div class="cm"><span id="in"></span><span>Updated ${new Date(d.v).toLocaleString()}</span></div></div><div class="tw cp" id="tw"></div>`;
+            const tabs = () => c.querySelectorAll(".cpt button").forEach(b => b.classList.toggle("on", b.dataset.t === S.tab));
+            tabs(); cpSync(); $("#cq").value = S.q;
+            c.querySelectorAll(".cpt button").forEach(b => b.onclick = () => { if (S.tab !== b.dataset.t) { S.tab = b.dataset.t; S.sc = -1; S.sd = 1 } tabs(); cpDraw() });
+            c.querySelectorAll(".cf select").forEach(s => s.onchange = () => { S.f[s.dataset.k] = s.value; cpDraw() });
+            $("#cq").oninput = e => { S.q = e.target.value; cpDraw() };
+            $("#cr").onclick = () => { Object.keys(S.f).forEach(k => S.f[k] = ""); S.q = ""; $("#cq").value = ""; cpSync(); cpDraw() };
+            $("#cx").onclick = cpExport; cpDraw()
+        }
+        async function showSec(k) {
+            const c = $("#pgc");
+            if (k === "pi") return showPI();
+            if (k === "cap") return showCap();
+            if (k === "sch") return showSch();
+            if (!PS) { c.innerHTML = msg("Planning data source not found", "Create the “Planning” sub-module under Production &amp; Planning in Admin Console."); return }
+            let d = CACHE[k];
+            if (d === undefined) {
+                c.innerHTML = `<div class="ld">Loading data…</div>`;
+                try { d = (await ERP.packed(PS.id, SEC[k].file)) || null } catch (e) { console.error(e); d = false }
+                CACHE[k] = d; if (CUR !== k) return
+            }
+            if (d === false) { c.innerHTML = msg("Could not load data", "Check your connection or your access to Planning, then reload."); return }
+            if (!d || !d.rows) { c.innerHTML = msg("No data connected yet", `Upload the Excel in Admin Console → Data Manager → Production &amp; Planning → Planning → ${esc(SEC[k].name)}.`); return }
+            const st = ST[k] || (ST[k] = { q: "", pg: 0, sc: -1, sd: 1 });
+            c.innerHTML = `<div class="tb"><input id="sq" type="text" placeholder="Search…" value="${esc(st.q)}"><span class="in" id="in"></span><span class="sp"></span><span class="in">Updated ${new Date(d.v).toLocaleString()}</span><button id="pv">← Prev</button><button id="nx">Next →</button></div><div class="tw" id="tw"></div>`;
+            $("#sq").oninput = e => { st.q = e.target.value; st.pg = 0; draw(k, d) };
+            $("#pv").onclick = () => { st.pg--; draw(k, d) }; $("#nx").onclick = () => { st.pg++; draw(k, d) };
+            draw(k, d)
+        }
+        /* ===== Priority Intelligence (Admin → Planning › Priority Intelligence-এর Excel: Outstanding · Delivery Date · Special Requirement) =====
+           Row = Outstanding sheet-এর প্রতিটি (Art# + Buyer + Model + Color)।
+           Delivery Date sheet আর Special Requirement sheet মেলে Art# + Buyer + Model + Color (বড়/ছোট হাত ও বাড়তি space ধর্তব্য নয়) দিয়ে। */
+        const PI_CFG = {
+            /* Delivery Date sheet → "Delivery Qty" কোন column থেকে: Order Qty (চাইলে ["invoiceqty"] করুন) */
+            delivQty: ["orderqty"],
+            /* Capacity(MC & Mold) Details upload → "MODEL & TOOL" sheet · header মেলানোর নাম (বড়/ছোট হাত, space, . - # ধর্তব্য নয়) */
+            capSheet: /model\s*(&|and)?\s*tool/i,
+            cap: {
+                model: ["model", "modelname", "modelno"],
+                color: ["color", "colorname"],
+                moldDemand: ["molddemand", "moldsdemand", "moldrequirement", "moldreq", "noofmold", "noofmolds", "moldqty"],
+                avgDaily: ["avgdailyoutput", "averagedailyoutput", "avgdailyoutputpcs", "dailyoutput", "avgoutputperday", "dailycapacity", "capacityperday"],
+                budget: ["budget", "budgetqty", "budgetoutput", "budgetperday"]
+            },
+            /* একই Model-এর একাধিক Tool/row থাকলে Mold Demand · Avg. Daily Output · Budget যোগ হবে */
+            /* Automated Production Schedule (পরে Submit করলে) → MC Running Status */
+            schStatus: ["mcrunningstatus", "runningstatus"],
+            /* Priority নিয়ম (Production Requirement > 0 হলে):
+               Critical = Overdue delivery আছে, বা Pending Special Requirement-এর তারিখ ৩ দিনের মধ্যে
+               High     = Available Day ≤ 15, বা Pending Special Requirement আছে, বা Required Day > Available Day
+               Medium   = বাকি সব · Low = Production Requirement নেই */
+            hiDays: 15, spDays: 3
+        };
+        const piN = s => String(s ?? "").toLowerCase().replace(/[^a-z0-9]/g, "");
+        const piNum = v => { if (typeof v === "number") return v; const x = parseFloat(String(v ?? "").replace(/,/g, "")); return isNaN(x) ? null : x };
+        const piKey = (...a) => a.map(x => String(x ?? "").replace(/\.0+$/, "").replace(/\s+/g, " ").trim().toUpperCase()).join("|");
+        const piCol = (cols, names) => { const n = cols.map(piN); for (const a of names) { const i = n.indexOf(a); if (i >= 0) return i } return -1 };
+        const piSheet = (d, re) => { const ss = (d && d.sheets) || {}, k = Object.keys(ss).find(n => re.test(n)); return k ? ss[k] : null };
+        const PI_MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const piDate = s => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(s || "")); return m ? m[3] + "-" + PI_MON[+m[2] - 1] + "-" + m[1].slice(2) : "" };
+        const piDays = s => { if (!/^\d{4}-\d{2}-\d{2}/.test(String(s || ""))) return null; const t = new Date(); t.setHours(0, 0, 0, 0); return Math.round((new Date(String(s).slice(0, 10) + "T00:00:00") - t) / 864e5) };
+        const piFmt = v => v == null || v === "" ? "—" : Number(v).toLocaleString("en-US", { maximumFractionDigits: 2 });
+        /* Priority নিয়ম (Outstanding sheet-এর "Order-N Weeks Older" column থেকে):
+           1st = 9 / 10 / 10+ weeks older · 2nd = 6 / 7 / 8 weeks · 3rd = 4 / 5 weeks · 4th = 1 / 2 / 3 weeks */
+        const PI_PR = [["crit", "1st Priority", "#ef4444"], ["high", "2nd Priority", "#f97316"], ["med", "3rd Priority", "#facc15"], ["low", "4th Priority", "#22c55e"]];
+        const piWeeks = s => { const t = String(s ?? ""); let m = /more\s*than\s*(\d+)/i.exec(t); if (m) return +m[1] + 1; m = /(\d+)\s*weeks?/i.exec(t); return m ? +m[1] : null };
+        const piPri = n => n == null ? 3 : n >= 9 ? 0 : n >= 6 ? 1 : n >= 4 ? 2 : 3;
+        /* Outstanding sheet-এর column header: "Order-9 Weeks Older", "Order-More than 10 Weeks", "Order-1 Week Older"... (প্রতিটায় ঐ age-এর qty থাকে) */
+        const piWkCols = O => O.cols.map((h, i) => { const t = String(h ?? ""); const n = /week/i.test(t) ? piWeeks(t) : null; return n == null ? null : { i, n } }).filter(Boolean);
+        const piWkCol = O => { let best = -1, bn = 0; O.cols.forEach((_, i) => { let n = 0; O.rows.forEach(r => { if (/week/i.test(String(r[i] ?? ""))) n++ }); if (n > bn) { bn = n; best = i } }); return best };
+
+        /* Capacity: MODEL & TOOL sheet থেকে Model (+ Color থাকলে Color) ধরে Mold Demand / Avg. Daily Output / Budget */
+        function piCapIndex(capD) {
+            if (!capD) return null;
+            let sh = piSheet(capD, PI_CFG.capSheet); if (!sh && capD.cols && capD.rows) sh = { cols: capD.cols, rows: capD.rows };
+            if (!sh) return null;
+            const C = PI_CFG.cap, ix = { model: piCol(sh.cols, C.model), color: piCol(sh.cols, C.color), md: piCol(sh.cols, C.moldDemand), ad: piCol(sh.cols, C.avgDaily), bg: piCol(sh.cols, C.budget) };
+            if (ix.model < 0 || (ix.md < 0 && ix.ad < 0 && ix.bg < 0)) return null;
+            const byM = new Map(), byMC = new Map(), add = (m, k, r) => { (m.get(k) || m.set(k, []).get(k)).push(r) };
+            sh.rows.forEach(r => { const m = piKey(r[ix.model]); if (!m) return; add(byM, m, r); if (ix.color >= 0) add(byMC, m + "|" + piKey(r[ix.color]), r) });
+            return { ix, byM, byMC }
+        }
+        function piCapGet(cap, model, color) {
+            if (!cap) return null;
+            const m = piKey(model), rs = cap.byMC.get(m + "|" + piKey(color)) || cap.byM.get(m); if (!rs) return null;
+            const sum = i => { if (i < 0) return null; let s = null; rs.forEach(r => { const x = piNum(r[i]); if (x != null) s = (s || 0) + x }); return s };
+            return { md: sum(cap.ix.md), ad: sum(cap.ix.ad), bg: sum(cap.ix.bg) }
+        }
+        /* Automated Production Schedule → MC Running Status (Model + Color); না থাকলে "—" */
+        function piSchIndex(schD) {
+            if (!schD || !schD.cols || !schD.rows) return null;
+            const st = piCol(schD.cols, PI_CFG.schStatus), mo = piCol(schD.cols, PI_CFG.cap.model), co = piCol(schD.cols, PI_CFG.cap.color); if (st < 0 || mo < 0) return null;
+            const map = new Map(); schD.rows.forEach(r => { const v = String(r[st] ?? "").trim(); if (!v) return; const k = piKey(r[mo]) + "|" + (co >= 0 ? piKey(r[co]) : ""); (map.get(k) || map.set(k, new Set()).get(k)).add(v) });
+            return { map, hasColor: co >= 0 }
+        }
+
+        function piBuild(d, capD, schD) {
+            const O = piSheet(d, /outstanding/i) || { cols: d.cols, rows: d.rows }, DL = piSheet(d, /deliver/i), SP = piSheet(d, /special/i);
+            const o = { art: piCol(O.cols, ["art", "artno"]), buyer: piCol(O.cols, ["buyer"]), model: piCol(O.cols, ["model"]), color: piCol(O.cols, ["color"]), stock: piCol(O.cols, ["availablestock"]), dem: piCol(O.cols, ["totaldemand"]), req: piCol(O.cols, ["productionrequirement"]), wk: piWkCol(O), wks: piWkCols(O) };
+            const g = (r, i) => i < 0 ? "" : r[i];
+            const dmap = new Map(), smap = new Map(); let dN = 0, dMiss = 0;
+            if (DL) {
+                const x = { art: piCol(DL.cols, ["art", "artno"]), buyer: piCol(DL.cols, ["buyer"]), model: piCol(DL.cols, ["model"]), color: piCol(DL.cols, ["color"]), date: piCol(DL.cols, ["deliverydate"]), qty: piCol(DL.cols, PI_CFG.delivQty), inv: piCol(DL.cols, ["invoiceqty"]), st: piCol(DL.cols, ["deliverystatus"]) };
+                DL.rows.forEach(r => { const k = piKey(g(r, x.art), g(r, x.buyer), g(r, x.model), g(r, x.color)); dN++; (dmap.get(k) || dmap.set(k, []).get(k)).push({ date: String(g(r, x.date) || ""), qty: piNum(g(r, x.qty)), inv: piNum(g(r, x.inv)), status: String(g(r, x.st) || "").trim() }) })
+            }
+            if (SP) {
+                const x = { art: piCol(SP.cols, ["art", "artno"]), buyer: piCol(SP.cols, ["buyer"]), model: piCol(SP.cols, ["model"]), color: piCol(SP.cols, ["color"]), qty: piCol(SP.cols, ["requiredqty"]), date: piCol(SP.cols, ["requireddate"]), who: piCol(SP.cols, ["responsibleperson"]), st: piCol(SP.cols, ["actionstatus"]), rem: piCol(SP.cols, ["remarks"]) };
+                SP.rows.forEach(r => { const k = piKey(g(r, x.art), g(r, x.buyer), g(r, x.model), g(r, x.color)); if (k === "|||") return; (smap.get(k) || smap.set(k, []).get(k)).push({ qty: piNum(g(r, x.qty)), date: String(g(r, x.date) || ""), who: String(g(r, x.who) || "").trim(), status: String(g(r, x.st) || "").trim(), rem: String(g(r, x.rem) || "").trim() }) })
+            }
+            const cap = piCapIndex(capD), sch = piSchIndex(schD), used = new Set(), rows = []; let wkMiss = 0;
+            O.rows.forEach(r => {
+                const k = piKey(g(r, o.art), g(r, o.buyer), g(r, o.model), g(r, o.color)); if (k === "|||") return; used.add(k);
+                const x = { art: g(r, o.art), buyer: g(r, o.buyer), model: g(r, o.model), color: g(r, o.color), stock: piNum(g(r, o.stock)), dem: piNum(g(r, o.dem)), req: piNum(g(r, o.req)) };
+                x.dels = (dmap.get(k) || []).slice().sort((a, b) => (a.date || "9999").localeCompare(b.date || "9999"));
+                x.sps = smap.get(k) || [];
+                const c = piCapGet(cap, x.model, x.color); x.md = c ? c.md : null; x.ad = c ? c.ad : null; x.bg = c ? c.bg : null;
+                const sv = sch && sch.map.get(piKey(x.model) + "|" + (sch.hasColor ? piKey(x.color) : "")); x.mc = sv ? [...sv].join(", ") : "";
+                x.prog = x.dem > 0 && x.stock != null ? Math.max(0, Math.min(100, x.stock / x.dem * 100)) : null;           /* Production Progress % = Available Stock ÷ Total Demand */
+                const first = x.dels.find(z => z.date); x.avail = first ? piDays(first.date) : null;                          /* Available Day = আজ থেকে সবচেয়ে কাছের Delivery Date */
+                x.need = x.req > 0 && x.ad > 0 ? Math.ceil(x.req / x.ad) : null;                                            /* Required Day = Production Requirement ÷ Avg. Daily Output */
+                let wkv = null;   /* যে row-তে যে age-column(গুলো)-তে qty > 0, তার মধ্যে সবচেয়ে পুরনোটা দিয়ে Priority */
+                x.wkq = o.wks.length ? new Array(11).fill(0) : null;   /* 1..10 Weeks, 11 = More than 10 Weeks (tooltip chart) */
+                if (o.wks.length) o.wks.forEach(w => { const v = piNum(g(r, w.i)); if (v > 0) { x.wkq[Math.min(Math.max(w.n, 1), 11) - 1] += v; if (wkv == null || w.n > wkv) wkv = w.n } }); else wkv = piWeeks(g(r, o.wk));
+                x.wk = wkv; x.p = piPri(x.wk); if (x.wk == null) wkMiss++;
+                x.s = [x.art, x.buyer, x.model, x.color, PI_PR[x.p][1], x.mc, ...x.dels.map(z => z.status + " " + piDate(z.date)), ...x.sps.map(z => z.who + " " + z.status)].join(" ").toLowerCase();
+                rows.push(x)
+            });
+            let un = 0; const unArts = new Set(); dmap.forEach((v, k) => { if (!used.has(k)) { un += v.length; unArts.add(k.split("|")[0]) } });
+            rows.sort((a, b) => a.p - b.p || (b.wk || 0) - (a.wk || 0) || (((a.dels.find(z => z.date) || {}).date || "9999").localeCompare((b.dels.find(z => z.date) || {}).date || "9999")) || (b.req || 0) - (a.req || 0));
+            rows.forEach((x, i) => x.id = i);
+            return { rows, wkOk: o.wks.length > 0 || o.wk >= 0, wkMiss, noDel: !DL, noSp: !SP, un, unArts: [...unArts], capOk: !!cap, schOk: !!sch }
+        }
+        const piChip = s => { const t = String(s || "").trim(); if (!t) return '<span class="nd">—</span>'; const c = /overdue|late|delay/i.test(t) ? "ovd" : /running|on\s*track|done|deliver|complete|ok/i.test(t) ? "ok" : /not\s*sched|pending|open/i.test(t) ? (/pending|open/i.test(t) ? "pen" : "ns") : "ns"; return `<span class="chip ${c}">${esc(t)}</span>` };
+        const PI_COLS = [
+            { h: "#", v: () => 0, c: (r, n) => `<td class="rn">${n}</td>` },
+            { h: "ART#", v: r => piNum(r.art) ?? String(r.art), c: r => `<td>${esc(r.art)}</td>` },
+            { h: "Buyer", v: r => r.buyer, c: r => `<td>${esc(r.buyer)}</td>` },
+            { h: "Model", v: r => r.model, c: r => `<td>${esc(r.model)}</td>` },
+            { h: "Color", v: r => r.color, c: r => `<td>${esc(r.color)}</td>` },
+            { h: "Priority", v: r => r.p, c: r => `<td class="c"><span class="chip ${PI_PR[r.p][0]}"${r.wkq ? ` data-r="${r.id}"` : ""}>${PI_PR[r.p][1]}</span></td>` },
+            { h: "MC Running Status", v: r => r.mc, c: r => `<td>${r.mc ? piChip(r.mc) : '<span class="nd">—</span>'}</td>` },
+            { h: "Special Requirement", v: r => (r.sps[0] && r.sps[0].date) || "9999", c: r => `<td class="sr">${r.sps.length ? r.sps.map(z => `<div class="dl">${piFmt(z.qty)} pcs · by ${esc(piDate(z.date) || "—")} ${piChip(z.status)}<small>${esc(z.who)}${z.rem ? " · " + esc(z.rem) : ""}</small></div>`).join("") : '<span class="nd">—</span>'}</td>` },
+            { h: "Mold Demand", v: r => r.md ?? -1, c: r => `<td class="n">${piFmt(r.md)}</td>` },
+            { h: "Avg. Daily Output", v: r => r.ad ?? -1, c: r => `<td class="n">${piFmt(r.ad)}</td>` },
+            { h: "Production Progress %", v: r => r.prog ?? -1, c: r => `<td>${r.prog == null ? '<span class="nd">—</span>' : `<span class="pbar"><i><b style="width:${r.prog}%"></b></i>${Math.round(r.prog)}%</span>`}</td>` },
+            { h: "Available Day", v: r => r.avail ?? -99999, c: r => `<td class="n${r.avail != null && r.avail < 0 ? " neg" : ""}">${r.avail == null ? '<span class="nd">—</span>' : r.avail}</td>` },
+            { h: "Required Day", v: r => r.need ?? -1, c: r => `<td class="n${r.need != null && r.avail != null && r.need > r.avail ? " neg" : ""}">${r.need == null ? '<span class="nd">—</span>' : r.need.toLocaleString("en-US")}</td>` },
+            { h: "Budget", v: r => r.bg ?? -1, c: r => `<td class="n">${piFmt(r.bg)}</td>` },
+            { h: "Total Demand", v: r => r.dem ?? -1, c: r => `<td class="n">${piFmt(r.dem)}</td>` },
+            { h: "Available Stock", v: r => r.stock ?? -1, c: r => `<td class="n">${piFmt(r.stock)}</td>` },
+            { h: "Production Requirement", v: r => r.req ?? -1, c: r => `<td class="n">${piFmt(r.req)}</td>` },
+            { h: "Delivery Date", v: r => (r.dels.find(z => z.date) || {}).date || "9999", c: r => `<td>${r.dels.length ? r.dels.map(z => `<div class="dl">${z.date ? esc(piDate(z.date)) : '<span class="nd">—</span>'}</div>`).join("") : '<span class="nd">—</span>'}</td>` },
+            { h: "Delivery Qty", v: r => r.dels.reduce((s, z) => s + (z.qty || 0), 0), c: r => `<td class="n">${r.dels.length ? r.dels.map(z => `<div class="dl">${piFmt(z.qty)}</div>`).join("") : '<span class="nd">—</span>'}</td>` },
+            { h: "Delivery Status", v: r => (r.dels[0] || {}).status || "", c: r => `<td>${r.dels.length ? r.dels.map(z => `<div class="dl">${piChip(z.status)}</div>`).join("") : '<span class="nd">—</span>'}</td>` }
+        ];
+        const piK = n => n >= 1e6 ? (n / 1e6).toFixed(1).replace(/\.0$/, "") + "M" : n >= 1e3 ? (n / 1e3).toFixed(1).replace(/\.0$/, "") + "K" : String(Math.round(n));
+        const PI_GRP = [[9, 10, 11], [6, 7, 8], [4, 5], [1, 2, 3]];   /* Priority → কোন কোন week (11 = More than 10 Weeks) */
+        const piOrd = i => ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"][i] + " Week";
+        function piTip(r) {
+            const q = r.wkq, tot = q.reduce((a, b) => a + b, 0), mx = Math.max(...q), pn = PI_PR[r.p][1];
+            const sub = `ART# ${esc(r.art)} • ${esc(r.model)} • ${esc(r.color)}`;
+            const head = `<div class="tph"><svg viewBox="0 0 48 48"><defs><linearGradient id="tg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#19c6ff"/><stop offset="1" stop-color="#2f7bff"/></linearGradient></defs><rect x="4" y="30" width="9" height="14" rx="2.5" fill="url(#tg)"/><rect x="17" y="22" width="9" height="22" rx="2.5" fill="url(#tg)"/><rect x="30" y="14" width="9" height="30" rx="2.5" fill="url(#tg)"/><path d="M5 22l12-9 9 5 16-13M34 5h9v9" fill="none" stroke="#5fd0ff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="tpt"><b>Week-wise Outstanding</b><span>${sub}</span></div><div class="tpp"><i>★</i>📅 ${pn}<i>★</i></div></div>`;
+            if (!(tot > 0)) return head + '<div class="tpb"><div class="pn">No outstanding quantity in any week.</div></div>';
+            const stp = [1, 2, 2.5, 5, 10], raw = mx / 6, e = Math.pow(10, Math.floor(Math.log10(raw))), step = (stp.find(m => m * e >= raw) || 10) * e, top = Math.ceil(mx / step) * step;
+            const ticks = []; for (let v = 0; v <= top + 1e-9; v += step) ticks.push(v);
+            const grp = PI_GRP[r.p], inG = i => grp.includes(i + 1);
+            const rows = q.map((v, i) => {
+                const w = top ? v / top * 100 : 0, lab = `${piK(v)} – ${(v / tot * 100).toFixed(1)}%`, name = i === 10 ? "10+ Weeks" : piOrd(i);
+                const bar = v <= 0 ? `<span class="wo" style="left:8px">0</span>` : w >= 34 ? `<div class="wb" style="width:${w}%">${lab}</div>` : `<div class="wb" style="width:${w}%"></div><span class="wo" style="left:calc(${w}% + 9px)">${lab}</span>`;
+                return `<div class="ptr ${inG(i) ? "on" : "off"}${v <= 0 ? " z" : ""}"><div class="lb"><u>${i + 1}</u>${name}</div><div class="tk">${bar}</div></div>`
+            }).join("");
+            const chart = `<div class="ptb"><div class="gl">${ticks.map(v => `<i style="left:${v / top * 100}%"></i>`).join("")}</div>${rows}</div><div class="pax">${ticks.map(v => `<i style="left:${v / top * 100}%">${v ? piK(v) : "0"}</i>`).join("")}</div>`;
+            /* হোভার করা Priority-র সারাংশ কার্ড */
+            const gs = PI_GRP.map(g => g.reduce((a, w) => a + q[w - 1], 0)), mine = gs[r.p], pct = mine / tot * 100, rank = 1 + gs.filter(x => x > mine).length;
+            const wl = grp.slice().reverse().map(w => w === 11 ? "10+" : w).join(", ");
+            const banner = mine > 0 && rank === 1 ? `<i>🏆</i><div>Highest Outstanding<small>in this Plan</small></div>` : `<i>📊</i><div>#${rank} by Outstanding<small>among the 4 priorities</small></div>`;
+            const card = `<div class="tpd"><div class="dh"><u>${r.p + 1}</u>${pn}<em>📅</em></div><div class="db"><div class="kv"><span>Outstanding</span><b>${Math.round(mine).toLocaleString("en-US")} Pcs</b></div><div class="kv"><span>Percentage</span><b>${pct.toFixed(1)}%</b></div><div class="pg"><i><b style="width:${Math.min(100, pct)}%"></b></i><em>${pct.toFixed(1)}%</em></div><div class="kv"><span>Weeks</span><b>${wl}</b></div><div class="dv"></div><div class="kv ic"><span>🏷️ ART#</span><b>${esc(r.art)}</b></div><div class="kv ic"><span>📄 Model</span><b>${esc(r.model)}</b></div><div class="kv ic"><span>🎨 Color</span><b>${esc(r.color)}</b></div></div><div class="hb">${banner}</div></div>`;
+            return head + `<div class="tpb"><div class="tpc">${chart}</div>${card}</div>`
+        }
+        const PI_FZ = 6;   /* freeze: # · ART# · Buyer · Model · Color · Priority */
+        function piDraw() {
+            const st = ST.pi, M = CACHE.piM, q = st.q.trim().toLowerCase();
+            const F = st.f, has = (k, v) => !F[k].size || F[k].has(String(v));
+            const ok = r => (!q || r.s.includes(q)) && has("art", r.art) && has("buyer", r.buyer) && has("model", r.model) && has("pf", r.p) && has("mc", r.mc);
+            let ix = M.rows.map((_, i) => i).filter(i => ok(M.rows[i]));
+            /* KPI cards + priority pie (current filter অনুযায়ী) */
+            let dem = 0, stk = 0, need = 0; const cnt = [0, 0, 0, 0];
+            ix.forEach(i => { const r = M.rows[i]; dem += r.dem || 0; stk += r.stock || 0; if (r.need != null && r.need > need) need = r.need; cnt[r.p]++ });
+            const prog = dem > 0 ? Math.max(0, Math.min(100, stk / dem * 100)) : 0, tot = ix.length;
+            $("#k-dem").innerHTML = `${piFmt(dem)} <u>Pcs</u>`; $("#k-prog").textContent = prog.toFixed(1) + "%"; $("#k-req").textContent = need.toLocaleString("en-US"); $("#k-stk").innerHTML = `${piFmt(stk)} <u>Pcs</u>`;
+            let acc = 0; const seg = cnt.map((n, k) => { const a = acc, b = acc + (tot ? n / tot * 100 : 0); acc = b; return `${PI_PR[k][2]} ${a}% ${b}%` });
+            $("#k-pie").style.background = tot ? `conic-gradient(${seg.join(",")})` : "#31456f";
+            $("#k-leg").innerHTML = PI_PR.map((p, k) => `<div class="lg"><i style="background:${p[2]}"></i><span>${p[1]}</span><em>${tot ? Math.round(cnt[k] / tot * 100) : 0}%</em></div>`).join("");
+            if (st.sc >= 0) { const f = PI_COLS[st.sc].v; ix.sort((a, b) => { const x = f(M.rows[a]), y = f(M.rows[b]); return (typeof x === "number" && typeof y === "number" ? x - y : String(x).localeCompare(String(y), undefined, { numeric: true })) * st.sd }) }
+            const pages = Math.max(1, Math.ceil(ix.length / PAGE)); st.pg = Math.min(st.pg, pages - 1);
+            const from = st.pg * PAGE, part = ix.slice(from, from + PAGE);
+            $("#tw").innerHTML = `<table><thead><tr>${PI_COLS.map((c, j) => `<th${j ? ` data-c="${j}"` : ""}>${c.h}${st.sc === j ? (st.sd > 0 ? " ▲" : " ▼") : ""}</th>`).join("")}</tr></thead><tbody>${part.map((i, k) => "<tr>" + PI_COLS.map(c => c.c(M.rows[i], from + k + 1)).join("") + "</tr>").join("")}</tbody></table>`;
+            const tbl = $("#tw").querySelector("table"), hs = [...tbl.querySelectorAll("thead th")], offs = []; let lf = 0;
+            for (let j = 0; j < PI_FZ; j++) { offs.push(lf); lf += hs[j].offsetWidth }
+            tbl.querySelectorAll("tr").forEach(tr => { for (let j = 0; j < PI_FZ; j++) { const e = tr.children[j]; if (!e) continue; e.classList.add("fz"); if (j === PI_FZ - 1) e.classList.add("fl"); e.style.left = offs[j] + "px" } });
+            $("#in").textContent = ix.length ? `${(from + 1).toLocaleString()}–${(from + part.length).toLocaleString()} of ${ix.length.toLocaleString()} rows` : "No matching rows";
+            $("#pv").disabled = st.pg === 0; $("#nx").disabled = st.pg >= pages - 1;
+            $("#tw").querySelectorAll("th[data-c]").forEach(h => h.onclick = () => { const c = +h.dataset.c; st.sd = st.sc === c ? -st.sd : 1; st.sc = c; st.pg = 0; piDraw() })
+        }
+        async function showPI() {
+            const c = $("#pgc");
+            if (!PS) { c.innerHTML = msg("Planning data source not found", "Create the “Planning” sub-module under Production &amp; Planning in Admin Console."); return }
+            let d = CACHE.pi;
+            if (d === undefined) {
+                c.innerHTML = `<div class="ld">Loading data…</div>`;
+                try { d = (await ERP.packed(PS.id, SEC.pi.file)) || null } catch (e) { console.error(e); d = false }
+                CACHE.pi = d; if (CUR !== "pi") return
+            }
+            if (d === false) { c.innerHTML = msg("Could not load data", "Check your connection or your access to Planning, then reload."); return }
+            if (!d || !d.rows) { c.innerHTML = msg("No data connected yet", `Upload the Excel in Admin Console → Data Manager → Production &amp; Planning → Planning → ${esc(SEC.pi.name)}.`); return }
+            if (CACHE.piX === undefined) {
+                const gp = async f => { try { return (await ERP.packed(PS.id, f)) || null } catch (e) { return null } };
+                const cp = await gp(SEC.cap.file); CACHE.piX = { cap: cp, sch: SchStore.asData() }; if (CUR !== "pi") return
+            }
+            const M = CACHE.piM = piBuild(d, CACHE.piX.cap, CACHE.piX.sch);
+            const st = ST.pi || (ST.pi = { q: "", pg: 0, sc: -1, sd: 1, f: { art: new Set(), buyer: new Set(), model: new Set(), pf: new Set(), mc: new Set() } });
+            const notes = [];
+            if (M.noDel || M.noSp) notes.push(`<b>${M.noDel ? "Delivery Date" : ""}${M.noDel && M.noSp ? " ও " : ""}${M.noSp ? "Special Requirement" : ""}</b> sheet পাওয়া যায়নি — Admin → Data Manager → Priority Intelligence-এ পুরো Excel (সব sheet সহ) আবার Upload করুন।`);
+            if (!M.wkOk) notes.push(`Outstanding sheet-এ <b>“Order-N Weeks Older”</b> column (header) পাওয়া যায়নি — তাই সব row 4th Priority ধরা হয়েছে।`); else if (M.wkMiss) notes.push(`<b>${M.wkMiss}</b> টি row-এর কোনো “Weeks Older” column-এ qty নেই — সেগুলো 4th Priority ধরা হয়েছে।`);
+            if (M.un) notes.push(`Delivery Date sheet-এর <b>${M.un}</b> টি row (Art# ${M.unArts.map(esc).join(", ")}) Outstanding sheet-এর কোনো Art# + Buyer + Model + Color-এর সাথে মেলেনি, তাই দেখানো হয়নি।`);
+            if (!M.capOk) notes.push(`Mold Demand · Avg. Daily Output · Budget (এবং Required Day) আসবে Capacity(MC &amp; Mold) Details-এ <b>MODEL &amp; TOOL</b> Excel Upload করলে।`);
+            if (!M.schOk) notes.push(`MC Running Status আসবে Automated Production Schedule Submit করলে।`);
+            const uq = f => [...new Set(M.rows.map(f).filter(v => v !== "" && v != null).map(String))].sort((x, y) => x.localeCompare(y, undefined, { numeric: true }));
+            const DD = [
+                { k: "art", label: "ART#", opts: uq(r => r.art).map(v => [v, v]) },
+                { k: "buyer", label: "Buyer", opts: uq(r => r.buyer).map(v => [v, v]) },
+                { k: "model", label: "Model", opts: uq(r => r.model).map(v => [v, v]) },
+                { k: "pf", label: "Priority", opts: PI_PR.map((p, i) => [String(i), p[1]]) },
+                { k: "mc", label: "MC Running Status", opts: uq(r => r.mc).map(v => [v, v]) }
+            ];
+            const ic = p => `<svg viewBox="0 0 24 24">${p}</svg>`;
+            c.innerHTML = `<div class="pk">
+                <div class="kc g">${ic('<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/>')}<div><small>Total Demand</small><strong id="k-dem"></strong></div></div>
+                <div class="kc v">${ic('<circle cx="12" cy="12" r="8.5" stroke-width="3.4" opacity=".35"/><path d="M12 3.5a8.5 8.5 0 0 1 8.2 6.3" stroke-width="3.4"/>')}<div><small>Production Progress</small><strong id="k-prog"></strong></div></div>
+                <div class="kc o">${ic('<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M12 14h2M16 14h2M8 17h2M12 17h2"/>')}<div><small>Required Day</small><strong id="k-req"></strong></div></div>
+                <div class="kc t">${ic('<path d="M3 10l9-6 9 6v11H3z"/><path d="M7 21v-8h10v8M7 16h10"/>')}<div><small>Available Stock</small><strong id="k-stk"></strong></div></div>
+                <div class="pie"><div class="pc" id="k-pie"></div><div class="pl"><b>Priority Wise</b><div id="k-leg"></div></div></div>
+            </div>
+            <div class="pfb">
+                ${DD.map(c => `<div class="dd" data-k="${c.k}"><button type="button" class="ddb"><span>${c.label}</span>${ic('<path d="M6 9l6 6 6-6"/>').replace("<svg ", "<svg ")}</button><div class="ddp"><input class="dds" type="text" placeholder="Search…"><div class="ddl"></div><div class="ddf"><button type="button" data-a="all">Select all</button><button type="button" data-a="clr">Clear</button></div></div></div>`).join("")}
+                <button type="button" class="rs" id="rs">Reset</button>
+                <label class="fs">${ic('<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>')}<input id="sq" type="text" placeholder="Search…" value="${esc(st.q)}"></label>
+            <span class="in" id="in"></span><span class="in" title="${esc(new Date(d.v).toLocaleString())}">Updated ${new Date(d.v).toLocaleString([], { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}</span><button id="pv" title="Previous page">←</button><button id="nx" title="Next page">→</button>
+            </div>
+            <div class="tw pi" id="tw"></div>${notes.length ? `<div class="pin">${notes.map(n => "• " + n).join("<br>")}</div>` : ""}`;
+            $("#sq").oninput = e => { st.q = e.target.value; st.pg = 0; piDraw() };
+            const ddRefresh = el => {
+                const c = DD.find(x => x.k === el.dataset.k), sel = st.f[c.k], qq = el.querySelector(".dds").value.trim().toLowerCase();
+                const vis = c.opts.filter(o => !qq || o[1].toLowerCase().includes(qq));
+                el.querySelector(".ddl").innerHTML = vis.length ? vis.map(o => `<label class="ddi"><input type="checkbox" data-v="${esc(o[0])}"${sel.has(o[0]) ? " checked" : ""}><span>${esc(o[1])}</span></label>`).join("") : '<div class="ddn">No match</div>';
+                el.querySelector(".ddb span").innerHTML = c.label + (sel.size ? ` <em>${sel.size}</em>` : "")
+            };
+            const ddBtn = el => { const c = DD.find(x => x.k === el.dataset.k); el.querySelector(".ddb span").innerHTML = c.label + (st.f[c.k].size ? ` <em>${st.f[c.k].size}</em>` : "") };
+            document.querySelectorAll(".dd").forEach(el => {
+                const c = DD.find(x => x.k === el.dataset.k), sel = st.f[c.k], inp = el.querySelector(".dds");
+                ddRefresh(el);
+                el.querySelector(".ddb").onclick = e => { e.stopPropagation(); const was = el.classList.contains("open"); document.querySelectorAll(".dd.open").forEach(x => x.classList.remove("open")); if (!was) { el.classList.add("open"); inp.value = ""; ddRefresh(el); inp.focus() } };
+                inp.oninput = () => ddRefresh(el);
+                el.querySelector(".ddl").onchange = e => { const v = e.target.dataset.v; if (v == null) return; e.target.checked ? sel.add(v) : sel.delete(v); ddBtn(el); st.pg = 0; piDraw() };
+                el.querySelector('[data-a="all"]').onclick = () => { const qq = inp.value.trim().toLowerCase(); c.opts.forEach(o => { if (!qq || o[1].toLowerCase().includes(qq)) sel.add(o[0]) }); ddRefresh(el); st.pg = 0; piDraw() };
+                el.querySelector('[data-a="clr"]').onclick = () => { sel.clear(); inp.value = ""; ddRefresh(el); st.pg = 0; piDraw() }
+            });
+            if (!window.PI_DD_BOUND) { window.PI_DD_BOUND = 1; document.addEventListener("click", e => { if (!e.target.closest(".dd")) document.querySelectorAll(".dd.open").forEach(x => x.classList.remove("open")) }) }
+            const tip = document.getElementById("pitip") || document.body.appendChild(Object.assign(document.createElement("div"), { id: "pitip" })), tw = $("#tw");
+            const tipPlace = e => { const w = tip.offsetWidth, h = tip.offsetHeight; let x = e.clientX + 18, y = e.clientY + 14; if (x + w > innerWidth - 8) x = Math.max(8, e.clientX - w - 18); if (y + h > innerHeight - 8) y = Math.max(8, innerHeight - h - 8); tip.style.left = x + "px"; tip.style.top = y + "px" };
+            tw.onmouseover = e => { const t = e.target.closest("[data-r]"); if (!t) return; const r = M.rows[+t.dataset.r]; if (!r || !r.wkq) return; tip.innerHTML = piTip(r); tip.style.display = "block"; tipPlace(e) };
+            tw.onmousemove = e => { if (tip.style.display === "block") tipPlace(e) };
+            tw.onmouseout = e => { const t = e.relatedTarget; if (!t || !t.closest || !t.closest("[data-r]")) tip.style.display = "none" };
+            tw.onscroll = () => { tip.style.display = "none" };
+            $("#rs").onclick = () => { Object.values(st.f).forEach(x => x.clear()); st.q = ""; $("#sq").value = ""; st.pg = 0; st.sc = -1; st.sd = 1; document.querySelectorAll(".dd").forEach(el => { el.querySelector(".dds").value = ""; ddRefresh(el); el.classList.remove("open") }); piDraw() };
+            $("#pv").onclick = () => { st.pg--; piDraw() }; $("#nx").onclick = () => { st.pg++; piDraw() };
+            piDraw()
+        }
+        /* ===== Machine Plan → Automated Production Schedule ===== */
+        const SCH_CFG = { chgMin: 45, offDow: [5], horizon: 400, dayStartH: 0, defHrs: 24 };
+        const dkey = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+        const dtkey = d => dkey(d) + "T" + String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+        const hashS = s => { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return String(h) };
+        const natCmp = (a, b) => String(a).localeCompare(String(b), undefined, { numeric: true });
+        const SCH_D = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const fmtDay = s => { const d = new Date(s); return isNaN(d) ? "-" : `${SCH_D[d.getDay()]}, ${String(d.getDate()).padStart(2, "0")} ${PI_MON[d.getMonth()]} '${String(d.getFullYear()).slice(2)}` };
+        /* Holiday / Maintenance বদলালে এই signature বদলায় → Calendar-এ "প্ল্যান পুরনো" দেখায় */
+        const calSig = () => { const a = []; for (const k in CAL_DAYS) if (/^(hol|chg|mnt)$/.test(CAL_DAYS[k])) a.push(k + CAL_DAYS[k]); const m = window.CAL_MAINT || {}; for (const mc in m) for (const k in m[mc]) a.push(mc + "@" + k); return a.sort().join(",") };
+        const calStale = () => { const P = SchStore.get("draft") || SchStore.get("live"); return P && P.sig !== hashS(calSig()) ? '<em class="yc-stale">⚠ প্ল্যান পুরনো হয়ে গেছে, আবার Machine Plan চালান</em>' : "" };
+
+        /* Draft / Live সংরক্ষণ — এখন localStorage (এই browser-এ)। Server-এ রাখতে হলে শুধু get/set বদলাতে হবে */
+        const SchStore = {
+            _m: {},
+            key: n => "mfSch:" + n + ":" + (PS ? PS.id : ""),
+            get(n) { if (this._m[n] === undefined) { try { this._m[n] = JSON.parse(localStorage.getItem(this.key(n)) || "null") } catch (e) { this._m[n] = null } } return this._m[n] },
+            set(n, v) { this._m[n] = v; try { v ? localStorage.setItem(this.key(n), JSON.stringify(v)) : localStorage.removeItem(this.key(n)) } catch (e) { console.error(e) } },
+            /* Priority Intelligence-এর piSchIndex যে {cols, rows} চায় সেই রূপ (শুধু Submit-করা Schedule) */
+            asData() {
+                const L = this.get("live"); if (!L) return null; const now = dtkey(new Date());
+                const st = r => now < r.start ? "Scheduled" : now <= r.end ? "Running" : "Completed";
+                return { cols: ["ART", "Bay", "MC No", "Model", "Color", "Tool", "MC Running Status", "Planned Start", "Planned End", "Planned Qty"], rows: L.rows.map(r => [r.art, r.bay, r.mc, r.model, r.color, r.tool, st(r), r.start, r.end, r.qty]) }
+            }
+        };
+
+        async function planLoad() {
+            const gp = async f => { try { return (await ERP.packed(PS.id, f)) || null } catch (e) { return null } };
+            const [pd, cd] = await Promise.all([gp(SEC.pi.file), gp(SEC.cap.file)]);
+            if (!pd || !pd.rows) throw new Error("Priority Intelligence Excel আপলোড নেই");
+            if (!cd || !cd.rows) throw new Error("Capacity (MC & Mold) Excel আপলোড নেই");
+            CACHE.pi = pd; CACHE.cap = cd; CACHE.capC = undefined; CACHE.piX = undefined;
+            return { pd, cd }
+        }
+
+        function genPlan(pd, cd) {
+            const C = cpBuild(cd, null), M = piBuild(pd, cd, null);
+            const today = new Date(); today.setHours(0, 0, 0, 0);
+            const hol = new Set(Object.keys(CAL_DAYS).filter(k => CAL_DAYS[k] === "hol")), maint = window.CAL_MAINT || {};
+            const mcs = new Map(), notes = [], rows = [];
+            C.mcs.forEach(m => { if (/^active$/i.test(m.status)) mcs.set(m.mc, { mc: m.mc, bay: m.loc || "No Bay", hrs: m.hr > 0 ? m.hr : SCH_CFG.defHrs, pos: 0, last: "", wd: null }) });
+            if (!mcs.size) throw new Error("Active MC পাওয়া যায়নি (MACHINE sheet দেখুন)");
+            /* মেশিনের কাজের দিন: শুক্রবার, Holiday আর ঐ মেশিনের Maintenance বাদ */
+            const wdOf = x => { if (x.wd) return x.wd; const mt = maint[x.mc] || {}, a = []; for (let i = 0; i < SCH_CFG.horizon; i++) { const d = new Date(today); d.setDate(d.getDate() + i); if (SCH_CFG.offDow.includes(d.getDay()) || hol.has(dkey(d)) || mt[dkey(d)]) continue; a.push(d) } return x.wd = a };
+            const at = (x, pos, isEnd) => {
+                const wd = wdOf(x); let k = Math.floor(pos + 1e-9), f = pos - k;
+                if (isEnd && f < 1e-6 && k > 0) { k--; f = 1 }
+                if (k >= wd.length) return null;
+                const d = new Date(wd[k]), mi = Math.round(f * x.hrs * 60); d.setHours(SCH_CFG.dayStartH, isEnd ? Math.min(mi, x.hrs * 60 - 1) : mi, 0, 0); return d
+            };
+            const add = (m, k, v) => { (m.get(k) || m.set(k, []).get(k)).push(v) }, byA = new Map(), byMC = new Map(), byM = new Map();
+            C.models.forEach(m => { add(byA, piKey(m.art, m.model, m.color), m); add(byMC, piKey(m.model, m.color), m); add(byM, piKey(m.model), m) });
+            const tl = r => byA.get(piKey(r.art, r.model, r.color)) || byMC.get(piKey(r.model, r.color)) || byM.get(piKey(r.model)) || [];
+            /* কাজের তালিকা: একাধিক Tool থাকলে Avg. Daily Output অনুপাতে ভাগ */
+            const jobs = [];
+            M.rows.forEach(r => {
+                if (!(r.req > 0)) return;
+                const ts = tl(r).filter(t => piNum(t.ad) > 0);
+                if (!ts.length) { notes.push(`${r.art} · ${r.model} · ${r.color} — Capacity data-তে Tool / Avg. Daily Output নেই`); return }
+                const ds = [(r.dels.find(z => z.date) || {}).date, ...r.sps.filter(z => z.date && !/done|complete|closed|deliver/i.test(z.status)).map(z => z.date)].filter(Boolean).map(s => String(s).slice(0, 10)).sort();
+                const tot = ts.reduce((s, t) => s + piNum(t.ad), 0); let left = Math.round(r.req);
+                ts.forEach((t, i) => { const q = i === ts.length - 1 ? left : Math.round(r.req * piNum(t.ad) / tot); left -= q; if (q > 0) jobs.push({ r, t, ad: piNum(t.ad), qty: q, due: ds[0] || "" }) })
+            });
+            jobs.sort((a, b) => a.r.p - b.r.p || (a.due || "9999").localeCompare(b.due || "9999") || (b.r.wk || 0) - (a.r.wk || 0) || b.qty - a.qty);
+            jobs.forEach(j => {
+                const cand = j.t.mcs.map(n => mcs.get(n)).filter(Boolean);
+                if (!cand.length) { notes.push(`${j.r.art} · ${j.r.model} · Tool ${j.t.tool} — Compatible MC নেই বা সব Inactive`); return }
+                const sig = j.r.model + "|" + j.t.tool, days = j.qty / j.ad; let best = null;
+                cand.forEach(x => { const chg = x.last && x.last !== sig ? SCH_CFG.chgMin / 60 / x.hrs : 0, s = x.pos + chg, e = s + days; if (!best || e < best.e - 1e-9) best = { x, chg, s, e } });
+                const { x, chg, s, e } = best, ts = at(x, s), te = at(x, e, true);
+                if (!ts || !te) { notes.push(`${j.r.art} · ${j.r.model} · Tool ${j.t.tool} — ${SCH_CFG.horizon} দিনের মধ্যে জায়গা হয়নি`); return }
+                const cs = chg ? at(x, x.pos) : null, sk = Math.floor(s + 1e-9), ek = Math.ceil(e - 1e-9) - 1;
+                rows.push({ id: rows.length + 1, art: j.r.art, bay: x.bay, mc: x.mc, model: j.r.model, color: j.r.color, tool: j.t.tool, cav: String(j.t.cavi == null ? "" : j.t.cavi).replace(/\.0+$/, "").trim(), p: j.r.p, ad: j.ad, chg: cs ? dtkey(cs) : "", start: dtkey(ts), end: dtkey(te), qty: j.qty, days: ek - sk + 1, due: j.due, remark: "", dev: "" });
+                x.pos = e; x.last = sig
+            });
+            rows.sort((a, b) => natCmp(a.bay, b.bay) || natCmp(a.mc, b.mc) || a.start.localeCompare(b.start));
+            return { rows, notes, sig: hashS(calSig()), at: Date.now() }
+        }
+
+        /* Machine Plan বাটন → Preview (popup) খোলে। Submit করলে তবেই সাইডবারের Automated Production Schedule পেজে যায় */
+        async function runMachinePlan() {
+            if (!PS) { calToast("Planning data source পাওয়া যায়নি"); return }
+            const old = SchStore.get("draft");
+            if (old && old.dirty && !confirm("Draft-এ আপনার edit আছে। নতুন করে সাজালে সেগুলো হারিয়ে যাবে। চালিয়ে যাবেন?")) return;
+            calToast("Machine Plan তৈরি হচ্ছে…");
+            try { const { pd, cd } = await planLoad(); SchStore.set("draft", genPlan(pd, cd)); SCHV = null; openPrev() }
+            catch (e) { console.error(e); calToast(e.message || "Plan তৈরি করা যায়নি") }
+        }
+
+        /* কাজের দিন গোনা: শুক্রবার, Holiday আর ঐ মেশিনের Maintenance বাদ */
+        function wdCount(s, e, mc) {
+            if (!s || !e) return null; const mt = (window.CAL_MAINT || {})[mc] || {}, d = new Date(s.slice(0, 10) + "T00:00"), z = new Date(e.slice(0, 10) + "T00:00");
+            if (isNaN(d) || isNaN(z)) return null; let n = 0, g = 0;
+            for (; d <= z && g < 3000; d.setDate(d.getDate() + 1), g++) { const k = dkey(d); if (!SCH_CFG.offDow.includes(d.getDay()) && CAL_DAYS[k] !== "hol" && !mt[k]) n++ }
+            return n
+        }
+        /* একটি cell edit-এর মান row-তে বসানো (Preview আর Schedule পেজ দুটোতেই) */
+        function schApply(r, f, t) {
+            if (f === "tc") { const s = t.value.trim(), i = s.indexOf("-"); r.tool = i < 0 ? s : s.slice(0, i); r.cav = i < 0 ? "" : s.slice(i + 1) }
+            else r[f] = f === "p" ? +t.value : t.type === "number" ? (t.value === "" ? null : +t.value) : t.value;
+            if (f === "start" || f === "end") r.days = wdCount(r.start, r.end, r.mc)
+        }
+        const newRow = (P, bay, mc, day) => ({ id: Math.max(0, ...P.rows.map(r => r.id)) + 1, art: "", bay, mc: mc || "", model: "", color: "", tool: "", cav: "", p: 3, ad: null, chg: "", start: day + "T08:00", end: day + "T17:00", qty: null, days: null, due: "", remark: "", dev: "" });
+
+        /* ===== Preview popup (Submit-এর আগে অনুমোদনের জন্য) — সব cell edit করা যায় ===== */
+        const SCH_COLS = [["ART", "art", "t"], ["Bay", "bay", "t"], ["MC No.", "mc", "t"], ["Model", "model", "t"], ["Color", "color", "t"], ["Tool", "tool", "t"], ["Priority", "p", "p"], ["Capacity<br>per Day", "ad", "n"], ["Changeover<br>Date &amp; Time", "chg", "dt"], ["Planned<br>Day", "start", "dd"], ["Planned<br>Start At", "start", "dt"], ["Planned<br>End", "end", "dt"], ["Planned<br>Qty", "qty", "n"], ["Work<br>Day", "days", "n"], ["Remark", "remark", "r"]];
+        let SCHV = null, GV = null;
+        function scCell(r, c) {
+            const [, f, t] = c, v = r[f], a = `class="ei" data-id="${r.id}" data-f="${f}"`;
+            if (t === "p") return `<td><select class="ei pr${r.p}" data-id="${r.id}" data-f="p">${PI_PR.map((p, i) => `<option value="${i}"${i === +v ? " selected" : ""}>${p[1]}</option>`).join("")}</select></td>`;
+            if (t === "dd") return `<td class="mu">${esc(fmtDay(r.start))}</td>`;
+            if (t === "dt") return `<td><input ${a} type="datetime-local" value="${esc(v || "")}"></td>`;
+            if (t === "n") return `<td><input ${a} type="number" step="any" value="${v ?? ""}"></td>`;
+            if (t === "r") { const ch = r.due && r.end ? (r.end.slice(0, 10) <= r.due ? `<span class="chip ok" title="Due ${esc(r.due)}">On Time</span>` : `<span class="chip ovd" title="Due ${esc(r.due)}">Late</span>`) : ""; return `<td class="rm">${ch}<input ${a} type="text" value="${esc(v || "")}" placeholder="-"></td>` }
+            return `<td><input ${a} type="text" value="${esc(v ?? "")}"></td>`
+        }
+        /* cell edit-এর পর re-render: মাউসের click শেষ হওয়া পর্যন্ত অপেক্ষা করে, আর ফোকাস ফিরিয়ে দেয় — যাতে বাটনের প্রথম click হারিয়ে না যায় */
+        let PTR = 0, PEND = null;
+        document.addEventListener("mousedown", () => { PTR = 1 }, true);
+        document.addEventListener("mouseup", () => { PTR = 0; if (PEND) setTimeout(() => { const f = PEND; PEND = null; f && f() }, 80) }, true);
+        const later = f => {
+            const g = () => { const a = document.activeElement, k = a && a.dataset && a.dataset.f ? [a.dataset.id, a.dataset.f] : null; f(); if (k) { const n = document.querySelector(`[data-id="${k[0]}"][data-f="${k[1]}"]`); if (n) n.focus() } };
+            PTR ? (PEND = g) : setTimeout(g, 0)
+        };
+        const prevKey = e => { if (e.key === "Escape") closePrev() };
+        function closePrev() { const o = $("#pmo"); if (o) o.remove(); document.removeEventListener("keydown", prevKey) }
+        function openPrev() {
+            if (!SchStore.get("draft")) return;
+            closePrev(); const o = document.createElement("div"); o.id = "pmo"; o.innerHTML = `<div class="pmb" id="pmb"></div>`; document.body.appendChild(o);
+            document.addEventListener("keydown", prevKey); renderPrev()
+        }
+        function renderPrev() {
+            const P = SchStore.get("draft"), b = $("#pmb"); if (!P || !b) return;
+            const S = SCHV || (SCHV = { bay: "", from: "", to: "" }), bays = [...new Set(P.rows.map(r => r.bay))].sort(natCmp);
+            if (!bays.includes(S.bay)) S.bay = bays[0] || "";
+            if (!S.from) { const ss = P.rows.map(r => r.start).sort(), ee = P.rows.map(r => r.end).sort(); S.from = (ss[0] || "").slice(0, 10); S.to = (ee[ee.length - 1] || "").slice(0, 10) }
+            const vis = P.rows.filter(r => r.bay === S.bay && (!S.to || r.start.slice(0, 10) <= S.to) && (!S.from || r.end.slice(0, 10) >= S.from)).sort((a, b) => natCmp(a.mc, b.mc) || a.start.localeCompare(b.start));
+            const sy = $("#pvt") ? $("#pvt").scrollTop : 0, stale = P.sig !== hashS(calSig());
+            const qty = vis.reduce((s, r) => s + (r.qty || 0), 0), wd = vis.reduce((s, r) => s + (r.days || 0), 0);
+            b.innerHTML = `<div class="pmi"><div class="sc">
+    <div class="sc-h"><b>Automated Production Schedule</b><span>Plan Smart • Produce Better</span><button class="pm-x" id="pv-x" title="বন্ধ করুন (Draft থেকে যাবে)">✕</button></div>
+    <div class="sc-w dr">PREVIEW — Submit না করা পর্যন্ত Priority Intelligence বা Schedule পেজে যাবে না। সব cell edit করা যাবে।${stale ? " ⚠ Holiday/Maintenance বদলেছে, Recal চালান।" : ""}</div>
+    <div class="sc-f"><label>From <input type="date" id="pvf" value="${esc(S.from)}"></label><label>To <input type="date" id="pvt2" value="${esc(S.to)}"></label>
+        <div class="sc-bays">${bays.map(x => `<button class="${x === S.bay ? "on" : ""}" data-b="${esc(x)}">${esc(x)}</button>`).join("")}</div></div>
+    <div class="tw sc-t" id="pvt"><table><thead><tr><th>#</th>${SCH_COLS.map(x => `<th>${x[0]}</th>`).join("")}</tr></thead><tbody>${vis.map((r, i) => `<tr><td class="rn">${i + 1}</td>${SCH_COLS.map(x => scCell(r, x)).join("")}</tr>`).join("") || `<tr><td colspan="16" style="padding:30px;color:var(--mute)">এই Bay / তারিখে কোনো কাজ নেই</td></tr>`}</tbody></table></div>
+    <div class="sc-ft"><span>Total Records: ${vis.length}</span><span>Total Planned Qty: ${qty.toLocaleString("en-US")}</span><span>Total Work Days: ${wd}</span></div>
+    <div class="sc-ac"><button class="g" id="pv-cr">+ Create</button><button class="b" id="pv-rc">Recal</button><button class="o" id="pv-up">Update</button><button class="v" id="pv-sb">Submit</button></div>
+    ${P.notes && P.notes.length ? `<div class="pin"><b>সাজানো যায়নি (${P.notes.length}):</b><br>${P.notes.map(n => "• " + esc(n)).join("<br>")}</div>` : ""}</div></div>`;
+            $("#pvt").scrollTop = sy;
+            b.querySelectorAll(".sc-bays button").forEach(x => x.onclick = () => { S.bay = x.dataset.b; renderPrev() });
+            $("#pvf").onchange = e => { S.from = e.target.value; renderPrev() }; $("#pvt2").onchange = e => { S.to = e.target.value; renderPrev() };
+            $("#pvt").onchange = e => {
+                const t = e.target, f = t.dataset.f; if (!f) return; const r = P.rows.find(x => x.id === +t.dataset.id); if (!r) return;
+                schApply(r, f, t); P.dirty = 1; later(renderPrev)
+            };
+            $("#pv-x").onclick = closePrev;
+            $("#pv-cr").onclick = () => { P.rows.push(newRow(P, S.bay, "", S.from || dkey(new Date()))); P.dirty = 1; renderPrev() };
+            $("#pv-rc").onclick = () => runMachinePlan();
+            $("#pv-up").onclick = () => { P.dirty = 0; SchStore.set("draft", P); calToast("Draft সংরক্ষণ হয়েছে") };
+            $("#pv-sb").onclick = () => {
+                if (!confirm("Submit করলে Schedule চূড়ান্ত হবে, Automated Production Schedule পেজে যাবে এবং Priority Intelligence-এর MC Running Status ভরে যাবে। Submit করবেন?")) return;
+                P.dirty = 0; P.submittedAt = Date.now(); SchStore.set("live", P); SchStore.set("draft", null); CACHE.piX = undefined; GV = null; closePrev(); calToast("Submit হয়েছে"); show("sch")
+            };
+        }
+
+        /* ===== Automated Production Schedule পেজ (Submit-করা Schedule): বাঁয়ে Machine-ভিত্তিক তালিকা, ডানে Gantt — সব cell edit করা যায় ===== */
+        const GDW = 24, GRH = 34, GDOW = ["S", "M", "T", "W", "T", "F", "S"];
+        const fmtN = n => n == null || n === "" ? "-" : Number(n).toLocaleString("en-US", { maximumFractionDigits: 2 });
+        function showSch() {
+            const c = $("#pgc"), P = SchStore.get("live");
+            if (!P) {
+                const dr = SchStore.get("draft");
+                c.innerHTML = msg("এখনো কোনো Submit করা Schedule নেই", dr ? `একটি Draft আছে — <button class="sc-lnk" id="sc-od">Draft খুলুন</button> আর Submit করুন।` : "Annual Planning Calendar → <b>Machine Plan</b> চাপুন, Preview দেখে Submit করুন।");
+                if ($("#sc-od")) $("#sc-od").onclick = openPrev; return
+            }
+            const S = GV || (GV = { bay: "", from: "", to: "", q: "", off: {} });
+            const bays = [...new Set(P.rows.map(r => r.bay))].sort(natCmp); if (!bays.includes(S.bay)) S.bay = bays[0] || "";
+            const bayRows = P.rows.filter(r => r.bay === S.bay), ss = bayRows.map(r => r.start).filter(Boolean).sort(), ee = bayRows.map(r => r.end).filter(Boolean).sort();
+            const from = S.from || (ss[0] || dkey(new Date())).slice(0, 10), to = S.to || (ee[ee.length - 1] || from).slice(0, 10), q = S.q.trim().toLowerCase();
+            const vis = bayRows.filter(r => (r.start || "").slice(0, 10) <= to && (r.end || "").slice(0, 10) >= from && (!q || [r.art, r.model, r.color, r.tool, r.mc].join(" ").toLowerCase().includes(q)));
+            const groups = new Map(); vis.forEach(r => (groups.get(r.mc) || groups.set(r.mc, []).get(r.mc)).push(r));
+            const gk = [...groups.keys()].sort(natCmp); gk.forEach(k => groups.get(k).sort((a, b) => (a.start || "").localeCompare(b.start || "")));
+            const rs = new Date(from + "T00:00"), nd = Math.max(1, Math.min(400, Math.round((new Date(to + "T00:00") - rs) / 864e5) + 1)), W = nd * GDW;
+            const px = s => { const t = new Date(s); return isNaN(t) ? null : (t - rs) / 864e5 * GDW };
+            const bar = (ri, a, b, cls, tx, tt) => { const x1 = px(a), x2 = px(b); if (x1 == null || x2 == null) return ""; const l = Math.max(0, x1), w = Math.min(W, x2) - l; if (w <= 0) return ""; return `<div class="gbar ${cls}" style="left:${l}px;width:${Math.max(w, 5)}px;top:${ri * GRH + (cls === "grp" ? 12 : 8)}px" title="${esc(tt)}">${w > 80 ? esc(tx) : ""}</div>` };
+            let ri = 0, L = "", B = "", totQ = 0, totD = 0, jobs = 0;
+            gk.forEach((k, gi) => {
+                const rg = groups.get(k), open = !S.off[k], tq = rg.reduce((s, r) => s + (r.qty || 0), 0), td = rg.reduce((s, r) => s + (r.days || 0), 0);
+                const a = rg.map(r => r.start).filter(Boolean).sort()[0] || "", z = rg.map(r => r.end).filter(Boolean).sort().pop() || "";
+                L += `<tr class="gp"><td><button class="gt" data-g="${esc(k)}">${open ? "−" : "+"}</button></td><td colspan="2" class="gname">MC ${esc(k || "—")}</td><td></td><td></td><td>${a ? esc(fmtDay(a)) : "-"}</td><td>${z ? esc(fmtDay(z)) : "-"}</td><td></td><td>${fmtN(tq)}</td><td></td><td>${td}</td><td></td><td class="mu">${rg.length} job</td></tr>`;
+                B += bar(ri, a, z, "grp", "", `MC ${k}: ${a} → ${z}`); ri++;
+                if (!open) return;
+                rg.forEach((r, ji) => {
+                    totQ += r.qty || 0; totD += r.days || 0; jobs++;
+                    const ed = (f, v, t = "text") => `<input class="ei" type="${t}" data-id="${r.id}" data-f="${f}" ${t === "number" ? 'step="any"' : ""} value="${esc(v ?? "")}">`;
+                    const late = r.due && r.end && r.end.slice(0, 10) > r.due, chip = r.due && r.end ? (late ? `<span class="chip ovd" title="Due ${esc(r.due)}">Late</span>` : `<span class="chip ok" title="Due ${esc(r.due)}">On Time</span>`) : "";
+                    const dd = r.start && r.end ? Math.round((new Date(r.end.slice(0, 10)) - new Date(r.start.slice(0, 10))) / 864e5) + 1 : NaN;
+                    L += `<tr><td>${r.chg ? `<button class="gc on" data-id="${r.id}" title="Changeover ${esc(r.chg.replace("T", " "))} (${SCH_CFG.chgMin} min) — ক্লিক করে বদলান">⇄</button>` : `<button class="gc" data-id="${r.id}" title="Changeover নেই — ক্লিক করে সময় দিন">+</button>`}</td>
+<td class="gm"><span class="gn">${gi + 1}.${ji + 1}</span>${ed("model", r.model)}</td><td>${ed("tc", r.tool + (r.cav ? "-" + r.cav : ""))}</td><td>${ed("ad", r.ad, "number")}</td>
+<td class="mu">${r.start ? esc(fmtDay(r.start)) : "-"}</td><td>${ed("start", r.start, "datetime-local")}</td><td>${ed("end", r.end, "datetime-local")}</td><td class="mu">${isNaN(dd) ? "-" : dd + " d"}</td>
+<td>${ed("qty", r.qty, "number")}</td><td>${ed("dev", r.dev)}</td><td>${ed("days", r.days, "number")}</td><td>${ed("art", r.art)}</td><td class="rm"><div>${chip}${ed("remark", r.remark)}</div></td></tr>`;
+                    B += bar(ri, r.start, r.end, late ? "late" : "", `${r.model} · ${fmtN(r.qty)}`, `${r.model} · ${r.art}\n${r.start.replace("T", " ")} → ${r.end.replace("T", " ")}\nQty ${fmtN(r.qty)}`); ri++
+                })
+            });
+            let wk = "", dy = "", dw = "", off = ""; const hol = CAL_DAYS;
+            for (let w = 0; w * 7 < nd; w++) { const n = Math.min(7, nd - w * 7), d0 = new Date(rs); d0.setDate(d0.getDate() + w * 7); wk += `<div style="width:${n * GDW}px">Week ${w + 1}<br>${d0.getDate()} ${PI_MON[d0.getMonth()]} ${d0.getFullYear()}</div>` }
+            for (let i = 0; i < nd; i++) {
+                const d = new Date(rs); d.setDate(d.getDate() + i); const k = dkey(d), f = SCH_CFG.offDow.includes(d.getDay()), h = hol[k] === "hol";
+                dy += `<div>${d.getDate()}</div>`; dw += `<div class="${f ? "f" : h ? "h" : ""}">${f ? "F" : h ? "H" : GDOW[d.getDay()]}</div>`;
+                if (f || h) off += `<i class="gx${h && !f ? " h" : ""}" style="left:${i * GDW}px;width:${GDW}px"></i>`
+            }
+            const t0 = new Date(); t0.setHours(0, 0, 0, 0); const tx = (t0 - rs) / 864e5 * GDW, today = tx >= 0 && tx < W ? `<i class="gtd" style="left:${tx}px" title="আজ"></i>` : "";
+            const stale = P.sig !== hashS(calSig()), gl0 = $("#glp"), gr0 = $("#grp"), keep = gl0 ? [gl0.scrollTop, gl0.scrollLeft, gr0.scrollLeft] : [0, 0, 0];
+            c.innerHTML = `<div class="sc">
+    <div class="sc-h"><b>Automated Production Schedule</b><span>Plan Smart • Produce Better</span></div>
+    <div class="sc-w">Submitted ${esc(new Date(P.submittedAt || P.at).toLocaleString())} — যেকোনো cell edit করলে নিজে থেকেই সংরক্ষণ হয়।${stale ? " ⚠ Holiday/Maintenance বদলেছে, প্ল্যান পুরনো — Recal চালান।" : ""}</div>
+    <div class="sc-f"><label>From <input type="date" id="gf" value="${esc(from)}"></label><label>To <input type="date" id="gt" value="${esc(to)}"></label>
+        <label class="gq"><input type="search" id="gq" placeholder="Search ART / Model / Tool / MC" value="${esc(S.q)}"></label>
+        <div class="sc-bays">${bays.map(x => `<button class="${x === S.bay ? "on" : ""}" data-b="${esc(x)}">${esc(x)}</button>`).join("")}</div></div>
+    <div class="gz">
+      <div class="gzl" id="glp"><table><colgroup><col style="width:70px"><col style="width:130px"><col style="width:110px"><col style="width:100px"><col style="width:120px"><col style="width:160px"><col style="width:160px"><col style="width:90px"><col style="width:110px"><col style="width:90px"><col style="width:80px"><col style="width:90px"><col style="width:210px"></colgroup>
+        <thead><tr><th>Change<br>Log</th><th>Mould<br>Model</th><th>Tool &amp;<br>Cavity</th><th>Capacity<br>Per Day</th><th>Planned<br>Day</th><th>Plan<br>Start At</th><th>Plan<br>End At</th><th>Plan<br>Duration</th><th>Planned<br>Qty</th><th>% Dev<br>From Plan</th><th>WORK<br>DAYS</th><th>ART</th><th>Remark</th></tr></thead>
+        <tbody>${L || `<tr><td colspan="13" style="padding:30px;color:var(--mute)">এই Bay / তারিখে কোনো কাজ নেই</td></tr>`}</tbody></table></div>
+      <div class="gzr" id="grp"><div class="gh" style="width:${W}px"><div class="wk">${wk}</div><div class="dy">${dy}</div><div class="dw">${dw}</div></div>
+        <div class="gb" style="width:${W}px;height:${Math.max(ri, 1) * GRH}px">${off}${today}${B}</div></div>
+    </div>
+    <div class="sc-ft"><span>Total Jobs: ${jobs}</span><span>Total Planned Qty: ${totQ.toLocaleString("en-US")}</span><span>Total Work Days: ${totD}</span></div>
+    <div class="sc-ac"><button class="g" id="gz-cr">+ Create</button><button class="b" id="gz-rc">Recal</button><button class="o" id="gz-up">Update</button></div>
+    ${P.notes && P.notes.length ? `<div class="pin"><b>সাজানো যায়নি (${P.notes.length}):</b><br>${P.notes.map(n => "• " + esc(n)).join("<br>")}</div>` : ""}</div>`;
+            const gl = $("#glp"), gr = $("#grp"); gl.scrollTop = gr.scrollTop = keep[0]; gl.scrollLeft = keep[1]; gr.scrollLeft = keep[2];
+            let lk = 0; gl.onscroll = () => { if (gr.scrollTop !== gl.scrollTop) { lk = 1; gr.scrollTop = gl.scrollTop } };
+            gr.onscroll = () => { if (lk) { lk = 0; return } if (gl.scrollTop !== gr.scrollTop) gl.scrollTop = gr.scrollTop };
+            const sv = () => { P.dirty = 0; SchStore.set("live", P); CACHE.piX = undefined };
+            c.querySelectorAll(".sc-bays button").forEach(x => x.onclick = () => { S.bay = x.dataset.b; S.from = S.to = ""; showSch() });
+            $("#gf").onchange = e => { S.from = e.target.value; showSch() }; $("#gt").onchange = e => { S.to = e.target.value; showSch() };
+            $("#gq").onchange = e => { S.q = e.target.value; showSch() };
+            c.querySelectorAll(".gt").forEach(x => x.onclick = () => { S.off[x.dataset.g] = !S.off[x.dataset.g]; showSch() });
+            c.querySelectorAll(".gc").forEach(x => x.onclick = () => {
+                const r = P.rows.find(z => z.id === +x.dataset.id); if (!r) return;
+                const v = prompt("Changeover তারিখ-সময় (YYYY-MM-DDTHH:MM)। খালি রাখলে মুছে যাবে।", r.chg || ""); if (v === null) return;
+                r.chg = v.trim(); sv(); showSch()
+            });
+            gl.onchange = e => { const t = e.target, f = t.dataset.f; if (!f) return; const r = P.rows.find(x => x.id === +t.dataset.id); if (!r) return; schApply(r, f, t); sv(); later(() => { if (CUR === "sch") showSch() }) };
+            $("#gz-cr").onclick = () => { P.rows.push(newRow(P, S.bay, gk[0], from)); sv(); showSch() };
+            $("#gz-rc").onclick = () => runMachinePlan();
+            $("#gz-up").onclick = () => { sv(); calToast("Update হয়েছে") }
+        }
+
+        /* ===== Annual Planning Calendar ===== */
+        const MN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const MI = ["❄️", "🗓️", "🍃", "🌷", "🌸", "☀️", "🌴", "🌞", "🍀", "🎃", "🌲", "🎁"];   /* month icon */
+        const MCOL = ["#3b82f6", "#14b8a6", "#22c55e", "#a855f7", "#3b82f6", "#3b82f6", "#14b8a6", "#3b82f6", "#22c55e", "#3b82f6", "#14b8a6", "#ec4899"];   /* month card tint */
+        const START_YEAR = 2026;                                                   /* first year in selector */
+        /* Day status data: window.CAL_DAYS = { "2027-03-15": "prod" | "chg" | "mnt" | "hol" | "unp" }
+           Days with no entry count as planned (Production). "unp" = unplanned / open. */
+        const CAL_DAYS = (window.CAL_DAYS = window.CAL_DAYS || {});
+        let CALY = null;
+        const calYears = () => { const cy = new Date().getFullYear(), end = Math.max(2028, cy + 1), a = []; for (let y = START_YEAR; y <= end; y++) a.push(y); return a };
+        const S = (p, x = "") => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" ${x}>${p}</svg>`;
+        const I = {
+            cal: S('<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M12 14h2M16 14h2M8 17h2M12 17h2"/>'),
+            chv: '<svg class="chv" viewBox="0 0 24 24" fill="none" stroke="#cfe0ff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>',
+            gear: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm9 4.5v-2l-2.1-.5a7 7 0 0 0-.8-1.9l1.1-1.9-1.4-1.4-1.9 1.1a7 7 0 0 0-1.9-.8L13.5 3h-2l-.5 2.1a7 7 0 0 0-1.9.8L7.2 4.8 5.8 6.2l1.1 1.9a7 7 0 0 0-.8 1.9L4 10.5v2l2.1.5c.2.7.5 1.3.8 1.9l-1.1 1.9 1.4 1.4 1.9-1.1c.6.3 1.2.6 1.9.8l.5 2.1h2l.5-2.1c.7-.2 1.3-.5 1.9-.8l1.9 1.1 1.4-1.4-1.1-1.9c.3-.6.6-1.2.8-1.9z"/></svg>',
+            swap: S('<path d="M17 3l4 4-4 4M3 11V9a2 2 0 0 1 2-2h16M7 21l-4-4 4-4M21 13v2a2 2 0 0 1-2 2H3"/>'),
+            wr: S('<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.2-.6-.6-2.2z"/>'),
+            fac: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 21V10l6 3.6V10l6 3.6V4h3.4v9.6H22V21z"/><path fill="rgba(0,0,0,.28)" d="M5 17h2.2v2.2H5zM10 17h2.2v2.2H10zM15 17h2.2v2.2H15z"/></svg>',
+            doc: S('<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6M9 9h2"/>'),
+            calok: S('<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18M8.5 15.5l2.5 2.5 4.5-5"/>'),
+            calclk: S('<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/><circle cx="15" cy="16" r="3.6"/><path d="M15 14.4v1.8l1.1.7"/>'),
+            trend: S('<rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="10" width="4" height="11" rx="1"/><rect x="17" y="6" width="4" height="15" rx="1"/><path d="M3 9l5-4 4 3 7-6M15 2h4v4"/>'),
+            ill: '<svg viewBox="0 0 120 84"><g transform="rotate(-8 60 44)"><rect x="14" y="12" width="78" height="62" rx="8" fill="#1b4fb8" stroke="#7dd3fc" stroke-width="2"/><rect x="14" y="12" width="78" height="14" rx="8" fill="#2f6fe0"/><path d="M34 6v12M72 6v12" stroke="#e0f2fe" stroke-width="4" stroke-linecap="round"/><g fill="#dbeafe" opacity=".9"><rect x="22" y="32" width="12" height="9" rx="2"/><rect x="40" y="32" width="12" height="9" rx="2"/><rect x="58" y="32" width="12" height="9" rx="2"/><rect x="22" y="46" width="12" height="9" rx="2"/><rect x="40" y="46" width="12" height="9" rx="2"/></g></g><circle cx="88" cy="56" r="20" fill="#0b2a70" stroke="#7dd3fc" stroke-width="3"/><path d="M88 44v12l8 5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/></svg>'
+        };
+        function calMonth(y, m) {
+            const first = new Date(y, m, 1).getDay(), dim = new Date(y, m + 1, 0).getDate(), now = new Date();
+            const today = now.getFullYear() === y && now.getMonth() === m ? now.getDate() : 0;
+            let cells = "SuMoTuWeThFrSa".match(/../g).map(w => `<span class="w">${w}</span>`).join("") + "<span></span>".repeat(first);
+            for (let d = 1; d <= dim; d++) {
+                const key = `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`, s = CAL_DAYS[key] || "";
+                cells += `<span class="${s}${d === today ? " t" : ""}">${d}</span>`
+            }
+            return `<div class="yc-mo" style="--mc:${MCOL[m]}"><div class="yc-mh"><em>${MI[m]}</em><b>${MN[m]}</b><u>${dim} Days</u></div><div class="yc-dg">${cells}</div></div>`
+        }
+        function calToast(t) { const e = document.createElement("div"); e.className = "yc-toast"; e.textContent = t; document.body.appendChild(e); setTimeout(() => e.remove(), 1800) }
+        function renderCal() {
+            const ys = calYears(), cy = new Date().getFullYear();
+            if (!ys.includes(CALY)) CALY = ys.includes(cy) ? cy : ys[0];
+            const total = new Date(CALY, 1, 29).getDate() === 29 ? 366 : 365, pre = CALY + "-";
+            const yk = Object.keys(CAL_DAYS).filter(k => k.startsWith(pre));
+            const open = yk.filter(k => CAL_DAYS[k] === "unp").length;
+            const planned = yk.filter(k => ["prod", "chg", "mnt"].includes(CAL_DAYS[k])).length;
+            const work = planned + open, pct = work ? Math.round(planned / work * 100) : 0;
+            const btn = (c, ic, t, s) => `<button class="yc-btn ${c}" data-s="${t}"><span class="bi">${ic}</span><span><b>${t}</b><small>${s}</small></span></button>`;
+            $("#pgc").innerHTML = `<div class="yc">
+            <div class="yc-top">
+                <div class="yc-ic">${I.cal}</div><div class="yc-sep"></div>
+                <div class="yc-t"><b>Yearly Calendar</b><span>Annual Production Schedule Overview</span>${calStale()}</div>
+                <label class="yc-yr">${I.cal}<select id="cy">${ys.map(y => `<option value="${y}"${y === CALY ? " selected" : ""}>${y}</option>`).join("")}</select>${I.chv}</label>
+                <span class="yc-sp"></span>
+                <div class="yc-tag">Plan Smart<i>•</i>Produce Better</div>
+                <div class="yc-ill">${I.ill}</div>
+            </div>
+            <div class="yc-st">
+                <div class="yc-card b"><div class="ci">${I.fac}</div><div class="cl"></div><div><small>Total Months</small><strong>12</strong></div></div>
+                <div class="yc-card g"><div class="ci">${I.calok}</div><div><small>Planned Days</small><strong>${planned}</strong></div></div>
+                <div class="yc-card o"><div class="ci">${I.calclk}</div><div><small>Open Plans</small><strong>${open}</strong></div></div>
+                <div class="yc-card v"><div class="ci">${I.trend}</div><div><small>Production Plan</small><strong>${pct}%</strong></div></div>
+            </div>
+            <div class="yc-lg">
+                <span><i style="--k:#22c55e"></i>Production</span><span><i style="--k:#f97316"></i>Changeover</span><span><i style="--k:#ef4444"></i>Maintenance</span><span><i style="--k:#3b82f6"></i>Holiday</span><span><i style="--k:#a855f7"></i>Unplanned</span>
+            </div>
+            <div class="yc-gr">${MN.map((_, m) => calMonth(CALY, m)).join("")}</div>
+            <div class="yc-ct">
+                <div class="yc-ch">${I.gear}<div><b>Planning Controls</b><small>Manage Your Annual Plan</small></div></div>
+                <div class="yc-vs"></div>
+                ${btn("b", I.cal, "Holiday Setup", "Manage Holidays")}
+                ${btn("g", I.swap, "Changeover Setup", "Set Changeover Plan")}
+                ${btn("o", I.wr, "Maintenance Setup", "Plan Maintenance")}
+                ${btn("v", I.fac, "Machine Plan", "Plan Machines")}
+                <div class="yc-vs"></div>
+                ${btn("r", I.doc, "Yearly Report", "View &amp; Export")}
+            </div>
+        </div>`;
+            $("#cy").onchange = e => { CALY = +e.target.value; renderCal() };
+            $("#pgc").querySelectorAll(".yc-btn").forEach(b => b.onclick = () => b.dataset.s === "Holiday Setup" ? PlanCal.openSetup() : b.dataset.s === "Machine Plan" ? runMachinePlan() : calToast(b.dataset.s + " – coming soon"))
+        }
+        function show(k) {
+            if (!SEC[k] && k !== "cal") k = "pi"; CUR = k;
+            document.querySelectorAll(".nv[data-p]").forEach(n => n.classList.toggle("on", n.dataset.p === k));
+            const isCal = k === "cal"; $("#pt").style.display = $("#ps").style.display = (isCal || k === "pi" || k === "sch") ? "none" : ""; $("main").classList.toggle("calm", isCal);
+            if (!isCal) { $("#pt").textContent = SEC[k].name; $("#ps").textContent = SEC[k].sub }
+            (isCal ? renderCal() : showSec(k)); location.hash = k
+        }
+        (async () => {
+            const ME = await ERP.require(); if (!ME) return;
+            const nm = ME.name || ME.login_id; $("#un").textContent = nm; $("#av").textContent = nm.slice(0, 2).toUpperCase();
+            const hr = new Date().getHours(); $("#gr").textContent = `Good ${hr < 12 ? "morning" : hr < 17 ? "afternoon" : "evening"}, ${nm.split(" ")[0]}. Here is your operation at a glance.`;
+            if (ME.role === "admin") $("#adm").style.display = "block";
+            $("#ub").onclick = e => { e.stopPropagation(); const m = $("#mn"); m.style.display = m.style.display === "block" ? "none" : "block" }; document.onclick = () => $("#mn").style.display = "none";
+            const mods = await ERP.tree(), M = mods.find(x => /production/i.test(String(x.name)));
+            if (!M || !(ERP.can(ME, M.id) || M.subs.some(s => ERP.can(ME, s.id, "v", M.id)))) { location.replace("portal.html"); return }
+            PS = M.subs.find(ERP.isPlanSub) || null;
+            if (PS) await PlanCal.init({ PS, ME, DAYS: CAL_DAYS, onChange: () => { if (CUR === "cal") renderCal() } });   /* Phase 1: Calendar Master → calendar (mode-isolated) */
+            ERP.sideBanner([M.id, ...M.subs.map(s => s.id)], PS ? ERP.PLAN.map(x => [PS.id, x.file]) : []);
+            show(location.hash.slice(1))
+        })().catch(e => console.error(e));
+    </script>
+</body>
+
+</html>
