@@ -584,7 +584,7 @@
       try {
         await loadUsers(); const ids = sid ? [sid] : [mid, ...m.subs.map(s => s.id)];
         let r = await sb.from("datasets").delete().in("node_id", ids.concat(ids.map(i => "a_" + i))); if (r.error) throw r.error;
-        try { await sb.storage.from("erp-data").remove(ids.concat(ids.map(i => "a_" + i)).flatMap(i => Object.keys(ERP.PACK).flatMap(k => [i + "/" + k + ".json.gz", i + "/" + k + "_meta.json"]))) } catch (e) { }
+        try { await sb.storage.from("erp-data").remove(ids.concat(ids.map(i => "a_" + i)).flatMap(i => Object.keys(ERP.PACK).concat(ERP.PLAN.map(x => x.file), ["plan_mnt", "plan_chg"]).flatMap(k => [i + "/" + k + ".json.gz", i + "/" + k + "_meta.json"]))) } catch (e) { }
         for (const u of USERS) { const p = { ...(u.perm || {}) }; let ch = false; ids.forEach(i => { if (p[i]) { delete p[i]; ch = true } }); if (ch) { r = await sb.from("profiles").update({ perm: p }).eq("id", u.id); if (r.error) throw r.error } }
         r = sid ? await sb.from("submodules").delete().eq("id", sid) : await sb.from("modules").delete().eq("id", mid); if (r.error) throw r.error;
         sel = null; await mods(); toast("Deleted")
@@ -614,8 +614,8 @@
     }
     /* ---------- DATA · Excel → Supabase Storage ---------- */
     const LIM_DB = 500 * 1048576, LIM_ST = 1024 * 1048576; let USE = null, LOG = "";
-    const nodeOf = id => { for (const m of MODS) { if (m.id === id) return m; const s = m.subs.find(x => x.id === id); if (s) return s } return null };
-    const cfgOf = m => { for (const [k, c] of Object.entries(ERP.PACK)) if (c.match.test(m.name)) return { key: k, ...c }; return null };
+    const nodeOf = id => { id = String(id); const q = id.indexOf("~"); if (q > 0) { const b = nodeOf(id.slice(0, q)), k = ERP.PLAN.find(x => x.k === id.slice(q + 1)); return b && k && ERP.isPlanSub(b) ? { id: b.id, name: b.name + " › " + k.name, plan: k } : null } for (const m of MODS) { if (m.id === id) return m; const s = m.subs.find(x => x.id === id); if (s) return s } return null };
+    const cfgOf = m => { if (m.plan) return { key: m.plan.file, generic: true }; for (const [k, c] of Object.entries(ERP.PACK)) if (c.match.test(m.name)) return { key: k, ...c }; return null };
     const mbf = b => (b / 1048576).toFixed(1) + " MB", p2 = n => String(n).padStart(2, "0"), nrm = s => String(s).toLowerCase().replace(/[^a-z0-9]/g, ""), cln = s => String(s ?? "").replace(/\s+/g, " ").trim();
     function isoD(v, df) {
       if (v == null || v === "") return null;
@@ -638,28 +638,38 @@
     async function data() {
       await loadMods(); ERP._force = DMM; if (!sel || !nodeOf(sel)) sel = MODS[0] && MODS[0].id;
       const tb = k => `<button class="btn ${DMM === k ? "red" : "ghost"}" onclick="DMM='${k}';LOG='';data().catch(err)">${k === "office" ? "Office Mode" : "Audit Mode"} Data</button>`;
-      const par = nodeOf(sel) && MODS.find(x => x.id === sel || x.subs.some(s => s.id === sel)); if (par && par.id !== sel && par.subs.length) OPEN.add(par.id);
-      $("#main").innerHTML = `<div class="top"><h2>Data Manager</h2><div style="display:flex;gap:8px">${tb("office")}${tb("audit")}</div></div><div class="split"><div class="card tree" style="padding:10px;align-self:start">${MODS.map(x => { const op = OPEN.has(x.id); return `<div class="n ${x.id === sel ? "on" : ""}" style="display:flex;justify-content:space-between" onclick="sel='${x.id}';LOG='';${x.subs.length ? `OPEN.has('${x.id}')?OPEN.delete('${x.id}'):OPEN.add('${x.id}');` : ""}data().catch(err)"><span>${esc(x.name)}</span>${x.subs.length ? `<span>${op ? "▾" : "▸"}</span>` : ""}</div>` + (op ? x.subs.map(s => `<div class="n ${s.id === sel ? "on" : ""}" style="padding-left:26px;font-size:12.5px" onclick="sel='${s.id}';LOG='';data().catch(err)">↳ ${esc(s.name)}</div>`).join("") : "") }).join("")}</div><div class="card" id="dm"><div class="empty">Loading…</div></div></div>`;
+      const s0 = String(sel).split("~")[0], par = nodeOf(sel) && MODS.find(x => x.id === s0 || x.subs.some(s => s.id === s0)); if (par && par.id !== s0 && par.subs.length) OPEN.add(par.id);
+      $("#main").innerHTML = `<div class="top"><h2>Data Manager</h2><div style="display:flex;gap:8px">${tb("office")}${tb("audit")}</div></div><div class="split"><div class="card tree" style="padding:10px;align-self:start">${MODS.map(x => { const op = OPEN.has(x.id); return `<div class="n ${x.id === sel ? "on" : ""}" style="display:flex;justify-content:space-between" onclick="sel='${x.id}';LOG='';${x.subs.length ? `OPEN.has('${x.id}')?OPEN.delete('${x.id}'):OPEN.add('${x.id}');` : ""}data().catch(err)"><span>${esc(x.name)}</span>${x.subs.length ? `<span>${op ? "▾" : "▸"}</span>` : ""}</div>` + (op ? x.subs.map(s => `<div class="n ${s.id === sel ? "on" : ""}" style="padding-left:26px;font-size:12.5px" onclick="sel='${s.id}';LOG='';data().catch(err)">↳ ${esc(s.name)}</div>` + (ERP.isPlanSub(s) ? ERP.PLAN.filter(k => k.k !== "cal").map(k => `<div class="n ${s.id + "~" + k.k === sel ? "on" : ""}" style="padding-left:44px;font-size:12px" onclick="sel='${s.id}~${k.k}';LOG='';data().catch(err)">› ${esc(k.name)}</div>`).join("") : "")).join("") : "") }).join("")}</div><div class="card" id="dm"><div class="empty">Loading…</div></div></div>`;
       const m = nodeOf(sel); if (!m) return;
       const c = cfgOf(m), [use, meta] = await Promise.all([usageHtml(), c ? ERP._fetchStorage(m.id + "/" + c.key + "_meta.json").then(r => r.json()).catch(() => null) : null]);
       CUR = { m, c, meta };
       const kp = meta ? [["Packed rows", meta.n], ["Source rows", meta.raw ?? "—"], ["File size", meta.mb ? meta.mb + " MB" : "—"], ["Updated", meta.at ? meta.at.slice(0, 16).replace("T", " ") : "—"]] : [];
       $("#dm").innerHTML = `<div class="top" style="margin-bottom:12px"><h3>${esc(m.name)} <span class="tag">${DMM === "audit" ? "AUDIT" : "OFFICE"}</span> <span class="tag ${meta ? "on" : "off"}">${meta ? "Live" : "No data"}</span></h3><div style="display:flex;gap:8px;flex-wrap:wrap">
-  ${c ? `<label class="btn red" style="margin:0;color:#fff;font-size:14px;cursor:pointer">⬆ Upload Excel / CSV<input type="file" accept=".csv,.xlsx,.xls" hidden onchange="pack(this)"></label>` : ""}${meta ? `<button class="btn del" onclick="dClr()">Delete data</button>` : ""}</div></div>
-  ${c ? `<div style="max-width:320px"><label>তারিখ লেখা থাকলে (যেমন 05/03/2025)</label><select id="df"><option value="0">Month first (MM/DD/YYYY)</option><option value="1">Day first (DD/MM/YYYY)</option></select></div>` : `<div class="empty">${m.subs && m.subs.length ? "এই module-এ সরাসরি Upload নেই — বাঁ দিকের ↳ sub-module বেছে সেখানে Upload করুন।" : "এই section-এর জন্য Storage প্যাক এখনো সেটআপ হয়নি।"}</div>`}
+  ${c ? `<label class="btn red" style="margin:0;color:#fff;font-size:14px;cursor:pointer">⬆ Upload Excel / CSV<input type="file" accept=".csv,.xlsx,.xls" hidden onchange="${c.generic ? 'packTable' : 'pack'}(this)"></label>` : ""}${meta ? `<button class="btn del" onclick="dClr()">Delete data</button>` : ""}</div></div>
+  ${c && c.generic ? `<div class="empty" style="padding:14px;text-align:left">Excel / CSV-এর <b>প্রথম sheet</b>, <b>প্রথম সারি = column-এর নাম</b>।${c.key === "plan_pi" ? " <b>Priority Intelligence</b>-এ Excel-এর <b>সব sheet</b> পড়া হয়: Outstanding · Delivery Date · Special Requirement।" : c.key === "plan_cap" ? " <b>Capacity</b>-এ Excel-এর <b>MODEL &amp; TOOL</b> ও <b>MACHINE</b> — দুটি sheet-ই জমা হয় (Mold Demand · Avg. Daily Output · Budget · Machine list)।" : ""} নতুন Upload আগের ডেটা বদলে দেবে। ডেটা শুধু <b>${DMM === "audit" ? "Audit" : "Office"}</b> mode-এ জমা হবে।</div>` : c ? `<div style="max-width:320px"><label>তারিখ লেখা থাকলে (যেমন 05/03/2025)</label><select id="df"><option value="0">Month first (MM/DD/YYYY)</option><option value="1">Day first (DD/MM/YYYY)</option></select></div>` : `<div class="empty">${ERP.isPlanSub(m) ? "Planning-এর নিচের › section (Priority Intelligence, Annual Planning Calendar …) বেছে আলাদা আলাদা Upload করুন।" : m.subs && m.subs.length ? "এই module-এ সরাসরি Upload নেই — বাঁ দিকের ↳ sub-module বেছে সেখানে Upload করুন।" : "এই section-এর জন্য Storage প্যাক এখনো সেটআপ হয়নি।"}</div>`}
   ${meta ? `<div class="kpis" style="margin-top:14px">${kp.map(k => `<div class="kpi"><b style="font-size:22px">${typeof k[1] === "number" ? k[1].toLocaleString() : k[1]}</b><span>${k[0]}</span></div>`).join("")}</div>${meta.totals ? `<p style="color:var(--mute);font-size:12px">Totals: ${Object.entries(meta.totals).map(([k, v]) => k + " = " + v.toLocaleString()).join(" | ")}</p>` : ""}` : ""}
   <pre class="lg" id="lg" style="display:${LOG ? "block" : "none"}">${esc(LOG)}</pre><div style="margin-top:6px">${use}</div>`
     }
 
+    const upRetry = async (st, path, body, opts) => {
+      let r = { error: { message: "upload failed" } };
+      for (let t = 1; t <= 3; t++) {
+        try { r = await st.upload(path, body, opts); if (!r.error) return r } catch (e) { r = { error: e } }
+        if (t < 3) await new Promise(s => setTimeout(s, 2000 * t));
+      }
+      return r;
+    };
     async function pack(inp) {
       const f = inp.files[0]; inp.value = ""; if (!f) return;
+      if (f.size > 150 * 1048576) return alert("ফাইল ১৫০ MB-এর বেশি (" + mbf(f.size) + ")। অপ্রয়োজনীয় sheet/row বাদ দিয়ে ছোট করে আবার চেষ্টা করুন।");
       const { m, c } = CUR, df = $("#df").value === "1", st = sb.storage.from("erp-data"), dm = $("#dm"), lg = $("#lg");
       const log = t => { LOG += t + "\n"; lg.style.display = "block"; lg.textContent = LOG; lg.scrollTop = lg.scrollHeight }, tick = () => new Promise(r => setTimeout(r, 30));
       LOG = ""; dm.style.pointerEvents = "none"; dm.style.opacity = ".75";
       try {
         log("1/5 ফাইল পড়া হচ্ছে… (বড় ফাইলে ১–৩ মিনিট লাগতে পারে, ট্যাব বন্ধ করবেন না)"); await tick();
-        const wb = XLSX.read(await f.arrayBuffer(), { type: "array", cellDates: true });
+        let wb = XLSX.read(await f.arrayBuffer(), { type: "array", cellDates: true });
         let A = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, raw: true, defval: "" });
+        wb = null; if (!A.length || !A[0]) throw new Error("ফাইলে কোনো ডেটা পাওয়া যায়নি (প্রথম sheet খালি)");
         const ix = {}; A[0].map(nrm).forEach((h, i) => { if (!(h in ix)) ix[h] = i });
         const miss = c.need.filter(k => ix[k] == null); if (miss.length) throw new Error("Column পাওয়া যায়নি: " + miss.join(", ") + " | ফাইলের column: " + A[0].join(", "));
         const raw = A.length - 1; log("   মোট row: " + raw.toLocaleString());
@@ -691,10 +701,56 @@
         if (gz.size > 50 * 1048576) throw new Error("ফাইল ৫০ MB ছাড়িয়েছে (ফ্রি সীমা)। আমাকে জানান।");
         if (USE && USE.storage + gz.size > LIM_ST * .95) throw new Error("Storage ৯৫% পার হয়ে যাবে, তাই আপলোড বন্ধ। জায়গা খালি করুন।");
         log("4/5 Storage-এ আপলোড হচ্ছে…"); await tick();
-        let r = await st.upload(ERP.spath(m.id + "/" + c.key + ".json.gz", DMM), gz, { upsert: true, contentType: "application/gzip", cacheControl: "0" }); if (r.error) throw r.error;
-        r = await st.upload(ERP.spath(m.id + "/" + c.key + "_meta.json", DMM), new Blob([JSON.stringify({ v: ver, n, raw, bad, mb, at: new Date().toISOString(), file: f.name, totals })], { type: "application/json" }), { upsert: true, contentType: "application/json", cacheControl: "0" }); if (r.error) throw r.error;
+        let r = await upRetry(st, ERP.spath(m.id + "/" + c.key + ".json.gz", DMM), gz, { upsert: true, contentType: "application/gzip", cacheControl: "0" }); if (r.error) throw r.error;
+        r = await upRetry(st, ERP.spath(m.id + "/" + c.key + "_meta.json", DMM), new Blob([JSON.stringify({ v: ver, n, raw, bad, mb, at: new Date().toISOString(), file: f.name, totals })], { type: "application/json" }), { upsert: true, contentType: "application/json", cacheControl: "0" }); if (r.error) throw new Error("ডেটা সেভ হয়েছে কিন্তু meta লেখা যায়নি — আবার Upload করুন: " + r.error.message);
         log("5/5 ✔ সম্পন্ন! Totals উপরের মতো আপনার Excel-এর সাথে মিলিয়ে নিন।"); toast("Upload done")
-      } catch (e) { log("✖ ত্রুটি: " + (e.message || JSON.stringify(e))) }
+      } catch (e) { const msg = String(e.message || JSON.stringify(e)); log("✖ ত্রুটি: " + msg + (/fetch|network|timeout|Load failed|aborted/i.test(msg) ? "\n   → নেটওয়ার্ক সমস্যা। ইন্টারনেট ঠিক করে আবার চেষ্টা করুন (আগের ডেটা নষ্ট হয়নি)।" : "")) }
+      await data().catch(err)
+    }
+
+    /* Planning › sections: যেকোনো Excel/CSV (প্রথম sheet) → table হিসেবে জমা; Office/Audit আলাদা path-এ */
+    /* Priority Intelligence / Capacity: Excel-এর একাধিক sheet জমা হয় → { "Sheet নাম": { cols, rows } } ; অন্য section-এ null
+   plan_pi  = সব sheet (Outstanding · Delivery Date · Special Requirement …)
+   plan_cap = "MODEL & TOOL" + "MACHINE" — এই দুটি sheet (Mold Demand · Avg. Daily Output · Budget এখান থেকে আসবে) */
+    function multiSheets(wb, key) {
+      if (key !== "plan_pi" && key !== "plan_cap") return null;
+      const cl = v => v instanceof Date ? (isNaN(v) ? "" : (d => d.getFullYear() + "-" + p2(d.getMonth() + 1) + "-" + p2(d.getDate()))(new Date(v.getTime() + 43200000))) : typeof v === "number" ? v : cln(v), out = {};
+      for (const nm of wb.SheetNames) {
+        if (key === "plan_cap" && !/model\s*(&|and)?\s*tool/i.test(nm) && !/^\s*machines?\s*$/i.test(nm)) continue;
+        const A = XLSX.utils.sheet_to_json(wb.Sheets[nm], { header: 1, raw: true, defval: "" }); if (!A.length || !A[0]) continue;
+        let w = A[0].length; while (w > 0 && !cln(A[0][w - 1])) w--; if (!w) continue;
+        const cols = A[0].slice(0, w).map((h, i) => cln(h) || "Column " + (i + 1)), rows = [];
+        for (let r = 1; r < A.length; r++) { const row = A[r]; if (!row.some(x => x !== "" && x != null)) continue; rows.push(cols.map((_, j) => cl(row[j]))) }
+        out[cln(nm)] = { cols, rows }
+      }
+      return out
+    }
+    async function packTable(inp) {
+      const f = inp.files[0]; inp.value = ""; if (!f) return;
+      if (f.size > 150 * 1048576) return alert("ফাইল ১৫০ MB-এর বেশি (" + mbf(f.size) + ")।");
+      const { m, c } = CUR, st = sb.storage.from("erp-data"), dm = $("#dm"), lg = $("#lg");
+      const log = t => { LOG += t + "\n"; lg.style.display = "block"; lg.textContent = LOG; lg.scrollTop = lg.scrollHeight }, tick = () => new Promise(r => setTimeout(r, 30));
+      LOG = ""; dm.style.pointerEvents = "none"; dm.style.opacity = ".75";
+      try {
+        log("1/4 ফাইল পড়া হচ্ছে…"); await tick();
+        let wb = XLSX.read(await f.arrayBuffer(), { type: "array", cellDates: true });
+        let A = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, raw: true, defval: "" }); const MS = multiSheets(wb, c.key); wb = null;
+        if (!A.length || !A[0]) throw new Error("ফাইলে কোনো ডেটা পাওয়া যায়নি (প্রথম sheet খালি)");
+        let w = A[0].length; while (w > 0 && !cln(A[0][w - 1])) w--; if (!w) throw new Error("প্রথম সারিতে column-এর নাম নেই");
+        const cols = A[0].slice(0, w).map((h, i) => cln(h) || "Column " + (i + 1)), rows = [];
+        const cell = v => v instanceof Date ? (isNaN(v) ? "" : (d => d.getFullYear() + "-" + p2(d.getMonth() + 1) + "-" + p2(d.getDate()))(new Date(v.getTime() + 43200000))) : typeof v === "number" ? v : cln(v);
+        for (let r = 1; r < A.length; r++) { const row = A[r]; if (!row.some(x => x !== "" && x != null)) continue; rows.push(cols.map((_, j) => cell(row[j]))) }
+        if (rows.length > 100000) throw new Error("১,০০,০০০ row-এর বেশি (" + rows.length.toLocaleString() + ")। ছোট করে আবার চেষ্টা করুন।");
+        log("   column: " + cols.length + " · row: " + rows.length.toLocaleString());
+        if (MS) log("   sheet: " + (Object.keys(MS).map(k => k + " (" + MS[k].rows.length.toLocaleString() + ")").join(" · ") || "— (দরকারি sheet পাওয়া যায়নি)")); log("2/4 সংকুচিত (gzip) করা হচ্ছে…"); await tick();
+        const ver = Date.now(), gz = await new Response(new Blob([JSON.stringify({ v: ver, cols, rows, file: f.name, sheets: MS })]).stream().pipeThrough(new CompressionStream("gzip"))).blob(), mb = +(gz.size / 1048576).toFixed(2);
+        if (gz.size > 50 * 1048576) throw new Error("ফাইল ৫০ MB ছাড়িয়েছে (ফ্রি সীমা)।");
+        if (USE && USE.storage + gz.size > LIM_ST * .95) throw new Error("Storage ৯৫% পার হয়ে যাবে, তাই আপলোড বন্ধ।");
+        log("3/4 Storage-এ আপলোড হচ্ছে… (" + mb + " MB)"); await tick();
+        let r = await upRetry(st, ERP.spath(m.id + "/" + c.key + ".json.gz", DMM), gz, { upsert: true, contentType: "application/gzip", cacheControl: "0" }); if (r.error) throw r.error;
+        r = await upRetry(st, ERP.spath(m.id + "/" + c.key + "_meta.json", DMM), new Blob([JSON.stringify({ v: ver, n: rows.length, raw: A.length - 1, mb, at: new Date().toISOString(), file: f.name })], { type: "application/json" }), { upsert: true, contentType: "application/json", cacheControl: "0" }); if (r.error) throw new Error("ডেটা সেভ হয়েছে কিন্তু meta লেখা যায়নি — আবার Upload করুন: " + r.error.message);
+        log("4/4 ✔ সম্পন্ন!"); toast("Upload done")
+      } catch (e) { log("✖ ত্রুটি: " + String(e.message || JSON.stringify(e)) + "\n   (আগের ডেটা নষ্ট হয়নি)") }
       await data().catch(err)
     }
 
